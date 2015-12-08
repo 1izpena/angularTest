@@ -9,75 +9,104 @@ body {
   padding: 0;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-left: 15px;
-  padding-right: 15px;
+nav {
+  background-color: #5cb85c !important;
 }
 
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
-}
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  margin-top: 0;
+.navbar {
   margin-bottom: 0;
-  line-height: 40px;
-  padding-bottom: 19px;
 }
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
-}
-
-.container-narrow > hr {
-  margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
 .jumbotron {
+  padding-right: 4em;
+  padding-left: 4em;
+}
+
+.forumjumbo {
+  background-color: #9966FF;
+  margin-bottom: 0px;
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
+  margin-top: 1.9em;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
+.chatjumbo {
+  background-color: #33CCFF;
+  text-align: center;
+  margin-bottom: 0px;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
+.mobilejumbo {
+  background-color: #9966FF;
+  text-align: center;
+  margin-bottom: 0px;
+}
 
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+.messageContainer {
+  text-align: center;
+}
+
+.navbar-text {
+  float: none;
+}
+
+.descargaMessage {
+  font-size: 3vw;
+  color: white;
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  direction: row;
+}
+
+.flex-container {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.flex-column {
+  -webkit-flex: 1;
+  flex: 1;
+}
+/*
+.animation-element {
+  opacity: 0;
+  position: relative;
+}
+*/
+.bounce-up {
+  opacity: 0;
+}
+
+.bounce-up.in-view {
+  opacity: 1;
+  -moz-transition: all 1300ms ease-in;
+  -webkit-transition: all 1300ms ease-in;
+  -o-transition: all 1300ms ease-in;
+  transition: all 1300ms ease-in;
+}
+
+.cf:before,
+.cf:after {
+  content: " ";
+  display: table;
+}
+
+.cf:after {
+  clear: both;
+}
+
+.logo {
+  max-width:30px;
+}
+
+/*LOGIN*/
+
+.login-container {
+
 }
