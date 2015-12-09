@@ -40,13 +40,6 @@ angular
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl',
         controllerAs: 'login'
-        /*
-        resolve: {
-          load: ['injectCSS', function (injectCSS) {
-            return injectCSS.set("login", "login.css");
-          }]
-        }
-        */
       })
       .otherwise({
         redirectTo: '/'
@@ -55,23 +48,4 @@ angular
   }).config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default').accentPalette('green');
 
-  }).service('LoginService', ['$http', function($http)
-  {
-    return {
-      login: function(data)
-      {
-        return $http({
-          method: 'POST',
-          url: 'http://localhost:3000/api/v1/auth/login',
-          data: {mail: data.mail, password: data.password}
-        });
-      },
-      logout: function()
-      {
-        return $http({
-          method: 'GET',
-          url: '/api/v1/auth/logout'
-        });
-      }
-    }
-  }]);
+  });

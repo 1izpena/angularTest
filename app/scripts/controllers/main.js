@@ -10,17 +10,22 @@
 
 
 angular.module('myAppAngularMinApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, LoginService, $location) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
 
+    $scope.auth = LoginService;
 
     $scope.goTo = function(url)
     {
       $location.path(url);
+    }
+
+    $scope.logout = function(){
+      LoginService.logout();
     }
 
   });

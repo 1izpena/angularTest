@@ -9,6 +9,8 @@ angular.module('myAppAngularMinApp')
       'Karma'
     ];
 
+    $scope.error = 0;
+
     $scope.goTo = function(url)
     {
       $location.path(url);
@@ -24,9 +26,10 @@ angular.module('myAppAngularMinApp')
             username: res.data.username,
             token: res.data.token
           });
-          $scope.goTo('/login');
+          $scope.goTo('/foro');
         }, function(res)
         {
+          $scope.error = 1;
           $scope.message = res.data.message;
         });
       }
