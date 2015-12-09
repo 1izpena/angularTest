@@ -1,17 +1,9 @@
 /*LOGIN*/
 .content {
+  min-height: 675px;
   height: 90%;
   padding-top: 10em;
-}
-
-body {
   background-image: url(../../images/cielo.jpg);
   -webkit-background-size: cover;
   background-size: cover;
 }
-
-/*
-.login-container {
-  margin-top: 10em;
-}
-*/

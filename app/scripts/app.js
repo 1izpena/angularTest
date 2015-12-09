@@ -16,7 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ngMaterial'
+    'ngMaterial',
+    'ngStorage'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -29,11 +30,6 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
         controllerAs: 'about'
-      })
-      .when('/signup', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
       })
       .when('/signup', {
         templateUrl: 'views/signup.html',
@@ -55,6 +51,27 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
   }).config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default').accentPalette('green');
-  });
+
+  }).service('LoginService', ['$http', function($http)
+  {
+    return {
+      login: function(data)
+      {
+        return $http({
+          method: 'POST',
+          url: 'http://localhost:3000/api/v1/auth/login',
+          data: {mail: data.mail, password: data.password}
+        });
+      },
+      logout: function()
+      {
+        return $http({
+          method: 'GET',
+          url: '/api/v1/auth/logout'
+        });
+      }
+    }
+  }]);

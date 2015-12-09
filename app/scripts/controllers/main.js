@@ -10,12 +10,19 @@
 
 
 angular.module('myAppAngularMinApp')
-  .controller('MainCtrl', function () {
+  .controller('MainCtrl', function ($scope) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+
+
+    $scope.goTo = function(url)
+    {
+      $location.path(url);
+    }
+
   });
 
 //var $animation_elements = $('.animation-element');
