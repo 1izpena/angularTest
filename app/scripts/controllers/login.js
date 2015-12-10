@@ -18,6 +18,7 @@ angular.module('myAppAngularMinApp')
 
     $scope.login = function(user) {
       $scope.message = '';
+      $scope.error = 0;
       if ($scope.user.mail && $scope.user.password)
       {
         LoginService.login($scope.user).then(function(res)
