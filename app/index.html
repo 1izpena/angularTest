@@ -39,7 +39,7 @@
       <div class="navbar-collapse collapse">
         <!-- Si no esta logueado -->
         <ul ng-if="!auth.isLogged()" class="nav navbar-nav navbar-right">
-          <a ng-click="goTo('/signup')" class="btn btn-success navbar-btn">Registrar</a>
+          <a ng-click="goTo('/register')" class="btn btn-success navbar-btn">Registrar</a>
           <a ng-click="goTo('/login')" class="btn btn-success navbar-btn">Entrar</a>
         </ul>
         <!-- Si esta logueado -->
@@ -96,10 +96,12 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/config.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/services/loginservice.js"></script>
+        <script src="scripts/controllers/register.js"></script>
         <!-- endbuild -->
 </body>
 </html>
