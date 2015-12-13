@@ -1,6 +1,7 @@
 /**
  * Created by urtzi on 09/12/2015.
  */
+'use strict';
 angular.module('myAppAngularMinApp')
   .service('ResetService', ['$http', function($http)
   {
@@ -19,7 +20,7 @@ angular.module('myAppAngularMinApp')
           data: {token: data.token , password: data.password}
         });
       }
-    }
+    };
   }]);
 
 

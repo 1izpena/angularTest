@@ -19,39 +19,39 @@ angular.module('myAppAngularMinApp')
 
     $scope.auth = LoginService;
 
-    $scope.goTo = function(url)
-    {
+    $scope.goTo = function(url) {
       $location.path(url);
-    }
+    };
 
     $scope.logout = function(){
       LoginService.logout();
-    }
+    };
 
   });
+
 
 //var $animation_elements = $('.animation-element');
 var $window = $(window);
 
-function check_if_in_view() {
-  var window_height = $window.height();
-  var window_top_position = $window.scrollTop();
-  var window_bottom_position = (window_top_position + window_height);
+function checkIfInView() {
+  var windowHeight = $window.height();
+  var windowTopPosition = $window.scrollTop();
+  var windowBottomPosition = (windowTopPosition + windowHeight);
   for (var i = 0 ; i < 3 ; i++) {
 
     var $element = $('.animation-element')[i];
-    var element_height = $($element).outerHeight();
-    var element_top_position;
-    if(typeof $($element).offset() == 'undefined'){
-      element_top_position = 0;
+    var elementHeight = $($element).outerHeight();
+    var elementTopPosition;
+    if(typeof $($element).offset() === 'undefined'){
+      elementTopPosition = 0;
     } else {
-      element_top_position = $($element).offset().top;
+      elementTopPosition = $($element).offset().top;
     }
-    var element_bottom_position = (element_top_position + element_height);
+    var elementBottomPosition = (elementTopPosition + elementHeight);
 
     //check to see if this current container is within viewport
-    if ((element_bottom_position >= window_top_position) &&
-      (element_top_position <= window_bottom_position)) {
+    if ((elementBottomPosition >= windowTopPosition) &&
+      (elementTopPosition <= windowBottomPosition)) {
       $($element).addClass('in-view');
     } else {
       $($element).removeClass('in-view');
@@ -60,13 +60,9 @@ function check_if_in_view() {
 }
 
 $(window).load(function() {
-
-  check_if_in_view();
-
-  $window.on('scroll resize', check_if_in_view);
+  
+  $window.on('scroll resize', checkIfInView);
 
   $window.trigger('scroll');
-
-  //$('.navbar-default').addClass('navbar-fixed-top');
 
 });

@@ -14,22 +14,21 @@ angular.module('myAppAngularMinApp')
         var self=this;
         if (this.registerForm.$valid) {
           $http ({
-            method: "post",
-            url: API_BASE + "api/v1/auth/signup",
+            method: 'post',
+            url: API_BASE + 'api/v1/auth/signup',
             data: self.user
           })
-          .then(function(response) {
+          .then(function() {
               $location.path('/login');
 
           },
           function(error){
-            if (error.data && error.data.message)
-              self.errorMessage=error.data.message;
-            else{
-              self.errorMessage="Unexpected error in register";
+            if (error.data && error.data.message) {
+              self.errorMessage = error.data.message;
+            }else{
+              self.errorMessage='Unexpected error in register';
             }
-          })
-            ;
+          });
       }
   };
   }]);

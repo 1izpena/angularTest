@@ -22,8 +22,8 @@ angular.module('myAppAngularMinApp')
           $scope.message = res.data.message;
         });
       }
-    }
+    };
 });
 
 
- 
+

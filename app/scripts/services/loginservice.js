@@ -1,6 +1,8 @@
 /**
  * Created by urtzi on 09/12/2015.
  */
+'use strict';
+
 angular.module('myAppAngularMinApp')
   .service('LoginService', ['$http', '$localStorage', function($http, $localStorage)
   {
@@ -13,7 +15,7 @@ angular.module('myAppAngularMinApp')
         });
       },
       logout: function() {
-        if($localStorage.username != null){
+        if($localStorage.username !== null){
           $localStorage.$reset();
         }
       },
@@ -23,5 +25,6 @@ angular.module('myAppAngularMinApp')
         }
         return false;
       }
-    }
+    };
+
   }]);

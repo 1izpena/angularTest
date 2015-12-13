@@ -1,6 +1,8 @@
 /**
  * Created by urtzi on 08/12/2015.
  */
+'use strict';
+
 angular.module('myAppAngularMinApp')
   .controller('LoginCtrl', function ($scope, LoginService, $location, $localStorage) {
     this.awesomeThings = [
@@ -11,28 +13,25 @@ angular.module('myAppAngularMinApp')
 
     $scope.error = 0;
 
-    $scope.goTo = function(url)
-    {
+    $scope.goTo = function(url) {
       $location.path(url);
-    }
+    };
 
     $scope.login = function(user) {
       $scope.message = '';
       $scope.error = 0;
-      if ($scope.user.mail && $scope.user.password)
-      {
-        LoginService.login($scope.user).then(function(res)
-        {
+      if (user.mail && user.password) {
+        LoginService.login(user).then(function(res) {
           $scope.storage = $localStorage.$default({
             username: res.data.username,
             token: res.data.token
           });
           $scope.goTo('/foro');
-        }, function(res)
-        {
+        }, function(res) {
           $scope.error = 1;
           $scope.message = res.data.message;
         });
       }
-    }
+    };
+
   });

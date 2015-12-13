@@ -1,4 +1,4 @@
-var config_module = angular.module('myApp.config', [])
+angular.module('myApp.config', [])
     .constant('APP_NAME','My App')
     .constant('APP_VERSION','0.1')
     .constant('FIRST_URL','http://www.google.com')
