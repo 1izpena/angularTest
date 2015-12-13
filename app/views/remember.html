@@ -1,0 +1,24 @@
+<div class="remember-container container" ng-controller="RememberCtrl">
+  <div class="jumbotron">
+    <div class="container">
+      <form class="form-horizontal">
+        <div class="form-group">
+          <h1 class="col-md-offset-2 col-md-12">Restablecer contraseña</h1>
+          <p>¿Ha olvidado la contraseña de su cuenta? Introduzca su dirección de correo electrónico y te enviaremos un enlace de recuperación.</p>
+        </div>
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+          <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
+          <h4><strong>Error!</strong></h4> {{message}}
+        </div>
+        <div class="form-group form-group-lg">
+          <label class="col-md-4 col-md-offset-1 control-label" for="email">Email</label>
+          <div class="col-md-3">
+             <input class="form-control input-lg text-center" name="email" type="email" ng-model="FormData.mail"/>
+          </div>
+        </div> 
+        <button class="btn btn-primary btn-lg col-md-offset-5" ng-click="check()">Enviar email de recuperación</button>
+    </form>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" ng-href="styles/login.css">

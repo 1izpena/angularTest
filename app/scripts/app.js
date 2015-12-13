@@ -43,6 +43,11 @@ angular
         controller: 'LoginCtrl',
         controllerAs: 'login'
       })
+     .when('/remember', {
+        templateUrl: 'views/remember.html',
+        controller: 'RememberCtrl',
+        controllerAs: 'remember'
+      })
       .otherwise({
         redirectTo: '/'
       });
