@@ -60,7 +60,7 @@ function checkIfInView() {
 }
 
 $(window).load(function() {
-  
+
   $window.on('scroll resize', checkIfInView);
 
   $window.trigger('scroll');

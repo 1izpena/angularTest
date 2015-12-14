@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .service('LoginService', ['$http', '$localStorage', function($http, $localStorage)
+  .service('LoginService', ['$http', '$localStorage', '$location', function($http, $localStorage, $location)
   {
     return {
       login: function(data) {
@@ -17,6 +17,7 @@ angular.module('myAppAngularMinApp')
       logout: function() {
         if($localStorage.username !== null){
           $localStorage.$reset();
+          $location.path('/');
         }
       },
       isLogged: function() {
