@@ -18,6 +18,10 @@ angular.module('myAppAngularMinApp')
 
         ResetService.check($scope.FormData).then(function(res)
         {
+          if($localStorage.ResetToken !=null)
+          {
+            $localStorage.$reset();
+          }
           $scope.storage = $localStorage.$default({
             ResetToken: res.data
           });
