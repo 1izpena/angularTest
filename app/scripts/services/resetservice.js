@@ -13,11 +13,11 @@ angular.module('myAppAngularMinApp')
           data: {mail: data.mail}
         });
       },
-      reset: function(data){
+      reset: function(data,token){
         return $http({
           method:'POST',
           url:'http://localhost:3000/api/v1/auth/reset',
-          data: {token: data.token , password: data.password}
+          data: {token: token , password: data.password}
         });
       }
     };

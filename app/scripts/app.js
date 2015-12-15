@@ -48,6 +48,11 @@ angular
         controller: 'RememberCtrl',
         controllerAs: 'remember'
       })
+     .when('/reset/:token', {
+        templateUrl: 'views/reset.html',
+        controller: 'ResetCtrl',
+        controllerAs: 'reset',
+      })
       .otherwise({
         redirectTo: '/'
       });
