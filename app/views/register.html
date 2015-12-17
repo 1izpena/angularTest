@@ -1,13 +1,14 @@
-<div class="login-container container" ng-controller="LoginCtrl">
+<div class="login-container container" >
   <div class="jumbotron">
-    <div class="container">
-      <h3 class="page-header">Register new user</h3>
+    <div class="container text-center">
+      <h2 class="page-header">Register new user</h2>
       <form class="form-horizontal" name="register.registerForm" novalidate="" ng-model-options="{ updateOn: 'blur'}">
-        <div class="col-sm-offset-2 col-sm-10 alert alert-danger small"
+        <div class="row">
+          <div class="col-sm-offset-3 col-sm-6  alert alert-danger small text-left"
              ng-show="register.errorMessage||
-                     (register.registerForm.mail.$invalid && register.registerForm.mail.$dirty) ||
-                     (register.registerForm.username.$invalid && register.registerForm.username.$dirty) ||
-                     (register.registerForm.password.$invalid && register.registerForm.password.$dirty)">
+                     (register.registerForm.mail.$invalid && (register.registerForm.$submitted || register.registerForm.mail.$dirty)) ||
+                     (register.registerForm.username.$invalid && (register.registerForm.$submitted || register.registerForm.username.$dirty)) ||
+                     (register.registerForm.password.$invalid && (register.registerForm.$submitted || register.registerForm.password.$dirty))">
           <ul>
             <li ng-show="register.errorMessage">{{register.errorMessage}}</li>
             <li ng-show="(register.registerForm.$submitted || register.registerForm.mail.$touched) &&
@@ -16,44 +17,41 @@
                           register.registerForm.mail.$error.email">Email format error</li>
             <li ng-show="(register.registerForm.$submitted || register.registerForm.username.$touched) &&
                           register.registerForm.username.$error.required">Username required</li>
-            <li ng-show="(register.registerForm.$submitted || register.registerForm.username.$touched) &&
-                          register.registerForm.username.$error.minlength">Username is less than 5 characters</li>
             <li ng-show="(register.registerForm.$submitted || register.registerForm.password.$touched) &&
                           register.registerForm.password.$error.required">Password required</li>
-            <li ng-show="(register.registerForm.$submitted || register.registerForm.password.$touched) &&
-                          register.registerForm.password.$error.minlength">Password is less than 8 characters</li>
           </ul>
+        </div>
         </div>
         <div class="form-group"
              ng-class="{'has-error': (register.registerForm.$submitted || register.registerForm.mail.$touched) &&
                                       register.registerForm.mail.$invalid}">
-          <label class="col-sm-2 control-label" for="mail">Email</label>
-          <div class="col-sm-10">
+          <label class="col-sm-4 control-label" for="mail">Email</label>
+          <div class="col-sm-4">
             <input type="email" class="form-control" id="mail" name="mail" placeholder=""
-                   ng-model="register.user.mail" required="">
+                   ng-model="register.user.mail" strict-email-format required="">
           </div>
         </div>
         <div class="form-group"
              ng-class="{'has-error': (register.registerForm.$submitted || register.registerForm.username.$touched) &&
                                       register.registerForm.username.$invalid}">
-          <label class="col-sm-2 control-label" for="username">Username</label>
-          <div class="col-sm-10">
+          <label class="col-sm-4 control-label" for="username">Username</label>
+          <div class="col-sm-4">
             <input type="text" class="form-control" id="username" name="username" placeholder=""
-                   ng-model="register.user.username" required="" minlength="5">
+                   ng-model="register.user.username" required="" >
           </div>
         </div>
         <div class="form-group"
              ng-class="{'has-error': (register.registerForm.$submitted || register.registerForm.password.$touched) &&
                                       register.registerForm.password.$invalid}">
-          <label class="col-sm-2 control-label" for="password">Password</label>
-          <div class="col-sm-10">
+          <label class="col-sm-4 control-label" for="password">Password</label>
+          <div class="col-sm-4">
             <input type="text" class="form-control" id="password" name="password" placeholder=""
-                   ng-model="register.user.password" required="" minlength="8">
+                   ng-model="register.user.password" required="" >
           </div>
         </div>
-
+        <br />
         <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
+          <div class="col-sm-offset-4 col-sm-4">
             <button class="btn btn-primary"
                     ng-click="register.register()" >Register</button>
           </div>
