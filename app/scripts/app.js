@@ -53,6 +53,11 @@ angular
         controller: 'ResetCtrl',
         controllerAs: 'reset',
       })
+      .when('/chat2', {
+        templateUrl: 'views/chat2.html',
+        controller: 'Chat2Ctrl',
+        controllerAs: 'chat2'
+      })
       .otherwise({
         redirectTo: '/'
       });

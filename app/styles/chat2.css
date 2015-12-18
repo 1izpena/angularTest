@@ -1,0 +1,185 @@
+.content {
+  min-height: 675px;
+  height: 90%;  
+  background-image: url(../../images/cielo.jpg);
+  -webkit-background-size: cover;
+  background-size: cover;
+  margin-top:-1.5em;
+}
+
+/* General Styles */
+
+.btn#menu-toggle {
+    color: rgb(250,250,250);
+    background-color: rgba(0,0,0,0.87);
+    border-color: rgba(0,0,0,0.87);
+    margin-left:-3em;
+    margin-top:-5.2em;
+}
+
+.btn#menu-toggle2 {
+    color: rgb(250,250,250);
+    background-color: rgba(0,0,0,0.87);
+    border-color: rgba(0,0,0,0.87);
+    margin-left:-3em;
+    margin-top:2.15em;
+}
+
+spam {
+	margin-left:-15px;
+
+}
+
+img#avatar {
+    height: 3em;
+    margin-bottom:10px; 
+    margin-top:20px;   
+}
+
+.fa {  color: white; }
+.c-align-left {    text-align: left; }
+
+
+li {   text-align: center; }
+
+ul {   list-style-type: none; }
+
+.fa-heart-o, .fa-heart  {
+	margin-right: 5px;
+        margin-left: -20px;	
+}
+
+
+/* Wrapper Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: absolute;
+    left: 250px;
+    width: 0;
+    /*height: 100%;*/
+    height: 48.2em;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #000;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: white;
+}
+
+.sidebar-nav ul>li a:hover {
+    text-decoration: none;
+}
+
+.emphasis a:hover {
+    text-decoration: none;
+    color: rgba(255,152,0,1);
+
+}
+
+.emphasis li .fa:hover {
+    text-decoration: none;
+    color: rgba(255,152,0,1);  
+}
+
+
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 85px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: white;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+
