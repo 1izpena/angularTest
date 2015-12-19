@@ -25,6 +25,13 @@ angular.module('myAppAngularMinApp')
           $scope.storage = $localStorage.$default({
             ResetToken: res.data
           });
+          if(res.data=="error"){ // control error envio mail
+          //Mostrar error
+        $scope.FormVisibility = false;
+        $scope.ResponseVisibility = false;
+        $scope.ResponseError = true;       
+         
+        }         
           
           
         },function(res)

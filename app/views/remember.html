@@ -18,7 +18,8 @@
         </div> 
         <button class="btn btn-primary btn-lg col-md-offset-5" ng-click="check()">Enviar email de recuperación</button>
     </form>
-    <div class="result" ng-show="ResponseVisibility">Te hemos enviado un email<br/><a href="#/login">LOGIN</a></div>
+     <div class="result" ng-show="ResponseVisibility"><p>Te hemos enviado un email</p><br/></div>
+    <div class="result" ng-show="ResponseError"><p>Ha habido un error.Intentalo más tarde</p><br/></div>
     </div>
   </div>
 </div>
