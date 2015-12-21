@@ -423,9 +423,27 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    concat: {
+      controllers: {
+        src: ['app/scripts/controllers/**/*.js' ],
+        dest: '.tmp/scripts/controllers.js'
+      },
+      directives: {
+        src: ['app/scripts/directives/**/*.js' ],
+        dest: '.tmp/scripts/directives.js'
+      },
+      services: {
+        src: ['app/scripts/services/**/*.js' ],
+        dest: '.tmp/scripts/services.js'
+      }
     }
+
+
   });
 
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -434,6 +452,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'concat',
       'wiredep',
       'concurrent:server',
       'postcss:server',
