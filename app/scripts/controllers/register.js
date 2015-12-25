@@ -8,7 +8,7 @@
  * Controller of the myAppAngularMinApp
  */
 angular.module('myAppAngularMinApp')
-  .controller('RegisterCtrl', [ '$http', '$location', 'API_BASE', function ($http, $location, API_BASE) {
+  .controller('RegisterCtrl', [ '$http', '$location', '$localStorage', '$scope', 'API_BASE', function ($http, $location, $localStorage, $scope, API_BASE) {
 
       this.register = function () {
         var self=this;
@@ -18,8 +18,18 @@ angular.module('myAppAngularMinApp')
             url: API_BASE + 'api/v1/auth/signup',
             data: self.user
           })
-          .then(function() {
-              $location.path('/login');
+          .then(function(res) {
+            alert("Te hemos enviado un mail de activación");
+            $location.path('/login');              
+
+              //token de activacion al localstorage
+          if($localStorage.ActivateToken !=null)
+          {
+            $localStorage.$reset();
+          }
+          $scope.storage = $localStorage.$default({
+            ActivateToken: res.data
+          });
 
           },
           function(error){
