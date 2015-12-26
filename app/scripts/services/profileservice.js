@@ -8,7 +8,7 @@ angular.module('myAppAngularMinApp')
 
      return {
         getGroups: getGroups,
-	getUsername
+	getUsername: getUsername
      }
 
     function getGroups () {
@@ -46,23 +46,5 @@ angular.module('myAppAngularMinApp')
         return promise;
     }
 
-/*
-    return {
-      getGroups: function() {
-	return $http.get('http://localhost:3000/api/v1/users/:username/chat/groups', {
-    		headers: {'x-access-token': $localStorage.token}
-	});
 
-      },
-
-
-      getUser: function() {
-		return $http.get('http://localhost:3000/api/v1/users/:username/chat', {
-	    		headers: {'x-access-token': $localStorage.token}
-		});
-	}
-
-     }
-
-*/
   }]);
