@@ -44,12 +44,11 @@
           <a ng-click="goTo('/login')" class="btn btn-success navbar-btn">Entrar</a>
         </ul>
 
-	<!-- Para pruebas, luego eliminar -->
-	<a ng-click="goTo('/chat2')" class="btn btn-success navbar-btn">Chat</a>
-	</ul>
 
         <!-- Si esta logueado -->
         <ul ng-if="auth.isLogged()" class="nav navbar-nav navbar-right">
+          <a ng-click="goTo('/chat2')" class="btn btn-success navbar-btn">Chat</a>
+
           <a ng-click="logout()" class="btn btn-success navbar-btn">Salir</a>
         </ul>
       </div>

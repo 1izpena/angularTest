@@ -11,7 +11,7 @@
                 <li class="sidebar-brand">
 
                    <a href=""><img id="avatar" src="images/yeoman.png" class="profile-image img-circle">
-                        1izpena
+                        {{username}}
                     </a>
                 </li>
               
@@ -20,9 +20,10 @@
 		   <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
 		
 		    <ul aria-expanded="true" class="emphasis">
-		    	<li><a href="">dessi15</a></li>
-			<li><a href="">dessiProyecto</a></li>
-			<li><a href="">dessiClase</a></li>
+
+			<li ng-repeat="group in groups"><a href="">
+               			{{group.groupName}}
+			</a></li>
 			
          		<!----  add group ------>
 			<li><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span>Add new group</a></li>
