@@ -1,41 +1,39 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', function ($scope, ProfileService, $location, $localStorage) {
-    
-	ProfileService.getGroups().then(function(res, error) {
-	      if(error) {
+  .controller('Chat2Ctrl', function ($scope, ProfileService, LoginService, $location, $localStorage) {
+  
+	$scope.logout = function(){
+       		LoginService.logoutLogin();
+    	};
 
-		console.log(error);
-                return error;
+	ProfileService
+        .getGroups()
+        .then(function(data) {
+            $scope.groups = data;
+        }
+        , function(err) {
+            // Tratar el error
+		console.log("Hay error");
+		console.log(err.message);
+  		$scope.error = err.message;
+		
+        });
 
-	      } else {
-
-		     $scope.groups= res.data;
-
-   			
-	      }
-	});
 
 
-	ProfileService.getUser().then(function(res, error) {
-	      if(error) {
+	ProfileService
+        .getUsername()
+        .then(function(data) {
+            $scope.username = data.username;
+        }
+        , function(err) {
+            // Tratar el error
+		console.log("Hay error");
+		console.log(err.message);
+		$scope.error = err.message;
 
-		console.log(error);
-                return error;
+        });
 
-	      } else {
-
-		     $scope.username= res.data.username;
- 		     console.log("esto vale scope2");
-		     console.log(res.data.username);
-
-   			
-	      }
-	});
-       
-        
-
- 
 
 });

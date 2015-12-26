@@ -20,6 +20,14 @@ angular.module('myAppAngularMinApp')
           $location.path('/');
         }
       },
+
+      logoutLogin: function() {
+        if($localStorage.username !== null){
+          $localStorage.$reset();
+          $location.path('/login');
+        }
+      },
+
       isLogged: function() {
         if($localStorage.username && $localStorage.token){
           return true;

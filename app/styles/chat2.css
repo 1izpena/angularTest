@@ -184,6 +184,12 @@ ul {   list-style-type: none; }
 
 /* Chat Styles */
 
+#alert
+{
+	margin-bottom: 0;
+}
+
+
 #btn-chat-choose
 {
 	margin-top:-1px;
@@ -235,7 +241,7 @@ ul {   list-style-type: none; }
 .panel-body
 {
     overflow-y: scroll;
-    height: 35em; 
+    height: 31em; 
 }
 
 ::-webkit-scrollbar-track
