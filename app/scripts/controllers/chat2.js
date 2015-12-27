@@ -7,6 +7,24 @@ angular.module('myAppAngularMinApp')
        		LoginService.logoutLogin();
     	};
 
+
+        $scope.getChannels = function(group){
+		
+       		ProfileService.getChannels(group.id)
+		.then(function(data) {
+		    $scope.channels = data.channels;
+		}
+		, function(err) {
+		    // Tratar el error
+			console.log("Hay error");
+			console.log(err.message);
+	  		$scope.error = err.message;
+		
+		});
+    	}
+
+
+
 	ProfileService
         .getGroups()
         .then(function(data) {

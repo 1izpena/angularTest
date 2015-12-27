@@ -21,7 +21,7 @@
 		
 		    <ul aria-expanded="true" class="emphasis">
 
-			<li ng-repeat="group in groups"><a href="">
+			<li ng-repeat="group in groups"><a ng-click="getChannels(group)">
                			{{group.groupName}}
 			</a></li>
 			
@@ -38,10 +38,13 @@
 			   <a href="" class="btn btn-danger">Public<span class="fa fa-chevron-down"></span></a>
 				<ul class="emphasis">
 
-				<li><a href="">dessi15</li>
-				<li><a href="">dessiProject</li>
-				<li><a href="">dessiSubjects</li>
 				
+				
+				<li ng-repeat="channel in channels" ng-show= "channel.channelType=='PUBLIC'"><a ng-click="">
+               			{{channel.channelName}}
+			</a></li>
+
+
 				</ul>
 		           
 			</li>
@@ -49,9 +52,9 @@
 			   <a href="" class="btn btn-danger">Private<span class="fa fa-chevron-down"></span></a>
 				<ul class="emphasis">
 
-				<li><a href="">dessi15</li>
-				<li><a href="">dessiProject</li>
-				<li><a href="">dessiSubjects</li>
+				<li ng-repeat="channel in channels" ng-show= "channel.channelType=='PRIVATE'"><a ng-click="">
+               			{{channel.channelName}}
+			</a></li>
 				
 				</ul>
 		           
