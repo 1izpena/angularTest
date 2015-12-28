@@ -13,6 +13,13 @@ angular.module('myAppAngularMinApp')
           data: {mail: data.mail}
         });
       },
+      activate: function(token) {
+        return $http({
+          method: 'POST',
+          url: 'http://localhost:3000/api/v1/auth/activate',
+          data: {token: token}
+        });
+      },
       reset: function(data,token){
         return $http({
           method:'POST',

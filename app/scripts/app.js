@@ -53,6 +53,11 @@ angular
         controller: 'ResetCtrl',
         controllerAs: 'reset',
       })
+      .when('/activate/:token', {
+        templateUrl: 'views/activate.html',
+        controller: 'ActivateCtrl',
+        controllerAs: 'activate',
+      })
       .when('/chat2', {
         templateUrl: 'views/chat2.html',
         controller: 'Chat2Ctrl',
