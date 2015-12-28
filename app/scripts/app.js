@@ -58,6 +58,12 @@ angular
         controller: 'Chat2Ctrl',
         controllerAs: 'chat2'
       })
+      // Incluirlo e la pagina principal del chat
+      .when('/messages', {
+        templateUrl: '../views/messages.html',
+        controller: 'MessagesCtrl',
+        controllerAs: 'message'
+      })
       .otherwise({
         redirectTo: '/'
       });

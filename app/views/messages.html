@@ -1,0 +1,22 @@
+
+<div class="container">
+  <form name="message.uploadForm" ng-submit=>
+    <label>User ID</label><input type="text" ng-model="message.data.userid" />
+    <br>
+    <label>Channel ID</label><input type="text" ng-model="message.data.channelid" />
+    <br>
+    <label >Texto del mensaje</label>
+    <br>
+    <textarea name="message.text" rows="3" cols="80"/>
+    <input type=button ng-model="message.data.text" ng-click="message.sendText()" value="Enviar">
+    <br>
+    <br>
+    <br>
+    <label >Subir fichero</label>
+    <!-- uploadFile: path completo al fichero. NO lo utilizamos en el controlador -->
+    <!-- upload.fileName: dentro del scope del controlador. La directiva lo carga con el nombre del fichero (sin ruta) -->
+    <input type="file" name="uploadFile" file="message.data.filename" required />
+      <br><br>
+      <input type=button ng-click="message.sendDocument()" value="Subir fichero">
+  </form>
+</div>
