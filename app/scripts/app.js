@@ -63,6 +63,11 @@ angular
         controller: 'Chat2Ctrl',
         controllerAs: 'chat2'
       })
+      .when('/foro', {
+        templateUrl: 'views/foro.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro',
+      })
       .otherwise({
         redirectTo: '/'
       });
