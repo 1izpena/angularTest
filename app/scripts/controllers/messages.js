@@ -1,55 +1,91 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('MessagesCtrl', [ '$http', 'API_BASE', function ($http, API_BASE ) {
+  .controller('MessagesCtrl', [ 'ChatService', 'Socket', function (ChatService, Socket ) {
 
-    this.data = { userid: 'amaia', 'channelid': 'general'};
+    var self=this;
+
+    // Datos iniciales
+    self.data = { 'userid': '5676e310ffe2b17c165869ef',
+                  'channelid': '56817aeeb878246408a2c02c',
+                  'groupid': '56817aeeb878246408a2c02a'};
+
+
+    self.listaMensajes = [
+      {_channel: "56817aeeb878246408a2c02c",
+        _id: "568432e53b3707e0045f7aef",
+        _user: "5676e310ffe2b17c165869ef",
+        content: {
+          path: 'foto3.jpg'
+        },
+        datetime: "2015-12-30T19:39:17.863Z",
+        messageType: "FILE"},
+      {_channel: "56817aeeb878246408a2c02c",
+        _id: "568432e53b3707e0045f7aef",
+        _user: "5676e310ffe2b17c165869ef",
+        content: {
+          path: 'foto1.jpg'
+        },
+        datetime: "2015-12-30T19:39:17.863Z",
+        messageType: "FILE"},
+      {_channel: "56817aeeb878246408a2c02c",
+        _id: "568432e53b3707e0045f7aef",
+        _user: "5676e310ffe2b17c165869ef",
+        content: {
+          text: 'este es un mensaje de texto'
+        },
+        datetime: "2015-12-30T19:39:17.863Z",
+        messageType: "TEXT"},
+    ];
+
+    Socket.emit('selectChannel', this.data);
+    Socket.on('newMessage', function (data) {
+      self.listaMensajes.push(data);
+
+    });
 
     this.sendDocument = function () {
 
-      var self=this;
+        var self=this;
+        self.data.messageType = 'FILE';
 
-      var userid=self.data.userid;
-      var channelid=self.data.channelid;
-
-      $http.post(API_BASE + 'api/v1/file/getSignedUrl', {filename: self.data.filename} )
-        .then( function(response){
-          $http.put(response.data.url, self.data.filename)
-            .then(function(response){
-              self.data.messageType = 'FILE';
-              console.log (self.data);
-              $http({
-                method: 'post',
-                url: API_BASE + 'api/v1/users/'+userid+'/chat/channels/'+channelid+'/messages',
-                data: self.data
-              })
-                .then(function(response) {
-                  console.log ("mensaje creado");
-                  console.log(response);
-                },
-                function(error){
-                  console.log("Error en post message");
-                  console.log (error);
-                });
-              //api/v1/users/:username/chat/
+      ChatService.uploadFileS3(self.data).then(
+          function(result) {
+            // Upload OK
+            ChatService.postMessage(self.data).then(
+              function(result) {
+                // Mensaje creado
               },
-            function () {
-              console.log("Error en put file");
-            });
-        },
-        function () {
-          console.log("Error en get signedUrl");
-        });
+              function (erro) {
+                // TODO: Mostrar error
+                console.log ("Error en postMessage");
+              }
+            );
+          },
+          function (erro) {
+            // TODO: Mostrar error
+            console.log ("Error en uploadFileS3");
+          }
+        );
+
+
 
     };
 
     this.sendText = function () {
 
-      console.log ("send text");
-
       var self=this;
+      self.data.messageType = 'TEXT';
 
-      // TODO: Enviar informacion al servidor
+      ChatService.postMessage(self.data).then(
+        function(result) {
+          // Mensaje creado
+        },
+        function (err) {
+          // TODO: Mostrar error
+          console.log ("Error en postMessage");
+        }
+      );
 
 
 
