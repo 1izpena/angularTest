@@ -30,6 +30,15 @@ angular.module('myAppAngularMinApp')
         }, function(res) {
           $scope.error = 1;
           $scope.message = res.data.message;
+
+          //token de activacion al localstorage
+          if($localStorage.ActivateToken !=null)
+          {
+            $localStorage.$reset();
+          }
+          $scope.storage = $localStorage.$default({
+            ActivateToken: res.data.token
+          });
         });
       }
     };
