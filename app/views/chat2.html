@@ -16,12 +16,15 @@
                 </li>
               
 
-	 <li class="active">
-		   <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
-		
-		    <ul aria-expanded="true" class="emphasis">
 
-			<li ng-repeat="group in groups" ng-if="groups.length > 0"><a ng-click="getChannels(group); getGroupMembers(group)">
+	         <li class="active">
+
+
+		   <a class="btn btn-primary" href="" aria-expanded="false">Groups<i class="fa fa-group fa-fw"></i></a>
+		
+		    <ul aria-expanded="false" class="emphasis cgroups">
+
+			<li class="prueba" ng-repeat="group in groups" ng-if="groups.length > 0"><a ng-click="getChannels(group); getGroupMembers(group);">
                			{{group.groupName}}
 			</a></li>
 			
@@ -31,15 +34,19 @@
 		  </li>
 
 		<!-------separator------->
-		  <li>
+		  <li class="activeChannels">
 		     <a class="btn btn-primary" href="" aria-expanded="false">Channels<i class="fa fa-comment fa-fw"></i></a>
 		    <ul aria-expanded="false">
-		    	<li>
-			   <a href="" class="btn btn-danger">Public<span class="fa fa-chevron-down"></span></a>
-				<ul class="emphasis">
+		    	<li class="inactive">
+			   <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
+				<ul aria-expanded="false" class="emphasis">
 
 				
 				
+<li ><a href="" >oli
+			</a></li>
+
+
 				<li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0"><a ng-click="getChannelMembers(channel)">
                			{{channel.channelName}}
 			</a></li>
@@ -65,10 +72,10 @@
 		    </ul>
 		  </li>
 		  <!-------separator------->
-		  <li>
+		  <li class="activeMembers">
 		    <a class="btn btn-primary" href="" aria-expanded="false">Members<i class="fa fa-user fa-fw"></i></a>
 		
-		      <ul aria-expanded="true" class="emphasis">
+		      <ul aria-expanded="false" class="emphasis">
 			  <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
 
 <li ng-repeat="member in members" ng-if="members.length > 0"><a ng-click=""><span class="fa fa-heart-o"></span>
@@ -250,11 +257,66 @@
         $("#wrapper").toggleClass("toggled");
     });
 
-     $("#menu").metisMenu({
+    $("#menu").metisMenu({
+    	activeClass: 'active'
+    });
+
+
+
+    $("#menu ul.cgroups").click(function(e) {
+	var target = $( e.target );	
+	if ( target.is( "a.ng-binding" ) ) {
+		console.log("entro");
+    		$("#menu").metisMenu({
+    			activeClass: 'activeChannels'
+			//toggle: false
+    		});
+    }
+
+	
+});
+
+
+
+    </script>
+<!---------
+https://github.com/onokumus/metisMenu
+
+$('li.active').addClass('selected');
+
+$("button").attr("aria-expanded","true");
+
+$("#menu").metisMenu({
     	collapseClass: 'collapse'
      });
-    </script>
 
+
+//esto hace que no se colapsen cuando habro otra
+      $("#menu").metisMenu({
+    toggle: false
+  });
+
+// esto hace que me habra las clases que yo quiera
+$("#menu").metisMenu({
+    activeClass: 'inactive'
+  });
+
+//no se que hace
+ $("#menu").metisMenu({
+    collapseInClass: 'in'
+  });
+
+ $("#menu").metisMenu({
+    collapsingClass: 'collapsing'
+  });
+
+$("#menu").metisMenu({
+    doubleTapToGo: true
+  });
+
+
+------------>
+<!--------------------->
 
 
 <link rel="stylesheet" ng-href="styles/chat2.css">
