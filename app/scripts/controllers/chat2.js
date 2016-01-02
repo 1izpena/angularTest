@@ -12,7 +12,8 @@ angular.module('myAppAngularMinApp')
 		
        		ProfileService.getChannels(group.id)
 		.then(function(data) {
-		    $scope.channels = data.channels;
+		    $scope.privateChannels = data.privateChannels;
+		    $scope.publicChannels = data.publicChannels;
 		}
 		, function(err) {
 		    // Tratar el error
@@ -22,6 +23,44 @@ angular.module('myAppAngularMinApp')
 		
 		});
     	}
+
+
+	$scope.getChannelMembers = function(channel){
+		
+       		ProfileService.getChannelMembers(channel.id)
+		.then(function(data) {
+		    $scope.members = data;
+		    
+		}
+		, function(err) {
+		    // Tratar el error
+			console.log("Hay error");
+			console.log(err.message);
+	  		$scope.error = err.message;
+		
+		});
+    	}
+	
+
+
+
+
+        $scope.getGroupMembers = function(group){
+		
+       		ProfileService.getGroupMembers(group.id)
+		.then(function(data) {
+		    $scope.members = data;
+		    
+		}
+		, function(err) {
+		    // Tratar el error
+			console.log("Hay error");
+			console.log(err.message);
+	  		$scope.error = err.message;
+		
+		});
+    	}
+
 
 
 
@@ -41,7 +80,7 @@ angular.module('myAppAngularMinApp')
 
 
 	ProfileService
-        .getUsername()
+        .getUserinfo()
         .then(function(data) {
             $scope.username = data.username;
         }

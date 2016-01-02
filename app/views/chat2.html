@@ -21,7 +21,7 @@
 		
 		    <ul aria-expanded="true" class="emphasis">
 
-			<li ng-repeat="group in groups"><a ng-click="getChannels(group)">
+			<li ng-repeat="group in groups" ng-if="groups.length > 0"><a ng-click="getChannels(group); getGroupMembers(group)">
                			{{group.groupName}}
 			</a></li>
 			
@@ -40,7 +40,7 @@
 
 				
 				
-				<li ng-repeat="channel in channels" ng-show= "channel.channelType=='PUBLIC'"><a ng-click="">
+				<li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0"><a ng-click="getChannelMembers(channel)">
                			{{channel.channelName}}
 			</a></li>
 
@@ -52,7 +52,7 @@
 			   <a href="" class="btn btn-danger">Private<span class="fa fa-chevron-down"></span></a>
 				<ul class="emphasis">
 
-				<li ng-repeat="channel in channels" ng-show= "channel.channelType=='PRIVATE'"><a ng-click="">
+				<li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0"><a ng-click="getChannelMembers(channel)">
                			{{channel.channelName}}
 			</a></li>
 				
@@ -69,10 +69,13 @@
 		    <a class="btn btn-primary" href="" aria-expanded="false">Members<i class="fa fa-user fa-fw"></i></a>
 		
 		      <ul aria-expanded="true" class="emphasis">
-			  <!-- dependiendo si esta en online un icono u otro -->
-		    	  <li><a href=""><span class="fa fa-heart-o"></span>user1</a></li>
-			  <li><a href=""><span class="fa fa-heart"></span>user2</a></li>
-			  <li><a href=""><span class="fa fa-heart-o"></span>user3</a></li>
+			  <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
+
+<li ng-repeat="member in members" ng-if="members.length > 0"><a ng-click=""><span class="fa fa-heart-o"></span>
+               			{{member.username}}
+			</a></li>
+
+
 
 			<!----  invite user ------>
 			<li><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span>Invite new user</a></li>
