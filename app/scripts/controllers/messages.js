@@ -5,10 +5,10 @@ angular.module('myAppAngularMinApp')
 
     var self=this;
 
-    // Datos iniciales
-    self.data = { 'userid': '5676e310ffe2b17c165869ef',
-                  'channelid': '56817aeeb878246408a2c02c',
-                  'groupid': '56817aeeb878246408a2c02a'};
+    // Datos iniciales paar pruebas en local
+    self.data = { 'userid': '56844f173d57021c0ccd88af',
+                  'channelid': '56844f8c3d57021c0ccd88b4',
+                  'groupid': '56844f8c3d57021c0ccd88b2'};
 
 
     self.listaMensajes = [
@@ -44,6 +44,10 @@ angular.module('myAppAngularMinApp')
 
     });
 
+    this.getMessages = function (channelid) {
+
+    };
+
     this.sendDocument = function () {
 
         var self=this;
@@ -51,20 +55,23 @@ angular.module('myAppAngularMinApp')
 
       ChatService.uploadFileS3(self.data).then(
           function(result) {
-            // Upload OK
+            console.log ("Upload OK");
             ChatService.postMessage(self.data).then(
               function(result) {
                 // Mensaje creado
+                console.log(result.data);
               },
-              function (erro) {
+              function (error) {
                 // TODO: Mostrar error
                 console.log ("Error en postMessage");
+                console.log (error);
               }
             );
           },
-          function (erro) {
+          function (error) {
             // TODO: Mostrar error
             console.log ("Error en uploadFileS3");
+            console.log (error);
           }
         );
 

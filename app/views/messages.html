@@ -20,7 +20,7 @@
     <label >Subir fichero</label>
     <!-- uploadFile: path completo al fichero. NO lo utilizamos en el controlador -->
     <!-- upload.fileName: dentro del scope del controlador. La directiva lo carga con el nombre del fichero (sin ruta) -->
-    <input type="file" name="uploadFile" file="message.data.filename" required />
+    <input type="file" name="uploadFile" file="message.data.file" required />
     <br>
      <input type=button ng-click="message.sendDocument()" value="Subir fichero">
   </form>

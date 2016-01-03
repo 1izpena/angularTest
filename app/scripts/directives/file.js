@@ -10,7 +10,7 @@ angular.module('myAppAngularMinApp')
         element.bind('change', function(event){
           var files = event.target.files;
           var file = files[0];
-          scope.file = file ? file.name : undefined;
+          scope.file = file ? file : undefined;
           scope.$apply();
         });
       }

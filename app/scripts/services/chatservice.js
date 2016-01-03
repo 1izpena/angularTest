@@ -14,11 +14,28 @@ angular.module('myAppAngularMinApp')
         var promise = defered.promise;
 
         // getSignedUrl para subir fichero a AWS S3
-        $http.post(API_BASE + 'api/v1/file/getSignedUrl', {filename: data.filename} )
-          .then( function(response){
+        $http({
+          method: 'post',
+          url: API_BASE + 'api/v1/file/getSignedUrl',
+          headers: {
+            'x-access-token': $localStorage.token
+            },
+          data: {
+            'groupid': data.groupid,
+            'channelid': data.channelid,
+            'filename': data.file.name
+          }
+        }).then( function(response){
             // Put del fichero en AWS S3
-            $http.put(response.data.url, data.filename)
-              .then(function(response){
+            $http({
+              method: 'put',
+              url: response.data.url,
+              headers: {
+                'x-access-token': $localStorage.token,
+                'Content-Type': data.file.type
+              },
+              data: data.file
+            }).then(function(response){
                 defered.resolve(response);
               },
               function (err) {
@@ -42,7 +59,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/chat/channels/'+channelid+'/messages',
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
           data: data
         }).then(
           function(response) {
