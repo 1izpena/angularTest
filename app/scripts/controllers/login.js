@@ -23,7 +23,8 @@ angular.module('myAppAngularMinApp')
       if (user.mail && user.password) {
         LoginService.login(user).then(function(res) {
           $scope.storage = $localStorage.$default({
-            username: res.data.username,
+            id:res.data.id,
+	    username: res.data.username,
             token: res.data.token
           });
           $scope.goTo('/foro');
