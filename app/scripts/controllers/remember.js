@@ -7,7 +7,7 @@ angular.module('myAppAngularMinApp')
 //Comprobar q el email existe
  $scope.FormVisibility = true;
    $scope.check = function(){
-  
+
       $scope.message = '';
       $scope.error = 0;
       if($scope.FormData.mail)
@@ -20,26 +20,25 @@ angular.module('myAppAngularMinApp')
         {
           if($localStorage.ResetToken !=null)
           {
-            $localStorage.$reset();
+            delete $localStorage.ResetToken;
           }
-          $scope.storage = $localStorage.$default({
-            ResetToken: res.data
-          });
+
+          $localStorage.ResetToken = res.data;
+
           if(res.data=="error"){ // control error envio mail
-          //Mostrar error
-        $scope.FormVisibility = false;
-        $scope.ResponseVisibility = false;
-        $scope.ResponseError = true;       
-         
-        }         
-          
-          
+            //Mostrar error
+            $scope.FormVisibility = false;
+            $scope.ResponseVisibility = false;
+            $scope.ResponseError = true;
+          }
+
+
         },function(res)
         {
           alert(res.data.message);
           $scope.error = 1;
           $scope.message = res.data.message;
-         
+
         });
       }
     };

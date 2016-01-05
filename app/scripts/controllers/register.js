@@ -20,16 +20,16 @@ angular.module('myAppAngularMinApp')
           })
           .then(function(res) {
             alert("Te hemos enviado un mail de activación");
-            $location.path('/login');              
+            $location.path('/login');
 
-              //token de activacion al localstorage
-          if($localStorage.ActivateToken !=null)
-          {
-            $localStorage.$reset();
-          }
-          $scope.storage = $localStorage.$default({
-            ActivateToken: res.data
-          });
+            //token de activacion al localstorage
+            if($localStorage.ActivateToken !=null)
+            {
+              delete $localStorage.ActivateToken
+            }
+            if (res.data.token) {
+              $localStorage.ActivateToken = res.data.token;
+            }
 
           },
           function(error){
