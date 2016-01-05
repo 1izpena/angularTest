@@ -6,7 +6,8 @@ angular.module('myAppAngularMinApp')
 
       return {
         uploadFileS3: uploadFileS3,
-        postMessage: postMessage
+        postMessage: postMessage,
+        getMessages: getMessages
       };
 
       function uploadFileS3 (data) {
@@ -54,6 +55,7 @@ angular.module('myAppAngularMinApp')
         var promise = defered.promise;
 
         var userid=data.userid;
+        var groupid=data.groupid;
         var channelid=data.channelid;
 
         $http({
@@ -70,6 +72,27 @@ angular.module('myAppAngularMinApp')
           }
         );
 
+        return promise;
+      }
+
+      function getMessages (channel) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        var userid = $localStorage.id;
+        var groupid = $localStorage.groupid;
+        var channelid = channel.id;
+
+        $http({
+          method: 'get',
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
+          headers: { 'x-access-token': $localStorage.token },
+        }).then( function(result){
+            defered.resolve(result);
+          },
+          function (err) {
+            defered.reject(err);
+          });
         return promise;
       }
   }]);

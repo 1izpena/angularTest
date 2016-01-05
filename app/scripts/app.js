@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngMaterial',
-    'ngStorage'
+    'ngStorage',
+    'angularMoment'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -62,12 +63,6 @@ angular
         templateUrl: 'views/chat2.html',
         controller: 'Chat2Ctrl',
         controllerAs: 'chat2'
-      })
-      // Incluirlo e la pagina principal del chat
-      .when('/messages', {
-        templateUrl: '../views/messages.html',
-        controller: 'MessagesCtrl',
-        controllerAs: 'message'
       })
       .otherwise({
         redirectTo: '/'

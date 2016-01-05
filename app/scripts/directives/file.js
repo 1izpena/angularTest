@@ -3,8 +3,10 @@
 angular.module('myAppAngularMinApp')
   .directive('file', function(){
     return {
+      restrict: 'A',
       scope: {
-        file: '='
+        file: '=',
+        uploadFn: '&uploadFn'
       },
       link: function(scope, element){
         element.bind('change', function(event){
@@ -12,6 +14,10 @@ angular.module('myAppAngularMinApp')
           var file = files[0];
           scope.file = file ? file : undefined;
           scope.$apply();
+
+          if (file) {
+            scope.uploadFn();
+          }
         });
       }
     };
