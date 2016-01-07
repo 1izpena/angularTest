@@ -25,7 +25,7 @@ angular.module('myAppAngularMinApp')
         });
     }
 
-
+/* de momento no se usa */
     $scope.getChannelMembers = function (channel) {
 
       ProfileService.getChannelMembers(channel.id)
@@ -161,7 +161,6 @@ angular.module('myAppAngularMinApp')
 
       $scope.channelSelected = true;
 
-      $scope.getChannelMembers(channel);
       $scope.getMessages(channel);
 
       // Emitimos eveno de selecion de canal para recibir nuevos mensajes
@@ -190,6 +189,7 @@ angular.module('myAppAngularMinApp')
       .getUserinfo()
       .then(function (data) {
         $scope.username = data.username;
+	$scope.userid = data.id;
       }
       , function (err) {
         // Tratar el error

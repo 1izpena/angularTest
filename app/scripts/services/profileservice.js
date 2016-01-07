@@ -12,6 +12,7 @@ angular.module('myAppAngularMinApp')
         getGroups: getGroups, 
 	getChannels: getChannels,
 	getGroupMembers: getGroupMembers,
+	/* de momento no se usa */
 	getChannelMembers: getChannelMembers
 
      }
@@ -94,7 +95,7 @@ angular.module('myAppAngularMinApp')
         return promise;
     }
 
-
+/* de momento no se usa */
     function getChannelMembers (channelId) {
         var defered = $q.defer();
         var promise = defered.promise;
