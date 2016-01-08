@@ -7,16 +7,24 @@ angular.module('myAppAngularMinApp')
 
 
      return {
-        getGroups: getGroups,
-	getUsername: getUsername,
-	getChannels: getChannels
+
+	getUserinfo: getUserinfo,
+        getGroups: getGroups, 
+	getChannels: getChannels,
+	getGroupMembers: getGroupMembers,
+	/* de momento no se usa */
+	getChannelMembers: getChannelMembers
+
      }
 
-    function getGroups () {
+
+	
+
+    function getUserinfo () {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/:username/chat/groups', {
+        $http.get('http://localhost:3000/api/v1/users/'+ $localStorage.id +'/chat/', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
                 defered.resolve(data);
@@ -31,11 +39,12 @@ angular.module('myAppAngularMinApp')
 
 
 
-    function getUsername () {
+
+    function getGroups () {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/:username/chat/', {
+        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
                 defered.resolve(data);
@@ -53,11 +62,11 @@ angular.module('myAppAngularMinApp')
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/:username/chat/groups/'+groupId, {
+        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId, {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
-		console.log("data");
-		console.log(data);
+		//console.log("data");
+		//console.log(data);
                 defered.resolve(data);
             })
             .error(function(err) {
@@ -68,15 +77,42 @@ angular.module('myAppAngularMinApp')
     }
 
 
+    function getGroupMembers (groupId) {
+        var defered = $q.defer();
+        var promise = defered.promise;
 
+        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId+'/users', {
+    		headers: {'x-access-token': $localStorage.token}
+	}).success(function(data) {
+		//console.log("data");
+		//console.log(data);
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
 
+        return promise;
+    }
 
+/* de momento no se usa */
+    function getChannelMembers (channelId) {
+        var defered = $q.defer();
+        var promise = defered.promise;
 
+        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/channels/'+channelId+'/users', {
+    		headers: {'x-access-token': $localStorage.token}
+	}).success(function(data) {
+		//console.log("data");
+		//console.log(data);
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
 
-
-
-
-
+        return promise;
+    }
 
 
 

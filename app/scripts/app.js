@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngMaterial',
-    'ngStorage'
+    'ngStorage',
+    'angularMoment'
   ])
   .config(function ($routeProvider) {
     $routeProvider
