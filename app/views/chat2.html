@@ -19,7 +19,7 @@
         <li class="active">
           <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
 
-          <ul aria-expanded="true" class="emphasis">
+          <ul aria-expanded="true" class="emphasis cgroups">
 
             <li ng-repeat="group in groups" ng-if="groups.length > 0"><a ng-click="selectGroup(group)">
               {{group.groupName}}
@@ -32,12 +32,12 @@
         </li>
 
         <!-------separator------->
-        <li>
+        <li class="activeChannels">
           <a class="btn btn-primary" href="" aria-expanded="false">Channels<i class="fa fa-comment fa-fw"></i></a>
           <ul aria-expanded="false">
-            <li>
-              <a href="" class="btn btn-danger">Public<span class="fa fa-chevron-down"></span></a>
-              <ul class="emphasis">
+            <li class="activeChannelsPublic active">
+              <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
+              <ul class="emphasis" aria-expanded="false">
 
 
                 <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0"><a
@@ -68,7 +68,7 @@
           </ul>
         </li>
         <!-------separator------->
-        <li>
+        <li class="activeMembers">
           <a class="btn btn-primary" href="" aria-expanded="false">Members<i class="fa fa-user fa-fw"></i></a>
 
           <ul aria-expanded="true" class="emphasis">
@@ -363,7 +363,7 @@
 
 </div>
 
-
+<script src="scripts/myscripts.js"></script>
 <!-- Menu Toggle Script -->
 <script>
   $("#menu-toggle").click(function (e) {
@@ -371,14 +371,20 @@
     $("#wrapper").toggleClass("toggled");
   });
 
-  $("#menu").metisMenu({
-    collapseClass: 'collapse'
+  $("#menu").metisMenu2({
+    
   });
 
   // Upload file using href
   $("#uploadHref").click(function () {
     $("#uploadFile").trigger('click');
   });
+
+  
+
+
+
+
 </script>
 
 

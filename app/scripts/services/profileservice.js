@@ -65,8 +65,8 @@ angular.module('myAppAngularMinApp')
         $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId, {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
-		console.log("data");
-		console.log(data);
+		//console.log("data");
+		//console.log(data);
                 defered.resolve(data);
             })
             .error(function(err) {
@@ -84,8 +84,8 @@ angular.module('myAppAngularMinApp')
         $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId+'/users', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
-		console.log("data");
-		console.log(data);
+		//console.log("data");
+		//console.log(data);
                 defered.resolve(data);
             })
             .error(function(err) {
@@ -103,8 +103,8 @@ angular.module('myAppAngularMinApp')
         $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/channels/'+channelId+'/users', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
-		console.log("data");
-		console.log(data);
+		//console.log("data");
+		//console.log(data);
                 defered.resolve(data);
             })
             .error(function(err) {
