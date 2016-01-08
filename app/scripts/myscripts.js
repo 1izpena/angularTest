@@ -131,31 +131,16 @@
 		    var self2 = self.parent('li').parent('ul').find('li.activeChannels');
 	 	    var self3 = self.parent('li').parent('ul').find('li.activeChannelsPublic');
 		
-		    /* para conocer si tiene esos elementos */		
+		    /* para conocer si tiene esos elementos 	
 		    self.append( "<li>" +
 	 			 ( self3.length ? "Yes" : "No" ) +
 	 			 "</li>" );
-
+		    */
 		    var $parent2 = self2;
 		    var $list2 = $parent2.children('ul');
 		    $this.show($list2);
 		    self2.attr('aria-expanded',true);
-	
-/* var self4 = self.parent('li').parent('ul').find('li.activeMembers');
-
-
-var $parent3 = self4;
-		    var $list3 = $parent3.children('ul');
-		    $this.show($list3);
-		    self4.attr('aria-expanded',true);
-*/
-		    /* no funciona 
-		    var $parent3 = self3;
-		    var $list3 = $parent3.children('ul');
-		    $this.show($list3);
-		    self3.attr('aria-expanded',true);
-
-			
+				
 		
 	/************************************/
 
