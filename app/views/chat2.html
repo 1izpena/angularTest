@@ -14,23 +14,26 @@
             {{username}}
           </a>
         </li>
-
-
         <li class="active">
           <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
 
-          <ul aria-expanded="true" class="emphasis cgroups">
+          <ul aria-expanded="true" class="emphasis">
 
-            <li ng-repeat="group in groups" ng-if="groups.length > 0"><a ng-click="selectGroup(group)">
-              {{group.groupName}}
-            </a></li>
+            <li ng-repeat="group in groups" ng-if="groups.length > 0">
+              <a ng-click="selectGroup(group)">
+                {{group.groupName}}
+              </a></li>
 
             <!----  add group ------>
-            <li><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span>Add new group</a>
+            <li>
+              <a href="" class=""><span class="fa fa-plus"></span><span class=""> </span>Add new group</a>
+              <ul aria-expanded="false" class="emphasis" id="ulNewGroup" name="ulNewGroup">
+                <li><input class="form-control" type="text" placeholder="Group Name" id="groupName" ng-model="group.groupName"></li>
+                <li><a class="btn btn-primary" type="input" href="" ng-click="createNewGroup(group)"><i class="fa fa-floppy-o"></i></a></li>
+              </ul>
             </li>
           </ul>
         </li>
-
         <!-------separator------->
         <li class="activeChannels">
           <a class="btn btn-primary" href="" aria-expanded="false">Channels<i class="fa fa-comment fa-fw"></i></a>
@@ -38,16 +41,12 @@
             <li class="activeChannelsPublic active">
               <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
               <ul class="emphasis" aria-expanded="false">
-
-
-                <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0"><a
-                  ng-click="selectChannel(channel)">
+                <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0">
+                  <a ng-click="selectChannel(channel)">
                   {{channel.channelName}}
                 </a></li>
-
-
               </ul>
-
+            </li>
             </li>
             <li>
               <a href="" class="btn btn-danger">Private<span class="fa fa-chevron-down"></span></a>
@@ -57,14 +56,17 @@
                   ng-click="selectChannel(channel)">
                   {{channel.channelName}}
                 </a></li>
-
               </ul>
-
             </li>
             <!----  add channel ------>
-            <li><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span>Add new
-              channel</a></li>
-
+            <li>
+              <a href="" class=""><span class="fa fa-plus"></span><span class=""> </span>Add new channel</a>
+              <ul aria-expanded="false" class="emphasis" id="ulNewChannel" name="ulNewChannel">
+                <li><input class="form-control" type="text" placeholder="Channel Name..." id="channelName" ng-model="channel.channelName"></li>
+                <li><input class="form-control" type="text" placeholder="Channel Type..." id="channelType" ng-model="channel.channelType"></li>
+                <li><a class="btn btn-primary" type="input" href="" ng-click="createNewChannel(channel)"><i class="fa fa-floppy-o"></i></a></li>
+              </ul>
+            </li>
           </ul>
         </li>
         <!-------separator------->
@@ -372,7 +374,7 @@
   });
 
   $("#menu").metisMenu2({
-    
+
   });
 
   // Upload file using href
@@ -380,7 +382,7 @@
     $("#uploadFile").trigger('click');
   });
 
-  
+
 
 
 

@@ -1,13 +1,110 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket',
-  function ($scope, ProfileService, LoginService, $location, $localStorage, ChatService, Socket) {
+  .controller('Chat2Ctrl', ['$scope', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService',
+    function ($scope, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService) {
 
-    $scope.logout = function () {
+      $scope.logout = function () {
       LoginService.logoutLogin();
     };
 
+    $scope.goTo = function(url)
+    {
+      $location.path(url);
+    };
+
+    $scope.createNewGroup = function(group){
+      console.log('ha llegado');
+      GroupService.createNewGroup(group).then(
+        function(data) {
+          $scope.privateChannels = data.privateChannels;
+          $scope.publicChannels = data.publicChannels;
+          ProfileService.getGroups().then(
+            function(data){
+              $scope.groups = data;
+            },function(err) {
+              // Tratar el error
+              console.log("Hay error");
+              console.log(err.message);
+              $scope.error = err.message;
+            }
+          );
+        },function(err){
+          // Tratar el error
+          console.log("Hay error");
+          console.log(err.message);
+          $scope.error = err.message;
+        }
+      );
+    };
+
+    $scope.editGroup = function(group){
+      GroupService.editGroup(group).then(
+        function(data) {
+          ProfileService.getGroups().then(
+            function(data){
+              $scope.groups = data;
+            },function(err) {
+              // Tratar el error
+              console.log("Hay error");
+              console.log(err.message);
+              $scope.error = err.message;
+            }
+          );
+        },function(err){
+          // Tratar el error
+          console.log("Hay error");
+          console.log(err.message);
+          $scope.error = err.message;
+        }
+      );
+    };
+
+    $scope.createNewChannel = function(channel){
+      ChannelService.createNewChannel(channel).then(
+        function(data) {
+          ProfileService.getChannels($localStorage.groupid).then(
+            function(data) {
+              $scope.privateChannels = data.privateChannels;
+              $scope.publicChannels = data.publicChannels;
+            },function(err){
+              // Tratar el error
+              console.log("Hay error");
+              console.log(err.message);
+              $scope.error = err.message;
+            }
+          );
+        },function(err){
+          // Tratar el error
+          console.log("Hay error");
+          console.log(err.message);
+          $scope.error = err.message;
+        }
+      );
+    };
+
+    $scope.editChannel = function(channel){
+      ChannelService.editChannel(channel).then(
+        function(data) {
+          ProfileService.getChannels($localStorage.groupid).then(
+            function(data) {
+              $scope.privateChannels = data.privateChannels;
+              $scope.publicChannels = data.publicChannels;
+            },function(err){
+              // Tratar el error
+              console.log("Hay error");
+              console.log(err.message);
+              $scope.error = err.message;
+            }
+          );
+        },function(err){
+          // Tratar el error
+          console.log("Hay error");
+          console.log(err.message);
+          $scope.error = err.message;
+        }
+      );
+    };
 
     $scope.getChannels = function (group) {
 
@@ -23,7 +120,7 @@ angular.module('myAppAngularMinApp')
           $scope.error = err.message;
 
         });
-    }
+    };
 
 /* de momento no se usa */
     $scope.getChannelMembers = function (channel) {

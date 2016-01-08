@@ -12,11 +12,11 @@ angular.module('myAppAngularMinApp')
       function createNewGroup (data) {
         var defered = $q.defer();
         var promise = defered.promise;
-        var userid = $localStorage.userid;
+        var userid = $localStorage.id;
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/groups',
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups',
           data: data
         }).then(
           function(response) {
@@ -32,12 +32,12 @@ angular.module('myAppAngularMinApp')
       function editGroup (data) {
         var defered = $q.defer();
         var promise = defered.promise;
-        var userid = $localStorage.userid;
+        var userid = $localStorage.id;
         var groupid = $localStorage.groupid;
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/groups/'+groupid,
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid,
           data: data
         }).then(
           function(response) {

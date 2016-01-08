@@ -15,11 +15,12 @@ angular.module('myAppAngularMinApp')
       function createNewChannel (data) {
         var defered = $q.defer();
         var promise = defered.promise;
-        var userid = $localStorage.userid;
+        var userid = $localStorage.id;
+        var groupid = $localStorage.groupid;
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/groups'+groupid+'/channels',
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels',
           data: data
         }).then(
           function(response) {
@@ -35,13 +36,13 @@ angular.module('myAppAngularMinApp')
       function editChannel (data) {
         var defered = $q.defer();
         var promise = defered.promise;
-        var userid = $localStorage.userid;
+        var userid = $localStorage.id;
         var groupid = $localStorage.groupid;
         var channelid = $localStorage.channelid;
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/groups/'+groupid+'/channels/'+channelid,
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid,
           data: data
         }).then(
           function(response) {
@@ -63,7 +64,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'delete',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/groups/'+groupid+'/channels/'+channelid+'/unsuscribe/',
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/unsuscribe/',
           data: data
         }).then(
           function(response) {
@@ -86,7 +87,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'delete',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/groups/'+groupid+'/channels/'+channelid+'/users/'+userid1,
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/users/'+userid1,
           data: data
         }).then(
           function(response) {
@@ -109,7 +110,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/groups/'+groupid+'/channels/'+channelid+'/users/'+userid1,
+          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/users/'+userid1,
           data: data
         }).then(
           function(response) {
