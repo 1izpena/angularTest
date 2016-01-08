@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-controller="ForoCtrl" data-ng-init="init()">
 	<div class="row container">
 		<div class="col-md-8 headLeft">
 			<div class="col-md-6">
@@ -30,18 +30,18 @@
 		<div class="tab-content ">
 			<div class="tab-pane active" id="1">
 	        	<div class="row">
-	        		<div ng-repeat="pregunta in foro.ultimas" class="col-md-12 pregunta">
+	        		<div ng-repeat="question in questions | orderBy: '-created'" class="col-md-12 pregunta">
 	        			<div class="col-md-12 contentright">
-	        				<h2 class="questiontitle"><a>{{pregunta.titulo}}</a></h2>
-	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{pregunta.votos}}</div></div>
-	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{pregunta.respuestas}}</div>
-	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{pregunta.visitas}}</div>
-	        				<p>{{pregunta.pregunta}}</p>
+	        				<h2 class="questiontitle"><a>{{question.title}}</a></h2>
+	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
+	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.a}}</div>
+	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.visitas}}</div>
+	        				<p>{{question.body}}</p>
 	        				<div class="time">
-	        				<span class="glyphicon glyphicon-time pull-right text-muted">12 minutes ago</span>
+	        				<span class="glyphicon glyphicon-time pull-right text-muted">{{question.created}}</span>
 	        				</div>
 	        				<div class="tags">
-	        					<a ng-repeat="tag in pregunta.tags" class="label label-info" href="">{{tag}}</a>
+	        					<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag}}</a>
 	        				</div>
 	        			</div>
 	        		</div>
@@ -49,15 +49,15 @@
 			</div>
 			<div class="tab-pane" id="2">
 	         	<div class="row">
-	        		<div ng-repeat="pregunta in foro.ultimas" class="col-md-12 pregunta">
+	        		<div ng-repeat="question in questions " class="col-md-12 pregunta">
 	        			<div class="col-md-12 contentright">
-	        				<h2 class="questiontitle"><a>{{pregunta.titulo}}</a></h2>
-	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{pregunta.votos}}</div></div>
-	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{pregunta.respuestas}}</div>
-	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{pregunta.visitas}}</div>
-	        				<p>{{pregunta.pregunta}}</p>
+	        				<h2 class="questiontitle"><a>{{question.title}}</a></h2>
+	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
+	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
+	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
+	        				<p>{{question.body}}</p>
 	        				<div class="tags">
-	        					<a ng-repeat="tag in pregunta.tags" class="label label-info" href="">{{tag}}</a>
+	        					<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag}}</a>
 	        				</div>
 	        			</div>
 	        		</div>
@@ -65,15 +65,15 @@
 			</div>
 	        <div class="tab-pane" id="3">
 	          	<div class="row">
-	        		<div ng-repeat="pregunta in foro.ultimas" class="col-md-12 pregunta">
+	        		<div ng-repeat="question in questions | orderBy: '-votes' " class="col-md-12 pregunta">
 	        			<div class="col-md-12 contentright">
-	        				<h2 class="questiontitle"><a>{{pregunta.titulo}}</a></h2>
-	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{pregunta.votos}}</div></div>
-	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{pregunta.respuestas}}</div>
-	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{pregunta.visitas}}</div>
-	        				<p>{{pregunta.pregunta}}</p>
+	        				<h2 class="questiontitle"><a>{{question.title}}</a></h2>
+	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
+	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.respuestas}}</div>
+	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.visitas}}</div>
+	        				<p>{{question.body}}</p>
 	        				<div class="tags">
-	        					<a ng-repeat="tag in pregunta.tags" class="label label-info" href="">{{tag}}</a>
+	        					<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag}}</a>
 	        				</div>
 	        			</div>
 	        		</div>
