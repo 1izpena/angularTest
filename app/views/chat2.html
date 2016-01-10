@@ -24,7 +24,7 @@
                     <span><i class="fa fa-gear"></i></span>
                   </button>
                   <ul class="dropdown-menu slidedown">
-                    <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editGroupModal"> Edit group</a></li>
+                    <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editGroupModal" ng-click="selectGroup(group)"> Edit group</a></li>
                   </ul>
                 </div>
               </span>
@@ -33,7 +33,7 @@
               </a></li>
             <!----  add group ------>
             <li>
-              <a href="" class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span>Add new Group</a>
+              <a href="" class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new Group</a>
             </li>
           </ul>
         </li>
@@ -52,6 +52,11 @@
                       </button>
                       <ul class="dropdown-menu slidedown">
                         <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
+                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Members</a></li>
+                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
+                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
                       </ul>
                     </div>
                   </span>
@@ -71,7 +76,12 @@
                         <span><i class="fa fa-gear"></i></span>
                       </button>
                       <ul class="dropdown-menu slidedown">
-                        <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal"> Edit channel</a></li>
+                        <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
+                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Members</a></li>
+                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
+                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
                       </ul>
                     </div>
                   </span>
@@ -83,7 +93,7 @@
             </li>
             <!----  add channel ------>
             <li>
-              <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span>Add new channel</a>
+              <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
             </li>
           </ul>
         </li>
@@ -101,7 +111,7 @@
 
 
             <!----  invite user ------>
-            <li><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span>Invite new
+            <li><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span> Invite new
               user</a></li>
           </ul>
         </li>
