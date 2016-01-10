@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('LoginCtrl', function ($scope, loginsocial, $location, $localStorage) {
+  .controller('LoginScl', function ($scope, loginsocial, $location, $localStorage) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -33,7 +33,7 @@ hello.on('auth.login', function(auth){
     // call user information, for the given network
     hello( auth.network ).api( '/me' ).then( function(user){
       //alert(user.id + user.name); 
-        loginsocial.login(user).then(function(res) {
+        loginsocial.loginsocial(user).then(function(res) {
           $scope.storage = $localStorage.$default({
             id:res.data.id,
             username: res.data.username,
