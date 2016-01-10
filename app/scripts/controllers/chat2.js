@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService',
-    function ($scope, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService) {
+  .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService',
+    function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService) {
 
       $scope.logout = function () {
       LoginService.logoutLogin();
@@ -316,6 +316,32 @@ angular.module('myAppAngularMinApp')
 
     };
 
+    $scope.getDownloadLink = function (filename, ev) {
+
+      ev.preventDefault();
+
+      var data = {
+        userid: $localStorage.id,
+        groupid: $localStorage.groupid,
+        channelid: $localStorage.channelid,
+        filename: filename,
+      };
+
+      ChatService.getDownloadUrl(data).then(
+        function (result) {
+          console.log("Get URL OK");
+          $window.location.href=result.data.url;
+
+        },
+        function (error) {
+          // TODO: Mostrar error
+          console.log("Error en getDownloadUrl");
+          console.log(error);
+        }
+      );
+
+    };
+
 
     $scope.channelSelected = false;
     $scope.listaMensajes = [];
@@ -352,6 +378,7 @@ angular.module('myAppAngularMinApp')
       console.log ("newMessage receive from server");
       console.log(data);
       $scope.listaMensajes.push(data);
+      scope.$apply();
     });
 
   }]);
