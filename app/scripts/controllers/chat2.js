@@ -8,32 +8,38 @@ angular.module('myAppAngularMinApp')
       LoginService.logoutLogin();
     };
 
+      $scope.error1 = 0;
+      $scope.message1 = '';
+
     $scope.goTo = function(url)
     {
       $location.path(url);
     };
 
     $scope.createNewGroup = function(group){
-      console.log('ha llegado');
+      $scope.message1 = '';
+      $scope.error1 = 0;
       GroupService.createNewGroup(group).then(
         function(data) {
           $scope.privateChannels = data.privateChannels;
           $scope.publicChannels = data.publicChannels;
           ProfileService.getGroups().then(
             function(data){
+              $("#newGroupModal").modal("hide");
+              $("#groupNameTxt").val('').trigger('input');
               $scope.groups = data;
             },function(err) {
               // Tratar el error
-              console.log("Hay error");
-              console.log(err.message);
-              $scope.error = err.message;
+              $("#groupNameTxt").val('').trigger('input');
+              $scope.error1 = 1;
+              $scope.message1 = err.message;
             }
           );
         },function(err){
           // Tratar el error
-          console.log("Hay error");
-          console.log(err.message);
-          $scope.error = err.message;
+          $("#groupNameTxt").val('').trigger('input');
+          $scope.error1 = 1;
+          $scope.message1 = err.message;
         }
       );
     };
@@ -46,41 +52,65 @@ angular.module('myAppAngularMinApp')
               $scope.groups = data;
             },function(err) {
               // Tratar el error
-              console.log("Hay error");
-              console.log(err.message);
-              $scope.error = err.message;
+              $("#newGroupNameTxt").val('').trigger('input');
+              $scope.error1 = 1;
+              $scope.message1 = err.message;
             }
           );
         },function(err){
           // Tratar el error
-          console.log("Hay error");
-          console.log(err.message);
-          $scope.error = err.message;
+          $("#newGroupNameTxt").val('').trigger('input');
+          $scope.error1 = 1;
+          $scope.message1 = err.message;
         }
       );
     };
 
     $scope.createNewChannel = function(channel){
-      ChannelService.createNewChannel(channel).then(
-        function(data) {
-          ProfileService.getChannels($localStorage.groupid).then(
-            function(data) {
-              $scope.privateChannels = data.privateChannels;
-              $scope.publicChannels = data.publicChannels;
-            },function(err){
-              // Tratar el error
-              console.log("Hay error");
-              console.log(err.message);
-              $scope.error = err.message;
-            }
-          );
-        },function(err){
-          // Tratar el error
-          console.log("Hay error");
-          console.log(err.message);
-          $scope.error = err.message;
-        }
-      );
+        $scope.message1 = '';
+        $scope.error1 = 0;
+        ChannelService.createNewChannel(channel).then(
+          function(data) {
+            ProfileService.getChannels($localStorage.groupid).then(
+              function(data) {
+                $("#newChannelModal").modal("hide");
+                $scope.privateChannels = data.privateChannels;
+                $scope.publicChannels = data.publicChannels;
+                $("#channelNameTxt").val('').trigger('input');
+                $("#channelTypeTxt").val('').trigger('input');
+              },function(err){
+                // Tratar el error
+                console.log("Hay error");
+                console.log(err.message);
+                $("#channelNameTxt").val('').trigger('input');
+                $("#channelTypeTxt").val('').trigger('input');
+                $scope.error1 = 1;
+                $scope.message1 = err.message;
+              }
+            );
+          },function(err){
+            // Tratar el error
+            console.log("Hay error");
+            console.log(err.message);
+            $scope.error1 = 1;
+            $scope.message1 = err.message;
+            $("#channelNameTxt").val('').trigger('input');
+            $("#channelTypeTxt").val('').trigger('input');
+          }
+        );
+      };
+
+    $scope.resetNewChannel = function(){
+      $scope.message1 = '';
+      $scope.error1 = 0;
+      $("#channelNameTxt").val('').trigger('input');
+      $("#channelTypeTxt").val('').trigger('input');
+    };
+
+    $scope.resetNewGroup = function(){
+      $scope.message1 = '';
+      $scope.error1 = 0;
+      $("#groupNameTxt").val('').trigger('input');
     };
 
     $scope.editChannel = function(channel){

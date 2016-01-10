@@ -16,21 +16,14 @@
         </li>
         <li class="active">
           <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
-
           <ul aria-expanded="true" class="emphasis cgroups">
-
             <li ng-repeat="group in groups" ng-if="groups.length > 0">
               <a ng-click="selectGroup(group)">
                 {{group.groupName}}
               </a></li>
-
             <!----  add group ------>
             <li>
-              <a href="" class=""><span class="fa fa-plus"></span><span class=""> </span>Add new group</a>
-              <ul aria-expanded="false" class="emphasis" id="ulNewGroup" name="ulNewGroup">
-                <li><input class="form-control" type="text" placeholder="Group Name" id="groupName" ng-model="group.groupName"></li>
-                <li><a class="btn btn-primary" type="input" href="" ng-click="createNewGroup(group)"><i class="fa fa-floppy-o"></i></a></li>
-              </ul>
+              <a href="" class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span>Add new Group</a>
             </li>
           </ul>
         </li>
@@ -60,12 +53,7 @@
             </li>
             <!----  add channel ------>
             <li>
-              <a href="" class=""><span class="fa fa-plus"></span><span class=""> </span>Add new channel</a>
-              <ul aria-expanded="false" class="emphasis" id="ulNewChannel" name="ulNewChannel">
-                <li><input class="form-control" type="text" placeholder="Channel Name..." id="channelName" ng-model="channel.channelName"></li>
-                <li><input class="form-control" type="text" placeholder="Channel Type..." id="channelType" ng-model="channel.channelType"></li>
-                <li><a class="btn btn-primary" type="input" href="" ng-click="createNewChannel(channel)"><i class="fa fa-floppy-o"></i></a></li>
-              </ul>
+              <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span>Add new channel</a>
             </li>
           </ul>
         </li>
@@ -365,6 +353,71 @@
 
 </div>
 
+<!-- New Channel Modal -->
+<div id="newChannelModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="padding:35px 50px;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add New Channel</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="channelNameTxt">Channel Name:</label>
+          <input type="text" class="form-control" name="channelNameTxt" id="channelNameTxt" placeholder="Enter Channel Name..." ng-model="channel.channelName">
+        </div>
+        <div class="form-group">
+          <label for="channelTypeTxt">Channel Type (PUBLIC/PRIVATE): </label>
+          <input type="text" class="form-control" name="channelTypeTxt" id="channelTypeTxt" placeholder="Enter Channel Type..." ng-model="channel.channelType">
+        </div>
+        <div>
+          <button type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel(channel)"><span class="fa fa-floppy-o"></span> Create</button>
+          <button type="button" class="btn btn-success" id="btn-new-channel-reset" ng-click="resetNewChannel()"><span class="fa fa-refresh"></span> Reset</button>
+          <button type="button" class="btn btn-success" id="btn-new-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">{{message1}} &times;</span></button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- New Group Modal -->
+<div id="newGroupModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="padding:35px 50px;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add New Group</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="groupNameTxt">Group Name:</label>
+          <input type="text" class="form-control" name="groupNameTxt" id="groupNameTxt" placeholder="Enter Group Name..." ng-model="group.groupName">
+        </div>
+        <div>
+          <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewGroup(group)"><span class="fa fa-floppy-o"></span> Create</button>
+          <button type="button" class="btn btn-success" id="btn-new-group-reset" ng-click="resetNewGroup()"><span class="fa fa-refresh"></span> Reset</button>
+          <button type="button" class="btn btn-success" id="btn-new-group-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <script src="scripts/myscripts.js"></script>
 <!-- Menu Toggle Script -->
 <script>
@@ -381,6 +434,9 @@
   $("#uploadHref").click(function () {
     $("#uploadFile").trigger('click');
   });
+
+  //New channel modal management
+
 
 
 
