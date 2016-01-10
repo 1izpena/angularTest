@@ -151,9 +151,8 @@
             </div>
 
 
-            <div class="panel-body">
-              <ul class="chat" scroll-bottom-on-last="listaMensajes">
-
+            <div class="panel-body" scroll-bottom-on-last="listaMensajes">
+              <ul class="chat">
                 <li ng-repeat="msg in listaMensajes" send-last
                     ng-class="($storage.id==msg.user.id) ? 'right clearfix' : 'left clearfix'">
                           <span ng-class="($storage.id==msg.user.id) ? 'chat-img pull-right' : 'chat-img pull-left'">
@@ -189,72 +188,6 @@
                     </p>
                   </div>
                 </li>
-                <br><br>
-                <li ng-show="listaMensajes.length > 0" class="text-left"><strong>>>>MENSAJES IZQUIERDA y
-                  DERECHA</strong></li>
-
-                <li ng-repeat="msg in listaMensajes"
-                    ng-class="($storage.id==msg.user.id) ? 'right clearfix' : 'left clearfix'">
-                          <span ng-class="($storage.id==msg.user.id) ? 'chat-img pull-right' : 'chat-img pull-left'">
-                            <img
-                              ng-src="http://placehold.it/50/{{($storage.id!=msg.user.id)?'55C1E7':'FA6F57'}}/fff&text={{msg.user.username | limitTo:2 | uppercase }}"
-                              alt="User Avatar" class="img-circle"/>
-                          </span>
-
-                  <div class="chat-body clearfix">
-                    <div class="header text-left" ng-show="$storage.id!=msg.user.id">
-                      <strong class="primary-font">{{msg.user.username}}</strong>
-                      <small class="pull-right text-muted">
-                        <span class="glyphicon glyphicon-time"></span>
-                        <span am-time-ago="msg.date"></span>
-                      </small>
-                    </div>
-                    <div class="header text-left" ng-show="$storage.id==msg.user.id">
-                      <small class="text-muted">
-                        <span class="glyphicon glyphicon-time"></span>
-                        <span am-time-ago="msg.date"></span>
-                      </small>
-                      <strong class="pull-right primary-font">{{msg.user.username}}</strong>
-                    </div>
-                    <p class="text-left" ng-show="msg.messageType=='TEXT'">
-                      {{msg.text}}
-                    </p>
-
-                    <p class="text-left" ng-show="msg.messageType=='FILE'">
-                      DESCARGAR FICHERO {{msg.text}}
-                    </p>
-                  </div>
-                </li>
-                <br><br>
-                <li ng-show="listaMensajes.length > 0" class="text-left"><strong>>>>MENSAJES IZQUIERDA</strong></li>
-
-                <li ng-repeat="msg in listaMensajes"
-                    class="left clearfix">
-                          <span class="chat-img pull-left">
-                            <img
-                              ng-src="http://placehold.it/50/{{($storage.id!=msg.user.id)?'55C1E7':'FA6F57'}}/fff&text={{msg.user.username | limitTo:2 | uppercase }}"
-                              alt="User Avatar" class="img-circle"/>
-                          </span>
-
-                  <div class="chat-body clearfix">
-                    <div class="header text-left">
-                      <strong class="primary-font">{{msg.user.username}}</strong>
-                      <small class="pull-right text-muted">
-                        <span class="glyphicon glyphicon-time"></span>
-                        <span am-time-ago="msg.date"></span>
-                      </small>
-                    </div>
-                    <p class="text-left" ng-show="msg.messageType=='TEXT'">
-                      {{msg.text}}
-                    </p>
-
-                    <p class="text-left" ng-show="msg.messageType=='FILE'">
-                      DESCARGAR FICHERO {{msg.text}}
-                    </p>
-                  </div>
-                </li>
-                <br><br>
-
               </ul>
             </div>
             <div class="panel-footer">
