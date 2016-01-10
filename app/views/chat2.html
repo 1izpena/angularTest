@@ -52,11 +52,11 @@
                       </button>
                       <ul class="dropdown-menu slidedown">
                         <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
-                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Members</a></li>
+                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#channelMemberInfoModal" ng-click="selectChannel(channel)"> Members</a></li>
                         <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
-                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#deleteUserFromChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#unsuscribeFromChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
+                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#addUserToChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
                       </ul>
                     </div>
                   </span>
@@ -77,11 +77,11 @@
                       </button>
                       <ul class="dropdown-menu slidedown">
                         <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
-                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Members</a></li>
+                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#channelMemberInfoModal" ng-click="selectChannel(channel)"> Members</a></li>
                         <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
-                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#deleteUserFromChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
+                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#unsuscribeFromChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
+                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#addUserToChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
                       </ul>
                     </div>
                   </span>
@@ -515,7 +515,108 @@
   </div>
 </div>
 
+<!-- Edit Channel Modal -->
+<div id="channelMemberInfoModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="padding:35px 50px;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Channel Members</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <span><label>Members: </label></span>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success" id="btn-channel-member-info-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Unsuscribe from channel Modal -->
+<div id="unsuscribeFromChannelModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-group">
+          <span><label>¿Do you really want to unsuscribe from this channel? </label></span>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success" id="btn-unsuscribe-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+          <button type="submit" class="btn btn-danger" id="btn-unsuscribe-channel-accept" ng-click="unsuscribeFromChannel(channel)"><span class="fa fa-floppy-o"></span> Unsuscribe</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete user From Channel Modal -->
+<div id="deleteUserFromChannelModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="padding:35px 50px;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete User</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <span><label>Please select a member to delete: </label></span>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success" id="btn-delete-user-from-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+          <button type="submit" class="btn btn-danger" id="btn-delete-user-from-channel-accept" ng-click="deleteUserFromChannel(channel)"><span class="fa fa-floppy-o"></span> Delete</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add user to Channel Modal -->
+<div id="addUserToChannelModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="padding:35px 50px;">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add User</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <span><label>Please select a member to add: </label></span>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success" id="btn-add-user-from-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+          <button type="submit" class="btn btn-success" id="btn-add-user-from-channel-accept" ng-click="addUserToChannel(channel)"><span class="fa fa-floppy-o"></span> Add</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="scripts/myscripts.js"></script>
 <!-- Menu Toggle Script -->
