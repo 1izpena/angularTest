@@ -53,7 +53,7 @@
                       <ul class="dropdown-menu slidedown">
                         <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
                         <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#channelMemberInfoModal" ng-click="selectChannel(channel)"> Members</a></li>
-                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
+                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#deleteChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
                         <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#deleteUserFromChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
                         <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#unsuscribeFromChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
                         <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#addUserToChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
@@ -78,7 +78,7 @@
                       <ul class="dropdown-menu slidedown">
                         <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
                         <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#channelMemberInfoModal" ng-click="selectChannel(channel)"> Members</a></li>
-                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
+                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#deleteChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
                         <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#deleteUserFromChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
                         <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#unsuscribeFromChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
                         <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#addUserToChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
@@ -563,6 +563,30 @@
     </div>
   </div>
 </div>
+
+<!-- delete channel Modal -->
+<div id="deleteChannelModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="form-group">
+          <span><label>¿Do you really want to delete this channel? </label></span>
+        </div>
+        <div>
+          <button type="button" class="btn btn-success" id="btn-delete-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+          <button type="submit" class="btn btn-danger" id="btn-delete-channel-accept" ng-click="deleteChannel(channel)"><span class="fa fa-floppy-o"></span> Delete</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- Delete user From Channel Modal -->
 <div id="deleteUserFromChannelModal" class="modal fade" role="dialog">
