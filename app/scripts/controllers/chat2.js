@@ -45,10 +45,14 @@ angular.module('myAppAngularMinApp')
     };
 
     $scope.editGroup = function(group){
+      $scope.message1 = '';
+      $scope.error1 = 0;
       GroupService.editGroup(group).then(
         function(data) {
           ProfileService.getGroups().then(
             function(data){
+              $("#editGroupModal").modal("hide");
+              $("#editGroupNameTxt").val('').trigger('input');
               $scope.groups = data;
             },function(err) {
               // Tratar el error
@@ -59,7 +63,7 @@ angular.module('myAppAngularMinApp')
           );
         },function(err){
           // Tratar el error
-          $("#newGroupNameTxt").val('').trigger('input');
+          $("#editGroupNameTxt").val('').trigger('input');
           $scope.error1 = 1;
           $scope.message1 = err.message;
         }
@@ -100,6 +104,33 @@ angular.module('myAppAngularMinApp')
         );
       };
 
+      $scope.editChannel = function(channel){
+        $scope.message1 = '';
+        $scope.error1 = 0;
+        ChannelService.editChannel(channel).then(
+          function(data) {
+            ProfileService.getChannels($localStorage.groupid).then(
+              function(data){
+                $("#editChannelModal").modal("hide");
+                $scope.privateChannels = data.privateChannels;
+                $scope.publicChannels = data.publicChannels;
+                $("#editChannelNameTxt").val('').trigger('input');
+              },function(err) {
+                // Tratar el error
+                $("#editChannelNameTxt").val('').trigger('input');
+                $scope.error1 = 1;
+                $scope.message1 = err.message;
+              }
+            );
+          },function(err){
+            // Tratar el error
+            $("#editChannelNameTxt").val('').trigger('input');
+            $scope.error1 = 1;
+            $scope.message1 = err.message;
+          }
+        );
+      };
+
     $scope.resetNewChannel = function(){
       $scope.message1 = '';
       $scope.error1 = 0;
@@ -113,28 +144,18 @@ angular.module('myAppAngularMinApp')
       $("#groupNameTxt").val('').trigger('input');
     };
 
-    $scope.editChannel = function(channel){
-      ChannelService.editChannel(channel).then(
-        function(data) {
-          ProfileService.getChannels($localStorage.groupid).then(
-            function(data) {
-              $scope.privateChannels = data.privateChannels;
-              $scope.publicChannels = data.publicChannels;
-            },function(err){
-              // Tratar el error
-              console.log("Hay error");
-              console.log(err.message);
-              $scope.error = err.message;
-            }
-          );
-        },function(err){
-          // Tratar el error
-          console.log("Hay error");
-          console.log(err.message);
-          $scope.error = err.message;
-        }
-      );
+    $scope.resetEditGroup = function(){
+      $scope.message1 = '';
+      $scope.error1 = 0;
+      $("#editGroupNameTxt").val('').trigger('input');
     };
+
+    $scope.resetEditChannel = function(){
+      $scope.message1 = '';
+      $scope.error1 = 0;
+      $("#editChannelNameTxt").val('').trigger('input');
+    };
+
 
     $scope.getChannels = function (group) {
 
