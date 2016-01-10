@@ -75,7 +75,7 @@ angular.module('myAppAngularMinApp')
         $scope.error1 = 0;
         ChannelService.createNewChannel(channel).then(
           function(data) {
-            ProfileService.getChannels($localStorage.groupid).then(
+            ProfileService.getChannels($scope.groupid).then(
               function(data) {
                 $("#newChannelModal").modal("hide");
                 $scope.privateChannels = data.privateChannels;
@@ -109,7 +109,7 @@ angular.module('myAppAngularMinApp')
         $scope.error1 = 0;
         ChannelService.editChannel(channel).then(
           function(data) {
-            ProfileService.getChannels($localStorage.groupid).then(
+            ProfileService.getChannels($scope.groupid).then(
               function(data){
                 $("#editChannelModal").modal("hide");
                 $scope.privateChannels = data.privateChannels;
@@ -234,8 +234,8 @@ angular.module('myAppAngularMinApp')
 
         var data = {
           userid: $localStorage.id,
-          groupid: $localStorage.groupid,
-          channelid: $localStorage.channelid,
+          groupid: $scope.groupid,
+          channelid: $scope.channelid,
           file: $scope.file,
           filename: $scope.file.name,
           messageType: 'FILE'
@@ -249,6 +249,7 @@ angular.module('myAppAngularMinApp')
               function (result) {
                 console.log("postMessage OK");
                 console.log(result.data);
+                //$scope.listaMensajes.push(result.data);
                 $scope.file="";
               },
               function (error) {
@@ -271,33 +272,33 @@ angular.module('myAppAngularMinApp')
 
     $scope.sendText = function () {
 
-      var data = {
-        userid: $localStorage.id,
-        groupid: $localStorage.groupid,
-        channelid: $localStorage.channelid,
-        text: $scope.text,
-        messageType: 'TEXT'
-      };
+      if ($scope.text) {
+        var data = {
+          userid: $localStorage.id,
+          groupid: $scope.groupid,
+          channelid: $scope.channelid,
+          text: $scope.text,
+          messageType: 'TEXT'
+        };
 
-      ChatService.postMessage(data).then(
-        function(result) {
-          $scope.text="";
-          console.log("postMessage OK");
-          console.log (result.data);
-        },
-        function (error) {
-          // TODO: Mostrar error
-          console.log ("Error en postMessage");
-          console.log(error);
-        }
-      );
-
-
-
+        ChatService.postMessage(data).then(
+          function (result) {
+            $scope.text = "";
+            console.log("postMessage OK");
+            console.log(result.data);
+            //$scope.listaMensajes.push(result.data);
+          },
+          function (error) {
+            // TODO: Mostrar error
+            console.log("Error en postMessage");
+            console.log(error);
+          }
+        );
+      }
     };
 
     $scope.selectGroup= function (group) {
-      $localStorage.groupid=group.id;
+      $scope.groupid=group.id;
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);
@@ -305,7 +306,7 @@ angular.module('myAppAngularMinApp')
 
     $scope.selectChannel = function (channel) {
 
-      $localStorage.channelid=channel.id;
+      $scope.channelid=channel.id;
 
       $scope.channelSelected = true;
 
@@ -322,8 +323,8 @@ angular.module('myAppAngularMinApp')
 
       var data = {
         userid: $localStorage.id,
-        groupid: $localStorage.groupid,
-        channelid: $localStorage.channelid,
+        groupid: $scope.groupid,
+        channelid: $scope.channelid,
         filename: filename,
       };
 
@@ -378,7 +379,7 @@ angular.module('myAppAngularMinApp')
       console.log ("newMessage receive from server");
       console.log(data);
       $scope.listaMensajes.push(data);
-      scope.$apply();
+      $scope.$apply();
     });
 
   }]);

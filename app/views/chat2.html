@@ -201,43 +201,42 @@
               </ul>
             </div>
             <div class="panel-footer">
-              <div class="input-group">
+              <form name="sendMessageForm">
+                <div class="input-group">
+                <span class="input-group-btn">
+                   <div class="dropup">
+                     <button type="button" class="btn btn-success glyphicon glyphicon-plus btn-sm" id="btn-chat-choose"
+                             data-toggle="dropdown" ng-disabled="!channelSelected" >
+                     </button>
 
-			<span class="input-group-btn">
-
-			   <div class="dropup">
-           <button type="button" class="btn btn-success glyphicon glyphicon-plus btn-sm" id="btn-chat-choose"
-                   data-toggle="dropdown" ng-disabled="!channelSelected" >
-           </button>
-
-           <ul class="dropdown-menu slidedown">
-             <li>
-               <input type="file" id="uploadFile" name="uploadFile"
-                      file="file" upload-fn="uploadFile()" style="display: none"/>
-               <a id="uploadHref">
-                 <span class="glyphicon glyphicon-file"></span>Upload a file
-               </a>
-             </li>
-
-             <li class="divider"></li>
-             <li><a href=""><span class="glyphicon glyphicon-question-sign">
-		                    </span>Create a question</a></li>
-           </ul>
-
-         </div>
-                        </span>
-
-
+                     <ul class="dropdown-menu slidedown">
+                       <li>
+                         <input type="file" id="uploadFile" name="uploadFile"
+                                file="file" upload-fn="uploadFile()" style="display: none"/>
+                         <a id="uploadHref">
+                           <span class="glyphicon glyphicon-file"></span>Upload a file
+                         </a>
+                       </li>
+                       <li class="divider"></li>
+                       <li>
+                         <a href="">
+                          <span class="glyphicon glyphicon-question-sign"></span>Create a question
+                         </a>
+                       </li>
+                     </ul>
+                   </div>
+                </span>
                 <input id="btn-input" type="text" class="form-control input-sm"
                        placeholder="{{(channelSelected)?'Type your message here...':'Select a channel ...'}}"
                        ng-model="text"/>
-                        <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat"
-                                    ng-disabled="!channelSelected" ng-click="sendText()">
+                <span class="input-group-btn">
+                    <button type=submit class="btn btn-warning btn-sm" id="btn-chat"
+                            ng-disabled="!channelSelected" ng-click="sendText()">
                               Send
-                            </button>
-                        </span>
+                    </button>
+                </span>
               </div>
+              </form>
             </div>
 
 
