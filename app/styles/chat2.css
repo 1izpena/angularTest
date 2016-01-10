@@ -1,6 +1,6 @@
 .content {
   min-height: 675px;
-  height: 90%;  
+  height: 90%;
   background-image: url(../../images/cielo.jpg);
   -webkit-background-size: cover;
   background-size: cover;
@@ -32,8 +32,8 @@ spam {
 
 img#avatar {
     height: 3em;
-    margin-bottom:10px; 
-    margin-top:20px;   
+    margin-bottom:10px;
+    margin-top:20px;
 }
 
 .fa {  color: white; }
@@ -46,7 +46,7 @@ ul {   list-style-type: none; }
 
 .fa-heart-o, .fa-heart  {
 	margin-right: 5px;
-        margin-left: -20px;	
+        margin-left: -20px;
 }
 
 
@@ -129,7 +129,7 @@ ul {   list-style-type: none; }
 
 .emphasis li .fa:hover {
     text-decoration: none;
-    color: rgba(255,152,0,1);  
+    color: rgba(255,152,0,1);
 }
 
 
@@ -189,6 +189,29 @@ ul {   list-style-type: none; }
 	margin-bottom: 0;
 }
 
+#btn-group-settings
+{
+  margin-top:-1px;
+  color: rgba(255,152,0,1);
+  background-color: black;
+  border-color: black;
+}
+
+#btn-private-channel-settings
+{
+  margin-top:-1px;
+  color: rgba(255,152,0,1);
+  background-color: black;
+  border-color: black;
+}
+
+#btn-public-channel-settings
+{
+  margin-top:-1px;
+  color: rgba(255,152,0,1);
+  background-color: black;
+  border-color: black;
+}
 
 #btn-chat-choose
 {
@@ -198,7 +221,7 @@ ul {   list-style-type: none; }
 
 .panel-info
 {
-    margin-left:1.8em;   
+    margin-left:1.8em;
 }
 
 
@@ -241,7 +264,7 @@ ul {   list-style-type: none; }
 .panel-body
 {
     overflow-y: scroll;
-    height: 31em; 
+    height: 31em;
 }
 
 ::-webkit-scrollbar-track

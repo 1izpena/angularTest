@@ -20,8 +20,8 @@
             <li ng-repeat="group in groups" ng-if="groups.length > 0">
               <span class="input-group-btn pull-left">
                 <div class="dropdown">
-                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                    <span><i class="fa fa-gear" style="color:black"></i></span>
+                  <button type="button" id="btn-group-settings" name="btn-group-settings" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                    <span><i class="fa fa-gear"></i></span>
                   </button>
                   <ul class="dropdown-menu slidedown">
                     <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editGroupModal"> Edit group</a></li>
@@ -47,8 +47,8 @@
                 <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0">
                   <span class="input-group-btn pull-left">
                     <div class="dropdown">
-                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                        <span><i class="fa fa-gear" style="color:black"></i></span>
+                      <button type="button" id="btn-public-channel-settings" name="btn-public-channel-settings" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <span><i class="fa fa-gear"></i></span>
                       </button>
                       <ul class="dropdown-menu slidedown">
                         <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
@@ -67,11 +67,11 @@
                 <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0">
                   <span class="input-group-btn pull-left">
                     <div class="dropdown">
-                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                        <span><i class="fa fa-gear" style="color:black"></i></span>
+                      <button type="button" id="btn-private-channel-settings" name="btn-private-channel-settings" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" ng-click="selectChannel(channel)">
+                        <span><i class="fa fa-gear"></i></span>
                       </button>
                       <ul class="dropdown-menu slidedown">
-                        <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
+                        <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal"> Edit channel</a></li>
                       </ul>
                     </div>
                   </span>
