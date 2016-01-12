@@ -12,11 +12,10 @@ angular.module('myAppAngularMinApp')
         editChannel: editChannel
       };
 
-      function createNewChannel (data) {
+      function createNewChannel (groupid,data) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
-        var groupid = $localStorage.groupid;
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
@@ -33,12 +32,10 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function editChannel (data) {
+      function editChannel (groupid,channelid,data) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
-        var groupid = $localStorage.groupid;
-        var channelid = $localStorage.channelid;
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token},
@@ -55,12 +52,10 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function unsubscribeFromChannel () {
+      function unsubscribeFromChannel (groupid,channelid) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.userid;
-        var groupid = $localStorage.groupid;
-        var channelid = $localStorage.channelid;
         $http({
           method: 'delete',
           headers: {'x-access-token': $localStorage.token},
@@ -77,12 +72,10 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function deleteUserFromChannel (data) {
+      function deleteUserFromChannel (groupid,channelid,data) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.userid;
-        var groupid = $localStorage.groupid;
-        var channelid = $localStorage.channelid;
         var userid1 = data;
         $http({
           method: 'delete',
@@ -100,12 +93,10 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function addUserToChannel (data) {
+      function addUserToChannel (groupid,channelid,data) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.userid;
-        var groupid = $localStorage.groupid;
-        var channelid = $localStorage.channelid;
         var userid1 = data;
         $http({
           method: 'put',
