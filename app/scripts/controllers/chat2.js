@@ -70,20 +70,16 @@ angular.module('myAppAngularMinApp')
       );
     };
 
-/********************************/
 
 
-   $scope.acceptGroup = function (invitation) {
-   	console.log("invita");
-   	console.log(invitation);
-/*
+   $scope.acceptGroup = function (invitation) {   	
 
-groupid
-
-      ProfileService.acceptGroup(invitation.id)
+      ProfileService.acceptGroup(invitation.groupid)
         .then(function (data) {
-          $scope.privateChannels = data.privateChannels;
-          $scope.publicChannels = data.publicChannels;
+          console.log("esto devuelve accept");
+          console.log(data);
+          $scope.invitations = data.invitations;
+          $scope.groups = data.groups;
         }
         , function (err) {
           // Tratar el error
@@ -92,15 +88,16 @@ groupid
           $scope.error = err.message;
 
         });
-*/
+
     };
 
     $scope.refuseGroup = function (invitation) {
-/*
-      ProfileService.refuseGroup(group.id)
+
+      ProfileService.refuseGroup(invitation.groupid)
         .then(function (data) {
-          $scope.privateChannels = data.privateChannels;
-          $scope.publicChannels = data.publicChannels;
+          console.log("esto devuelve accept");
+          console.log(data);
+          $scope.invitations = data.invitations;
         }
         , function (err) {
           // Tratar el error
@@ -110,12 +107,11 @@ groupid
 
         });
 
- */
+ 
     };
 
 
 
-/********************************/
     $scope.createNewChannel = function(channel){
         $scope.message1 = '';
         $scope.error1 = 0;

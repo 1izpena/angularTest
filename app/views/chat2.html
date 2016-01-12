@@ -17,7 +17,7 @@
 
 
 
-        <li class="activeInvitations">
+        <li class="activeInvitations" ng-show="invitations.length > 0">
           <a class="btn btn-warning" href="" aria-expanded="true">Invitations<i class="fa fa-exclamation-triangle fa-fw"></i></a>
           <ul aria-expanded="true" class="emphasis">
             <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0">

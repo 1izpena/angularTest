@@ -11,8 +11,8 @@ angular.module('myAppAngularMinApp')
 	getUserinfo: getUserinfo,
     getInvitations : getInvitations,
 
-    /*acceptGroup : acceptGroup,
-    refuseGroup : refuseGroup,*/
+    acceptGroup : acceptGroup,
+   refuseGroup : refuseGroup,
 
     getGroups: getGroups, 
 	getChannels: getChannels,
@@ -58,17 +58,19 @@ angular.module('myAppAngularMinApp')
         return promise;
     }
 
-/********************************************************/
 
 
-/*
-   function acceptGroup (invitationId, groupId) {
+
+   function acceptGroup (groupId) {
         var defered = $q.defer();
         var promise = defered.promise;
+        var userid = $localStorage.id;
 
-        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId+'invitations/'+invitationId, {
-            headers: {'x-access-token': $localStorage.token}
-    }).success(function(data) {
+        $http({
+          method: 'post',
+          headers: {'x-access-token': $localStorage.token},
+          url: 'http://localhost:3000/api/v1/users/'+userid+'/chat/invitations/'+groupId
+        }).success(function(data) {
                 defered.resolve(data);
             })
             .error(function(err) {
@@ -76,12 +78,33 @@ angular.module('myAppAngularMinApp')
             });
 
         return promise;
+
+
     }
-*/
 
 
-/********************************************************/
-/********************************************************/
+
+    function refuseGroup (groupId) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+        $http({
+          method: 'delete',
+          headers: {'x-access-token': $localStorage.token},
+          url: 'http://localhost:3000/api/v1/users/'+userid+'/chat/invitations/'+groupId
+        }).success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
+
+        return promise;
+
+    }
+
+
 
     function getGroups () {
         var defered = $q.defer();
