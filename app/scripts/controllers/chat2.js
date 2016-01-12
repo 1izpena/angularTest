@@ -47,7 +47,7 @@ angular.module('myAppAngularMinApp')
     $scope.editGroup = function(group){
       $scope.message1 = '';
       $scope.error1 = 0;
-      GroupService.editGroup(group).then(
+      GroupService.editGroup($scope.groupid,group).then(
         function(data) {
           ProfileService.getGroups().then(
             function(data){
@@ -73,7 +73,7 @@ angular.module('myAppAngularMinApp')
     $scope.createNewChannel = function(channel){
         $scope.message1 = '';
         $scope.error1 = 0;
-        ChannelService.createNewChannel(channel).then(
+        ChannelService.createNewChannel($scope.groupid,channel).then(
           function(data) {
             ProfileService.getChannels($scope.groupid).then(
               function(data) {
@@ -107,7 +107,7 @@ angular.module('myAppAngularMinApp')
       $scope.editChannel = function(channel){
         $scope.message1 = '';
         $scope.error1 = 0;
-        ChannelService.editChannel(channel).then(
+        ChannelService.editChannel($scope.groupid,$scope.channelid,channel).then(
           function(data) {
             ProfileService.getChannels($scope.groupid).then(
               function(data){
@@ -325,7 +325,7 @@ angular.module('myAppAngularMinApp')
         userid: $localStorage.id,
         groupid: $scope.groupid,
         channelid: $scope.channelid,
-        filename: filename,
+        filename: filename
       };
 
       ChatService.getDownloadUrl(data).then(

@@ -29,11 +29,10 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function editGroup (data) {
+      function editGroup (groupid,data) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
-        var groupid = $localStorage.groupid;
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token},
