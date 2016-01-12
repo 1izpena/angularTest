@@ -10,10 +10,34 @@
 
                 <li class="sidebar-brand">
 
-          <a href=""><img id="avatar" src="images/yeoman.png" class="profile-image img-circle">
-            {{username}}
-          </a>
+                    <a href=""><img id="avatar" src="images/yeoman.png" class="profile-image img-circle">
+                      {{username}}
+                    </a>
+                </li>
+
+
+
+        <li class="activeInvitations">
+          <a class="btn btn-warning" href="" aria-expanded="true">Invitations<i class="fa fa-exclamation-triangle fa-fw"></i></a>
+          <ul aria-expanded="true" class="emphasis">
+            <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0">
+              {{invitation.groupname}}
+              
+
+              <div class="btn-group">
+                <a ng-click="acceptGroup(invitation)" class="btn btn-success fa fa-thumbs-o-up"></a>
+                <a ng-click="refuseGroup(invitation)" class="btn btn-danger fa fa-thumbs-o-down"></a>
+              </div>
+
+            </li>
+            
+            
+          </ul>
         </li>
+
+
+
+
         <li class="active">
           <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
           <ul aria-expanded="true" class="emphasis cgroups">

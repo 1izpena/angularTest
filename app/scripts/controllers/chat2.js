@@ -70,6 +70,52 @@ angular.module('myAppAngularMinApp')
       );
     };
 
+/********************************/
+
+
+   $scope.acceptGroup = function (invitation) {
+   	console.log("invita");
+   	console.log(invitation);
+/*
+
+groupid
+
+      ProfileService.acceptGroup(invitation.id)
+        .then(function (data) {
+          $scope.privateChannels = data.privateChannels;
+          $scope.publicChannels = data.publicChannels;
+        }
+        , function (err) {
+          // Tratar el error
+          console.log("Hay error");
+          console.log(err.message);
+          $scope.error = err.message;
+
+        });
+*/
+    };
+
+    $scope.refuseGroup = function (invitation) {
+/*
+      ProfileService.refuseGroup(group.id)
+        .then(function (data) {
+          $scope.privateChannels = data.privateChannels;
+          $scope.publicChannels = data.publicChannels;
+        }
+        , function (err) {
+          // Tratar el error
+          console.log("Hay error");
+          console.log(err.message);
+          $scope.error = err.message;
+
+        });
+
+ */
+    };
+
+
+
+/********************************/
     $scope.createNewChannel = function(channel){
         $scope.message1 = '';
         $scope.error1 = 0;
@@ -346,6 +392,25 @@ angular.module('myAppAngularMinApp')
 
     $scope.channelSelected = false;
     $scope.listaMensajes = [];
+
+
+	ProfileService
+      .getInvitations()
+      .then(function (data) {
+        $scope.invitations = data;
+      }
+      , function (err) {
+        // Tratar el error
+        console.log("Hay error");
+        console.log(err.message);
+        $scope.error = err.message;
+
+      });
+
+
+
+
+
 
     ProfileService
       .getGroups()

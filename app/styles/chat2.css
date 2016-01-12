@@ -109,6 +109,12 @@ ul {   list-style-type: none; }
 .sidebar-nav li {
     text-indent: 20px;
     line-height: 40px;
+    color: white;
+}
+
+.activeInvitations li {
+    text-indent: 1px;
+    text-align-last: justify;
 }
 
 .sidebar-nav li a {
@@ -132,6 +138,11 @@ ul {   list-style-type: none; }
     color: rgba(255,152,0,1);
 }
 
+
+.activeInvitations li .fa:hover {
+    text-decoration: none;
+    color: white;
+}
 
 
 .sidebar-nav li a:active,
