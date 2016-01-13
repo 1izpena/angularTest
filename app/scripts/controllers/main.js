@@ -10,7 +10,7 @@
 
 
 angular.module('myAppAngularMinApp')
-  .controller('MainCtrl', function ($scope, LoginService, $location) {
+  .controller('MainCtrl', function ($scope, LoginService, sharedProperties, $location) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -19,7 +19,13 @@ angular.module('myAppAngularMinApp')
 
     $scope.auth = LoginService;
 
-    $scope.goTo = function(url) {
+    $scope.goTo = function(url, from) {
+      if (from === 'chat'){
+          sharedProperties.setProperty('/chat2');
+      }
+      else if (from === 'foro'){
+          sharedProperties.setProperty('/');
+      }
       $location.path(url);
     };
 

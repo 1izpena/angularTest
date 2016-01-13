@@ -6,9 +6,38 @@ angular.module('myAppAngularMinApp')
 
       return {
         uploadFileS3: uploadFileS3,
+        getDownloadUrl: getDownloadUrl,
         postMessage: postMessage,
         getMessages: getMessages
       };
+
+      function getDownloadUrl (data) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        // getSignedUrl para descargar fichero d AWS S3
+        $http({
+          method: 'post',
+          url: API_BASE + 'api/v1/file/getSignedUrl',
+          headers: {
+            'x-access-token': $localStorage.token
+            },
+          data: {
+            'groupid': data.groupid,
+            'channelid': data.channelid,
+            'filename': data.filename,
+            'operation': 'GET'
+          }
+        }).then( function(response){
+            // Return URL
+            defered.resolve(response);
+          },
+          function (err) {
+            defered.reject(err);
+          });
+
+        return promise;
+      }
 
       function uploadFileS3 (data) {
         var defered = $q.defer();
@@ -24,7 +53,8 @@ angular.module('myAppAngularMinApp')
           data: {
             'groupid': data.groupid,
             'channelid': data.channelid,
-            'filename': data.file.name
+            'filename': data.file.name,
+            'operation': 'PUT'
           }
         }).then( function(response){
             // Put del fichero en AWS S3

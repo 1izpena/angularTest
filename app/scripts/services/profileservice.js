@@ -9,7 +9,12 @@ angular.module('myAppAngularMinApp')
      return {
 
 	getUserinfo: getUserinfo,
-        getGroups: getGroups, 
+    getInvitations : getInvitations,
+
+    acceptGroup : acceptGroup,
+   refuseGroup : refuseGroup,
+
+    getGroups: getGroups, 
 	getChannels: getChannels,
 	getGroupMembers: getGroupMembers,
 	/* de momento no se usa */
@@ -37,6 +42,67 @@ angular.module('myAppAngularMinApp')
     }
 
 
+    function getInvitations () {
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/invitations', {
+            headers: {'x-access-token': $localStorage.token}
+    }).success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
+
+        return promise;
+    }
+
+
+
+
+   function acceptGroup (groupId) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+        $http({
+          method: 'post',
+          headers: {'x-access-token': $localStorage.token},
+          url: 'http://localhost:3000/api/v1/users/'+userid+'/chat/invitations/'+groupId
+        }).success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
+
+        return promise;
+
+
+    }
+
+
+
+    function refuseGroup (groupId) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+        $http({
+          method: 'delete',
+          headers: {'x-access-token': $localStorage.token},
+          url: 'http://localhost:3000/api/v1/users/'+userid+'/chat/invitations/'+groupId
+        }).success(function(data) {
+                defered.resolve(data);
+            })
+            .error(function(err) {
+                defered.reject(err)
+            });
+
+        return promise;
+
+    }
 
 
 
