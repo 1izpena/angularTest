@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('LoginCtrl', function ($scope, LoginService, $location, $localStorage) {
+  .controller('LoginCtrl', function ($scope, LoginService, sharedProperties, $location, $localStorage) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -27,7 +27,7 @@ angular.module('myAppAngularMinApp')
           $localStorage.id = res.data.id;
           $localStorage.username = res.data.username;
 
-          $scope.goTo('/foro');
+          $scope.goTo(sharedProperties.getProperty());
 
         }, function(res) {
           $scope.error = 1;
