@@ -23,7 +23,7 @@
 
 
   <!--navbar-fixed-top-->
-  <div class="navbar navbar-default" role="navigation" ng-controller="MainCtrl">
+  <div class="navbar navbar-default" id="customNavbar" role="navigation" ng-controller="MainCtrl">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -47,7 +47,6 @@
 
         <!-- Si esta logueado -->
         <ul ng-if="auth.isLogged()" class="nav navbar-nav navbar-right">
-          <a ng-click="goTo('/chat2')" class="btn btn-success navbar-btn">Chat</a>
 
           <a ng-click="logout()" class="btn btn-success navbar-btn">Salir</a>
         </ul>
@@ -61,8 +60,8 @@
    <div ng-view=""></div>
    </div>
 
-   <div class="footer">
-     <div class="navbar navbar-default" role="navigation">
+   <div class="footer" id="mainFooter">
+     <div class="navbar navbar-default" id="navbarfooter" role="navigation">
        <div class="container messageContainer">
          <p class="navbar-text">&copy <span class="glyphicon glyphicon-heart"></span> from the DESSI team</p>
        </div>

@@ -1,9 +1,53 @@
+
+
+/*.navbar-default#customNavbar {
+    background-color: black;
+    border-color: black;
+    margin-bottom: -55px;
+}
+*/
+/*
+.navbar-default#customNavbar {
+    margin-left: 18em;
+
+}
+
+.navbar-brand>img {
+    margin-left: 5em;
+    
+}
+
+
+
+#mainFooter{
+    margin-bottom: -55px;
+}
+*/
+
+
+#navbarfooter{
+
+    padding-bottom: 0px;   
+}
+
+.navbar-brand>img {
+    margin-left: 20em;
+    
+}
+
+.messageContainer>p{
+    margin-left: 25em;
+}
+
+
 .content {
-  min-height: 675px;
-  height: 90%;
-  background-image: url(../../images/cielo.jpg);
+  min-height: 525px;
+  height: 85%;
+  /*background-image: url(../../images/cielo.jpg);
   -webkit-background-size: cover;
-  background-size: cover;
+  background-size: cover;**/
+  /*background-color: #e7e7e7;*/
+  background-color: blue;
   margin-top:-1.5em;
 }
 
@@ -13,6 +57,8 @@
     color: rgb(250,250,250);
     background-color: rgba(0,0,0,0.87);
     border-color: rgba(0,0,0,0.87);
+    margin-top: -5.5em;
+    margin-left: 1em;
     /*margin-left:-3em;
     margin-top:-5.2em;*/
 }
@@ -46,18 +92,23 @@ ul {   list-style-type: none; }
 
 .fa-heart-o, .fa-heart  {
 	margin-right: 5px;
-        margin-left: -20px;
+    margin-left: -20px;
 }
 
 
 /* Wrapper Styles */
 
 #wrapper {
+    background: green;
     padding-left: 0;
+    min-height: 525px;
+    height: 85%;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+
+
 }
 
 #wrapper.toggled {
@@ -65,15 +116,20 @@ ul {   list-style-type: none; }
 }
 
 #sidebar-wrapper {
+    margin-top: -3.65em;
     z-index: 1000;
     position: absolute;
     left: 250px;
     width: 0;
     /*height: 100%;*/
-    height: 48.2em;
+    /*height: 55.6em;*/
+    /*height: 110.5%;*/
+    min-height: 628px;
+    height: 85%;
     margin-left: -250px;
     overflow-y: auto;
     background: #000;
+    border-color: #000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -88,6 +144,9 @@ ul {   list-style-type: none; }
     width: 100%;
     position: absolute;
     padding: 15px;
+    background-color: red;
+
+
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -166,6 +225,8 @@ ul {   list-style-type: none; }
 }
 
 @media(min-width:768px) {
+    
+
     #wrapper {
         padding-left: 250px;
     }
@@ -176,6 +237,7 @@ ul {   list-style-type: none; }
 
     #sidebar-wrapper {
         width: 250px;
+        height: 100%;
     }
 
     #wrapper.toggled #sidebar-wrapper {
@@ -185,6 +247,7 @@ ul {   list-style-type: none; }
     #page-content-wrapper {
         padding: 20px;
         position: relative;
+        padding-top:17px;
     }
 
     #wrapper.toggled #page-content-wrapper {
@@ -232,7 +295,12 @@ ul {   list-style-type: none; }
 
 .panel-info
 {
-    margin-left:1.8em;
+    margin-left: -1.4em;
+    margin-top: -2.8em;
+    margin-right: -1.46em;
+    min-height: 581px;
+    height: 100%;
+    background-color: orange;
 }
 
 
@@ -276,6 +344,7 @@ ul {   list-style-type: none; }
 {
     overflow-y: scroll;
     height: 31em;
+
 }
 
 ::-webkit-scrollbar-track
