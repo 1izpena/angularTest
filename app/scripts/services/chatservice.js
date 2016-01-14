@@ -18,7 +18,7 @@ angular.module('myAppAngularMinApp')
         // getSignedUrl para descargar fichero d AWS S3
         $http({
           method: 'post',
-          url: API_BASE + 'api/v1/file/getSignedUrl',
+          url: API_BASE + '/api/v1/file/getSignedUrl',
           headers: {
             'x-access-token': $localStorage.token
             },
@@ -46,7 +46,7 @@ angular.module('myAppAngularMinApp')
         // getSignedUrl para subir fichero a AWS S3
         $http({
           method: 'post',
-          url: API_BASE + 'api/v1/file/getSignedUrl',
+          url: API_BASE + '/api/v1/file/getSignedUrl',
           headers: {
             'x-access-token': $localStorage.token
             },
@@ -91,7 +91,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
           data: data
         }).then(
           function(response) {
@@ -115,7 +115,7 @@ angular.module('myAppAngularMinApp')
 
         $http({
           method: 'get',
-          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
           headers: { 'x-access-token': $localStorage.token },
         }).then( function(result){
             defered.resolve(result);

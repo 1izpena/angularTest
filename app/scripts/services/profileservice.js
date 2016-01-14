@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .service('ProfileService', ['$http','$q', '$localStorage', '$location', function($http, $q, $localStorage, $location)
+  .service('ProfileService', ['$http','$q', '$localStorage', 'API_BASE', function($http, $q, $localStorage, API_BASE)
   {
 
 
@@ -14,7 +14,7 @@ angular.module('myAppAngularMinApp')
     acceptGroup : acceptGroup,
    refuseGroup : refuseGroup,
 
-    getGroups: getGroups, 
+    getGroups: getGroups,
 	getChannels: getChannels,
 	getGroupMembers: getGroupMembers,
 	/* de momento no se usa */
@@ -23,13 +23,13 @@ angular.module('myAppAngularMinApp')
      }
 
 
-	
+
 
     function getUserinfo () {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/'+ $localStorage.id +'/chat/', {
+        $http.get(API_BASE+'/api/v1/users/'+ $localStorage.id +'/chat/', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
                 defered.resolve(data);
@@ -46,7 +46,7 @@ angular.module('myAppAngularMinApp')
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/invitations', {
+        $http.get(API_BASE+'/api/v1/users/'+$localStorage.id +'/chat/invitations', {
             headers: {'x-access-token': $localStorage.token}
     }).success(function(data) {
                 defered.resolve(data);
@@ -69,7 +69,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
-          url: 'http://localhost:3000/api/v1/users/'+userid+'/chat/invitations/'+groupId
+          url: API_BASE+'/api/v1/users/'+userid+'/chat/invitations/'+groupId
         }).success(function(data) {
                 defered.resolve(data);
             })
@@ -92,7 +92,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'delete',
           headers: {'x-access-token': $localStorage.token},
-          url: 'http://localhost:3000/api/v1/users/'+userid+'/chat/invitations/'+groupId
+          url: API_BASE+'/api/v1/users/'+userid+'/chat/invitations/'+groupId
         }).success(function(data) {
                 defered.resolve(data);
             })
@@ -110,7 +110,7 @@ angular.module('myAppAngularMinApp')
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups', {
+        $http.get(API_BASE+'/api/v1/users/'+$localStorage.id +'/chat/groups', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
                 defered.resolve(data);
@@ -128,7 +128,7 @@ angular.module('myAppAngularMinApp')
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId, {
+        $http.get(API_BASE+'/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId, {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
 		//console.log("data");
@@ -147,7 +147,7 @@ angular.module('myAppAngularMinApp')
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId+'/users', {
+        $http.get(API_BASE+'/api/v1/users/'+$localStorage.id +'/chat/groups/'+groupId+'/users', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
 		//console.log("data");
@@ -166,7 +166,7 @@ angular.module('myAppAngularMinApp')
         var defered = $q.defer();
         var promise = defered.promise;
 
-        $http.get('http://localhost:3000/api/v1/users/'+$localStorage.id +'/chat/channels/'+channelId+'/users', {
+        $http.get(API_BASE+'/api/v1/users/'+$localStorage.id +'/chat/channels/'+channelId+'/users', {
     		headers: {'x-access-token': $localStorage.token}
 	}).success(function(data) {
 		//console.log("data");
