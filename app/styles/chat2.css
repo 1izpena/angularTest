@@ -25,6 +25,7 @@
 */
 
 
+
 #navbarfooter{
 
     padding-bottom: 0px;   
@@ -41,7 +42,9 @@
 
 
 .content {
-  min-height: 525px;
+
+ 
+  min-height: 570px;
   height: 85%;
   /*background-image: url(../../images/cielo.jpg);
   -webkit-background-size: cover;
@@ -101,8 +104,10 @@ ul {   list-style-type: none; }
 #wrapper {
     background: green;
     padding-left: 0;
+
     min-height: 525px;
-    height: 85%;
+    /*height: 100%;*/
+    height: 80%;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -124,8 +129,8 @@ ul {   list-style-type: none; }
     /*height: 100%;*/
     /*height: 55.6em;*/
     /*height: 110.5%;*/
-    min-height: 628px;
-    height: 85%;
+    min-height: 672px;
+    height: 100%;
     margin-left: -250px;
     overflow-y: auto;
     background: #000;
@@ -143,7 +148,9 @@ ul {   list-style-type: none; }
 #page-content-wrapper {
     width: 100%;
     position: absolute;
-    padding: 15px;
+    /************/
+    height: 80%;
+    /*padding: 15px;*/
     background-color: red;
 
 
@@ -245,9 +252,10 @@ ul {   list-style-type: none; }
     }
 
     #page-content-wrapper {
-        padding: 20px;
+        /*padding: 20px;*/
         position: relative;
-        padding-top:17px;
+        /*padding-top:17px;*/
+        padding-bottom: 0px;
     }
 
     #wrapper.toggled #page-content-wrapper {
@@ -295,12 +303,12 @@ ul {   list-style-type: none; }
 
 .panel-info
 {
-    margin-left: -1.4em;
-    margin-top: -2.8em;
-    margin-right: -1.46em;
+   /* margin-left: -1.4em;
+    /*margin-top: -2.8em;
+    margin-right: -1.46em;*/
     min-height: 581px;
     height: 100%;
-    background-color: orange;
+    
 }
 
 
@@ -343,7 +351,11 @@ ul {   list-style-type: none; }
 .panel-body
 {
     overflow-y: scroll;
-    height: 31em;
+    /*min-height: 525px;*/
+    min-height: 33em;
+    height: 80%;
+    
+    
 
 }
 
