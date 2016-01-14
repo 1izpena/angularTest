@@ -1,4 +1,46 @@
 
+.navbar {
+  margin-bottom: 0 !important;
+  height: 6%;
+}
+
+.content {
+  height: 88% !important;
+}
+
+.footer {
+  height: 6%;
+}
+
+.footer > .navbar {
+  height: 100%;
+}
+
+.viewContainer {
+  height: 100%;
+}
+
+.chatContainer {
+  height: 100%;
+}
+
+#wrapper {
+  height: 100% !important;
+}
+
+#page-content-wrapper {
+  height: 100% !important;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+.row {
+  height: 100%;
+}
+
+
 
 /*.navbar-default#customNavbar {
     background-color: black;
@@ -14,7 +56,7 @@
 
 .navbar-brand>img {
     margin-left: 5em;
-    
+
 }
 
 
@@ -28,12 +70,12 @@
 
 #navbarfooter{
 
-    padding-bottom: 0px;   
+    padding-bottom: 0px;
 }
 
 .navbar-brand>img {
     margin-left: 20em;
-    
+
 }
 
 .messageContainer>p{
@@ -43,7 +85,7 @@
 
 .content {
 
- 
+
   min-height: 570px;
   height: 85%;
   /*background-image: url(../../images/cielo.jpg);
@@ -51,7 +93,7 @@
   background-size: cover;**/
   /*background-color: #e7e7e7;*/
   background-color: blue;
-  margin-top:-1.5em;
+  /*margin-top:-1.5em;*/
 }
 
 /* General Styles */
@@ -104,7 +146,8 @@ ul {   list-style-type: none; }
 #wrapper {
     background: green;
     padding-left: 0;
-
+    margin: 0;
+    padding: 0;
     min-height: 525px;
     /*height: 100%;*/
     height: 80%;
@@ -232,7 +275,7 @@ ul {   list-style-type: none; }
 }
 
 @media(min-width:768px) {
-    
+
 
     #wrapper {
         padding-left: 250px;
@@ -308,7 +351,7 @@ ul {   list-style-type: none; }
     margin-right: -1.46em;*/
     min-height: 581px;
     height: 100%;
-    
+
 }
 
 
@@ -354,8 +397,8 @@ ul {   list-style-type: none; }
     /*min-height: 525px;*/
     min-height: 33em;
     height: 80%;
-    
-    
+
+
 
 }
 

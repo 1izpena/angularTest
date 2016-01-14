@@ -1,5 +1,5 @@
 
-<div class="content">
+<div class="chatContainer">
 
 
  <div id="wrapper">
@@ -22,7 +22,7 @@
           <ul aria-expanded="true" class="emphasis">
             <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0">
               {{invitation.groupname}}
-              
+
 
               <div class="btn-group">
                 <a ng-click="acceptGroup(invitation)" class="btn btn-success fa fa-thumbs-o-up"></a>
@@ -30,8 +30,8 @@
               </div>
 
             </li>
-            
-            
+
+
           </ul>
         </li>
 
