@@ -1,0 +1,67 @@
+<div class="container" ng-controller="QuestionCtrl" data-ng-init="init()">
+	<div class="row container">
+		<div class="col-md-8 headLeft">
+			<div class="col-md-6">
+			</div>	
+			<div class="col-md-6">
+				<div class="btn-group" role="group">
+  					<button type="button" class="btn btn-default">Preguntas</button>
+  					<button type="button" class="btn btn-default">Tags</button>
+  					<button type="button" class="btn btn-default">Hacer pregunta</button>
+				</div>
+			</div>	
+		</div>
+		<div class="col-md-4 headRight">
+			<form id="custom-search-form" class="form-search form-horizontal">
+	            <div class="input-append span12">
+	                <input type="text" class="search-query mac-style" placeholder="Search">
+	                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i></button>
+	            </div>
+            </form>
+		</div>
+	</div>	
+	<div class="row">
+	    <div  class="col-md-12 preguntadetalle">
+	        <div class="col-md-12">
+	        	<div class="left">
+	    			<button class="glyphicon glyphicon-chevron-up voteup" aria-hidden="true"></button>
+	    			<span class="votes">{{question.votes}}</span>
+	    			<button class="glyphicon glyphicon-chevron-down downvote" aria-hidden="true"></button>
+	    		</div> 
+	    		<div class="right">
+		        	<h1 class="questiontitle"><a>{{question.title}}</a></h1>
+		        	<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
+		        	<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
+		        	<p>{{question.body}}</p>
+		        	<div class="time col-md-12">
+		        		<span class="glyphicon glyphicon-time pull-right text-muted">{{question.created}} by {{question._user.username}}</span>
+		        	</div>
+		        	<div class="tags">
+		        		<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag.tag}}</a>
+		        	</div>
+		        	<div id="shared">
+						<div data-addthis-toolbox data-url="{{path}}" id="bp-{{question._id}}" class="addthis_toolbox addthis_default_style addthis_16x16_style">
+							<a class="addthis_button_facebook"></a>
+							<a class="addthis_button_twitter"></a>
+							<a class="addthis_button_google_plusone_share"></a>
+						</div>
+		        	</div>
+		        	<div class="col-md-8">
+		        		<table>
+
+		        			<tr ng-repeat="comment in question.comments">
+		        				<td class="comment">
+		        					<span class="commentbody">{{comment.comment}}</span>
+		        					<span class="commentuser">{{comment._user.username}}</span>
+		        					<span class="commentdate">{{comment.created}}</span>
+		        				</td>
+		        			</tr>
+		        		</table>
+		        	</div>
+	        	</div>
+	        </div>
+	   </div>
+	</div>
+</div>
+<link rel="stylesheet" ng-href="styles/foro.css">
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>

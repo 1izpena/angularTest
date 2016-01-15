@@ -69,6 +69,11 @@ angular
         controller: 'ForoCtrl',
         controllerAs: 'foro',
       })
+      .when('/foro/question/:questionid', {
+        templateUrl: 'views/question.html',
+        controller: 'QuestionCtrl',
+        controllerAs: 'question'
+      })
       .otherwise({
         redirectTo: '/'
       });
