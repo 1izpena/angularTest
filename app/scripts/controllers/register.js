@@ -15,7 +15,7 @@ angular.module('myAppAngularMinApp')
         if (this.registerForm.$valid) {
           $http ({
             method: 'post',
-            url: API_BASE + 'api/v1/auth/signup',
+            url: API_BASE + '/api/v1/auth/signup',
             data: self.user
           })
           .then(function(res) {

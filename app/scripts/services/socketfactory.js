@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .factory('Socket', [function()
+  .factory('Socket', ['API_BASE', function(API_BASE)
   {
-    return io.connect('http://localhost:3000');
+    return io.connect(API_BASE);
   }]);
 
