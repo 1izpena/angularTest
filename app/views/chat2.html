@@ -22,7 +22,7 @@
           <ul aria-expanded="true" class="emphasis">
             <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0">
               {{invitation.groupname}}
-              
+
 
               <div class="btn-group">
                 <a ng-click="acceptGroup(invitation)" class="btn btn-success fa fa-thumbs-o-up"></a>
@@ -30,8 +30,8 @@
               </div>
 
             </li>
-            
-            
+
+
           </ul>
         </li>
 
@@ -128,10 +128,12 @@
           <ul aria-expanded="true" class="emphasis">
             <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
 
-            <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid"><a ng-click=""><span
-              class="fa fa-heart-o"></span>
-              {{member.username}}
-            </a></li>
+            <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid">
+              <a ng-click="searchDirectChannel(member)">
+                <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'"></span>
+                {{member.username}}
+              </a>
+            </li>
 
 
             <!----  invite user ------>

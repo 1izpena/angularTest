@@ -72,7 +72,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-   $scope.acceptGroup = function (invitation) {   	
+   $scope.acceptGroup = function (invitation) {
 
       ProfileService.acceptGroup(invitation.groupid)
         .then(function (data) {
@@ -107,7 +107,7 @@ angular.module('myAppAngularMinApp')
 
         });
 
- 
+
     };
 
 
@@ -205,6 +205,8 @@ angular.module('myAppAngularMinApp')
         .then(function (data) {
           $scope.privateChannels = data.privateChannels;
           $scope.publicChannels = data.publicChannels;
+          $scope.directChannels = data.directMessageChannels;
+
         }
         , function (err) {
           // Tratar el error
@@ -291,7 +293,6 @@ angular.module('myAppAngularMinApp')
               function (result) {
                 console.log("postMessage OK");
                 console.log(result.data);
-                //$scope.listaMensajes.push(result.data);
                 $scope.file="";
               },
               function (error) {
@@ -344,6 +345,10 @@ angular.module('myAppAngularMinApp')
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);
+
+      // Emitimos evento de selecion de grupo para notificaciones de usuarios coenctados al grupo
+      Socket.emit('selectGroup', { 'groupid': group.id, 'userid': $localStorage.id } );
+
     };
 
     $scope.selectChannel = function (channel) {
@@ -354,7 +359,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.getMessages(channel);
 
-      // Emitimos eveno de selecion de canal para recibir nuevos mensajes
+      // Emitimos evento de selecion de canal para recibir nuevos mensajes
       Socket.emit('selectChannel', { 'channelid': channel.id } );
 
     };
@@ -385,9 +390,49 @@ angular.module('myAppAngularMinApp')
 
     };
 
+    $scope.isConnected = function (userid) {
+      var ret = false;
+      if ($scope.listaUsuariosConectados[userid]) {
+        ret = true;
+      }
+      return ret;
+    };
+
+    $scope.searchDirectChannel = function (member) {
+
+      var userid = $localStorage.id;
+      var groupid = $scope.groupid;
+      var directChannels = $scope.directChannels
+
+      var channel = ChannelService.searchDirectChannel(userid, member, directChannels);
+      if (channel != null) {
+        $scope.selectChannel (channel);
+      }
+      else {
+        console.log("Creamos canal para mesajes directos");
+        ChannelService.createDirectChannel(userid, $scope.username, member, groupid)
+          .then ( function (channel) {
+            console.log("canal creado");
+            console.log (channel);
+            $scope.directChannels.push(channel);
+            console.log ("directChannels: ");
+            console.log($scope.directChannels);
+            $scope.selectChannel (channel);
+        },
+        function (err) {
+          // Tratar el error
+          console.log("Error al crear el canal para mensajes directos");
+          console.log(err.message);
+          $scope.error = err.message;        })
+      }
+
+
+
+    }
 
     $scope.channelSelected = false;
     $scope.listaMensajes = [];
+    $scope.listaUsuariosConectados = {};
 
 
 	ProfileService
@@ -437,10 +482,30 @@ angular.module('myAppAngularMinApp')
 
     //
     Socket.on('newMessage', function (data) {
-      console.log ("newMessage receive from server");
-      console.log(data);
       $scope.listaMensajes.push(data);
       $scope.$apply();
     });
 
-  }]);
+    Socket.on('newUserConnect', function (data) {
+      console.log ("newUserConnect: ");
+      $scope.listaUsuariosConectados[data.userid] = true;
+      $scope.$apply();
+    });
+
+      Socket.on('usersConnected', function (data) {
+        console.log ("usersConnected: ");
+        console.log (data);
+        if (data.users) {
+          for (var i = 0; i < data.users.length; i++) {
+            $scope.listaUsuariosConectados[data.users[i]] = true;
+          }
+          $scope.$apply();
+        }
+      });
+
+      Socket.on('userDisconnect', function (data) {
+      delete $scope.listaUsuariosConectados[data.userid];
+      $scope.$apply();
+    });
+
+    }]);
