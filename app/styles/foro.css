@@ -1,5 +1,23 @@
- 
-/*HEAD*/
+@font-face{
+    font-family:roboto;
+    src: url('../fonts/RobotoCondensed-Regular.ttf');
+} 
+@font-face{
+    font-family: lora;
+    src: url('../fonts/Lora-Regular.ttf');
+}
+p
+{
+    font-family: lora;
+    font-size:1.1em;
+}
+h1 a
+{
+    font-family: roboto;
+    color:#333333;
+}
+
+/***********CABECERA FORO***********/
 .headRight
 {
     margin-top: 20px;
@@ -13,6 +31,7 @@
 {
     padding-left:0;
 }
+
 /*SEARCH FORM*/
 #custom-search-form {
     margin:0;
@@ -20,7 +39,6 @@
     padding: 0;
     float:right;
 }
- 
 #custom-search-form .search-query {
     padding-right: 3px;
     padding-right: 4px \9;
@@ -32,7 +50,6 @@
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
- 
 #custom-search-form button {
     border: 0;
     background: none;
@@ -47,7 +64,6 @@
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
- 
 .search-query:focus + button {
     z-index: 3;   
 }   
@@ -56,7 +72,8 @@
 }   
 
 
-/*Contenido*/
+
+/************CONTENIDO PRINCIPAL FORO*************/
 .pregunta
 {
     overflow: hidden;
@@ -86,9 +103,78 @@
     text-decoration: none;
     cursor: pointer;
 }
+.questiontitle
+{
+    text-transform: uppercase;
+}
 
 
-/*Responsive*/
+
+
+
+
+/************DETALLE DE LA PREGUNTA***********/
+.preguntadetalle .left
+{
+    float: left;
+    width: 8%;
+}
+.preguntadetalle .right
+{
+    float: left;
+    width: 92%;
+}
+
+/*VOTOS*/
+.preguntadetalle button.voteup
+{
+    font-size:40px;
+    color:#33CC33;
+    display: block;
+    border:none;
+    background-color:transparent;
+}
+.preguntadetalle button.downvote
+{
+    font-size:40px;
+    color:#CC0000;
+    display: block;
+    border:none;
+    background-color:transparent;
+}
+.preguntadetalle button.voteup:hover,.preguntadetalle button.downvote:hover
+{
+   
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.8;
+
+}
+
+/*COMENTARIOS*/
+.comment
+{
+    padding: 6px 6px 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    border-top:1px solid #f0f0f0;
+    line-height: 1.4;
+    font-size: 13px;
+    vertical-align: top;
+}
+
+/*FORMULARIO AÑADIR COMENTARIOS*/
+#commentform textarea
+{
+    width:100%;
+}
+
+
+
+
+
+
+/***********RESPONSIVE*********/
+
 @media (max-width: 990px) {
  #custom-search-form
  {

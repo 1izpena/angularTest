@@ -5,7 +5,7 @@
 			</div>	
 			<div class="col-md-6">
 				<div class="btn-group" role="group">
-  					<button type="button" class="btn btn-default">Preguntas</button>
+  					<button type="button" class="btn btn-default active">Preguntas</button>
   					<button type="button" class="btn btn-default">Tags</button>
   					<button type="button" class="btn btn-default">Hacer pregunta</button>
 				</div>
@@ -19,14 +19,22 @@
 	            </div>
             </form>
 		</div>
+		<div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+          <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
+          <h4><strong>Error!</strong></h4> {{message}}
+        </div>
+        <div class="alert alert-success fade in in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="success">
+          <button type="button" class="close"  aria-label="Close" ng-click="success=0"><span aria-hidden="true">&times;</span></button>
+          	{{message}}
+        </div>
 	</div>	
 	<div class="row">
 	    <div  class="col-md-12 preguntadetalle">
 	        <div class="col-md-12">
 	        	<div class="left">
-	    			<button class="glyphicon glyphicon-chevron-up voteup" aria-hidden="true"></button>
+	    			<button class="glyphicon glyphicon-chevron-up voteup" aria-hidden="true" ng-click="upvote()"></button>
 	    			<span class="votes">{{question.votes}}</span>
-	    			<button class="glyphicon glyphicon-chevron-down downvote" aria-hidden="true"></button>
+	    			<button class="glyphicon glyphicon-chevron-down downvote" aria-hidden="true" ng-click="downvote()"></button>
 	    		</div> 
 	    		<div class="right">
 		        	<h1 class="questiontitle"><a>{{question.title}}</a></h1>
@@ -46,15 +54,26 @@
 							<a class="addthis_button_google_plusone_share"></a>
 						</div>
 		        	</div>
-		        	<div class="col-md-8">
+		        	<div class="col-md-12">
 		        		<table>
-
-		        			<tr ng-repeat="comment in question.comments">
+		        			<tr ng-repeat="comment in question.comments | orderBy: '-created'">
 		        				<td class="comment">
 		        					<span class="commentbody">{{comment.comment}}</span>
 		        					<span class="commentuser">{{comment._user.username}}</span>
 		        					<span class="commentdate">{{comment.created}}</span>
 		        				</td>
+		        			</tr>
+		        			<tr>
+		        				<td><a href="" ng-click="showCommentForm()">Add comment</a><td>	  
+		        				<!--Formulario de añadir comentario-->	
+		        				<modal title="Add Comment" visible="showModal">
+									<form role="form" id="commentform">
+									    <div class="form-group">
+									    	<textarea rows="5" placeholder="Your comment...." ng-model="user.comment"> </textarea> 
+									    </div>
+									    <button ng-click="comment(user.comment)" class="btn btn-primary">Comment</button>
+									</form>
+								</modal>
 		        			</tr>
 		        		</table>
 		        	</div>
