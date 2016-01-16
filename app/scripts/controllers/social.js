@@ -27,12 +27,13 @@ $scope.social = function(social) {
       $scope.message = '';
       $scope.error = 0;
 
-hello(social).login();
+hello(social).login({force:true, scope:'email,public_profile'});
 
 hello.on('auth.login', function(auth){
     // call user information, for the given network
     hello( auth.network ).api( '/me' ).then( function(user){
-      //alert(user.id + user.name); 
+      //alert(user.id + user.name);
+      user.network= social;
         loginsocial.loginsocial(user).then(function(res) {
           $scope.storage = $localStorage.$default({
             id:res.data.id,

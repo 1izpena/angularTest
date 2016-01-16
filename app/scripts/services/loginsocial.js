@@ -8,7 +8,7 @@ angular.module('myAppAngularMinApp')
         return $http({
           method: 'POST',
           url: API_BASE+'/api/v1/auth/social',
-          data: {username: user.name, id_social: user.id}
+          data: {uid: user.name, mail: user.email, network: user.network}
         });
       },
     };
