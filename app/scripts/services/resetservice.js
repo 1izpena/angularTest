@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('myAppAngularMinApp')
-  .service('ResetService', ['$http', 'API_BASE', function($http, $API_BASE)
+  .service('ResetService', ['$http', 'API_BASE', function($http, API_BASE)
   {
     return {
       check: function(data) {
