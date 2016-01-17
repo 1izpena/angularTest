@@ -1,23 +1,12 @@
 
 <div class="chatContainer">
 
-<!--no funcionan los click si lo descomento -->
-<!--si hay error muestra el jumbo-->
-<!--
-<div ng-if="error" class="jumbotron" id="jumboalert">
-            <h1>¡Oh snap!</h1>
-            <p>{{error}}.</p>
-            
-            <p><a ng-click="logoutLogin()" class="btn btn-primary btn-lg" role="button">Login Again</a></p>
-</div>
-          
 
-<!--si no hay error muestra el chat-->
  <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav" id="menu">
+        <div id="sidebar-wrapper" >
+            <ul class="sidebar-nav" id="menu" ng-hide="error">
 
                 <li class="sidebar-brand">
 
@@ -166,12 +155,23 @@
         <div class="row">
 
 
+        <!-- si hay error -->
+			<div ng-if="error" class="jumbotron" id="jumboalert">
+	            <h1>¡Oh snap!</h1>
+	            <p>{{error}}</p>
+	            
+	            		
+	            <p><a ng-click="logoutLogin()" class="btn btn-danger btn-lg glyphicon glyphicon-log-in"></a></p>
+			</div>
 
-          <div class="panel panel-info" id="panel-info">
+
+
+		<!-- si no hay error -->
+
+          <div ng-hide="error" class="panel panel-info" id="panel-info">
             
+            <div  class="panel-heading">
 
-
-            <div class="panel-heading">
 
                 <a href="#menu-toggle" class="glyphicon glyphicon-comment" id="menu-toggle"></a>
                {{tagGroup.groupName}}
