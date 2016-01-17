@@ -3,27 +3,27 @@
  */
 'use strict';
 angular.module('myAppAngularMinApp')
-  .service('ResetService', ['$http', function($http)
+  .service('ResetService', ['$http', 'API_BASE', function($http, $API_BASE)
   {
     return {
       check: function(data) {
         return $http({
           method: 'POST',
-          url: 'http://localhost:3000/api/v1/auth/forget',
+          url: API_BASE+'/api/v1/auth/forget',
           data: {mail: data.mail}
         });
       },
       activate: function(token) {
         return $http({
           method: 'POST',
-          url: 'http://localhost:3000/api/v1/auth/activate',
+          url: API_BASE+'/api/v1/auth/activate',
           data: {token: token}
         });
       },
       reset: function(data,token){
         return $http({
           method:'POST',
-          url:'http://localhost:3000/api/v1/auth/reset',
+          url:API_BASE+'/api/v1/auth/reset',
           data: {token: token , password: data.password}
         });
       }

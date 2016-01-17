@@ -4,13 +4,13 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .service('LoginService', ['$http', '$localStorage', '$location', function($http, $localStorage, $location)
+  .service('LoginService', ['$http', '$localStorage', '$location','API_BASE', function($http, $localStorage, $location, API_BASE)
   {
     return {
       login: function(data) {
         return $http({
           method: 'POST',
-          url: 'http://localhost:3000/api/v1/auth/login',
+          url: API_BASE+'/api/v1/auth/login',
           data: {mail: data.mail, password: data.password}
         });
       },

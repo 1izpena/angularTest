@@ -16,7 +16,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups',
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups',
           data: data
         }).then(
           function(response) {
@@ -36,7 +36,7 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + 'api/v1/users/'+userid+'/chat/groups/'+groupid,
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid,
           data: data
         }).then(
           function(response) {
