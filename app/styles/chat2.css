@@ -1,4 +1,35 @@
 
+#header_search_form .search_input {
+    margin-right: 0;
+    outline: 0;
+}
+
+#search_terms {
+   
+    padding: 2px 2rem;
+    width: 70%;
+    border-radius: 40px;
+    background: #FFF;
+    border: 1px solid rgba(214,214,214,.61);
+    display: inline-block;
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+
+
+#col8{
+    padding: 0px;
+    height: 100%;
+}
+
+#col4{
+    padding: 0px;
+    height: 100%;
+}
+
+
 #jumboalert{
     height: 100%;
     margin-bottom: 0px;
@@ -28,7 +59,25 @@
     height: 6%;
 }
 
+#panel-heading2 {
+    height: 6%;
+    color: black;
+    background-color: #F1D9F7;
+    border-color: #E4BCF1;
 
+}
+
+
+#searchTag{
+    color: #79318F;
+}
+/*
+#panel-heading2 >li a{
+    color: black;
+}
+*/
+
+/* #8C33B7*/
 
 #panel-footer {
     height: 8%;
@@ -109,6 +158,9 @@ img#avatar {
 }
 
 .fa {  color: white; }
+
+
+
 .c-align-left {    text-align: left; }
 
 
@@ -352,6 +404,16 @@ ul {   list-style-type: none; }
 
 }
 
+#panel-info2{
+
+    /*color: #79318F;*/
+    /*background-color: #F1D9F7;
+    border-left-color: #bce8f1;*/
+    border-color: #E4BCF1;
+    margin: 0px;
+    min-height: 581px;
+    height: 100%;
+}
 
 
 .chat
@@ -398,7 +460,13 @@ ul {   list-style-type: none; }
     height: 86%;
 }
 
-
+#panel-body2
+{
+    overflow-y: scroll;
+    /*min-height: 525px;*/
+    min-height: 33em;
+    height: 94%;
+}
 
 }
 
