@@ -4,12 +4,18 @@ angular.module('myAppAngularMinApp')
   .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService',
     function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService) {
 
-      $scope.logout = function () {
+      $scope.logoutLogin = function () {
       LoginService.logoutLogin();
+    };
+
+      $scope.logout = function () {
+      LoginService.logout();
     };
 
       $scope.error1 = 0;
       $scope.message1 = '';
+
+
 
     $scope.goTo = function(url)
     {
@@ -344,11 +350,15 @@ angular.module('myAppAngularMinApp')
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);
+      $scope.tagGroup=group;
+
+      
     };
 
     $scope.selectChannel = function (channel) {
 
       $scope.channelid=channel.id;
+      $scope.tagChannel=channel;
 
       $scope.channelSelected = true;
 
