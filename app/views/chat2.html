@@ -165,8 +165,8 @@
 			<div ng-if="error" class="jumbotron" id="jumboalert">
 	            <h1>¡Oh snap!</h1>
 	            <p>{{error}}</p>
-	            
-	            		
+
+
 	            <p><a ng-click="logoutLogin()" class="btn btn-danger btn-lg glyphicon glyphicon-log-in"></a></p>
 			</div>
 
@@ -176,16 +176,17 @@
 		<div ng-hide="error" class="col-md-8" id="col8">
       		<!--Sidebar content-->
 
+<<<<<<< HEAD
           <div class="panel panel-info" id="panel-info">
             
             <div  class="panel-heading" id="panel-heading">
-
+    
 
                 <a href="#menu-toggle" class="glyphicon glyphicon-comment" id="menu-toggle"></a>
                {{tagGroup.groupName}}
 
                <a href="" class="" id="menu-tag" ng-if= "tagChannel !==undefined"> #{{tagChannel.channelName}}</a>
-                
+
 
               <div class="btn-group pull-right">
                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -200,12 +201,12 @@
                             </span>Busy</a></li>
                   <li><a href=""><span class="glyphicon glyphicon-time"></span>
                     Away</a></li>
-                  
+
                 <!--Groups settings---->
                 <li class="divider" ng-if= "tagGroup !==undefined"></li>
                 <li class="dropdown-header" ng-if= "tagGroup !==undefined">Group Settings</li>
-              	
-                                
+
+
                   <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-edit">
                             </span>Edit</a></li>
 
@@ -217,7 +218,7 @@
                   <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-eye-open"></span>
                     Details</a></li>
 
-                  
+
                   <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-remove"></span>
                     Unsuscribe</a></li>
 
@@ -225,16 +226,16 @@
                             </span>Remove</a></li>
 
 
-                  
-                 
-                  
+
+
+
 
                   <!--Channels settings---->
                 <li class="divider" ng-if= "tagChannel !==undefined"></li>
                 <li class="dropdown-header" ng-if= "tagChannel !==undefined">Channel Settings</li>
-              	
-                                
-                               
+
+
+
                   <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-edit">
                             </span>Edit</a></li>
 
@@ -246,7 +247,7 @@
                   <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-eye-open"></span>
                     Details</a></li>
 
-                  
+
                   <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-remove"></span>
                     Unsuscribe</a></li>
 
@@ -270,32 +271,36 @@
               <ul class="chat">
                 <li ng-repeat="msg in listaMensajes" send-last
                     ng-class="($storage.id==msg.user.id) ? 'right clearfix' : 'left clearfix'">
-                          <span ng-class="($storage.id==msg.user.id) ? 'chat-img pull-right' : 'chat-img pull-left'">
-                            <img
-                              ng-src="http://placehold.it/50/{{($storage.id!=msg.user.id)?'55C1E7':'FA6F57'}}/fff&text={{msg.user.username | limitTo:2 | uppercase }}"
-                              alt="User Avatar" class="img-circle"/>
-                          </span>
+                  <hr ng-if="showUserInfo($index)">
+                  <span ng-class="($storage.id==msg.user.id) ? 'chat-img pull-right' : 'chat-img pull-left'"
+                        ng-if="showUserInfo($index)">
+                    <img
+                      ng-src="http://placehold.it/50/{{($storage.id!=msg.user.id)?'55C1E7':'FA6F57'}}/fff&text={{msg.user.username | limitTo:2 | uppercase }}"
+                      alt="User Avatar" class="img-circle"/>
+                  </span>
 
                   <div class="chat-body clearfix">
-                    <div class="header" ng-show="$storage.id!=msg.user.id">
-                      <strong class="primary-font">{{msg.user.username}}</strong>
-                      <small class="pull-right text-muted">
+                    <div class="header text-left" ng-if="$storage.id!=msg.user.id && showUserInfo($index)">
+                      <strong class="username">{{msg.user.username}}</strong>
+                      <small class="date" >
                         <span class="glyphicon glyphicon-time"></span>
                         <span am-time-ago="msg.date"></span>
                       </small>
                     </div>
-                    <div class="header" ng-show="$storage.id==msg.user.id">
-                      <small class="text-muted">
+                    <div class="header text-right" ng-if="$storage.id==msg.user.id && showUserInfo($index)">
+                      <small class="date" >
                         <span class="glyphicon glyphicon-time"></span>
                         <span am-time-ago="msg.date"></span>
                       </small>
-                      <strong class="pull-right primary-font">{{msg.user.username}}</strong>
+                      <strong class="pull-right username">{{msg.user.username}}</strong>
                     </div>
-                    <p ng-show="msg.messageType=='TEXT'">
+                    <p ng-if="msg.messageType=='TEXT'"
+                       ng-class="($storage.id==msg.user.id) ? 'text-right' : 'text-left'">
                       {{msg.text}}
                     </p>
 
-                    <p ng-show="msg.messageType=='FILE'">
+                    <p ng-if="msg.messageType=='FILE'"
+                      ng-class="($storage.id==msg.user.id) ? 'text-right' : 'text-left'">
                       <a ng-href="#" ng-click="getDownloadLink(msg.text, $event)">
                         <span class="glyphicon glyphicon-file" style="font-size: 30px;"></span>{{msg.text}}
                       </a>
@@ -303,6 +308,7 @@
                     </p>
                   </div>
                 </li>
+                <hr>
               </ul>
             </div>
             <div class="panel-footer" id="panel-footer">

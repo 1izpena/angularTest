@@ -446,6 +446,30 @@ angular.module('myAppAngularMinApp')
 
     }
 
+    $scope.showUserInfo = function ($index) {
+      if ($index < 1) {
+        return true;
+      }
+
+      var msgactual = $scope.listaMensajes[$index];
+      var msganterior = $scope.listaMensajes[$index-1];
+      console.log (msgactual);
+      if (msgactual.user.id ==msganterior.user.id) {
+        if (moment(msgactual.date).diff(moment(msganterior.date),'minutes') > 10) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+      else {
+        return true;
+      }
+
+
+    }
+
+
     $scope.channelSelected = false;
     $scope.listaMensajes = [];
     $scope.listaUsuariosConectados = {};
