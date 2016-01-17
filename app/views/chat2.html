@@ -1,7 +1,18 @@
 
 <div class="chatContainer">
 
+<!--no funcionan los click si lo descomento -->
+<!--si hay error muestra el jumbo-->
+<!--
+<div ng-if="error" class="jumbotron" id="jumboalert">
+            <h1>¡Oh snap!</h1>
+            <p>{{error}}.</p>
+            
+            <p><a ng-click="logoutLogin()" class="btn btn-primary btn-lg" role="button">Login Again</a></p>
+</div>
+          
 
+<!--si no hay error muestra el chat-->
  <div id="wrapper">
 
         <!-- Sidebar -->
@@ -155,9 +166,14 @@
         <div class="row">
 
 
+
           <div class="panel panel-info" id="panel-info">
+            
+
+
             <div class="panel-heading">
-              <a href="#menu-toggle" class="glyphicon glyphicon-comment" id="menu-toggle"></a>
+
+                <a href="#menu-toggle" class="glyphicon glyphicon-comment" id="menu-toggle"></a>
                {{tagGroup.groupName}}
 
                <a href="" class="" id="menu-tag" ng-if= "tagChannel !==undefined"> #{{tagChannel.channelName}}</a>
@@ -240,10 +256,6 @@
             </div>
 
 
-            <div ng-if="error" class="alert alert-danger" id="alert" role="alert">
-              <strong>¡Oh snap!</strong> {{error}}.
-              <a ng-click="logoutLogin()" class="alert-link">Login Again</a>
-            </div>
 
 
             <div class="panel-body" scroll-bottom-on-last="listaMensajes">

@@ -1,12 +1,18 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService',
-    function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService) {
+  .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties',
+    function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties) {
 
-      $scope.logoutLogin = function () {
-      LoginService.logoutLogin();
+   
+
+    $scope.logoutLogin = function () {
+        sharedProperties.setProperty('/chat2');
+        console.log("estoy en chatjs");
+        LoginService.logoutLogin();
     };
+
+
 
       $scope.logout = function () {
       LoginService.logout();
