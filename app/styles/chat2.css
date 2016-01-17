@@ -1,18 +1,90 @@
+
+#jumboalert{
+    height: 100%;
+    margin-bottom: 0px;
+    color: #a94442;
+    background-color: #F2DEDE;
+    border-color: #EBCCD1;
+}
+
+
+.navbar {
+    display: none;
+}
+
+.footer {
+  display: none;
+  height: 6%;
+}
+
+
+
+#page-content-wrapper {
+    min-height: 600px;
+}
+
+
+.panel-heading {
+    height: 6%;
+}
+
+
+
+#panel-footer {
+    height: 8%;
+    /*background-color: #d9edf7*/
+}
+
+.footer > .navbar {
+  height: 100%;
+  margin: 0;
+}
+
+.viewContainer {
+  height: 100%;
+}
+
+/***** class content all *******/
+.chatContainer {
+  height: 100%;
+}
+
+
+
+
+
+#navbarfooter{
+
+    padding-bottom: 0px;
+}
+
+.navbar-brand>img {
+    margin-left: 20em;
+
+}
+
+.messageContainer>p{
+    margin-left: 25em;
+}
+
+
 .content {
-  min-height: 675px;
-  height: 90%;
-  background-image: url(../../images/cielo.jpg);
-  -webkit-background-size: cover;
-  background-size: cover;
-  margin-top:-1.5em;
+
+
+  min-height: 570px;
+  height: 100% 
+}
+  
 }
 
 /* General Styles */
 
 .btn#menu-toggle {
-    color: rgb(250,250,250);
+    /*color: rgb(250,250,250);
     background-color: rgba(0,0,0,0.87);
     border-color: rgba(0,0,0,0.87);
+    margin-top: -5.5em;
+    margin-left: 1em;
     /*margin-left:-3em;
     margin-top:-5.2em;*/
 }
@@ -46,18 +118,26 @@ ul {   list-style-type: none; }
 
 .fa-heart-o, .fa-heart  {
 	margin-right: 5px;
-        margin-left: -20px;
+    margin-left: -20px;
 }
 
 
 /* Wrapper Styles */
 
 #wrapper {
+
     padding-left: 0;
+    margin: 0;
+    padding: 0;
+    min-height: 525px;
+    height: 100% ;
+    
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+
+
 }
 
 #wrapper.toggled {
@@ -65,15 +145,21 @@ ul {   list-style-type: none; }
 }
 
 #sidebar-wrapper {
+    
     z-index: 1000;
     position: absolute;
     left: 250px;
     width: 0;
-    /*height: 100%;*/
-    height: 48.2em;
+
+    margin-top: 0; 
+    min-height: 600px;
+
+   
+    height: 100%;
     margin-left: -250px;
     overflow-y: auto;
     background: #000;
+    border-color: #000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -86,8 +172,8 @@ ul {   list-style-type: none; }
 
 #page-content-wrapper {
     width: 100%;
-    position: absolute;
-    padding: 15px;
+    /*position: absolute;*/
+    height: 100%;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -144,6 +230,11 @@ ul {   list-style-type: none; }
     color: white;
 }
 
+#menu-toggle:hover,
+#menu-toggle:focus {
+    text-decoration: none;
+
+}
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
@@ -166,6 +257,8 @@ ul {   list-style-type: none; }
 }
 
 @media(min-width:768px) {
+
+
     #wrapper {
         padding-left: 250px;
     }
@@ -176,6 +269,7 @@ ul {   list-style-type: none; }
 
     #sidebar-wrapper {
         width: 250px;
+        height: 100%;
     }
 
     #wrapper.toggled #sidebar-wrapper {
@@ -183,8 +277,11 @@ ul {   list-style-type: none; }
     }
 
     #page-content-wrapper {
-        padding: 20px;
+        /*padding: 20px;*/
         position: relative;
+        /*padding-top:17px;*/
+
+        padding-bottom: 0px;
     }
 
     #wrapper.toggled #page-content-wrapper {
@@ -229,11 +326,32 @@ ul {   list-style-type: none; }
 	margin-top:-1px;
 }
 
+/**
+<div id="page-content-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="panel panel-info">
 
-.panel-info
-{
-    margin-left:1.8em;
+**/
+.row {
+  height: 100%;
 }
+
+.container-fluid {
+  height: 100%;
+}
+
+#panel-info
+{
+   /* margin-left: -1.4em;
+    /*margin-top: -2.8em;
+    margin-right: -1.46em;*/
+    min-height: 581px;
+    height: 100%;
+    margin-bottom: 0px;
+
+}
+
 
 
 .chat
@@ -275,7 +393,13 @@ ul {   list-style-type: none; }
 .panel-body
 {
     overflow-y: scroll;
-    height: 31em;
+    /*min-height: 525px;*/
+    min-height: 33em;
+    height: 86%;
+}
+
+
+
 }
 
 ::-webkit-scrollbar-track

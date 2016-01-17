@@ -1,15 +1,27 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService',
-    function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService) {
+  .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties',
+    function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties) {
+
+
+
+    $scope.logoutLogin = function () {
+        sharedProperties.setProperty('/chat2');
+        console.log("estoy en chatjs");
+        LoginService.logoutLogin();
+    };
+
+
 
       $scope.logout = function () {
-      LoginService.logoutLogin();
+      LoginService.logout();
     };
 
       $scope.error1 = 0;
       $scope.message1 = '';
+
+
 
     $scope.goTo = function(url)
     {
@@ -345,6 +357,9 @@ angular.module('myAppAngularMinApp')
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);
+      $scope.tagGroup=group;
+
+
 
       // Emitimos evento de selecion de grupo para notificaciones de usuarios coenctados al grupo
       Socket.emit('selectGroup', { 'groupid': group.id, 'userid': $localStorage.id } );
@@ -354,6 +369,7 @@ angular.module('myAppAngularMinApp')
     $scope.selectChannel = function (channel) {
 
       $scope.channelid=channel.id;
+      $scope.tagChannel=channel;
 
       $scope.channelSelected = true;
 
@@ -482,6 +498,8 @@ angular.module('myAppAngularMinApp')
 
     //
     Socket.on('newMessage', function (data) {
+      console.log ("newMessage receive from server");
+      console.log(data);
       $scope.listaMensajes.push(data);
       $scope.$apply();
     });

@@ -12,7 +12,7 @@ angular.module('myAppAngularMinApp')
     getInvitations : getInvitations,
 
     acceptGroup : acceptGroup,
-   refuseGroup : refuseGroup,
+    refuseGroup : refuseGroup,
 
     getGroups: getGroups,
 	getChannels: getChannels,

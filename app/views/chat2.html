@@ -1,12 +1,12 @@
 
-<div class="content">
+<div class="chatContainer">
 
 
  <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav" id="menu">
+        <div id="sidebar-wrapper" >
+            <ul class="sidebar-nav" id="menu" ng-hide="error">
 
                 <li class="sidebar-brand">
 
@@ -61,9 +61,9 @@
             </li>
           </ul>
         </li>
-        <!-------separator------->
+        <!----separator------>
         <li class="activeChannels">
-          <a class="btn btn-primary" href="" aria-expanded="false">Channels<i class="fa fa-comment fa-fw"></i></a>
+          <a class="btn btn-primary" href="" aria-expanded="false" ng-show= "tagGroup !==undefined">Channels<i class="fa fa-comment fa-fw"></i></a>
           <ul aria-expanded="false">
             <li class="activeChannelsPublic active">
               <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
@@ -121,9 +121,9 @@
             </li>
           </ul>
         </li>
-        <!-------separator------->
+        <!-------separator------>
         <li class="activeMembers">
-          <a class="btn btn-primary" href="" aria-expanded="false">Members<i class="fa fa-user fa-fw"></i></a>
+          <a href="" class="btn btn-primary" aria-expanded="false" ng-show= "tagGroup !==undefined">Direct Messages<i class="fa fa-user fa-fw"></i></a>
 
           <ul aria-expanded="true" class="emphasis">
             <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
@@ -145,7 +145,7 @@
       </ul>
     </div>
 
-
+<!--
     <a href="#menu-toggle" class="btn btn-default glyphicon glyphicon-th-list" id="menu-toggle"></a>
 
     <!--	 <a href="" class="btn btn-default glyphicon glyphicon-cog" id="menu-toggle2"></a>  -->
@@ -157,34 +157,107 @@
         <div class="row">
 
 
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <span class="glyphicon glyphicon-comment"></span> Chat
+        <!-- si hay error -->
+			<div ng-if="error" class="jumbotron" id="jumboalert">
+	            <h1>¡Oh snap!</h1>
+	            <p>{{error}}</p>
+	            
+	            		
+	            <p><a ng-click="logoutLogin()" class="btn btn-danger btn-lg glyphicon glyphicon-log-in"></a></p>
+			</div>
+
+
+
+		<!-- si no hay error -->
+
+          <div ng-hide="error" class="panel panel-info" id="panel-info">
+            
+            <div  class="panel-heading">
+
+
+                <a href="#menu-toggle" class="glyphicon glyphicon-comment" id="menu-toggle"></a>
+               {{tagGroup.groupName}}
+
+               <a href="" class="" id="menu-tag" ng-if= "tagChannel !==undefined"> #{{tagChannel.channelName}}</a>
+                
+
               <div class="btn-group pull-right">
                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                   <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
                 <ul class="dropdown-menu slidedown">
-                  <li><a href=""><span class="glyphicon glyphicon-refresh">
-                            </span>Refresh</a></li>
+                  <li class="dropdown-header">My status</li>
+
                   <li><a href=""><span class="glyphicon glyphicon-ok-sign">
                             </span>Available</a></li>
-                  <li><a href=""><span class="glyphicon glyphicon-remove">
+                  <li><a href=""><span class="glyphicon glyphicon-minus-sign">
                             </span>Busy</a></li>
                   <li><a href=""><span class="glyphicon glyphicon-time"></span>
                     Away</a></li>
+                  
+                <!--Groups settings---->
+                <li class="divider" ng-if= "tagGroup !==undefined"></li>
+                <li class="dropdown-header" ng-if= "tagGroup !==undefined">Group Settings</li>
+              	
+                                
+                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-edit">
+                            </span>Edit</a></li>
+
+
+                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-user"></span>
+                    Show members</a></li>
+
+
+                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-eye-open"></span>
+                    Details</a></li>
+
+                  
+                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-remove"></span>
+                    Unsuscribe</a></li>
+
+                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-trash">
+                            </span>Remove</a></li>
+
+
+                  
+                 
+                  
+
+                  <!--Channels settings---->
+                <li class="divider" ng-if= "tagChannel !==undefined"></li>
+                <li class="dropdown-header" ng-if= "tagChannel !==undefined">Channel Settings</li>
+              	
+                                
+                               
+                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-edit">
+                            </span>Edit</a></li>
+
+
+                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-user"></span>
+                    Show members</a></li>
+
+
+                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-eye-open"></span>
+                    Details</a></li>
+
+                  
+                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-remove"></span>
+                    Unsuscribe</a></li>
+
+                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-trash">
+                            </span>Remove</a></li>
+
+
+                  <!---siempre-->
+
                   <li class="divider"></li>
-                  <li><a href=""><span class="glyphicon glyphicon-off"></span>
+                  <li><a ng-click="logout()"><span class="glyphicon glyphicon-off"></span>
                     Sign Out</a></li>
                 </ul>
               </div>
             </div>
 
 
-            <div ng-if="error" class="alert alert-danger" id="alert" role="alert">
-              <strong>¡Oh snap!</strong> {{error}}.
-              <a ng-click="logout()" class="alert-link">Login Again</a>
-            </div>
 
 
             <div class="panel-body" scroll-bottom-on-last="listaMensajes">
@@ -226,7 +299,7 @@
                 </li>
               </ul>
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer" id="panel-footer">
               <form name="sendMessageForm">
                 <div class="input-group">
                 <span class="input-group-btn">
