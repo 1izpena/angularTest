@@ -173,9 +173,8 @@
 
 
 		<!-- si no hay error -->
-		<div ng-hide="error" class="col-xs-7 col-sm-7 col-md-8 col-lg-8" id="col8">
-
-
+		<div ng-show="!error" ng-class="class1" id="col8">    
+    
       		<!--Sidebar content-->
 
           <div class="panel panel-info" id="panel-info">
@@ -263,6 +262,22 @@
                     Sign Out</a></li>
                 </ul>
               </div>
+
+
+                <div class="btn-group pull-right">
+                
+                  <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
+                   </a>
+
+                   <!-- 
+                      <a ng-click="changeSearchNav()" id="changesearch" type="button" class="btn btn-default btn-xs dropdown-toggle" >
+                      <span class="glyphicon glyphicon-option-vertical"></span>
+                    </a>
+                    -->    
+                </div>
+
+
+
             </div>
 
 
@@ -357,10 +372,11 @@
 
           </div>
         <!-- /#col-md-8 -->
-        <div ng-hide="error" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
-        		<!-- **************************************** -->
 
 
+
+        <div ng-show="!error && navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
+        		
           <div class="panel panel-info" id="panel-info2">
             
             <div  class="panel-heading" id="panel-heading2">
@@ -371,7 +387,6 @@
 				<input type="text" id="search_terms" class="search_input search_input_highlighted" placeholder="Search" autocomplete="off" value="" maxlength="250">
 
              
-
 
               <div class="btn-group pull-right">
                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -399,12 +414,6 @@
             <div class="panel-body" id="panel-body2">
               
             </div>
-
-
-
-
-
-        		<!--	************************************	-->
 
       	</div>
         <!-- /#col-md-4 -->
@@ -692,6 +701,17 @@
   $("#uploadHref").click(function () {
     $("#uploadFile").trigger('click');
   });
+
+
+  $("#changesearch").click(function (e) {
+    e.preventDefault();
+    console.log("entro en jquery");
+    
+
+
+    /*class="col-xs-7 col-sm-7 col-md-8 col-lg-8"*/
+  });
+
 
   //New channel modal management
 

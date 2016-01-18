@@ -20,7 +20,28 @@ angular.module('myAppAngularMinApp')
 
       $scope.error1 = 0;
       $scope.message1 = '';
+      $scope.navsearch = 0;
+      $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
 
+
+
+    $scope.changeSearchNav = function()
+    {
+      console.log("estoy en chat js");
+      if($scope.navsearch === 0){
+          console.log("estoy en id cambiando a 1");
+
+          $scope.navsearch = 1;
+          $scope.class1 = "col-xs-7 col-sm-7 col-md-8 col-lg-8";
+      }
+      else{
+        console.log("estoy en id cambiando a 0");
+          $scope.navsearch = 0;
+          
+          $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
+      }
+      
+    };
 
 
     $scope.goTo = function(url)
