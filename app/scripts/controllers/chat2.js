@@ -4,11 +4,11 @@ angular.module('myAppAngularMinApp')
   .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties',
     function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties) {
 
-     /* $scope.init = function()
+      $scope.init = function()
       {
         // Emitimos evento de conexion a chat para recibir nuevas invitaciones a grupos
         Socket.emit('newChatConnection', {'userid':$localStorage.id});
-      };*/
+      };
 
 
     $scope.logoutLogin = function () {
@@ -713,7 +713,7 @@ angular.module('myAppAngularMinApp')
       $scope.$apply();
     });
 
-      /*
+
       //recibir evento de invitación a grupo
       Socket.on('newGroupInvitation', function (data) {
         console.log ("newGroupInvitation received from server");
@@ -846,6 +846,6 @@ angular.module('myAppAngularMinApp')
             $scope.$apply();
           }
         }
-      });*/
+      });
 
     }]);
