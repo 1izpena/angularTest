@@ -125,23 +125,5 @@ angular.module('myAppAngularMinApp')
           });
         return promise;
       }
-  }])
-  .factory('responseHandler', ['$q', '$injector', function($q, $injector, $state) {
-    var responseHandler = {
-      responseError: function(response) {
-        // Session has expired
-        if (response.status == 419){
-          var location = $injector.get('$location');
-
-          window.localStorage.removeItem('userid');
-          window.localStorage.removeItem('username');
-          window.localStorage.removeItem('token');
-          location.path('/');
-
-        }
-        return $q.reject(response);
-      }
-    };
-    return responseHandler;
   }]);
 

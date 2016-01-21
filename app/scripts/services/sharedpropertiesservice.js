@@ -3,6 +3,7 @@
 angular.module('myAppAngularMinApp')
     .service('sharedProperties', function () {
         var property = '/';
+        var message = '';
 
         return {
             getProperty: function () {
@@ -10,6 +11,12 @@ angular.module('myAppAngularMinApp')
             },
             setProperty: function(value) {
                 property = value;
+            },
+            getMessage: function () {
+                return message;
+            },
+            setMessage: function(value) {
+                message = value;
             }
         };
     });
