@@ -14,7 +14,7 @@ angular.module('myAppAngularMinApp')
           window.localStorage.removeItem('userid');
           window.localStorage.removeItem('username');
           window.localStorage.removeItem('token');
-          location.path('/login', sharedProperties.getProperty);
+          location.path('/login');
 
         }
         return $q.reject(response);

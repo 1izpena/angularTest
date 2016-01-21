@@ -31,6 +31,7 @@ angular.module('myAppAngularMinApp')
     };
 
     $scope.logout = function(){
+      sharedProperties.setProperty('/');
       LoginService.logout();
     };
 

@@ -10,12 +10,16 @@ angular.module('myAppAngularMinApp')
         Socket.emit('newChatConnection', {'userid':$localStorage.id});
       };
 
-
+/*
     $scope.logoutLogin = function () {
         sharedProperties.setProperty('/chat2');
         console.log("estoy en chatjs");
         LoginService.logoutLogin();
     };
+*/
+
+
+
 
       $scope.error1 = 0;
       $scope.message1 = '';
