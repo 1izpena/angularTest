@@ -71,4 +71,6 @@ angular
   }).config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default').accentPalette('green');
 
-  });
+  }).config(['$httpProvider', function($httpProvider) {
+    $httpProvider.interceptors.push('responseHandler');
+  }]);
