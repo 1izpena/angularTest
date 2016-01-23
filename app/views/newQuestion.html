@@ -1,0 +1,55 @@
+<div class="container" ng-controller="QuestionCtrl">
+	<div class="row container">
+		<div class="col-md-8 headLeft">
+			<div class="col-md-6">
+			</div>	
+			<div class="col-md-6">
+				<div class="btn-group" role="group">
+  					<button type="button" class="btn btn-default">Preguntas</button>
+  					<button type="button" class="btn btn-default">Tags</button>
+  					<button type="button" class="btn btn-default active">Hacer pregunta</button>
+				</div>
+			</div>	
+		</div>
+		<div class="col-md-4 headRight">
+			<form id="custom-search-form" class="form-search form-horizontal">
+	            <div class="input-append span12">
+	                <input type="text" class="search-query mac-style" placeholder="Search">
+	                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i></button>
+	            </div>
+            </form>
+		</div>
+		<div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+          <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
+          <h4><strong>Error!</strong></h4> {{message}}
+        </div>
+        <div class="alert alert-success fade in in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="success">
+          <button type="button" class="close"  aria-label="Close" ng-click="success=0"><span aria-hidden="true">&times;</span></button>
+          	{{message}}
+        </div>
+	</div>	
+	<div class="row">
+		<form class="questionform" ng-submit="newquestion(question)">
+			<div class="form-group form-group-lg">
+          		<label class="col-md-1 control-label" for="email">Title</label>
+          		<div class="col-md-11">
+            		<input type="text" name="title" ng-model="question.title" ng-required="true" >
+          		</div>
+        	</div>
+        	<div class="form-group form-group-lg">
+        		<label class="col-md-1 control-label">Body</label>
+        		<div class="col-md-11">
+        			<div text-angular ng-model="question.body"></div>
+        		</div>
+        	</div>
+			<div class="form-group form-group-lg">
+				<label class="col-md-1">Tags:</label>
+				<tags-input ng-model="question.tags" class="col-md-11">
+	       			 <auto-complete source="loadTags($query)"></auto-complete>
+	    		</tags-input>
+    		</div>
+    		<button type="submit" class="btn btn-primary btn-lg col-md-offset-9 col-md-2">Post</button>
+		</form>
+	</div>
+</div>
+<link rel="stylesheet" ng-href="styles/foro.css">
