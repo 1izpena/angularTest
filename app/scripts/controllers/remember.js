@@ -18,12 +18,13 @@ angular.module('myAppAngularMinApp')
 
         ResetService.check($scope.FormData).then(function(res)
         {
-          if($localStorage.ResetToken !=null)
+         /* if($localStorage.ResetToken !=null)
           {
             delete $localStorage.ResetToken;
           }
 
           $localStorage.ResetToken = res.data;
+          */
 
           if(res.data=="error"){ // control error envio mail
             //Mostrar error

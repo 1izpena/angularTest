@@ -21,7 +21,7 @@ angular.module('myAppAngularMinApp')
 
     $scope.reset = function()
     {
-      ResetService.reset($scope.user,$localStorage.ResetToken).then(function(res)
+      ResetService.reset($scope.user,$routeParams.token).then(function(res)
       {
         $scope.success=1;
         $scope.message = res.data.message;
@@ -31,6 +31,7 @@ angular.module('myAppAngularMinApp')
           $scope.message = res.data.message;
       });
     }
+    /*
     $scope.init = function()
     {
       if($routeParams.token !== $localStorage.ResetToken)
@@ -38,5 +39,5 @@ angular.module('myAppAngularMinApp')
          $scope.goTo("/login");
          
       }
-    }
+    } */
   });

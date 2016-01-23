@@ -19,22 +19,16 @@ angular.module('myAppAngularMinApp')
     $scope.activate = function()
     {
 
-      ResetService.activate($localStorage.ActivateToken).then(function(res)
+      ResetService.activate($routeParams.token).then(function(res)
       {
         $scope.success=1;
-        $scope.message = res.data.message;
+        $scope.message1 = "Cuenta activada";
+
       },function(res)
       {
           $scope.error = 1;
-          $scope.message = res.data.message;
+          $scope.message2 = "Email de activación expirado,ingresa tu datos en login para volver a recibir tu email de activación";
+          
       });
-    }
-    $scope.init = function()
-    {
-      if($routeParams.token !== $localStorage.ActivateToken)
-      {
-         $scope.goTo("/login");
-         
-      }
     }
   });
