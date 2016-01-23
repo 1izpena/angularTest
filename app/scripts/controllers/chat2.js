@@ -424,12 +424,18 @@ angular.module('myAppAngularMinApp')
 
     $scope.getMessages = function (channel) {
 
+      // Al pintarlos utilizamos $storage.id
       $scope.$storage = $localStorage;
 
-      ChatService.getMessages(channel).then(
+      var data = {
+        userid: $localStorage.id,
+        groupid: $scope.groupid,
+        channelid: channel.id,
+      };
+
+
+      ChatService.getMessages(data).then(
         function(result) {
-          console.log("getMessages - return:");
-          console.log(result.data);
           $scope.listaMensajes = result.data;
         },
         function(error) {
@@ -445,9 +451,6 @@ angular.module('myAppAngularMinApp')
 
       if ($scope.file) {
 
-        console.log("upload file");
-        console.log ($scope.file);
-
         var data = {
           userid: $localStorage.id,
           groupid: $scope.groupid,
@@ -460,11 +463,8 @@ angular.module('myAppAngularMinApp')
 
         ChatService.uploadFileS3(data).then(
           function (result) {
-            console.log("Upload OK");
             ChatService.postMessage(data).then(
               function (result) {
-                console.log("postMessage OK");
-                console.log(result.data);
                 $scope.file="";
               },
               function (error) {
@@ -499,9 +499,6 @@ angular.module('myAppAngularMinApp')
         ChatService.postMessage(data).then(
           function (result) {
             $scope.text = "";
-            console.log("postMessage OK");
-            console.log(result.data);
-            //$scope.listaMensajes.push(result.data);
           },
           function (error) {
             // TODO: Mostrar error
@@ -559,7 +556,6 @@ angular.module('myAppAngularMinApp')
 
       ChatService.getDownloadUrl(data).then(
         function (result) {
-          console.log("Get URL OK");
           $window.location.href=result.data.url;
 
         },
@@ -591,14 +587,9 @@ angular.module('myAppAngularMinApp')
         $scope.selectChannel (channel);
       }
       else {
-        console.log("Creamos canal para mesajes directos");
         ChannelService.createDirectChannel(userid, $scope.username, member, groupid)
           .then ( function (channel) {
-            console.log("canal creado");
-            console.log (channel);
             $scope.directChannels.push(channel);
-            console.log ("directChannels: ");
-            console.log($scope.directChannels);
             $scope.selectChannel (channel);
         },
         function (err) {
@@ -620,7 +611,7 @@ angular.module('myAppAngularMinApp')
 
       var msgactual = $scope.listaMensajes[$index];
       var msganterior = $scope.listaMensajes[$index-1];
-      console.log (msgactual);
+
       if (msgactual.user.id ==msganterior.user.id) {
         if (moment(msgactual.date).diff(moment(msganterior.date),'minutes') > 10) {
           return true;

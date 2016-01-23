@@ -25,6 +25,7 @@ angular.module('myAppAngularMinApp')
           data: {
             'groupid': data.groupid,
             'channelid': data.channelid,
+            'userid': data.userid,
             'filename': data.filename,
             'operation': 'GET'
           }
@@ -53,6 +54,7 @@ angular.module('myAppAngularMinApp')
           data: {
             'groupid': data.groupid,
             'channelid': data.channelid,
+            'userid': data.userid,
             'filename': data.file.name,
             'operation': 'PUT'
           }
@@ -105,13 +107,13 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function getMessages (channel) {
+      function getMessages (data) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        var userid = $localStorage.id;
-        var groupid = $localStorage.groupid;
-        var channelid = channel.id;
+        var userid=data.userid;
+        var groupid=data.groupid;
+        var channelid=data.channelid;
 
         $http({
           method: 'get',
