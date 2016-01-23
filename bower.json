@@ -30,6 +30,9 @@
         "dist/css/bootstrap.css",
         "dist/js/bootstrap.js"
       ]
+    },
+    "socket.io-client": {
+      "main": "socket.io.js"
     }
   },
   "resolutions": {

@@ -35,6 +35,7 @@ module.exports = function(config) {
       'bower_components/angular-material/angular-material.js',
       'bower_components/ngstorage/ngStorage.js',
       'bower_components/metisMenu/dist/metisMenu.js',
+      'bower_components/socket.io-client/socket.io.js',
       'bower_components/moment/moment.js',
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/hello/dist/hello.all.min.js',
