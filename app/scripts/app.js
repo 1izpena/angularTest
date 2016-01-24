@@ -19,7 +19,9 @@ angular
     'ngTouch',
     'ngMaterial',
     'ngStorage',
-    'angularMoment'
+    'angularMoment',
+    'ngFileUpload',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider

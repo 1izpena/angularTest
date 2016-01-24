@@ -306,10 +306,12 @@
 
                     <p ng-if="msg.messageType=='FILE'"
                       ng-class="($storage.id==msg.user.id) ? 'text-right' : 'text-left'">
-                      <a ng-href="#" ng-click="getDownloadLink(msg.text, $event)">
-                        <span class="glyphicon glyphicon-file" style="font-size: 30px;"></span>{{msg.text}}
+                      {{msg.text}}
+                      <br ng-if="msg.text">
+                      <a ng-href="#" ng-click="getDownloadLink(msg.filename, $event)">
+                        <span class="glyphicon glyphicon-file" style="font-size: 30px;"></span>{{msg.filename}}
                       </a>
-
+                      <br>
                     </p>
                   </div>
                 </li>
@@ -328,8 +330,8 @@
                      <ul class="dropdown-menu slidedown">
                        <li>
                          <input type="file" id="uploadFile" name="uploadFile"
-                                file="file" upload-fn="uploadFile()" style="display: none"/>
-                         <a id="uploadHref">
+                                file="file" upload-fn="confirmUploadFile()" style="display: none"/>
+                         <a id="uploadHref" >
                            <span class="glyphicon glyphicon-file"></span>Upload a file
                          </a>
                        </li>

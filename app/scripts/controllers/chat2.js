@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', 'ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties',
-    function ($scope, $window,ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties) {
 
       $scope.init = function()
       {
@@ -447,43 +447,30 @@ angular.module('myAppAngularMinApp')
       );
     };
 
-    $scope.uploadFile = function () {
+      $scope.confirmUploadFile = function () {
 
-      if ($scope.file) {
-
-        var data = {
-          userid: $localStorage.id,
-          groupid: $scope.groupid,
-          channelid: $scope.channelid,
-          file: $scope.file,
-          filename: $scope.file.name,
-          messageType: 'FILE'
-        };
-
-
-        ChatService.uploadFileS3(data).then(
-          function (result) {
-            ChatService.postMessage(data).then(
-              function (result) {
-                $scope.file="";
-              },
-              function (error) {
-                // TODO: Mostrar error
-                console.log("Error en postMessage");
-                console.log(error);
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/uploadModal.html',
+          controller: 'uploadModalCtrl',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.groupid,
+                channelid: $scope.channelid,
+                file: $scope.file
               }
-            );
-          },
-          function (error) {
-            // TODO: Mostrar error
-            console.log("Error en uploadFileS3");
-            console.log(error);
+            }
+          }
+        });
+
+        modalInstance.result.then(function () {
+            $scope.file="";
+        },function () {
+            $scope.file="";
           }
         );
+      };
 
-      }
-
-    };
 
     $scope.sendText = function () {
 
@@ -680,21 +667,16 @@ angular.module('myAppAngularMinApp')
 
     //
     Socket.on('newMessage', function (data) {
-      console.log ("newMessage receive from server");
-      console.log(data);
       $scope.listaMensajes.push(data);
       $scope.$apply();
     });
 
     Socket.on('newUserConnect', function (data) {
-      console.log ("newUserConnect: ");
       $scope.listaUsuariosConectados[data.userid] = true;
       $scope.$apply();
     });
 
       Socket.on('usersConnected', function (data) {
-        console.log ("usersConnected: ");
-        console.log (data);
         if (data.users) {
           for (var i = 0; i < data.users.length; i++) {
             $scope.listaUsuariosConectados[data.users[i]] = true;

@@ -1,0 +1,29 @@
+<div class="modal-header">
+  <h3 class="modal-title">Upload File</h3>
+</div>
+<div class="modal-body">
+  <form>
+    <fieldset class="form-group">
+      <label for="filename">File</label>
+      <input type="text" class="form-control" id="filename" ng-model="filename" ng-disabled="true" />
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="text">Comment (Optional)</label>
+      <textarea class="form-control" id="text" rows="2" ng-model="comment"></textarea>
+    </fieldset>
+  </form>
+  <div ng-show="uploading">
+    <uib-progressbar animate="false" value="progress" type="success"><b>{{progress}}%</b></uib-progressbar>
+  </div>
+  <div class="text-danger" ng-show="errors">
+    <strong>{{errorMessage}}</strong>
+  </div>
+
+</div>
+<div class="modal-footer" ng-show="!errors && !uploading">
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary" type="button" ng-click="ok()">Upload</button>
+</div>
+<div class="modal-footer" ng-show="errors">
+  <button class="btn btn-primary" type="button" ng-click="close()">Close</button>
+</div>
