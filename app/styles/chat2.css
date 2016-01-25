@@ -34,9 +34,11 @@
 #jumboalert{
     height: 100%;
     margin-bottom: 0px;
-    color: #a94442;
+    background-color: white;
+    border-color: white;
+    /*color: #a94442;
     background-color: #F2DEDE;
-    border-color: #EBCCD1;
+    border-color: #EBCCD1;*/
 }
 
 
@@ -155,6 +157,8 @@ img#avatar {
 
 .fa {  color: white; }
 
+#jumboalert .fa {  color: black; }
+
 
 
 .c-align-left {    text-align: left; }
@@ -264,8 +268,17 @@ ul {   list-style-type: none; }
 .emphasis a:hover {
     text-decoration: none;
     color: rgba(255,152,0,1);
+    cursor: pointer;
+
 
 }
+#jumboalert .fa:hover  { 
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
 
 .emphasis li .fa:hover {
     text-decoration: none;
@@ -278,9 +291,19 @@ ul {   list-style-type: none; }
     color: white;
 }
 
+#tagGroup:hover,
+#tagGroup:focus {
+    text-decoration: none;
+    font-weight:bolder;
+    cursor: pointer;
+
+
+}
+
 #menu-toggle:hover,
 #menu-toggle:focus {
     text-decoration: none;
+
 
 }
 
@@ -476,6 +499,17 @@ ul {   list-style-type: none; }
     min-height: 33em;
     height: 86%;
 }
+
+
+#panel-body1
+{
+    overflow-y: scroll;
+    /*min-height: 525px;*/
+    min-height: 33em;
+    height: 94%;
+    padding: 0px;
+}
+
 
 
 #panel-body2

@@ -42,6 +42,7 @@
           <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
           <ul aria-expanded="true" class="emphasis cgroups">
             <li ng-repeat="group in groups" ng-if="groups.length > 0">
+
               <span class="input-group-btn pull-left">
                 <div class="dropdown">
                   <button type="button" id="btn-group-settings" name="btn-group-settings" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -53,6 +54,7 @@
                 </div>
               </span>
               <a ng-click="selectGroup(group)">
+
                 {{group.groupName}}
               </a></li>
             <!----  add group ------>
@@ -63,7 +65,7 @@
         </li>
         <!----separator------>
         <li class="activeChannels">
-          <a class="btn btn-primary" href="" aria-expanded="false" ng-show= "tagGroup !==undefined">Channels<i class="fa fa-comment fa-fw"></i></a>
+          <a class="btn btn-primary" href="" aria-expanded="false" ng-show= "tagGroup !== ''">Channels<i class="fa fa-comment fa-fw"></i></a>
           <ul aria-expanded="false">
             <li class="activeChannelsPublic active">
               <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
@@ -123,7 +125,7 @@
         </li>
         <!-------separator------>
         <li class="activeMembers">
-          <a href="" class="btn btn-primary" aria-expanded="false" ng-show= "tagGroup !==undefined">Direct Messages<i class="fa fa-user fa-fw"></i></a>
+          <a href="" class="btn btn-primary" aria-expanded="false" ng-show= "tagGroup !== ''">Direct Messages<i class="fa fa-user fa-fw"></i></a>
 
           <ul aria-expanded="true" class="emphasis">
             <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
@@ -171,12 +173,26 @@
             <div  class="panel-heading" id="panel-heading">
 
 
+
+               <!-- Cuando se pincha en el tagGroup aparecen los setting en la ventana de chat -->
+
                 <a href="#menu-toggle" class="glyphicon glyphicon-comment" id="menu-toggle"></a>
-               {{tagGroup.groupName}}
-
-               <a href="" class="" id="menu-tag" ng-if= "tagChannel !==undefined"> #{{tagChannel.channelName}}</a>
 
 
+
+                <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
+                
+                  {{tagGroup.groupName}}
+                </a>
+               
+
+               <a href="" class="" id="menu-tag" ng-if= "tagChannel !== '' "> #{{tagChannel.channelName}}</a>
+
+
+
+
+               <!-- Quitamos los settings de la derecha -->
+               <!--
               <div class="btn-group pull-right">
                 <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                   <span class="glyphicon glyphicon-chevron-down"></span>
@@ -191,7 +207,7 @@
                   <li><a href=""><span class="glyphicon glyphicon-time"></span>
                     Away</a></li>
 
-                <!--Groups settings---->
+                <!--Groups settings----
                 <li class="divider" ng-if= "tagGroup !==undefined"></li>
                 <li class="dropdown-header" ng-if= "tagGroup !==undefined">Group Settings</li>
 
@@ -219,7 +235,7 @@
 
 
 
-                  <!--Channels settings---->
+                  <!--Channels settings----
                 <li class="divider" ng-if= "tagChannel !==undefined"></li>
                 <li class="dropdown-header" ng-if= "tagChannel !==undefined">Channel Settings</li>
 
@@ -244,14 +260,15 @@
                             </span>Remove</a></li>
 
 
-                  <!---siempre-->
+                  <!---siempre--
 
                   <li class="divider"></li>
                   <li><a ng-click="logout()"><span class="glyphicon glyphicon-off"></span>
                     Sign Out</a></li>
                 </ul>
               </div>
-
+              
+              -->
 
                 <div class="btn-group pull-right">
 
@@ -271,8 +288,51 @@
 
 
 
+            <!-- si no hemos seleccionado canal se muestra otro panel -->
+            <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
 
-            <div class="panel-body" scroll-bottom-on-last="listaMensajes">
+              <div ng-if= "tagGroup !== '' " class="jumbotron" id="jumboalert">
+                
+                 <!-- <h2>{{tagGroup.groupName}}</h2>
+                  <a class="fa fa-pencil-square-o fa-fw" href=""></a>
+-->
+                <!-- change name in rest api -->
+                <!-- ng-click="chageGroupName()" 
+                 <h2> <a href="#" editable-text="tagGroup.groupName">{{ tagGroup.groupName || "empty" }}</a></h2>-->
+
+
+                 <h2><span editable-text="tagGroup.groupName" e-form="textBtnForm" onbeforesave="checkGroupName($data, tagGroup)">
+                      {{ tagGroup.groupName || 'empty' }}
+                 </span>
+                 <a class="fa fa-pencil-square-o fa-fw" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible"></a></h2>
+
+
+                <!-- <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
+                  edit
+                 </button>-->
+
+
+                
+
+               <!--  <a class="" href=""><h2>{{tagGroup.groupName}}<i class="fa fa-group fa-fw"></i></h2></a>
+
+                 <i class="fa fa-pencil-square-o fa-fw"> <h2>{{tagGroup.groupName}}</h2></i>
+
+                  <p>...</p>
+                   <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+
+                   -->
+            </div>
+
+
+
+
+            </div>
+
+
+
+
+            <div ng-if= "tagChannel !== '' " class="panel-body" scroll-bottom-on-last="listaMensajes">
               <ul class="chat">
                 <li ng-repeat="msg in listaMensajes" send-last
                     ng-class="($storage.id==msg.user.id) ? 'right clearfix' : 'left clearfix'">
@@ -318,7 +378,7 @@
                 <hr ng-if="listaMensajes.length > 0">
               </ul>
             </div>
-            <div class="panel-footer" id="panel-footer">
+            <div ng-if= "tagChannel !== '' " class="panel-footer" id="panel-footer">
               <form name="sendMessageForm">
                 <div class="input-group">
                 <span class="input-group-btn">
@@ -360,6 +420,7 @@
 
           </div>
           <!-- /#panel panel-info -->
+
 
           </div>
         <!-- /#col-md-8 -->

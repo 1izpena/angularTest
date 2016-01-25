@@ -19,6 +19,9 @@ angular.module('myAppAngularMinApp')
 */
 
 
+	  $scope.tagChannel = '';	
+	  $scope.tagGroup = '';	
+
 
 
       $scope.error1 = 0;
@@ -106,6 +109,92 @@ angular.module('myAppAngularMinApp')
           }
         );
       };
+
+
+
+      /************* new *******************************/
+     
+
+       $scope.showGrouptoEdit = function(group){
+
+       	console.log("esto vale taggroup");
+       	console.log(group);
+       		console.log(group.groupName);
+       			console.log(group.id);
+       		console.log("esto vale tagchannel");
+       		console.log($scope.tagChannel);
+        
+/*
+        $scope.messageEditGroupModal = '';
+        $scope.errorEditGroupModal = 0;
+        GroupService.editGroup($scope.groupid,group).then(
+          function(data) {
+            ProfileService.getGroups().then(
+              function(data){
+                $("#editGroupModal").modal("hide");
+                $("#editGroupNameTxt").val('').trigger('input');
+                $scope.groups = data;
+              },function(err) {
+                // Tratar el error
+                $("#newGroupNameTxt").val('').trigger('input');
+                $scope.errorEditGroupModal = 1;
+                $scope.messageEditGroupModal = err.message;
+              }
+            );
+          },function(err){
+            // Tratar el error
+            $("#editGroupNameTxt").val('').trigger('input');
+            $scope.errorEditGroupModal = 1;
+            $scope.messageEditGroupModal = err.message;
+          }
+        );
+*/
+      };
+
+
+
+      $scope.checkGroupName = function(data, tagGroup) {
+    		if (data === '') {
+      			return "Group name should be not blank";
+      		}
+      		else{
+      			
+      			
+
+      			return GroupService.editGroup(tagGroup.id, data).then(
+          			function(data) {
+          				return "OK";
+          			/* esto hay que cambiarlo, para añadir el data que devuelva
+          			   en el array de grupos del scope */
+            		/*	ProfileService.getGroups().then(
+	              			function(data){
+				                
+				                $scope.groups = data;
+				            },function(err) {
+				                // Tratar el error
+				                
+				              /*  $scope.errorEditGroupModal = 1;
+				                $scope.messageEditGroupModal = err.message;
+				            }
+		            
+		       			);*/
+          		},function(err){
+                  // Tratar el error
+            
+		            /*$scope.errorEditGroupModal = 1;
+		            $scope.messageEditGroupModal = err.message;*/
+		            console.log("Hay error");
+          			console.log(err.message);
+          			//$scope.error = err.message;
+          			return err.message;
+          		}
+        		);
+      			
+      		}
+  	  };
+
+
+      /*********************************************/
 
       $scope.editGroup = function(group){
         $scope.messageEditGroupModal = '';
