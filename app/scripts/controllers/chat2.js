@@ -163,7 +163,7 @@ angular.module('myAppAngularMinApp')
 
       			return GroupService.editGroup(tagGroup.id, data).then(
           			function(data) {
-          				return "OK";
+          				return ;
           			/* esto hay que cambiarlo, para añadir el data que devuelva
           			   en el array de grupos del scope */
             		/*	ProfileService.getGroups().then(
