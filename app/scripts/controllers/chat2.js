@@ -736,7 +736,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('editedGroup', function (data) {
         console.log ("editedGroup receive from server");
         console.log(data);
-        for (i=0;i<$scope.groups.length;i++){
+        for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == data.id){
             $scope.groups[i].groupname = data.groupName;
             $scope.$apply();
@@ -748,7 +748,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('editedPublicChannel', function (data) {
         console.log ("editedPublicChannel receive from server");
         console.log(data);
-        for (i=0;i<$scope.publicChannels.length;i++){
+        for (var i=0;i<$scope.publicChannels.length;i++){
           if ($scope.publicChannels[i].id == data.id){
             $scope.publicChannels[i].channelName = data.channelName;
             $scope.$apply();
@@ -760,7 +760,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('editedPrivateChannel', function (data) {
         console.log ("editedPrivateChannel receive from server");
         console.log(data);
-        for (i=0;i<$scope.privateChannels.length;i++){
+        for (var i=0;i<$scope.privateChannels.length;i++){
           if ($scope.privateChannels[i].id == data.id){
             $scope.privateChannels[i].channelName = data.channelName;
             $scope.$apply();
@@ -772,7 +772,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('deletedPrivateChannel', function (data) {
         console.log ("deletedPrivateChannelInGroup receive from server");
         console.log(data);
-        for (i=0;i<$scope.privateChannels.length;i++){
+        for (var i=0;i<$scope.privateChannels.length;i++){
           if ($scope.privateChannels[i].id == data.id){
             $scope.privateChannels.splice(i,1);
             $scope.$apply();
@@ -783,7 +783,7 @@ angular.module('myAppAngularMinApp')
       //recibir evento de canal publico eliminado
       Socket.on('deletedPublicChannel', function (data) {
         console.log ("deletedPublicChannelInGroup receive from server");
-        for (i=0;i<$scope.publicChannels.length;i++){
+        for (var i=0;i<$scope.publicChannels.length;i++){
           if ($scope.publicChannels[i].id == data.id){
             $scope.publicChannels.splice(i,1);
             $scope.$apply();
@@ -794,7 +794,7 @@ angular.module('myAppAngularMinApp')
       //recibir evento de grupo eliminado
       Socket.on('deletedGroup', function (data) {
         console.log ("deletedGroup receive from server");
-        for (i=0;i<$scope.groups.length;i++){
+        for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == data.id){
             $scope.groups[i].splice(i,1);
             $scope.$apply();
