@@ -84,8 +84,8 @@ angular.module('myAppAngularMinApp')
         $scope.errorNewGroupModal = 0;
         GroupService.createNewGroup(group).then(
           function(data) {
-            $scope.groups.push(data);
-            $scope.$apply();
+            //$scope.groups.push(data);
+            //$scope.$apply();
             $("#newGroupModal").modal("hide");
             $("#groupNameTxt").val('').trigger('input');
           },function(err){
@@ -102,18 +102,10 @@ angular.module('myAppAngularMinApp')
         $scope.errorEditGroupModal = 0;
         GroupService.editGroup($scope.groupid,group).then(
           function(data) {
-            ProfileService.getGroups().then(
-              function(data){
-                $("#editGroupModal").modal("hide");
-                $("#editGroupNameTxt").val('').trigger('input');
-                $scope.groups = data;
-              },function(err) {
-                // Tratar el error
-                $("#newGroupNameTxt").val('').trigger('input');
-                $scope.errorEditGroupModal = 1;
-                $scope.messageEditGroupModal = err.message;
-              }
-            );
+            $("#editGroupModal").modal("hide");
+            $("#editGroupNameTxt").val('').trigger('input');
+            //$scope.groups.push(data);
+            //$scope.$apply();
           },function(err){
             // Tratar el error
             $("#editGroupNameTxt").val('').trigger('input');
@@ -154,7 +146,7 @@ angular.module('myAppAngularMinApp')
                 $scope.$apply();
               }
             }
-          $scope.groups.push(data);
+          //$scope.groups.push(data);
         }
         , function (err) {
           // Tratar el error
@@ -197,23 +189,21 @@ angular.module('myAppAngularMinApp')
         $scope.errorCreateNewChannelModal = 0;
         ChannelService.createNewChannel($scope.groupid,channel).then(
           function(data) {
-            ProfileService.getChannels($scope.groupid).then(
-              function(data) {
-                $("#newChannelModal").modal("hide");
-                $scope.privateChannels = data.privateChannels;
-                $scope.publicChannels = data.publicChannels;
-                $("#channelNameTxt").val('').trigger('input');
-                $("#channelTypeTxt").val('').trigger('input');
-              },function(err){
-                // Tratar el error
-                console.log("Hay error");
-                console.log(err.message);
-                $("#channelNameTxt").val('').trigger('input');
-                $("#channelTypeTxt").val('').trigger('input');
-                $scope.errorCreateNewChannelModal = 1;
-                $scope.messageCreateNewChannelModal = err.message;
-              }
-            );
+            $("#newChannelModal").modal("hide");
+            $("#channelNameTxt").val('').trigger('input');
+            $("#channelTypeTxt").val('').trigger('input');
+            /*if (data.channelType == 'PRIVATE'){
+              $scope.privateChannels.push(data);
+              $scope.$apply();
+            }
+            if (data.channelType == 'PUBLIC'){
+              $scope.publicChannels.push(data);
+              $scope.$apply();
+            }
+            if (data.channelType == 'DIRECT'){
+              $scope.directChannels.push(data);
+              $scope.$apply();
+            }*/
           },function(err){
             // Tratar el error
             console.log("Hay error");
@@ -232,8 +222,32 @@ angular.module('myAppAngularMinApp')
         ChannelService.deleteChannel($scope.groupid,$scope.channelid).then(
           function(data) {
             $("#deleteChannelModal").modal("hide");
-            $scope.privateChannels = data.privateChannels;
-            $scope.publicChannels = data.publicChannels;
+            /*if (data.channelType == 'PRIVATE'){
+              for (i=0;i<$scope.privateChannels.length;i++){
+                if ($scope.privateChannels[i].id == data.id){
+                  $scope.privateChannels.splice(i,1);
+                  $scope.$apply();
+                }
+              }
+            }
+            if (data.channelType == 'PUBLIC'){
+              for (i=0;i<$scope.publicChannels.length;i++){
+                if ($scope.publicChannels[i].id == data.id){
+                  $scope.publicChannels.splice(i,1);
+                  $scope.$apply();
+                }
+              }
+            }
+            if (data.channelType == 'DIRECT'){
+              $scope.directChannels.push(data);
+              $scope.$apply();
+              for (i=0;i<$scope.directChannels.length;i++){
+                if ($scope.directChannels[i].id == data.id){
+                  $scope.directChannels.splice(i,1);
+                  $scope.$apply();
+                }
+              }
+            }*/
           },function(err){
             // Tratar el error
             console.log("Hay error");
@@ -249,19 +263,20 @@ angular.module('myAppAngularMinApp')
         $scope.messageEditChannelModal = '';
         ChannelService.editChannel($scope.groupid,$scope.channelid,channel).then(
           function(data) {
-            ProfileService.getChannels($scope.groupid).then(
-              function(data){
-                $("#editChannelModal").modal("hide");
-                $scope.privateChannels = data.privateChannels;
-                $scope.publicChannels = data.publicChannels;
-                $("#editChannelNameTxt").val('').trigger('input');
-              },function(err) {
-                // Tratar el error
-                $("#editChannelNameTxt").val('').trigger('input');
-                $scope.errorEditChannelModal = 1;
-                $scope.messageEditChannelModal = err.message;
-              }
-            );
+            $("#editChannelModal").modal("hide");
+           /* if (data.channelType == 'PRIVATE'){
+              $scope.privateChannels.push(data);
+              $scope.$apply();
+            }
+            if (data.channelType == 'PUBLIC'){
+              $scope.publicChannels.push(data);
+              $scope.$apply();
+            }
+            if (data.channelType == 'DIRECT'){
+              $scope.directChannels.push(data);
+              $scope.$apply();
+            }*/
+
           },function(err){
             // Tratar el error
             $("#editChannelNameTxt").val('').trigger('input');
@@ -277,7 +292,7 @@ angular.module('myAppAngularMinApp')
         ChannelService.addUserToChannel($scope.groupid,$scope.channelid,userid1).then(
           function(data) {
             $("#addUserToChannelModal").modal("hide");
-            $scope.channelMembers = data.users;
+            //$scope.channelMembers = data.users;
           },function(err){
             $scope.errorAddUserToChannelModal = 1;
             $scope.messageAddUserToChannelModal = err.message;
@@ -292,7 +307,7 @@ angular.module('myAppAngularMinApp')
         ChannelService.deleteUserFromChannel($scope.groupid,$scope.channelid,userid1).then(
           function(data) {
             $("#deleteUserFromChannelModal").modal("hide");
-            $scope.channelMembers = data.users;
+           // $scope.channelMembers = data.users;
           },function(err){
             $scope.errorDeleteUserFromChannelModal = 1;
             $scope.messageDeleteUserFromChannelModal = err.message;
@@ -306,7 +321,7 @@ angular.module('myAppAngularMinApp')
         ChannelService.unsubscribeFromChannel($scope.groupid,$scope.channelid).then(
           function(data) {
             $("#unsuscribeFromChannelModal").modal("hide");
-            $scope.channelMembers = data.users;
+           // $scope.channelMembers = data.users;
           },function(err){
             // Tratar el error
             $scope.errorUnsuscribeFromChannelModal = 1;
@@ -758,7 +773,7 @@ angular.module('myAppAngularMinApp')
         console.log ("deletedPrivateChannelInGroup receive from server");
         console.log(data);
         for (i=0;i<$scope.privateChannels.length;i++){
-          if ($scope.privateChannels[i].id == data){
+          if ($scope.privateChannels[i].id == data.id){
             $scope.privateChannels.splice(i,1);
             $scope.$apply();
           }
@@ -769,7 +784,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('deletedPublicChannel', function (data) {
         console.log ("deletedPublicChannelInGroup receive from server");
         for (i=0;i<$scope.publicChannels.length;i++){
-          if ($scope.publicChannels[i].id == data){
+          if ($scope.publicChannels[i].id == data.id){
             $scope.publicChannels.splice(i,1);
             $scope.$apply();
           }
@@ -780,7 +795,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('deletedGroup', function (data) {
         console.log ("deletedGroup receive from server");
         for (i=0;i<$scope.groups.length;i++){
-          if ($scope.groups[i].id == data){
+          if ($scope.groups[i].id == data.id){
             $scope.groups[i].splice(i,1);
             $scope.$apply();
           }
