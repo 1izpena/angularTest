@@ -500,6 +500,11 @@ angular.module('myAppAngularMinApp')
       ProfileService.getGroupMembers(group.id)
         .then(function (data) {
           $scope.members = data;
+          for (var i = 0; i < data.length; i++ ) {
+                $scope.members[i].color = getRandomColor();
+
+          }
+          console.log($scope.members);
 
         }
         , function (err) {
@@ -510,6 +515,20 @@ angular.module('myAppAngularMinApp')
 
         });
     };
+
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF'.split('');
+      var color = '';
+      for (var i = 0; i < 6; i++ ) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+
+
+
+
 
     $scope.getMessages = function (channel) {
 

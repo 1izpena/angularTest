@@ -191,85 +191,6 @@
 
 
 
-               <!-- Quitamos los settings de la derecha -->
-               <!--
-              <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                  <span class="glyphicon glyphicon-chevron-down"></span>
-                </button>
-                <ul class="dropdown-menu slidedown">
-                  <li class="dropdown-header">My status</li>
-
-                  <li><a href=""><span class="glyphicon glyphicon-ok-sign">
-                            </span>Available</a></li>
-                  <li><a href=""><span class="glyphicon glyphicon-minus-sign">
-                            </span>Busy</a></li>
-                  <li><a href=""><span class="glyphicon glyphicon-time"></span>
-                    Away</a></li>
-
-                <!--Groups settings----
-                <li class="divider" ng-if= "tagGroup !==undefined"></li>
-                <li class="dropdown-header" ng-if= "tagGroup !==undefined">Group Settings</li>
-
-
-                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-edit">
-                            </span>Edit</a></li>
-
-
-                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-user"></span>
-                    Show members</a></li>
-
-
-                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-eye-open"></span>
-                    Details</a></li>
-
-
-                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-remove"></span>
-                    Unsuscribe</a></li>
-
-                  <li ng-if= "tagGroup !==undefined"><a href=""><span class="glyphicon glyphicon-trash">
-                            </span>Remove</a></li>
-
-
-
-
-
-
-                  <!--Channels settings----
-                <li class="divider" ng-if= "tagChannel !==undefined"></li>
-                <li class="dropdown-header" ng-if= "tagChannel !==undefined">Channel Settings</li>
-
-
-
-                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-edit">
-                            </span>Edit</a></li>
-
-
-                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-user"></span>
-                    Show members</a></li>
-
-
-                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-eye-open"></span>
-                    Details</a></li>
-
-
-                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-remove"></span>
-                    Unsuscribe</a></li>
-
-                  <li ng-if= "tagChannel !==undefined"><a href=""><span class="glyphicon glyphicon-trash">
-                            </span>Remove</a></li>
-
-
-                  <!---siempre--
-
-                  <li class="divider"></li>
-                  <li><a ng-click="logout()"><span class="glyphicon glyphicon-off"></span>
-                    Sign Out</a></li>
-                </ul>
-              </div>
-              
-              -->
-
                 <div class="btn-group pull-right">
 
                   <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
@@ -281,58 +202,95 @@
                     </a>
                     -->
                 </div>
-
-
-
-            </div>
+            </div> <!-- panel-heading -->
 
 
 
             <!-- si no hemos seleccionado canal se muestra otro panel -->
             <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
-
-              <div ng-if= "tagGroup !== '' " class="jumbotron" id="jumboalert">
-                
-                 <!-- <h2>{{tagGroup.groupName}}</h2>
-                  <a class="fa fa-pencil-square-o fa-fw" href=""></a>
--->
-                <!-- change name in rest api -->
-                <!-- ng-click="chageGroupName()" 
-                 <h2> <a href="#" editable-text="tagGroup.groupName">{{ tagGroup.groupName || "empty" }}</a></h2>-->
+           
+                <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
+                    <div ng-if= "tagGroup !== '' " class="panel panel-primary" id="panel-set">
 
 
-                 <h2><span editable-text="tagGroup.groupName" e-form="textBtnForm" onbeforesave="checkGroupName($data, tagGroup)">
-                      {{ tagGroup.groupName || 'empty' }}
-                 </span>
-                 <a class="fa fa-pencil-square-o fa-fw" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible"></a></h2>
+                          <div class="panel-heading" id="panel-heading-settings">
+                                <h3 class="panel-title">Group Settings</h3>
+                         </div>
 
 
-                <!-- <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
-                  edit
-                 </button>-->
+                              <div class="panel-body" id="panel-settings">
+                                   <p> 
+                                   <span editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
+                                {{ tagGroup.groupName || 'empty' }}
+                                   </span>
+
+                                  <button class="btn btn-info btn-xs" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
+                                          <span class="fa fa-pencil fa-fw"></span>  
+                                   </button>
+                            
+                                  </p>
+                              </div>
+
+                    </div>    
+                 </div>
 
 
-                
-
-               <!--  <a class="" href=""><h2>{{tagGroup.groupName}}<i class="fa fa-group fa-fw"></i></h2></a>
-
-                 <i class="fa fa-pencil-square-o fa-fw"> <h2>{{tagGroup.groupName}}</h2></i>
-
-                  <p>...</p>
-                   <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-
-                   -->
-            </div>
+                 <div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
+                    <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set1">
 
 
+                          <div class="panel-heading" id="panel-heading-settings">
+                                <h3 class="panel-title">Team Directory</h3>
+                         </div>
 
 
-            </div>
+                              <div class="panel-body" id="panel-settings">
+
+                                <div class="input-group input-group-unstyled">
+                                     <span class="input-group-addon">
+                                        <i class="fa fa-search"></i>
+
+                                    </span>
+
+
+                                    <input type="text" class="form-control" />
+                                   
+                                    
+                                    <button class="btn btn-info">Members <span class="badge">{{members.length}}</span></button>
+                                    
+                                </div>                            
+
+                    
+                      
+                              </div> <!-- panel-settings(panel-body) -->
+
+                                  <ul class="list-group" id="list-group">
+                                      <li class="list-group-item" ng-repeat="member in members" ng-if="members.length > 1">
+                                                <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
+                                                        alt="User Avatar" class="img-circle"/>
+                                                        <p>{{member.username}}</p>
+                                                        <p>{{member.mail}}</p>
+                                      </li>
+
+                                    
+                                    </ul>
+
+
+
+                    </div> <!-- panel-set1 (team directory)-->
+
+                 </div> <!-- row-settings --> 
+                 
+
+
+            </div> <!--  panel-body1 -->
+
+            
 
 
 
 
-            <div ng-if= "tagChannel !== '' " class="panel-body" scroll-bottom-on-last="listaMensajes">
+            <div ng-if= "tagChannel !== '' " class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
               <ul class="chat">
                 <li ng-repeat="msg in listaMensajes" send-last
                     ng-class="($storage.id==msg.user.id) ? 'right clearfix' : 'left clearfix'">
