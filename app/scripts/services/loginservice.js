@@ -17,6 +17,7 @@ angular.module('myAppAngularMinApp')
       logout: function() {
         if($localStorage.username !== null){
           $localStorage.$reset();
+          console.log("entro");
           $location.path('/');
         }
       },

@@ -20,6 +20,7 @@ angular.module('myAppAngularMinApp')
     $scope.auth = LoginService;
 
     $scope.goTo = function(url, from) {
+      
       if (from === 'chat'){
           sharedProperties.setProperty('/chat2');
       }
@@ -30,6 +31,7 @@ angular.module('myAppAngularMinApp')
     };
 
     $scope.logout = function(){
+      sharedProperties.setProperty('/');
       LoginService.logout();
     };
 

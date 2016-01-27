@@ -3,7 +3,7 @@
     <img class="img-responsive col-md-7 col-xs-7" src="../../images/pantalla.png">
     <div class="flex-column col-md-5 col-xs-5">
       <label class="descargaMessage">Accede a nuestro foro!!</label>
-      <a ng-click="goTo('/login', 'foro')" type="button" class="btn btn-danger btn-lg">Entrar al Foro</a>
+      <a ng-click="auth.isLogged() ? goTo('/', 'foro') : goTo('/login', 'foro')" type="button" class="btn btn-danger btn-lg">Entrar al Foro</a>
     </div>
   </div>
 </div>
@@ -13,7 +13,8 @@
     <img class="img-responsive col-md-7 col-xs-7" src="../../images/trabajoengrupo.png">
     <div class="flex-column col-md-5 col-xs-5">
       <label class="descargaMessage">Trabaja en grupo en nuestro sistema!!</label>
-      <a ng-click="goTo('/login', 'chat')" type="button" class="btn btn-danger btn-lg">Entrar al Chat</a>
+
+      <a ng-click="auth.isLogged() ? goTo('/chat2', 'chat') : goTo('/login', 'chat')" type="button" class="btn btn-danger btn-lg">Entrar al Chat</a>
     </div>
   </div>
 </div>

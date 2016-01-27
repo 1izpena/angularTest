@@ -29,23 +29,24 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function editGroup (groupid,data) {
+      function editGroup (groupid,data2) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
+       
         $http({
           method: 'put',
-          headers: {'x-access-token': $localStorage.token},
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
           url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid,
-          data: data
-        }).then(
-          function(response) {
-            defered.resolve(response);
-          },
-          function(error){
-            defered.reject(error);
-          }
-        );
+          data: 'groupName='+data2
+                    
+        }).success(function(data) {
+                defered.resolve(data);
+          })
+          .error(function(err) {
+                defered.reject(err)
+          });
+
         return promise;
       }
     }

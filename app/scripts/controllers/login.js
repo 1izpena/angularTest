@@ -11,7 +11,22 @@ angular.module('myAppAngularMinApp')
       'Karma'
     ];
 
-    $scope.error = 0;
+    
+        // Emitimos evento de conexion a chat para recibir nuevas invitaciones a grupos
+      
+    if(sharedProperties.getMessage()!= ''){
+         $scope.error = 1;
+         $scope.message  = sharedProperties.getMessage();
+    }
+    else{
+         $scope.error = 0;
+    }
+
+         
+    
+   
+
+   // $scope.error = 0;
 
     $scope.goTo = function(url) {
       $location.path(url);
@@ -27,6 +42,7 @@ angular.module('myAppAngularMinApp')
           $localStorage.id = res.data.id;
           $localStorage.username = res.data.username;
 
+          sharedProperties.setMessage('');
           $scope.goTo(sharedProperties.getProperty());
 
         }, function(res) {

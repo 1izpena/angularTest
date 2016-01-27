@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .service('ChatService', ['$http', '$localStorage', '$location', '$q', 'API_BASE',
-    function($http, $localStorage, $location, $q, API_BASE) {
+  .service('ChatService', ['$http', '$localStorage', '$location', '$q', 'API_BASE', 'Upload',
+    function($http, $localStorage, $location, $q, API_BASE, Upload) {
 
       return {
         uploadFileS3: uploadFileS3,
@@ -25,6 +25,7 @@ angular.module('myAppAngularMinApp')
           data: {
             'groupid': data.groupid,
             'channelid': data.channelid,
+            'userid': data.userid,
             'filename': data.filename,
             'operation': 'GET'
           }
@@ -53,12 +54,14 @@ angular.module('myAppAngularMinApp')
           data: {
             'groupid': data.groupid,
             'channelid': data.channelid,
+            'userid': data.userid,
             'filename': data.file.name,
             'operation': 'PUT'
           }
         }).then( function(response){
             // Put del fichero en AWS S3
-            $http({
+            //$http({
+            Upload.http({
               method: 'put',
               url: response.data.url,
               headers: {
@@ -71,6 +74,9 @@ angular.module('myAppAngularMinApp')
               },
               function (err) {
                 defered.reject(err);
+              },
+              function (progress) {
+                defered.notify(progress);
               });
           },
           function (err) {
@@ -105,13 +111,13 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function getMessages (channel) {
+      function getMessages (data) {
         var defered = $q.defer();
         var promise = defered.promise;
 
-        var userid = $localStorage.id;
-        var groupid = $localStorage.groupid;
-        var channelid = channel.id;
+        var userid=data.userid;
+        var groupid=data.groupid;
+        var channelid=data.channelid;
 
         $http({
           method: 'get',
