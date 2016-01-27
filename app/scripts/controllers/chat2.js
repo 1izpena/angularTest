@@ -1,14 +1,23 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce) {
 
       $scope.init = function()
       {
         // Emitimos evento de conexion a chat para recibir nuevas invitaciones a grupos
         Socket.emit('newChatConnection', {'userid':$localStorage.id});
+
+
       };
+
+
+/* cuando quiera recuperar los usuarios del sistema 
+
+	http://localhost:3000/api/v1/users
+
+*/
 
 /*
     $scope.logoutLogin = function () {
@@ -18,6 +27,9 @@ angular.module('myAppAngularMinApp')
     };
 */
 
+
+	  $scope.tagChannel = '';	
+	  $scope.tagGroup = '';	
 
 
 
@@ -73,6 +85,15 @@ angular.module('myAppAngularMinApp')
 
     };
 
+    /* subraya las coincidencias */
+    $scope.highlight = function(text, search) {
+    if (!search) {
+        return $sce.trustAsHtml(text);
+    }
+    return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
+};
+
+
 
     $scope.goTo = function(url)
     {
@@ -96,6 +117,92 @@ angular.module('myAppAngularMinApp')
           }
         );
       };
+
+
+
+      /************* new *******************************/
+     
+
+       $scope.showGrouptoEdit = function(group){
+
+       	console.log("esto vale taggroup");
+       	console.log(group);
+       		console.log(group.groupName);
+       			console.log(group.id);
+       		console.log("esto vale tagchannel");
+       		console.log($scope.tagChannel);
+        
+/*
+        $scope.messageEditGroupModal = '';
+        $scope.errorEditGroupModal = 0;
+        GroupService.editGroup($scope.groupid,group).then(
+          function(data) {
+            ProfileService.getGroups().then(
+              function(data){
+                $("#editGroupModal").modal("hide");
+                $("#editGroupNameTxt").val('').trigger('input');
+                $scope.groups = data;
+              },function(err) {
+                // Tratar el error
+                $("#newGroupNameTxt").val('').trigger('input');
+                $scope.errorEditGroupModal = 1;
+                $scope.messageEditGroupModal = err.message;
+              }
+            );
+          },function(err){
+            // Tratar el error
+            $("#editGroupNameTxt").val('').trigger('input');
+            $scope.errorEditGroupModal = 1;
+            $scope.messageEditGroupModal = err.message;
+          }
+        );
+*/
+      };
+
+
+
+      $scope.checkGroupName = function(data, tagGroup) {
+    		if (data === '') {
+      			return "Group name should be not blank";
+      		}
+      		else{
+      			
+      			
+
+      			return GroupService.editGroup(tagGroup.id, data).then(
+          			function(data) {
+          				return ;
+          			/* esto hay que cambiarlo, para añadir el data que devuelva
+          			   en el array de grupos del scope */
+            		/*	ProfileService.getGroups().then(
+	              			function(data){
+				                
+				                $scope.groups = data;
+				            },function(err) {
+				                // Tratar el error
+				                
+				              /*  $scope.errorEditGroupModal = 1;
+				                $scope.messageEditGroupModal = err.message;
+				            }
+		            
+		       			);*/
+          		},function(err){
+                  // Tratar el error
+            
+		            /*$scope.errorEditGroupModal = 1;
+		            $scope.messageEditGroupModal = err.message;*/
+		            console.log("Hay error");
+          			console.log(err.message);
+          			//$scope.error = err.message;
+          			return err.message;
+          		}
+        		);
+      			
+      		}
+  	  };
+
+
+      /*********************************************/
 
       $scope.editGroup = function(group){
         $scope.messageEditGroupModal = '';
@@ -396,6 +503,11 @@ angular.module('myAppAngularMinApp')
       ProfileService.getGroupMembers(group.id)
         .then(function (data) {
           $scope.members = data;
+          for (var i = 0; i < data.length; i++ ) {
+                $scope.members[i].color = getRandomColor();
+
+          }
+          console.log($scope.members);
 
         }
         , function (err) {
@@ -406,6 +518,20 @@ angular.module('myAppAngularMinApp')
 
         });
     };
+
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF'.split('');
+      var color = '';
+      for (var i = 0; i < 6; i++ ) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+
+
+
+
 
     $scope.getMessages = function (channel) {
 
