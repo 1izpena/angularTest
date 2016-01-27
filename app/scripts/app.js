@@ -19,7 +19,9 @@ angular
     'ngTouch',
     'ngMaterial',
     'ngStorage',
-    'angularMoment'
+    'angularMoment',
+    'textAngular',
+    'ngTagsInput',
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -71,8 +73,13 @@ angular
       })
       .when('/foro/question/:questionid', {
         templateUrl: 'views/question.html',
-        controller: 'QuestionCtrl',
-        controllerAs: 'question'
+        controller: 'ForoCtrl',
+        controllerAs: 'foro'
+      })
+      .when('/foro/newquestion', {
+        templateUrl: 'views/newQuestion.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro'
       })
       .otherwise({
         redirectTo: '/'
