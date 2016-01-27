@@ -1,14 +1,23 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce) {
 
       $scope.init = function()
       {
         // Emitimos evento de conexion a chat para recibir nuevas invitaciones a grupos
         Socket.emit('newChatConnection', {'userid':$localStorage.id});
+
+
       };
+
+
+/* cuando quiera recuperar los usuarios del sistema 
+
+	http://localhost:3000/api/v1/users
+
+*/
 
 /*
     $scope.logoutLogin = function () {
@@ -75,6 +84,15 @@ angular.module('myAppAngularMinApp')
       }
 
     };
+
+    /* subraya las coincidencias */
+    $scope.highlight = function(text, search) {
+    if (!search) {
+        return $sce.trustAsHtml(text);
+    }
+    return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
+};
+
 
 
     $scope.goTo = function(url)

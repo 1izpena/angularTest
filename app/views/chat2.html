@@ -253,7 +253,7 @@
                                     </span>
 
 
-                                    <input type="text" class="form-control" />
+                                    <input ng-model="searchText" type="text" class="form-control" />
                                    
                                     
                                     <button class="btn btn-info">Members <span class="badge">{{members.length}}</span></button>
@@ -265,11 +265,13 @@
                               </div> <!-- panel-settings(panel-body) -->
 
                                   <ul class="list-group" id="list-group">
-                                      <li class="list-group-item" ng-repeat="member in members" ng-if="members.length > 1">
+
+
+                                      <li class="list-group-item" ng-repeat="member in members | filter:searchText" ng-if="members.length > 1">
                                                 <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
                                                         alt="User Avatar" class="img-circle"/>
-                                                        <p>{{member.username}}</p>
-                                                        <p>{{member.mail}}</p>
+                                                        <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
+                                                        <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
                                       </li>
 
                                     

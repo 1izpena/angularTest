@@ -1,4 +1,15 @@
 
+.highlightedText {
+    background: yellow;
+}
+
+
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
+    display: none;
+}
+
+
+
 #header_search_form .search_input {
     margin-right: 0;
     outline: 0;
