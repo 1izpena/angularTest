@@ -1,3 +1,27 @@
+/*Añadidos para izaskun*/
+
+#row-settings {
+  height: 20%!important;
+}
+
+#row-settings1 {
+  height: 80%!important;
+}
+
+#panel-set1 {
+  height: 100%;
+}
+
+#panel-settings {
+  height: 10%!important;
+}
+
+#list-group {
+  height: 80%;
+  max-height: none!important;
+}
+
+/*Fin de añadidos para izaskun*/
 
 .highlightedText {
     background: yellow;
@@ -16,7 +40,7 @@
 }
 
 #search_terms {
-   
+
     padding: 2px 2rem;
     width: 70%;
     border-radius: 40px;
@@ -294,7 +318,7 @@ ul {   list-style-type: none; }
 
 
 }
-#jumboalert .fa:hover  { 
+#jumboalert .fa:hover  {
     text-decoration: none;
     cursor: pointer;
 }
@@ -619,7 +643,7 @@ ul {   list-style-type: none; }
 }
 
 #list-group {
-   
+
    border-color: transparent;
    min-height: 1px;
    overflow-y: scroll;
