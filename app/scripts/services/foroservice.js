@@ -12,7 +12,7 @@ angular.module('myAppAngularMinApp')
   		var promise = defered.promise;
   	 	$http({
         	method: 'get',
-        	url: API_BASE + 'api/v1/forum/questions',
+        	url: API_BASE + '/api/v1/forum/questions',
         }).then(
           function(response) {
             defered.resolve(response);
