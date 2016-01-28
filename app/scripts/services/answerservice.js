@@ -6,7 +6,9 @@ angular.module('myAppAngularMinApp')
   		return{
   			newAnswer: newAnswer,
         upVote:    upVote,
-        downVote:  downVote
+        downVote:  downVote,
+        commentAnswer: commentAnswer,
+        deleteAnswer: deleteAnswer
   		};
   function newAnswer(questionId,data)
   {
@@ -21,6 +23,30 @@ angular.module('myAppAngularMinApp')
         "body"      : data.body,
         "created"   : nowDate,
         "votes"     : 0
+      }
+    }).then(
+        function(response){
+          defered.resolve(response);
+        },
+        function(error){
+          defered.reject(error);
+        }
+    );
+    return promise;     
+  };
+
+  function commentAnswer(answerid,data)
+  {
+    var defered = $q.defer();
+    var promise = defered.promise;
+    var nowDate = new Date().getTime();
+    $http({
+      method: 'put',
+      headers: {'x-access-token': $localStorage.token},
+      url: API_BASE + '/api/v1/forum/question/'+ questionId+ "/answer/"+ answerid+'comment',
+      data:{
+        "body"      : data.body,
+        "created"   : nowDate,
       }
     }).then(
         function(response){
@@ -75,6 +101,25 @@ angular.module('myAppAngularMinApp')
         }
     );
     return promise;
-  }
+  };
+
+  function deleteAnswer(questionId,answerId)
+  {
+    var defered = $q.defer();
+    var promise = defered.promise;
+    $http({
+      method: 'delete',
+      headers: {'x-access-token': $localStorage.token},
+      url: API_BASE + '/api/v1/forum/question/'+ questionId+ "/answer/"+answerId+'/delete',
+    }).then(
+        function(response){
+          defered.resolve(response);
+        },
+        function(error){
+          defered.reject(error);
+        }
+    );
+    return promise;
+  };
 
 }]);
