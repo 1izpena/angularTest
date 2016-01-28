@@ -83,6 +83,10 @@ h1 a
     display:inline-block;
     margin:0 2px;
 }
+.votes
+{
+    font-size: 2.0rem;
+}
 .votes .glyphicon,.answers .glyphicon,.views .glyphicon
 {
     margin-right:4px;
@@ -90,7 +94,8 @@ h1 a
 .tags
 {
     line-height: 18px;
-    float: left;
+    width:100%;
+    text-align: left;
 }
 .tags a
 {
@@ -108,41 +113,56 @@ h1 a
     text-transform: uppercase;
 }
 
+.time span
+{
+    padding:2px;
+}
 
 
 
 
-
-/************DETALLE DE LA PREGUNTA***********/
-.preguntadetalle .left
+/************DETALLE DE LA PREGUNTA y Respuesta***********/
+.preguntadetalle .left, .respuestadetalle .left
 {
     float: left;
     width: 8%;
+    padding: 1%;
+    text-align: center;
 }
 .preguntadetalle .right
 {
     float: left;
     width: 92%;
 }
+.respuestadetalle .right
+{
+    margin-top: 3%;
+    float: left;
+    width: 92%;
+}
 
 /*VOTOS*/
-.preguntadetalle button.voteup
+.preguntadetalle button.voteup, .respuestadetalle button.voteup
 {
-    font-size:40px;
+    font-size:3vw;
     color:#33CC33;
     display: block;
     border:none;
     background-color:transparent;
+    white-space: normal;
+    width: 100%;
 }
-.preguntadetalle button.downvote
+.preguntadetalle button.downvote, .respuestadetalle button.downvote
 {
-    font-size:40px;
+    font-size:3vw;
     color:#CC0000;
     display: block;
     border:none;
     background-color:transparent;
+    white-space: normal;
+    width: 100%;
 }
-.preguntadetalle button.voteup:hover,.preguntadetalle button.downvote:hover
+.preguntadetalle button.voteup:hover,.preguntadetalle button.downvote:hover,.respuestadetalle button.voteup:hover, .respuestadetalle button.downvote:hover
 {
    
     text-decoration: none;
@@ -151,6 +171,12 @@ h1 a
 
 }
 
+.respuestas
+{
+    overflow: hidden;
+    clear: both;
+    width: 100%;
+}
 /*COMENTARIOS*/
 .comment
 {
@@ -162,14 +188,33 @@ h1 a
     vertical-align: top;
 }
 
+
+
 /*FORMULARIO AÑADIR COMENTARIOS*/
-#commentform textarea
+.modal textarea
 {
     width:100%;
 }
 
 
-
+/*********** FOrmulario nueva pregunta **********/
+.form-group
+{
+    overflow: hidden;
+}
+.questionform input 
+{
+    width: 100%;
+}
+/*Editor*/
+.ta-editor {
+    min-height: 300px;
+    height: auto;
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
+    margin:20px 0;
+}
 
 
 

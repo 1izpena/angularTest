@@ -40,9 +40,9 @@
 	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
 	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
 	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
-	        				<p>{{question.body}}</p>
+	        				<p ng-bind-html="question.body"></p>
 	        				<div class="time">
-	        				<span class="glyphicon glyphicon-time pull-right text-muted">{{question.created}}</span>
+	        				<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
 	        				</div>
 	        				<div class="tags">
 	        					<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag.tag}}</a>
@@ -60,6 +60,9 @@
 	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
 	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
 	        				<p>{{question.body}}</p>
+	        				<div class="time">
+	        					<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
+	        				</div>
 	        				<div class="tags">
 	        					<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag.tag}}</a>
 	        				</div>
@@ -74,8 +77,11 @@
 	        				<h2 class="questiontitle"><a>{{question.title}}</a></h2>
 	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
 	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
-	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.vews}}</div>
+	        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
 	        				<p>{{question.body}}</p>
+	        				<div class="time">
+	        					<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
+	        				</div>
 	        				<div class="tags">
 	        					<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag.tag}}</a>
 	        				</div>
