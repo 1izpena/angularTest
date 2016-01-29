@@ -279,17 +279,14 @@ angular.module('myAppAngularMinApp')
 
 
 
-      $scope.acceptGroup = function (invitation) {
+      $scope.acceptGroup = function (invitation, ind) {
 
       ProfileService.acceptGroup(invitation.groupid)
         .then(function (data) {
-          console.log("esto devuelve accept");
-          console.log(data);
-            for (i=0;i<$scope.invitations.length;i++){
-              if ($scope.invitations[i].id == data.id){
-                $scope.invitations.splice(i,1);
-              }
-            }
+                    
+                $scope.invitations.splice(ind,1);
+                $scope.groups.push(data);
+             
         }
         , function (err) {
           // Tratar el error
@@ -300,17 +297,13 @@ angular.module('myAppAngularMinApp')
 
     };
 
-    $scope.refuseGroup = function (invitation) {
+    $scope.refuseGroup = function (invitation, ind) {
 
       ProfileService.refuseGroup(invitation.groupid)
         .then(function (data) {
-          console.log("esto devuelve accept");
-          console.log(data);
-            for (i=0;i<$scope.invitations.length;i++){
-              if ($scope.invitations[i].id == data.groupid){
-                $scope.invitations.splice(i,1);
-              }
-            }
+                      
+                $scope.invitations.splice(ind,1);
+           
         }
         , function (err) {
           // Tratar el error
