@@ -6,8 +6,8 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper" >
-            <ul class="sidebar-nav" id="menu" ng-hide="error">
-
+           <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
+              <ul class="sidebar-nav" id="menu" >
                 <li class="sidebar-brand">
 
                     <a href=""><img id="avatar" src="images/yeoman.png" class="profile-image img-circle">
@@ -164,7 +164,8 @@
 
 
 		<!-- si no hay error -->
-		<div ng-show="!error" ng-class="class1" id="col8">
+		<!--<div ng-show="!error" ng-class="class1" id="col8"> -->
+        <div ng-class="class1" id="col8">
 
       		<!--Sidebar content-->
 
@@ -450,8 +451,8 @@
                        placeholder="{{(channelSelected)?'Type your message here...':'Select a channel ...'}}"
                        ng-model="text"/>
                 <span class="input-group-btn">
-                    <button type=submit class="btn btn-warning btn-sm" id="btn-chat"
-                            ng-disabled="!channelSelected" ng-click="sendText()">
+                    <button type="submit" class="btn btn-warning btn-sm" id="btn-chat"
+                            ng-disabled="!channelSelected" ng-click="sendText(text)">
                               Send
                     </button>
                 </span>
@@ -469,7 +470,9 @@
 
 
 
-        <div ng-show="!error && navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
+<!--        <div ng-show="!error && navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4"> -->
+
+<div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
 
           <div class="panel panel-info" id="panel-info2">
 

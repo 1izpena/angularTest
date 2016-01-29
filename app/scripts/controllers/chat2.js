@@ -649,8 +649,9 @@ angular.module('myAppAngularMinApp')
       };
 
 
-    $scope.sendText = function () {
-
+    $scope.sendText = function (text) {
+      console.log(text);
+      $scope.text = text;
       if ($scope.text) {
         var data = {
           userid: $localStorage.id,
