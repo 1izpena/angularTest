@@ -18,7 +18,8 @@ angular.module('myAppAngularMinApp')
 	getChannels: getChannels,
 	getGroupMembers: getGroupMembers,
 	/* de momento no se usa */
-	getChannelMembers: getChannelMembers
+	getChannelMembers: getChannelMembers,
+    getSistemUsers : getSistemUsers
 
      }
 
@@ -141,6 +142,28 @@ angular.module('myAppAngularMinApp')
 
         return promise;
     }
+
+
+
+
+    function getSistemUsers () {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http.get(API_BASE+'/api/v1/users/', {
+                headers: {'x-access-token': $localStorage.token}
+        }).success(function(data) {
+                    defered.resolve(data);
+                })
+                .error(function(err) {
+                    defered.reject(err)
+                });
+
+            return promise;
+        }
+
+
 
 
     function getGroupMembers (groupId) {

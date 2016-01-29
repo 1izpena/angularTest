@@ -6,8 +6,8 @@
 
         <!-- Sidebar -->
         <div id="sidebar-wrapper" >
-            <ul class="sidebar-nav" id="menu" ng-hide="error">
-
+           <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
+              <ul class="sidebar-nav" id="menu" >
                 <li class="sidebar-brand">
 
                     <a href=""><img id="avatar" src="images/yeoman.png" class="profile-image img-circle">
@@ -25,8 +25,8 @@
 
 
               <div class="btn-group">
-                <a ng-click="acceptGroup(invitation)" class="btn btn-success fa fa-thumbs-o-up"></a>
-                <a ng-click="refuseGroup(invitation)" class="btn btn-danger fa fa-thumbs-o-down"></a>
+                <a ng-click="acceptGroup(invitation, $index)" class="btn btn-success fa fa-thumbs-o-up"></a>
+                <a ng-click="refuseGroup(invitation, $index)" class="btn btn-danger fa fa-thumbs-o-down"></a>
               </div>
 
             </li>
@@ -164,7 +164,8 @@
 
 
 		<!-- si no hay error -->
-		<div ng-show="!error" ng-class="class1" id="col8">
+		<!--<div ng-show="!error" ng-class="class1" id="col8"> -->
+        <div ng-class="class1" id="col8">
 
       		<!--Sidebar content-->
 
@@ -190,7 +191,6 @@
 
 
 
-
                 <div class="btn-group pull-right">
 
                   <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
@@ -202,6 +202,32 @@
                     </a>
                     -->
                 </div>
+<!--
+
+   <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                  <span class="glyphicon glyphicon-option-horizontal"></span>
+                </button>
+                <ul class="dropdown-menu slidedown">
+                  <li class="dropdown-header">Type Filter</li>
+
+                  <li><a href=""><span class="glyphicon glyphicon-user">
+                            </span>Members</a></li>
+                  <li><a href=""><span class="glyphicon glyphicon-star">
+                            </span>Favorites</a></li>
+                  <li><a href=""><span class="glyphicon glyphicon-file">
+                            </span>Files</a></li>
+
+                  <li><a href=""><span class="glyphicon glyphicon-tag">
+                            </span>Mentions</a></li>
+
+
+                </ul>
+              </div>
+
+-->
+
+
             </div> <!-- panel-heading -->
 
 
@@ -210,12 +236,34 @@
             <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
            
                 <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
-                    <div ng-if= "tagGroup !== '' " class="panel panel-primary" id="panel-set">
+                    <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set">
 
 
                           <div class="panel-heading" id="panel-heading-settings">
-                                <h3 class="panel-title">Group Settings</h3>
-                         </div>
+                                <h3 class="panel-title">Settings 
+
+                                <div class="btn-group pull-right">
+
+                                      <a data-toggle="dropdown"><span class="glyphicon  glyphicon-cog"></span>
+                                      </a>
+
+                                        <ul class="dropdown-menu slidedown">
+                                              <li class="dropdown-header">Group Actions</li>
+
+                                              <li><a href=""><span class="fa fa-trash-o fa-fw">
+                                                        </span>Remove</a></li>
+                                              <li><a href=""><span class="fa fa-chain-broken fa-fw">
+                                                        </span>Unlink</a></li>
+                                              
+                                       </ul>
+
+                                </div>
+
+                        
+                                </h3>
+
+
+                         </div> <!-- end panel-heading-settings  -->
 
 
                               <div class="panel-body" id="panel-settings">
@@ -227,7 +275,8 @@
                                   <button class="btn btn-info btn-xs" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
                                           <span class="fa fa-pencil fa-fw"></span>  
                                    </button>
-                            
+
+                                                            
                                   </p>
                               </div>
 
@@ -239,9 +288,39 @@
                     <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set1">
 
 
-                          <div class="panel-heading" id="panel-heading-settings">
-                                <h3 class="panel-title">Team Directory</h3>
-                         </div>
+                        <div class="panel-heading" id="panel-heading-settings">
+                                <h3 class="panel-title">Team Directory
+                                        <span class="badge">{{membersSettings.length}}</span>
+
+
+
+
+                              <div class="btn-group pull-right">
+
+                                      <a data-toggle="dropdown"><span class="glyphicon  glyphicon-cog"></span>
+                                      </a>
+
+                                        <ul class="dropdown-menu slidedown">
+                                              <li class="dropdown-header">Members Actions</li>
+
+                                              <li><a ng-click="setSettingsOptions(0)"><span class="fa fa-search fa-fw">
+                                                        </span>Search</a></li>
+
+                                              <li><a ng-click="setSettingsOptions(1)"><span class="fa fa-user-plus fa-fw">
+                                                        </span>Add</a></li>
+                                              <li><a ng-click="setSettingsOptions(2)"><span class="fa fa-user-times fa-fw">
+                                                        </span>Remove</a></li>
+                                              
+                                       </ul>
+
+                                </div>
+
+
+
+                               </h3>
+                              
+
+                        </div>
 
 
                               <div class="panel-body" id="panel-settings">
@@ -256,7 +335,7 @@
                                     <input ng-model="searchText" type="text" class="form-control" />
                                    
                                     
-                                    <button class="btn btn-info">Members <span class="badge">{{members.length}}</span></button>
+                               <!--     <button class="btn btn-info">Members <span class="badge">{{members.length}}</span></button>-->
                                     
                                 </div>                            
 
@@ -267,7 +346,11 @@
                                   <ul class="list-group" id="list-group">
 
 
-                                      <li class="list-group-item" ng-repeat="member in members | filter:searchText" ng-if="members.length > 1">
+                                      <li ng-click=
+                                      "(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)" 
+                                      class="list-group-item" 
+                                      ng-repeat="member in membersSettings | filter:searchText" ng-if="members.length > 0">
+                                      <!-- si options = 1 add / options = 2 remove -->
                                                 <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
                                                         alt="User Avatar" class="img-circle"/>
                                                         <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
@@ -368,8 +451,8 @@
                        placeholder="{{(channelSelected)?'Type your message here...':'Select a channel ...'}}"
                        ng-model="text"/>
                 <span class="input-group-btn">
-                    <button type=submit class="btn btn-warning btn-sm" id="btn-chat"
-                            ng-disabled="!channelSelected" ng-click="sendText()">
+                    <button type="submit" class="btn btn-warning btn-sm" id="btn-chat"
+                            ng-disabled="!channelSelected" ng-click="sendText(text)">
                               Send
                     </button>
                 </span>
@@ -387,7 +470,9 @@
 
 
 
-        <div ng-show="!error && navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
+<!--        <div ng-show="!error && navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4"> -->
+
+<div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
 
           <div class="panel panel-info" id="panel-info2">
 
