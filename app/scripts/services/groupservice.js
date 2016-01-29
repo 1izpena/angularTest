@@ -6,7 +6,10 @@ angular.module('myAppAngularMinApp')
       return {
         createNewGroup: createNewGroup,
         //deleteGroup: deleteGroup,
-        editGroup: editGroup
+        editGroup: editGroup, 
+        inviteUserToGroup : inviteUserToGroup, 
+        removeUserFromGroup : removeUserFromGroup
+
       };
 
       function createNewGroup (data) {
@@ -27,7 +30,75 @@ angular.module('myAppAngularMinApp')
           }
         );
         return promise;
-      }
+      };
+
+      
+
+      function inviteUserToGroup (user, group) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+        $http({
+          method: 'post',
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/users/'+user.id
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+        return promise;
+      };
+
+
+   
+      function removeUserFromGroup (user, group) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+        $http({
+          method: 'delete',
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/users/'+user.id
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+        return promise;
+      };
+
+
+
+
+
+/* para borrar grupos enteros 
+      function removeUserFromGroup (user, group) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+        $http({
+          method: 'delete',
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+        return promise;
+      };
+
+*/
 
       function editGroup (groupid,data2) {
         var defered = $q.defer();

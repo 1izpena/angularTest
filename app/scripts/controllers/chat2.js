@@ -13,11 +13,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
-/* cuando quiera recuperar los usuarios del sistema
 
-	http://localhost:3000/api/v1/users
-
-*/
 
 /*
     $scope.logoutLogin = function () {
@@ -64,6 +60,8 @@ angular.module('myAppAngularMinApp')
       $scope.message1 = '';
       $scope.navsearch = 0;
       $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
+      /* group user settings tag */
+      $scope.option = 0;
 
 
 
@@ -220,7 +218,7 @@ angular.module('myAppAngularMinApp')
         );
       };
 
-      $scope.inviteUserToGroup = function (user) {
+     /* $scope.inviteUserToGroup = function (user) {
         $scope.messageNewGroupModal = '';
         $scope.errorNewGroupModal = 0;
         GroupService.inviteUserToGroup(user).then(
@@ -235,7 +233,49 @@ angular.module('myAppAngularMinApp')
           }
         );
 
+      };*/
+
+
+      $scope.inviteUserToGroup = function (user) {
+        
+        GroupService.inviteUserToGroup(user, $scope.tagGroup).then(
+          function(data) {
+            console.log(data);
+            /*$scope.searchText= "";*/
+
+          },function(err){
+            // Tratar el error
+            /*$scope.searchText= "";*/
+            console.log("Hay error");
+            console.log(err.message);
+            $scope.error = err.message;
+          }
+        );
+
       };
+
+      
+    $scope.removeUserFromGroup = function (user) {
+        console.log("estoy en chat y hago click para borrar usuarios");
+        console.log("options");
+        /*
+        console.log($scope.option);
+        
+        GroupService.removeUserFromGroup(user, $scope.tagGroup).then(
+          function(data) {
+            console.log(data);
+            $scope.searchText= '';
+
+          },function(err){
+            // Tratar el error
+            console.log("Hay error");
+            console.log(err.message);
+            $scope.error = err.message;
+          }
+        );*/
+      };
+
+
 
 
 
@@ -451,11 +491,12 @@ angular.module('myAppAngularMinApp')
       ProfileService.getGroupMembers(group.id)
         .then(function (data) {
           $scope.members = data;
+          $scope.membersSettings = data;
           for (var i = 0; i < data.length; i++ ) {
                 $scope.members[i].color = getRandomColor();
 
           }
-          console.log($scope.members);
+          
 
         }
         , function (err) {
@@ -476,6 +517,90 @@ angular.module('myAppAngularMinApp')
       return color;
     }
 
+
+
+    $scope.setSettingsOptions = function (option) {
+      /* 0 to search users
+         1 to add users
+         2 to remove users
+      */
+      $scope.option = option;
+      
+      if(option == 1) {
+          getSistemUsers($scope.tagGroup);
+          $scope.option = option;
+
+
+      }
+      else if (option == 2){
+          $scope.membersSettings = $scope.members;
+          $scope.option = option;
+          console.log($scope.membersSettings);
+      }
+      else {
+          $scope.membersSettings = $scope.members;
+          $scope.option = option;
+          console.log($scope.membersSettings);
+
+      }
+
+    };
+
+
+    function getSistemUsers(group) {
+            ProfileService.getSistemUsers(group.id)
+            .then(function (data) {
+
+
+/*var result = $.grep(myArray, function(e){ return e.id == id; });*/
+
+              
+              /*for (var i = 0; i < $scope.members.length; i++ ) {
+                var ind = data.indexOf($scope.members[i]);
+                if (ind >=0){
+                  console.log("debe entrar");
+                  data.splice(ind,1);
+                }
+                
+
+              }*/
+
+/*
+              for (var i = 0; i < $scope.members.length; i++ ) {
+                console.log($scope.members[i].mail);
+                
+                for (var j = 0; i < data.length; j++ ) {
+                    if(data[j] != undefined){
+                      if($scope.members[i].mail == data[j].mail){
+                          data.splice(j,1);
+                          j = data.length;
+                      }
+                    }
+              
+
+                }  
+              
+
+              }
+*/
+          
+              $scope.membersSettings = data;
+
+              for (var i = 0; i < data.length; i++ ) {
+                
+                $scope.membersSettings[i].color = getRandomColor();
+
+              }
+
+            }
+            , function (err) {
+              // Tratar el error
+              console.log("Hay error");
+              console.log(err.message);
+              $scope.error = err.message;
+
+            });
+    }
 
 
 
@@ -560,6 +685,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);
+
       $scope.tagGroup=group;
       $scope.channelSelected = false;
       $scope.tagChannel='';
@@ -777,9 +903,11 @@ angular.module('myAppAngularMinApp')
       //recibir evento de nuevo usuario en grupo
       Socket.on('newMemberInGroup', function (data) {
         console.log ("newMemberInGroup receive from server");
+        /*estas devolviendo el id del user y deberias devolver todo, el user entero
+        pero solo cuando acepte la peticion*/
         console.log(data);
-        $scope.members = data.users;
-        $scope.$apply();
+       // $scope.members = data.users;
+       // $scope.$apply();
       });
 
       //recibir evento de usuario eliminado de grupo
