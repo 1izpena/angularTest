@@ -66,12 +66,13 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
-          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/users/'+user.id
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/users/'+user.id+'/invite'
         }).then(
           function(response) {
             defered.resolve(response);
           },
           function(error){
+            console.log(error);
             defered.reject(error);
           }
         );

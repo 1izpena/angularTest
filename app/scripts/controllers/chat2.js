@@ -26,6 +26,8 @@ angular.module('myAppAngularMinApp')
 
 	  $scope.tagChannel = '';
 	  $scope.tagGroup = '';
+    /* modal de errores para los settings del grupo */
+    $scope.errorG= '';
 
 
 
@@ -274,8 +276,9 @@ angular.module('myAppAngularMinApp')
             // Tratar el error
             
             console.log(err);
-            //$scope.errorUnsuscribeFromGroupModal = 1;
-            //$scope.messageUnsuscribeFromGroupModal = err.message;
+            $scope.errorG = err.data.message;
+            $("#errorGroupModal").modal("show");
+            
             
           }
         );
@@ -285,47 +288,16 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-
-
-
-
-
-
-     /* $scope.inviteUserToGroup = function (user) {
-        $scope.messageNewGroupModal = '';
-        $scope.errorNewGroupModal = 0;
-        GroupService.inviteUserToGroup(user).then(
-          function(data) {
-            console.log("esto devuelve accept");
-            console.log(data);
-          },function(err){
-            // Tratar el error
-            $("#groupNameTxt").val('').trigger('input');
-            $scope.errorNewGroupModal = 1;
-            $scope.messageNewGroupModal = err.message;
-          }
-        );
-
-      };*/
-
-
-
-
-
-
       $scope.inviteUserToGroup = function (user) {
-        console.log("entro en añadir user");
+        
         GroupService.inviteUserToGroup(user, $scope.tagGroup).then(
           function(data) {
-            console.log("entro en añadir user");
-
-            console.log(data);
+            
             var index = $scope.membersSettings.indexOf(user);
             if(index > -1){
                 $scope.membersSettings.splice(index, 1);
-                /* lo hace solo con el emit
-                    $scope.members.push(user);
+                /* lo quito xsi sigue invitando usuarios, 
+                   pero luego vuelve a estar en la lista
                 */
                 
             }
@@ -335,8 +307,10 @@ angular.module('myAppAngularMinApp')
             // Tratar el error
             /*$scope.searchText= "";*/
             console.log("Hay error");
-            console.log(err.message);
-            $scope.error = err.message;
+            console.log(err);
+
+            $scope.errorG = err.data.message;
+            $("#errorGroupModal").modal("show");
           }
         );
 
@@ -369,8 +343,10 @@ angular.module('myAppAngularMinApp')
           },function(err){
             // Tratar el error
             console.log("Hay error");
-            console.log(err.message);
-            $scope.error = err.message;
+            /*console.log(err.message);
+            $scope.error = err.message;*/
+            $scope.errorG = err.data.message;
+            $("#errorGroupModal").modal("show");
           }
         );
       };
@@ -392,8 +368,10 @@ angular.module('myAppAngularMinApp')
           },function(err){
             // Tratar el error
             console.log("Hay error");
-            console.log(err.message);
-            $scope.error = err.message;
+            /*console.log(err.message);
+            $scope.error = err.message;*/
+            $scope.errorG = err.data.message;
+            $("#errorGroupModal").modal("show");
           }
         );
       };      
@@ -414,11 +392,14 @@ angular.module('myAppAngularMinApp')
         , function (err) {
           // Tratar el error
           console.log("Hay error");
-          console.log(err.message);
-          $scope.error = err.message;
+          /*console.log(err.message);
+          $scope.error = err.message;*/
+          $scope.errorG = err.data.message;
+          $("#errorGroupModal").modal("show");
         });
 
     };
+
 
     $scope.refuseGroup = function (invitation, ind) {
 
@@ -431,8 +412,10 @@ angular.module('myAppAngularMinApp')
         , function (err) {
           // Tratar el error
           console.log("Hay error");
-          console.log(err.message);
-          $scope.error = err.message;
+          /*console.log(err.message);
+          $scope.error = err.message;*/
+          $scope.errorG = err.data.message;
+          $("#errorGroupModal").modal("show");
         });
 
 
@@ -1012,8 +995,8 @@ angular.module('myAppAngularMinApp')
         /*estas devolviendo el id del user y deberias devolver todo, el user entero
         pero solo cuando acepte la peticion*/
         console.log(data);
-        $scope.members = data.users;
-        $scope.$apply();
+        /*$scope.members.push(data.users);
+        $scope.$apply();*/
       });
 
       //recibir evento de usuario eliminado de grupo
