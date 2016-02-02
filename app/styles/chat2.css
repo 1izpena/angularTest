@@ -13,15 +13,64 @@
 }
 
 #panel-settings {
-  height: 10%!important;
+	/*antes 11*/
+  height: 15%!important;
 }
 
+/*
 #list-group {
-  height: 80%;
+  height: 100%;
   max-height: none!important;
-}
+  margin-bottom: 0px;
+}*/
 
 /*Fin de añadidos para izaskun*/
+/*
+.list-group-item:first-child {
+    border-radius: 50%;
+}
+
+.list-group-item {
+    border-radius: 50%;
+}
+
+.list-group-item:last-child {
+    border-radius: 50%;
+}
+*/
+
+
+
+
+#labeladmin{
+    float: right;
+    background-color: #F44336;
+}
+
+
+#img-circle{
+    float:left;
+}
+
+
+#containermembersettings{
+	height: 75%;
+	padding-right: 0px;
+}
+
+
+#btnremoveuser{
+    background-color: #D9534F;
+}
+
+#btneditgroup button{
+	float:left;
+}
+
+#btnviewright a{
+	float:right;
+}
+
 
 .highlightedText {
     background: yellow;
@@ -95,6 +144,10 @@
 
 .panel-heading {
     height: 6%;
+}
+
+.panel-heading a{
+    font-size: large;
 }
 
 #panel-heading2 {
@@ -373,6 +426,74 @@ ul {   list-style-type: none; }
     background: none;
 }
 
+
+
+
+@media(max-width:458px) {
+
+	/*.panel-body {
+	    
+	    height: 80% !important;
+	}
+	.panel-heading {
+	    height: 12%;
+	}
+	
+	#btnviewright {
+	float:inherit;
+	}
+
+	#btnviewright a{
+	float:inherit;
+	}
+
+
+	/*#panel-body1
+	{
+    
+    height: 88%;
+   
+	}*/
+
+
+
+}
+
+
+@media(max-width:433px) {
+
+	/*.panel-body {
+	    
+	    height: 80% !important;
+	}
+	.panel-heading {
+	    height: 12%;
+	}
+	*/
+	#btnviewright {
+	float:inherit;
+	}
+
+	#btnviewright a{
+	float:inherit;
+	}
+
+
+	/*#panel-body1
+	{
+    
+    height: 88%;
+   
+	}*/
+
+
+
+}
+
+
+
+
+
 @media(min-width:768px) {
 
 
@@ -456,7 +577,7 @@ ul {   list-style-type: none; }
        -moz-border-radius: 4px;
             border-radius: 4px;
 
-    width: 75%;
+    width: 100%;
 
 }
 
@@ -467,6 +588,18 @@ ul {   list-style-type: none; }
     cursor: pointer;
 }
 
+#btnadduser {
+	background-color: #61B95C;
+}
+
+
+/*
+.input-group-addon1 {
+   
+    background-color: white;
+    cursor: pointer;
+}
+*/
 
 .row {
   height: 100%;
@@ -518,6 +651,10 @@ ul {   list-style-type: none; }
 #panel-heading-settings {
     border-color: #bce8f1;
     height:10%;
+}
+
+#panel-heading-settings h3{
+    /*font-size: inherit;*/
 }
 
 
@@ -647,8 +784,20 @@ ul {   list-style-type: none; }
    border-color: transparent;
    min-height: 1px;
    overflow-y: scroll;
-   max-height: 25.4em;
+   height: 100%;
+   max-height: none;
+   margin-bottom: 0px;
 
+
+
+
+
+}
+
+.list-group-item {
+	/*border: none;*/
+	padding-bottom: 0px;
+	border-color: transparent;
 }
 
 

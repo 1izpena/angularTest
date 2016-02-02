@@ -19,7 +19,7 @@ angular.module('myAppAngularMinApp')
 	getGroupMembers: getGroupMembers,
 	/* de momento no se usa */
 	getChannelMembers: getChannelMembers,
-    getSistemUsers : getSistemUsers
+    getSystemUsers : getSystemUsers
 
      }
 
@@ -146,7 +146,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-    function getSistemUsers () {
+    function getSystemUsers () {
 
             var defered = $q.defer();
             var promise = defered.promise;
