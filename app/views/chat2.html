@@ -243,9 +243,12 @@
                                                   <span class="fa fa-pencil fa-fw"></span>  
                                         </button>
 
+                                        <!--  de momento si el usuario es el admin, 
+                                              no se puede salir hasta que no gestionemos eso
+                                        -->
                                         <button type="button" class="btn btn-warning" 
                                         data-toggle="modal" data-target="#unsuscribeFromGroupModal"
-                                         ng-hide="textBtnForm.$visible">
+                                         ng-hide="textBtnForm.$visible || adminGroup.id == userid">
                                                   <span class="fa fa-chain-broken fa-fw"></span>
  
                                         </button>
