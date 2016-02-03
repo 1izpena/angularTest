@@ -7,7 +7,7 @@ angular.module('myAppAngularMinApp')
       $scope.init = function()
       {
         // Emitimos evento de conexion a chat para recibir nuevas invitaciones a grupos
-        Socket.emit('newChatConnection', {'userid':$localStorage.id});
+        Socket.emit('newChatConnection', {'userid': $localStorage.id });
 
 
       };
@@ -115,7 +115,7 @@ angular.module('myAppAngularMinApp')
             //$scope.$apply();
             $("#newGroupModal").modal("hide");
             $("#groupNameTxt").val('').trigger('input');
-            
+
             /* no lo actualiza */
             /*$scope.groups.push(data);
             console.log($scope.groups.indexOf(data));
@@ -124,7 +124,7 @@ angular.module('myAppAngularMinApp')
 
             /* falta el emit xsockects para que lo actualice */
             /* cuando este el sockect sobra esta llamada */
-            ProfileService
+           /* ProfileService
                   .getGroups()
                   .then(function (data) {
                     $scope.groups = data;
@@ -135,8 +135,8 @@ angular.module('myAppAngularMinApp')
                     console.log(err.message);
                     $scope.error = err.message;
 
-                  });
-            
+                  });*/
+
 
 
 
@@ -258,10 +258,10 @@ angular.module('myAppAngularMinApp')
 
 
       $scope.unsuscribeFromGroup = function(){
-        
+
         GroupService.unsuscribeFromGroup($scope.tagGroup).then(
           function(data) {
-             
+
              $("#unsuscribeFromGroupModal").modal("hide");
              var ind = $scope.groups.indexOf($scope.tagGroup);
              $scope.groups.splice(ind,1);
@@ -269,17 +269,17 @@ angular.module('myAppAngularMinApp')
              $scope.tagChannel='';
              $scope.publicChannels='';
              $scope.privateChannels='';
-             
 
-             
+
+
           },function(err){
             // Tratar el error
-            
+
             console.log(err);
             $scope.errorG = err.data.message;
             $("#errorGroupModal").modal("show");
-            
-            
+
+
           }
         );
       };
@@ -289,17 +289,17 @@ angular.module('myAppAngularMinApp')
 
 
       $scope.inviteUserToGroup = function (user) {
-        
+
         GroupService.inviteUserToGroup(user, $scope.tagGroup).then(
           function(data) {
-            
+
             var index = $scope.membersSettings.indexOf(user);
             if(index > -1){
                 $scope.membersSettings.splice(index, 1);
-                /* lo quito xsi sigue invitando usuarios, 
+                /* lo quito xsi sigue invitando usuarios,
                    pero luego vuelve a estar en la lista
                 */
-                
+
             }
             /*$scope.searchText= "";*/
 
@@ -316,28 +316,28 @@ angular.module('myAppAngularMinApp')
 
       };
 
-      
+
     $scope.removeUserFromGroup = function (user) {
-               
+
         GroupService.removeUserFromGroup(user, $scope.tagGroup).then(
           function(data) {
             console.log(data);
             $scope.searchText= '';
             /* borrarlo de los usuarios de los settings y de los mensajes directos */
-            
+
             /* lo borra con el emit
             var index = $scope.members.indexOf(user);
             $scope.members.splice(index,1);*/
             var index2 = $scope.membersSettings.indexOf(user);
-            
+
 
 
             if(index2 > -1){
-                
-                $scope.membersSettings.splice(index2,1); 
+
+                $scope.membersSettings.splice(index2,1);
             }
 
-            
+
             /* no dejar que se borre asi mismo */
 
           },function(err){
@@ -354,7 +354,7 @@ angular.module('myAppAngularMinApp')
 
 
     $scope.removeGroup = function () {
-               
+
         GroupService.removeGroup($scope.tagGroup).then(
           function(data) {
             console.log(data);
@@ -362,8 +362,8 @@ angular.module('myAppAngularMinApp')
             $scope.searchText= '';
             /* sacarlo del grupo con tagGroup = '' */
             $scope.tagGroup='';
-            
-           
+
+
 
           },function(err){
             // Tratar el error
@@ -374,7 +374,7 @@ angular.module('myAppAngularMinApp')
             $("#errorGroupModal").modal("show");
           }
         );
-      };      
+      };
 
 
 
@@ -384,10 +384,10 @@ angular.module('myAppAngularMinApp')
 
       ProfileService.acceptGroup(invitation.groupid)
         .then(function (data) {
-                    
+
                 $scope.invitations.splice(ind,1);
-                $scope.groups.push(data);
-             
+                //$scope.groups.push(data);
+
         }
         , function (err) {
           // Tratar el error
@@ -405,9 +405,9 @@ angular.module('myAppAngularMinApp')
 
       ProfileService.refuseGroup(invitation.groupid)
         .then(function (data) {
-                      
+
                 $scope.invitations.splice(ind,1);
-           
+
         }
         , function (err) {
           // Tratar el error
@@ -464,16 +464,8 @@ angular.module('myAppAngularMinApp')
         $scope.messageEditChannelModal = '';
         ChannelService.editChannel($scope.groupid,$scope.channelid,channel).then(
           function(data) {
+            console.log(data);
             $("#editChannelModal").modal("hide");
-            if (data.channelType == 'PRIVATE'){
-              $scope.privateChannels.push(data);
-            }
-            if (data.channelType == 'PUBLIC'){
-              $scope.publicChannels.push(data);
-            }
-            if (data.channelType == 'DIRECT'){
-              $scope.directChannels.push(data);
-            }
           },function(err){
             // Tratar el error
             $("#editChannelNameTxt").val('').trigger('input');
@@ -597,7 +589,7 @@ angular.module('myAppAngularMinApp')
                 $scope.members[i].color = getRandomColor();
 
           }
-          
+
 
         }
         , function (err) {
@@ -626,7 +618,7 @@ angular.module('myAppAngularMinApp')
          2 to remove users
       */
       $scope.option = option;
-      
+
       if(option == 1) {
           getSystemUsers($scope.tagGroup);
           $scope.option = option;
@@ -657,25 +649,25 @@ angular.module('myAppAngularMinApp')
             .then(function (data) {
 
               /* para coger usuarios que no estan en el grupo y si en el sistema*/
-              var temp = data;        
-              
+              var temp = data;
+
               for (var i = 0; i < $scope.members.length; i++ ) {
                 console.log($scope.members[i].mail);
-                
+
                 for (var j = 0; j < data.length; j++ ) {
-                    
+
                       if($scope.members[i].mail == data[j].mail){
                           temp.splice(j,1);
                           j = data.length;
-                          
+
                       }
-                }  
+                }
               }
-                      
+
               $scope.membersSettings = temp;
 
 
-              for (var i = 0; i < data.length; i++ ) {                
+              for (var i = 0; i < data.length; i++ ) {
                 $scope.membersSettings[i].color = getRandomColor();
               }
 
@@ -687,7 +679,7 @@ angular.module('myAppAngularMinApp')
               $scope.error = err.message;
 
             });
-    };
+    }
 
 
 
@@ -774,7 +766,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);
-     
+
       $scope.tagGroup=group;
       $scope.channelSelected = false;
       $scope.tagChannel='';
@@ -907,10 +899,7 @@ angular.module('myAppAngularMinApp')
 
       });
 
-
-
-
-
+      Socket.emit('newChatConnection', {'userid': $localStorage.id });
 
     ProfileService
       .getGroups()
@@ -995,8 +984,8 @@ angular.module('myAppAngularMinApp')
         /*estas devolviendo el id del user y deberias devolver todo, el user entero
         pero solo cuando acepte la peticion*/
         console.log(data);
-        /*$scope.members.push(data.users);
-        $scope.$apply();*/
+        $scope.members = data.users;
+        $scope.$apply()
       });
 
       //recibir evento de usuario eliminado de grupo
@@ -1009,7 +998,7 @@ angular.module('myAppAngularMinApp')
 
       //recibir evento de nuevo usuario en canal
       Socket.on('newMemberInChannel', function (data) {
-        console.log ("newMemberInChannel receive from server");
+        console.log ("newMemberInChannel received from server");
         console.log(data);
         $scope.channelMembers = data.users;
         $scope.$apply();
@@ -1017,27 +1006,51 @@ angular.module('myAppAngularMinApp')
 
       //recibir evento de usuario eliminado de canal
       Socket.on('deletedMemberInChannel', function (data) {
-        console.log ("deletedMemberInChannel receive from server");
+        console.log ("deletedMemberInChannel received from server");
         console.log(data);
+        $scope.channelMembers = data.users;
+        $scope.$apply();
+      });
+
+      //recibir evento de usuario eliminado de canal
+      Socket.on('deletedUserFromChannel', function (data) {
+        console.log ("deletedUserFromChannel received from server");
+        console.log(data);
+        if (data.userid == $localStorage.id){
+          for (var i=0;i<$scope.privateChannels.length;i++){
+            if ($scope.privateChannels[i].id == data.id){
+              $scope.privateChannels.splice(i,1);
+              $scope.$apply();
+            }
+          }
+        }
         $scope.channelMembers = data.users;
         $scope.$apply();
       });
 
       //recibir evento de nombre de grupo editado
       Socket.on('editedGroup', function (data) {
-        console.log ("editedGroup receive from server");
+        console.log ("editedGroup received from server");
         console.log(data);
         for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == data.id){
-            $scope.groups[i].groupname = data.groupName;
+            $scope.groups[i].groupName = data.groupName;
             $scope.$apply();
           }
         }
       });
 
+      //recibir evento de nombre de grupo editado
+      Socket.on('newGroup', function (data) {
+        console.log ("newGroup received from server");
+        console.log(data);
+        $scope.groups.push(data);
+        $scope.$apply();
+      });
+
       //recibir evento de nombre de canal publico editado
       Socket.on('editedPublicChannel', function (data) {
-        console.log ("editedPublicChannel receive from server");
+        console.log ("editedPublicChannel received from server");
         console.log(data);
         for (var i=0;i<$scope.publicChannels.length;i++){
           if ($scope.publicChannels[i].id == data.id){
@@ -1049,7 +1062,7 @@ angular.module('myAppAngularMinApp')
 
       //recibir evento de nombre de canal privado editado
       Socket.on('editedPrivateChannel', function (data) {
-        console.log ("editedPrivateChannel receive from server");
+        console.log ("editedPrivateChannel received from server");
         console.log(data);
         for (var i=0;i<$scope.privateChannels.length;i++){
           if ($scope.privateChannels[i].id == data.id){
@@ -1061,7 +1074,7 @@ angular.module('myAppAngularMinApp')
 
       //recibir evento de canal privado eliminado
       Socket.on('deletedPrivateChannel', function (data) {
-        console.log ("deletedPrivateChannelInGroup receive from server");
+        console.log ("deletedPrivateChannelInGroup received from server");
         console.log(data);
         for (var i=0;i<$scope.privateChannels.length;i++){
           if ($scope.privateChannels[i].id == data.id){
@@ -1073,7 +1086,7 @@ angular.module('myAppAngularMinApp')
 
       //recibir evento de canal publico eliminado
       Socket.on('deletedPublicChannel', function (data) {
-        console.log ("deletedPublicChannelInGroup receive from server");
+        console.log ("deletedPublicChannel received from server");
         for (var i=0;i<$scope.publicChannels.length;i++){
           if ($scope.publicChannels[i].id == data.id){
             $scope.publicChannels.splice(i,1);
