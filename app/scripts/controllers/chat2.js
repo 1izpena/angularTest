@@ -1079,9 +1079,12 @@ angular.module('myAppAngularMinApp')
         for (var i=0;i<$scope.privateChannels.length;i++){
           if ($scope.privateChannels[i].id == data.id){
             $scope.privateChannels.splice(i,1);
-            $scope.$apply();
           }
         }
+        $scope.channelMembers = '';
+        $scope.channelSelected = false;
+        $scope.tagChannel = '';
+        $scope.$apply();
       });
 
       //recibir evento de canal publico eliminado
@@ -1090,9 +1093,12 @@ angular.module('myAppAngularMinApp')
         for (var i=0;i<$scope.publicChannels.length;i++){
           if ($scope.publicChannels[i].id == data.id){
             $scope.publicChannels.splice(i,1);
-            $scope.$apply();
           }
         }
+        $scope.channelMembers = '';
+        $scope.channelSelected = false;
+        $scope.tagChannel = '';
+        $scope.$apply();
       });
 
       //recibir evento de grupo eliminado
@@ -1101,9 +1107,16 @@ angular.module('myAppAngularMinApp')
         for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == data.id){
             $scope.groups.splice(i,1);
-            $scope.$apply();
           }
         }
+        $scope.privateChannels = '';
+        $scope.publicChannels = '';
+        $scope.members = '';
+        $scope.channelMembers = '';
+        $scope.channelSelected = false;
+        $scope.directChannels = '';
+        $scope.tagGroup = '';
+        $scope.$apply();
       });
 
     }]);
