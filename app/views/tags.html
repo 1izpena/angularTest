@@ -1,0 +1,39 @@
+<div class="container" ng-controller="ForoCtrl" data-ng-init="getTags()">
+	<div class="row container">
+		<div class="col-md-8 headLeft">
+			<div class="col-md-6">
+			</div>	
+			<div class="col-md-6">
+				<div class="btn-group" role="group">
+  					<button type="button" class="btn btn-default" ng-click="goToForo()">Preguntas</button>
+  					<button type="button" class="btn btn-default active" ng-click="goToTags()">Tags</button>
+  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Hacer pregunta</button>
+				</div>
+			</div>	
+		</div>
+		<div class="col-md-4 headRight">
+			<form id="custom-search-form" class="form-search form-horizontal">
+	            <div class="input-append span12">
+	                <input type="text" class="search-query mac-style" placeholder="Search">
+	                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i></button>
+	            </div>
+            </form>
+		</div>
+		<div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+          <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
+          <h4><strong>Error!</strong></h4> {{message}}
+        </div>
+        <div class="alert alert-success fade in in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="success">
+          <button type="button" class="close"  aria-label="Close" ng-click="success=0"><span aria-hidden="true">&times;</span></button>
+          	{{message}}
+        </div>
+	</div>
+	<div class="row">
+		<div class="ui-widget">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div>
+		<div class="col-md-1" ng-repeat="tag in tags | orderBy:'tag.text'"><button class="btn btn-primary" ngclick="">{{tag.text}}</button></div>
+	</div>	
+</div>
+<link rel="stylesheet" ng-href="styles/foro.css" >
