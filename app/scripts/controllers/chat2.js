@@ -263,9 +263,9 @@ angular.module('myAppAngularMinApp')
 
           },function(err){
             // Tratar el error
-
-            console.log(err);
+            console.log("Hay error");
             $scope.errorG = err.data.message;
+            $("#unsuscribeFromGroupModal").modal("hide");
             $("#errorGroupModal").modal("show");
 
 
@@ -332,8 +332,7 @@ angular.module('myAppAngularMinApp')
           },function(err){
             // Tratar el error
             console.log("Hay error");
-            /*console.log(err.message);
-            $scope.error = err.message;*/
+           
             $scope.errorG = err.data.message;
             $("#errorGroupModal").modal("show");
           }
@@ -348,18 +347,20 @@ angular.module('myAppAngularMinApp')
           function(data) {
             console.log(data);
             $("#deleteGroupModal").modal("hide");
-            $scope.searchText= '';
-            /* sacarlo del grupo con tagGroup = '' */
             $scope.tagGroup='';
+            $scope.tagChannel='';
+            $scope.publicChannels='';
+            $scope.privateChannels='';
 
 
 
           },function(err){
             // Tratar el error
             console.log("Hay error");
-            /*console.log(err.message);
-            $scope.error = err.message;*/
+            
             $scope.errorG = err.data.message;
+            $("#deleteGroupModal").modal("hide");
+            $scope.tagGroup='';
             $("#errorGroupModal").modal("show");
           }
         );
@@ -903,7 +904,8 @@ angular.module('myAppAngularMinApp')
       .getUserinfo()
       .then(function (data) {
         $scope.username = data.username;
-	      $scope.userid = data.id;
+	    $scope.userid = data.id;
+	    $scope.user = data;
       }
       , function (err) {
         // Tratar el error
@@ -973,13 +975,24 @@ angular.module('myAppAngularMinApp')
         $scope.$apply()
       });
 
+      
       //recibir evento de usuario eliminado de grupo
+      /* si soy yo no tiene que cambiar nada */
+      /* si no estoy metido en el grupo dentro tampoco */
+      
       Socket.on('deletedMemberInGroup', function (data) {
         console.log ("deletedMemberInGroup receive from server");
         console.log(data);
-        $scope.members = data.users;
-        $scope.$apply();
+        /*if(data.user.id !== $scope.user.id && $scope.tagGroup.id == data.group.id){
+        	console.log ("xsockets actualizo miembros");
+	        $scope.members = data.users;
+	        $scope.$apply();
+        }*/
+        	
       });
+
+
+
 
       //recibir evento de nuevo usuario en canal
       Socket.on('newMemberInChannel', function (data) {

@@ -639,9 +639,8 @@
 
 
 <!--    errorGroupModal  -->
-
 <div id="errorGroupModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -651,14 +650,14 @@
 
 
         <div class="modal-body">
-
-            <p>{{errorG}}</p>
-
-          
+          <div class="alert alert-danger" role="alert">
+                {{errorG}}
+          </div>
         </div>
+
+
         <div class="modal-footer">
-         <button type="button" class="btn btn-success" id="btn-ok" data-dismiss="modal"><span class="fa fa-check"></span></button>
-        
+         <button type="button" class="btn btn-success" id="btn-ok" data-dismiss="modal" ng-click="errorG=''"><span class="fa fa-check"> Close</span></button>
           
         </div>
 
@@ -668,52 +667,48 @@
 
 
 
-
 <!--    deleteGroupModal  -->
-
 <div id="deleteGroupModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="deleteLabel">Delete Group Notification</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Delete Group Notification</h4>
 
         </div>
 
 
         <div class="modal-body">
-
-            <p>Do you really want to remove this group?</p>
-<!--
-            <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorUnsuscribeFromChannelModal">
-                      <button type="button" class="close"  aria-label="Close" ng-click="errorUnsuscribeFromGroupModal=0"><span aria-hidden="true">&times;</span>{{messageUnsuscribeFromChannelModal}}</button>
-            </div>
-         -->
-          
+            <p>Do you really want to remove this group?</p>       
         </div>
+
+
         <div class="modal-footer">
-         <button type="button" class="btn btn-danger" id="btn-unsuscribe-group-close" data-dismiss="modal"><span class="fa fa-remove"></span></button>
-         <button type="submit" class="btn btn-success" id="btn-unsuscribe-group-accept" 
-         ng-click="removeGroup()"><span class="fa fa-check"></span></button>
-          
+            <button type="submit" class="btn btn-success" ng-click="removeGroup()"><span class="fa fa-trash-o"> Remove</span></button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button> 
         </div>
-
+    
       </div>
+
     </div>
-  </div>
-
-
-
+</div>
+ 
 
 
 
  <!-- Unsuscribe from group Modal -->
   <div id="unsuscribeFromGroupModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="deleteLabel">Unsuscribe Notification</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Unsuscribe Notification</h4>
 
         </div>
 
@@ -721,18 +716,14 @@
         <div class="modal-body">
 
             <p>Do you really want to unsuscribe from this group?</p>
-<!--
-            <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorUnsuscribeFromChannelModal">
-                      <button type="button" class="close"  aria-label="Close" ng-click="errorUnsuscribeFromGroupModal=0"><span aria-hidden="true">&times;</span>{{messageUnsuscribeFromChannelModal}}</button>
-            </div>
-         -->
           
         </div>
+
         <div class="modal-footer">
-         <button type="button" class="btn btn-danger" id="btn-unsuscribe-group-close" data-dismiss="modal"><span class="fa fa-remove"></span></button>
-         <button type="submit" class="btn btn-success" id="btn-unsuscribe-group-delete" 
-         ng-click="unsuscribeFromGroup()"><span class="fa fa-check"></span></button>
           
+         <button type="submit" class="btn btn-success" ng-click="unsuscribeFromGroup()"><span class="fa fa-chain-broken"> Unsuscribe</span></button>
+         <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button> 
+
         </div>
 
       </div>
@@ -746,6 +737,7 @@
   <div id="newGroupModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
       <!-- Modal content-->
+
       <div class="modal-content">
         <div class="modal-header" >
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" 
@@ -759,8 +751,6 @@
           <div class="form-group">
             <label for="groupNameTxt">Group Name:</label>
             <input type="text" class="form-control" name="groupNameTxt" id="groupNameTxt" placeholder="Enter Group Name..." ng-model="group.groupName">
-
-             
 
             <div class="alert alert-danger" role="alert" ng-if="messageNewGroupModal !== ''">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
