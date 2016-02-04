@@ -40,19 +40,9 @@
 
         <li class="active">
           <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
-          <ul aria-expanded="true" class="emphasis cgroups">
+          <ul aria-expanded="true" class="emphasis cgroups" id="grouplist">
             <li ng-repeat="group in groups" ng-if="groups.length > 0">
 
-              <span class="input-group-btn pull-left">
-                <div class="dropdown">
-                  <button type="button" id="btn-group-settings" name="btn-group-settings" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                    <span><i class="fa fa-gear"></i></span>
-                  </button>
-                  <ul class="dropdown-menu slidedown">
-                    <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editGroupModal" ng-click="selectGroup(group)"> Edit group</a></li>
-                  </ul>
-                </div>
-              </span>
               <a ng-click="selectGroup(group)">
 
                 {{group.groupName}}
@@ -63,9 +53,11 @@
             </li>
           </ul>
         </li>
+
+
         <!----separator------>
-        <li class="activeChannels">
-          <a class="btn btn-primary" href="" aria-expanded="false" ng-show= "tagGroup !== ''">Channels<i class="fa fa-comment fa-fw"></i></a>
+        <li class="activeChannels" ng-show= "tagGroup !== ''">
+          <a class="btn btn-primary" href="" aria-expanded="false" >Channels<i class="fa fa-comment fa-fw"></i></a>
           <ul aria-expanded="false">
             <li class="activeChannelsPublic active">
               <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
@@ -173,66 +165,42 @@
 
             <div  class="panel-heading" id="panel-heading">
 
+             <div class="container-fluid panel-container">
+
+            
+                <div class="col-xs-1">
+                      <a ng-href="#menu-toggle" 
+                      class="glyphicon glyphicon-th-list" id="menu-toggle">
+                      </a>      
+                </div> 
 
 
-               <!-- Cuando se pincha en el tagGroup aparecen los setting en la ventana de chat -->
-
-                <a href="#menu-toggle" class="glyphicon glyphicon-comment" id="menu-toggle"></a>
-
-
-
-                <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
+                <div class="col-xs-10 text-center">
+                   <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
                 
-                  {{tagGroup.groupName}}
-                </a>
-               
-
-               <a href="" class="" id="menu-tag" ng-if= "tagChannel !== '' "> #{{tagChannel.channelName}}</a>
-
-
-
-                <div class="btn-group pull-right">
-
-                  <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
-                   </a>
-
-                   <!--
-                      <a ng-click="changeSearchNav()" id="changesearch" type="button" class="btn btn-default btn-xs dropdown-toggle" >
-                      <span class="glyphicon glyphicon-option-vertical"></span>
+                        {{tagGroup.groupName}}
+                   </a>    
+                   <a ng-click="" class="" id="menu-tag" ng-if= "tagChannel !== '' "> 
+                        #{{tagChannel.channelName}}
                     </a>
-                    -->
                 </div>
-<!--
 
-   <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                  <span class="glyphicon glyphicon-option-horizontal"></span>
-                </button>
-                <ul class="dropdown-menu slidedown">
-                  <li class="dropdown-header">Type Filter</li>
+                <div class="col-xs-1" id="btnviewright">
 
-                  <li><a href=""><span class="glyphicon glyphicon-user">
-                            </span>Members</a></li>
-                  <li><a href=""><span class="glyphicon glyphicon-star">
-                            </span>Favorites</a></li>
-                  <li><a href=""><span class="glyphicon glyphicon-file">
-                            </span>Files</a></li>
+                <!-- de momento no se usa, es el que abre el contenedor de busqueda -->
 
-                  <li><a href=""><span class="glyphicon glyphicon-tag">
-                            </span>Mentions</a></li>
+                <!--  <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
+                   </a> -->
+  
+                </div>  
 
-
-                </ul>
-              </div>
-
--->
-
+            </div>  <!-- container-fluid panel-container -->    
 
             </div> <!-- panel-heading -->
 
 
 
-            <!-- si no hemos seleccionado canal se muestra otro panel -->
+            <!-- si no hemos seleccionado canal se muestra otro panel (settings grupo) -->
             <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
            
                 <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
@@ -240,125 +208,210 @@
 
 
                           <div class="panel-heading" id="panel-heading-settings">
-                                <h3 class="panel-title">Settings 
 
-                                <div class="btn-group pull-right">
+                               <div class="container-fluid panel-container">
 
-                                      <a data-toggle="dropdown"><span class="glyphicon  glyphicon-cog"></span>
-                                      </a>
+                                      <div class="col-xs-1">
+                                         <h3 class="panel-title">Settings </h3>
+                                           <!-- <h3 ng-click="#menu-toggle" class="glyphicon glyphicon-th-list" id="menu-toggle"></a>    -->  
+                                      </div>
 
-                                        <ul class="dropdown-menu slidedown">
-                                              <li class="dropdown-header">Group Actions</li>
 
-                                              <li><a href=""><span class="fa fa-trash-o fa-fw">
-                                                        </span>Remove</a></li>
-                                              <li><a href=""><span class="fa fa-chain-broken fa-fw">
-                                                        </span>Unlink</a></li>
-                                              
-                                       </ul>
-
-                                </div>
-
-                        
-                                </h3>
+                              </div>  <!-- container-fluid panel-container -->    
 
 
                          </div> <!-- end panel-heading-settings  -->
 
 
-                              <div class="panel-body" id="panel-settings">
-                                   <p> 
-                                   <span editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
-                                {{ tagGroup.groupName || 'empty' }}
-                                   </span>
+                        <div class="panel-body" id="panel-settings">
+                            <div class="container-fluid panel-container">
 
-                                  <button class="btn btn-info btn-xs" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
-                                          <span class="fa fa-pencil fa-fw"></span>  
-                                   </button>
+                                <div class="col-xs-5 col-sm-3 col-md-3">
+                                  <p> 
+                                     <span editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
+                                  {{ tagGroup.groupName || 'empty' }}
+                                     </span>                      
+                                    </p>                        
+                                </div>
 
-                                                            
-                                  </p>
-                              </div>
 
-                    </div>    
-                 </div>
+
+                                 <div class="col-xs-7 col-sm-9 col-md-9 " id="btneditgroup">
+                             
+                                      <div class="btn-group" role="group" aria-label="">
+                                        <button type="button" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminGroup.id != userid">
+                                                  <span class="fa fa-pencil fa-fw"></span>  
+                                        </button>
+
+                                        <!--  de momento si el usuario es el admin, 
+                                              no se puede salir hasta que no gestionemos eso
+                                        -->
+                                        <button type="button" class="btn btn-warning" 
+                                        data-toggle="modal" data-target="#unsuscribeFromGroupModal"
+                                         ng-hide="textBtnForm.$visible || adminGroup.id == userid">
+                                                  <span class="fa fa-chain-broken fa-fw"></span>
+ 
+                                        </button>
+
+
+                                        <!-- falta implementar, tambien modal -->
+                                        <button type="button" class="btn btn-danger" 
+                                        data-toggle="modal" data-target="#deleteGroupModal"
+                                        ng-hide="textBtnForm.$visible || adminGroup.id != userid">
+                                                  <span class="fa fa-trash fa-fw"></span>  
+                                        </button>
+                        
+                                      </div>
+
+                                 </div> 
+
+
+                            </div>  <!-- container-fluid panel-container -->    
+
+                        </div> <!-- end panel-body -->  
+
+                    </div>   <!-- end panel-info -->  
+                 </div>     <!-- end row --> 
 
 
                  <div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
                     <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set1">
 
+                      <div class="panel-heading" id="panel-heading-settings">
 
-                        <div class="panel-heading" id="panel-heading-settings">
-                                <h3 class="panel-title">Team Directory
+                               <div class="container-fluid panel-container">
+
+                                      <div class="col-xs-11">
+                                          <h3 class="panel-title">Team Directory
                                         <span class="badge">{{membersSettings.length}}</span>
+                                        </h3>  
+                                      </div>
 
 
+                                      <!-- xsi queremos poner las opciones en el lateral
 
+                                      <div class="col-xs-1" id="btnviewright">
 
-                              <div class="btn-group pull-right">
+                                          <a data-toggle="dropdown"><span class="glyphicon  glyphicon-cog"></span>
+                                          </a>
 
-                                      <a data-toggle="dropdown"><span class="glyphicon  glyphicon-cog"></span>
-                                      </a>
+                                          <ul class="dropdown-menu slidedown">
+                                                <li class="dropdown-header">Members Actions</li>
 
-                                        <ul class="dropdown-menu slidedown">
-                                              <li class="dropdown-header">Members Actions</li>
+                                                <li><a ng-click="setSettingsOptions(0)"><span class="fa fa-search fa-fw">
+                                                          </span>Search</a></li>
 
-                                              <li><a ng-click="setSettingsOptions(0)"><span class="fa fa-search fa-fw">
-                                                        </span>Search</a></li>
+                                                <li><a ng-click="setSettingsOptions(1)"><span class="fa fa-user-plus fa-fw">
+                                                          </span>Add</a></li>
+                                                <li><a ng-click="setSettingsOptions(2)"><span class="fa fa-user-times fa-fw">
+                                                          </span>Remove</a></li>
+                                                
+                                         </ul>
+                        
+                                      </div>
+                                      -->  
 
-                                              <li><a ng-click="setSettingsOptions(1)"><span class="fa fa-user-plus fa-fw">
-                                                        </span>Add</a></li>
-                                              <li><a ng-click="setSettingsOptions(2)"><span class="fa fa-user-times fa-fw">
-                                                        </span>Remove</a></li>
-                                              
-                                       </ul>
+                              </div>  <!-- container-fluid panel-container -->    
 
-                                </div>
-
-
-
-                               </h3>
-                              
-
-                        </div>
+                         </div> <!-- end panel-heading-settings  1-->
 
 
                               <div class="panel-body" id="panel-settings">
 
-                                <div class="input-group input-group-unstyled">
-                                     <span class="input-group-addon">
-                                        <i class="fa fa-search"></i>
+                                  <div class="container-fluid panel-container">
 
-                                    </span>
+                                      <div class="col-xs-8 col-xs-offset-2 text-center"> 
 
+                                      <!-- me falta hacer el remove dentro de los grid --> 
 
-                                    <input ng-model="searchText" type="text" class="form-control" />
-                                   
+                                        <div class="input-group input-group-unstyled">
+                                             <span ng-click="setSettingsOptions(0)" class="input-group-addon">
+                                                <i class="fa fa-search"></i>
+                                            </span>
+                                            
                                     
-                               <!--     <button class="btn btn-info">Members <span class="badge">{{members.length}}</span></button>-->
-                                    
-                                </div>                            
+                                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>   
 
-                    
-                      
+                                            <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(1)" class="input-group-addon" id="btnadduser">
+                                                <i class="fa fa-user-plus"></i>
+                                            </span>
+
+                                            <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(2)" class="input-group-addon" id="btnremoveuser" >
+                                                <i class="fa fa-user-times"></i>
+                                            </span>                                    
+                                        </div>                           
+
+                                      </div>
+
+
+                                      <div class="col-xs-2" id="btnviewright">
+                                      </div>  
+
+                                  </div>  <!-- container-fluid panel-container -->    
+
+
                               </div> <!-- panel-settings(panel-body) -->
 
-                                  <ul class="list-group" id="list-group">
+
+                              <div class="container-fluid panel-container" id="containermembersettings">
+
+                                     
+                                      <ul class="list-group" id="list-group">
+
+<!--ng-class="$index%3 != 0? 'col-md-offset-1': ''"
+    falta que me devuelva los usuarios que no estan añadidos
+    cambiar la metodologia de options a 0 y 1 -->
 
 
-                                      <li ng-click=
+<!--
+<li ng-click=
                                       "(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)" 
-                                      class="list-group-item" 
+                                      class="list-group-item"
+                                      ng-class="members.length > 2 ? 'col-lg-4': 'col-lg-12'"
                                       ng-repeat="member in membersSettings | filter:searchText" ng-if="members.length > 0">
+
+
+
+                                      data-toggle="modal" data-target="#unsuscribeFromGroupModal"
+
+-->
+
+<!--
+                                      <li data-toggle="modal" 
+                                      data-toggle="(option == 1) ? 'modal' : ((option == 2) ? modal :  '')" 
+                                      data-target="#add-removeuserFromGroupModal" 
+-->
+
+
+                                      <li ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)" 
+                                      class="list-group-item"
+                                      ng-class="members.length > 2 ? 'col-lg-4': 'col-lg-12'"
+                                      ng-repeat="member in membersSettings | filter:searchText" ng-if="members.length > 0">
+                                      
                                       <!-- si options = 1 add / options = 2 remove -->
-                                                <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
-                                                        alt="User Avatar" class="img-circle"/>
-                                                        <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
+                                               <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
+                                                        alt="User Avatar" class="img-circle" id="img-circle"/>
+                                                        
+                                                        <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
+
+                                                        
+                                                        <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
+                                                        </p>
+
                                                         <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
+
+
                                       </li>
 
                                     
                                     </ul>
+                                     <!--  <div class="col-md-4">  
+                                      </div>
+                                      -->
+
+                                       
+
+                                  </div>  <!-- container-fluid panel-container --> 
 
 
 
@@ -472,6 +525,8 @@
 
 <!--        <div ng-show="!error && navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4"> -->
 
+<!-- contenedor de busquedas:: actualmente comentado -->
+
 <div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
 
           <div class="panel panel-info" id="panel-info2">
@@ -534,34 +589,196 @@
 </div>
 
   <!-- MODALS -->
-  <!-- New Group Modal -->
-  <div id="newGroupModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
+
+  <!--********** Notification deleting ********* -->
+
+
+<!--  #add-removeuserFromGroupModal       -->
+
+<!--
+<div id="add-removeuserFromGroupModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content
+      <div class="modal-content">
+        <div class="modal-header">
+
+            <!-- options 1 add -->
+            <!-- options 2 remove 
+            <h4 ng-show="option == 1" class="modal-title" id="adduserLabel">Adding User Notification</h4>
+            <h4 ng-show="option == 2" class="modal-title" id="removeuserLabel">Deleting User Notification</h4>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <p ng-show="option == 1">Do you really want to add this user to group?</p>
+            <p ng-show="option == 2">Do you really want to remove this user from group?</p>
+<!--
+            <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorUnsuscribeFromChannelModal">
+                      <button type="button" class="close"  aria-label="Close" ng-click="errorUnsuscribeFromGroupModal=0"><span aria-hidden="true">&times;</span>{{messageUnsuscribeFromChannelModal}}</button>
+            </div>
+         
+          
+        </div>
+        <div class="modal-footer">
+         <button type="button" class="btn btn-danger" id="btn-unsuscribe-group-close" data-dismiss="modal"><span class="fa fa-remove"></span></button>
+         <button type="submit" class="btn btn-success" id="btn-unsuscribe-group-accept" 
+
+         ng-click="(option == 1) ? inviteUserToGroup(member) : removeUserFromGroup(member)"><span class="fa fa-check"></span></button>
+          
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+-->
+
+
+<!--    errorGroupModal  -->
+<div id="errorGroupModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header" style="padding:35px 50px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Add New Group</h4>
+        <div class="modal-header">
+            <h4 class="modal-title" id="deleteLabel">Error Notification</h4>
+
         </div>
+
+
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+                {{errorG}}
+          </div>
+        </div>
+
+
+        <div class="modal-footer">
+         <button type="button" class="btn btn-success" id="btn-ok" data-dismiss="modal" ng-click="errorG=''"><span class="fa fa-check"> Close</span></button>
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+<!--    deleteGroupModal  -->
+<div id="deleteGroupModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Delete Group Notification</h4>
+
+        </div>
+
+
+        <div class="modal-body">
+            <p>Do you really want to remove this group?</p>       
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success" ng-click="removeGroup()"><span class="fa fa-trash-o"> Remove</span></button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button> 
+        </div>
+    
+      </div>
+
+    </div>
+</div>
+ 
+
+
+
+ <!-- Unsuscribe from group Modal -->
+  <div id="unsuscribeFromGroupModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Unsuscribe Notification</h4>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <p>Do you really want to unsuscribe from this group?</p>
+          
+        </div>
+
+        <div class="modal-footer">
+          
+         <button type="submit" class="btn btn-success" ng-click="unsuscribeFromGroup()"><span class="fa fa-chain-broken"> Unsuscribe</span></button>
+         <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button> 
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- New Group Modal -->
+  <div id="newGroupModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+
+      <div class="modal-content">
+        <div class="modal-header" >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" 
+            ng-click="messageNewGroupModal=''; removeInput()">
+                    <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add New Group</h4>
+        </div>
+
         <div class="modal-body">
           <div class="form-group">
             <label for="groupNameTxt">Group Name:</label>
             <input type="text" class="form-control" name="groupNameTxt" id="groupNameTxt" placeholder="Enter Group Name..." ng-model="group.groupName">
-          </div>
-          <div>
-            <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewGroup(group)"><span class="fa fa-floppy-o"></span> Create</button>
-            <button type="button" class="btn btn-success" id="btn-new-group-reset" ng-click="resetNewGroup()"><span class="fa fa-refresh"></span> Reset</button>
-            <button type="button" class="btn btn-success" id="btn-new-group-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
-          </div>
+
+            <div class="alert alert-danger" role="alert" ng-if="messageNewGroupModal !== ''">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+
+             {{messageNewGroupModal}}
+
+            </div>
+          </div>  
         </div>
+
+
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorNewGroupModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorNewGroupModal=0"><span aria-hidden="true">&times;</span>{{messageNewGroupModal}}</button>
-          </div>
+
+            <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewGroup(group)"><span class="fa fa-floppy-o"></span> Create</button>
+            
+            <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="messageNewGroupModal=''; removeInput()"><span class="fa fa-remove"></span> Close</button>
+           
         </div>
       </div>
     </div>
   </div>
+
+
+<!--***************** hasta aqui uso ***********************************-->
+
+
 
   <!-- Edit Group Modal -->
   <div id="editGroupModal" class="modal fade" role="dialog">

@@ -5,10 +5,11 @@ angular.module('myAppAngularMinApp')
     function($http, $localStorage, $location, $q, API_BASE) {
       return {
         createNewGroup: createNewGroup,
-        //deleteGroup: deleteGroup,
+        unsuscribeFromGroup : unsuscribeFromGroup,
         editGroup: editGroup, 
         inviteUserToGroup : inviteUserToGroup, 
-        removeUserFromGroup : removeUserFromGroup
+        removeUserFromGroup : removeUserFromGroup, 
+        removeGroup : removeGroup
 
       };
 
@@ -32,7 +33,31 @@ angular.module('myAppAngularMinApp')
         return promise;
       };
 
-      
+     
+
+
+      function unsuscribeFromGroup (group) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+        $http({
+          method: 'delete',
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/unsuscribe'
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+        return promise;
+      };
+
+
+
+
 
       function inviteUserToGroup (user, group) {
         var defered = $q.defer();
@@ -41,12 +66,13 @@ angular.module('myAppAngularMinApp')
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
-          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/users/'+user.id
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/users/'+user.id+'/invite'
         }).then(
           function(response) {
             defered.resolve(response);
           },
           function(error){
+            console.log(error);
             defered.reject(error);
           }
         );
@@ -78,8 +104,8 @@ angular.module('myAppAngularMinApp')
 
 
 
-/* para borrar grupos enteros 
-      function removeUserFromGroup (user, group) {
+/* para borrar grupos enteros */ 
+      function removeGroup (group) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
@@ -98,13 +124,13 @@ angular.module('myAppAngularMinApp')
         return promise;
       };
 
-*/
+
 
       function editGroup (groupid,data2) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
-       
+        console.log("entro en edit group");
         $http({
           method: 'put',
           headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
