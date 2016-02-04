@@ -256,8 +256,7 @@ angular.module('myAppAngularMinApp')
              $scope.groups.splice(ind,1);
              $scope.tagGroup='';
              $scope.tagChannel='';
-             $scope.publicChannels='';
-             $scope.privateChannels='';
+
 
 
 
@@ -349,8 +348,7 @@ angular.module('myAppAngularMinApp')
             $("#deleteGroupModal").modal("hide");
             $scope.tagGroup='';
             $scope.tagChannel='';
-            $scope.publicChannels='';
-            $scope.privateChannels='';
+            
 
 
 
