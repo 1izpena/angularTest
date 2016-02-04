@@ -11,11 +11,14 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="bower_components/metisMenu/dist/metisMenu.css" />
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
     <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <!-- endbuild -->
   </head>
@@ -24,7 +27,7 @@
 
 
   <!--navbar-fixed-top-->
-  <div class="navbar navbar-default" id="customNavbar" role="navigation" ng-controller="MainCtrl">
+  <div class="navbar navbar-default" role="navigation" ng-controller="MainCtrl">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -48,6 +51,7 @@
 
         <!-- Si esta logueado -->
         <ul ng-if="auth.isLogged()" class="nav navbar-nav navbar-right">
+          <a ng-click="goTo('/chat2')" class="btn btn-success navbar-btn">Chat</a>
 
           <a ng-click="logout()" class="btn btn-success navbar-btn">Salir</a>
         </ul>
@@ -58,27 +62,17 @@
 
 
    <div class="content">
-   <div ng-view="" class="viewContainer"></div>
+   <div ng-view=""></div>
    </div>
 
-   <div class="footer" id="mainFooter">
-     <div class="navbar navbar-default" id="navbarfooter" role="navigation">
+   <div class="footer">
+     <div class="navbar navbar-default" role="navigation">
        <div class="container messageContainer">
          <p class="navbar-text">&copy <span class="glyphicon glyphicon-heart"></span> from the DESSI team</p>
        </div>
      </div>
 
    </div>
-
-<!--
-	<div class="footer" id="mainFooter">
-      <div class="container" id="navbarfooter">
-        <p class="navbar-text">&copy <span class="glyphicon glyphicon-heart"></span> from the DESSI team</p>
-      </div>
-    </div>
-
--->
-
 
 
    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -111,12 +105,21 @@
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/angular-moment/angular-moment.js"></script>
     <script src="bower_components/hello/dist/hello.all.min.js"></script>
+    <script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <script src="bower_components/rangy/rangy-core.js"></script>
+    <script src="bower_components/rangy/rangy-classapplier.js"></script>
+    <script src="bower_components/rangy/rangy-highlighter.js"></script>
+    <script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+    <script src="bower_components/rangy/rangy-serializer.js"></script>
+    <script src="bower_components/rangy/rangy-textrange.js"></script>
+    <script src="bower_components/textAngular/dist/textAngular.js"></script>
+    <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+    <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/config.js"></script>
@@ -124,5 +127,6 @@
         <script src="scripts/directives.js"></script>
         <script src="scripts/services.js"></script>
         <!-- endbuild -->
+   
 </body>
 </html>
