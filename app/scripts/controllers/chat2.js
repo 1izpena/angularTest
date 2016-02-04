@@ -26,8 +26,10 @@ angular.module('myAppAngularMinApp')
 
 	  $scope.tagChannel = '';
 	  $scope.tagGroup = '';
-    /* modal de errores para los settings del grupo */
-    $scope.errorG= '';
+
+      /* modal de errores para los settings del grupo */
+      $scope.errorG= '';
+      $scope.messageNewGroupModal = '';
 
 
 
@@ -40,8 +42,9 @@ angular.module('myAppAngularMinApp')
 
       $scope.searchinputplaceholder = "Search member ...";
 
+    
 
-      $scope.errorNewGroupModal = 0;
+
       $scope.errorNewChannelModal = 0;
       $scope.errorEditGroupModal = 0;
       $scope.errorEditChannelModal = 0;
@@ -51,7 +54,9 @@ angular.module('myAppAngularMinApp')
       $scope.errorDeleteUserFromChannelModal = 0;
       $scope.errorAddUserToChannelModal = 0;
       //messages in channel setting modals
-      $scope.messageNewGroupModal = '';
+
+      
+      
       $scope.messageNewChannelModal = '';
       $scope.messageEditGroupModal = '';
       $scope.messageEditChannelModal = '';
@@ -107,44 +112,29 @@ angular.module('myAppAngularMinApp')
       $location.path(url);
     };
 
+
+
+      $scope.removeInput = function(){
+      	$("#groupNameTxt").val('').trigger('input');
+      }
+
       $scope.createNewGroup = function(group){
         $scope.messageNewGroupModal = '';
         $scope.errorNewGroupModal = 0;
         GroupService.createNewGroup(group).then(
           function(data) {
-            //$scope.$apply();
+            
             $("#newGroupModal").modal("hide");
-            $("#groupNameTxt").val('').trigger('input');
-
-            /* no lo actualiza */
-            /*$scope.groups.push(data);
-            console.log($scope.groups.indexOf(data));
-            $scope.tagGroup='';*/
-
-
-            /* falta el emit xsockects para que lo actualice */
-            /* cuando este el sockect sobra esta llamada */
-           /* ProfileService
-                  .getGroups()
-                  .then(function (data) {
-                    $scope.groups = data;
-                  }
-                  , function (err) {
-                    // Tratar el error
-                    console.log("Hay error");
-                    console.log(err.message);
-                    $scope.error = err.message;
-
-                  });*/
-
-
+            
+            $scope.messageNewGroupModal = '';
 
 
           },function(err){
             // Tratar el error
-            $("#groupNameTxt").val('').trigger('input');
-            $scope.errorNewGroupModal = 1;
-            $scope.messageNewGroupModal = err.message;
+           
+            $scope.removeInput();            
+            $scope.messageNewGroupModal = err.data.message;
+
           }
         );
       };
@@ -524,11 +514,7 @@ angular.module('myAppAngularMinApp')
         $("#channelTypeTxt").val('').trigger('input');
       };
 
-      $scope.resetNewGroup = function(){
-        $scope.messageNewGroupModal = '';
-        $scope.errorNewGroupModal = 0;
-        $("#groupNameTxt").val('').trigger('input');
-      };
+      
 
       $scope.resetEditGroup = function(){
         $scope.messageEditGroupModal = '';
