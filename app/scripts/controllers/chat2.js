@@ -123,9 +123,10 @@ angular.module('myAppAngularMinApp')
         $scope.errorNewGroupModal = 0;
         GroupService.createNewGroup(group).then(
           function(data) {
+
             
-            $("#newGroupModal").modal("hide");
-            
+            $("#newGroupModal").modal("hide"); 
+            $scope.removeInput();        
             $scope.messageNewGroupModal = '';
 
 
@@ -138,8 +139,6 @@ angular.module('myAppAngularMinApp')
           }
         );
       };
-
-
 
 
 
