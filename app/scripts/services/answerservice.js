@@ -35,7 +35,7 @@ angular.module('myAppAngularMinApp')
     return promise;     
   };
 
-  function commentAnswer(answerid,data)
+  function commentAnswer(questionid,answerid,data)
   {
     var defered = $q.defer();
     var promise = defered.promise;
@@ -43,9 +43,9 @@ angular.module('myAppAngularMinApp')
     $http({
       method: 'put',
       headers: {'x-access-token': $localStorage.token},
-      url: API_BASE + '/api/v1/forum/question/'+ questionId+ "/answer/"+ answerid+'comment',
+      url: API_BASE + '/api/v1/forum/question/'+ questionid+ "/answer/"+ answerid+'/comment',
       data:{
-        "body"      : data.body,
+        "comment"      : data,
         "created"   : nowDate,
       }
     }).then(

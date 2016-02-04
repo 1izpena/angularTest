@@ -26,7 +26,8 @@ angular.module('myAppAngularMinApp')
             "created": nowDate,
             "answercount" : 0,
             "votes" : 0,
-            "views" : 0
+            "views" : 0,
+            "tags":  data.tags
           }
         }).then(
           function(response) {
