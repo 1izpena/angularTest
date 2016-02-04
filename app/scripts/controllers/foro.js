@@ -45,6 +45,7 @@ $scope.goQuestion = function(id)
 $scope.getQuestions = function()
 {
   ForoService.getQuestions().then(function (res){
+    console.log(res.data);
     $scope.questions = res.data;
   },function(err){
     $scope.error = err.message;
@@ -215,6 +216,20 @@ $scope.getQuestion = function()
     $scope.error = err.message;
   });
 }
+
+//////////// elastic ///////////////////
+ $scope.search = function(request)
+    {
+      
+    searchservice.forumsearch(request).then(function (res){
+      console.log(res);
+      $scope.questions = "";
+      $scope.questions = res;
+      
+    },function(err){
+      console.log(err);
+    });
+  }
 
 
 $scope.init = function()
