@@ -1110,6 +1110,7 @@ angular.module('myAppAngularMinApp')
 	        $scope.channelSelected = false;
 	        $scope.directChannels = '';
 	        $scope.tagGroup = '';
+	        $scope.tagChannel = '';
 	        $scope.$apply();
         }
         for (var i=0;i<$scope.groups.length;i++){
