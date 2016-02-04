@@ -88,6 +88,11 @@ angular
         controller: 'ForoCtrl',
         controllerAs: 'foro'
       })
+       .when('/foro/tags', {
+        templateUrl: 'views/tags.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro'
+      })
       .otherwise({
         redirectTo: '/'
       });
