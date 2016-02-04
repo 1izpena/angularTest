@@ -1102,19 +1102,25 @@ angular.module('myAppAngularMinApp')
       //recibir evento de grupo eliminado
       Socket.on('deletedGroup', function (data) {
         console.log ("deletedGroup receive from server");
+        /* mostrar advertencia de que se ha borrado un grupo*/
+        /* solo hay que hacerlo si estas dentro del grupo */
+        if(tagGroup.id == data.id){
+        	$scope.privateChannels = '';
+	        $scope.publicChannels = '';
+	        $scope.members = '';
+	        $scope.channelMembers = '';
+	        $scope.channelSelected = false;
+	        $scope.directChannels = '';
+	        $scope.tagGroup = '';
+	        $scope.$apply();
+        }
         for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == data.id){
             $scope.groups.splice(i,1);
+            i = $scope.groups.length;
           }
-        }
-        $scope.privateChannels = '';
-        $scope.publicChannels = '';
-        $scope.members = '';
-        $scope.channelMembers = '';
-        $scope.channelSelected = false;
-        $scope.directChannels = '';
-        $scope.tagGroup = '';
-        $scope.$apply();
+        } 
+       
       });
 
     }]);
