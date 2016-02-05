@@ -21,7 +21,7 @@ angular.module('myAppAngularMinApp')
 	getChannelMembers: getChannelMembers,
     getSystemUsers : getSystemUsers
 
-     }
+     };
 
 
 
