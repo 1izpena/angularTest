@@ -46,7 +46,6 @@ angular.module('myAppAngularMinApp')
 
 
       $scope.errorNewChannelModal = 0;
-      $scope.errorEditGroupModal = 0;
       $scope.errorEditChannelModal = 0;
       $scope.errorChannelMemberInfoModal = 0;
       $scope.errorUnsuscribeFromChannelModal = 0;
@@ -58,7 +57,6 @@ angular.module('myAppAngularMinApp')
       
       
       $scope.messageNewChannelModal = '';
-      $scope.messageEditGroupModal = '';
       $scope.messageEditChannelModal = '';
       $scope.messageChannelMemberInfoModal = '';
       $scope.messageUnsuscribeFromChannelModal = '';
@@ -119,8 +117,7 @@ angular.module('myAppAngularMinApp')
       }
 
       $scope.createNewGroup = function(group){
-        $scope.messageNewGroupModal = '';
-        $scope.errorNewGroupModal = 0;
+        
         GroupService.createNewGroup(group).then(
           function(data) {
 
@@ -139,6 +136,35 @@ angular.module('myAppAngularMinApp')
           }
         );
       };
+
+
+
+     $scope.removeGroup = function () {
+
+        GroupService.removeGroup($scope.tagGroup).then(
+          function(data) {
+            console.log(data);
+            $("#deleteGroupModal").modal("hide");
+            $scope.tagGroup='';
+            $scope.tagChannel='';
+            
+
+
+
+          },function(err){
+            // Tratar el error
+            console.log("Hay error");
+            
+            $scope.errorG = err.data.message;
+            $("#deleteGroupModal").modal("hide");
+            $scope.tagGroup='';
+            $("#errorGroupModal").modal("show");
+          }
+        );
+      };
+
+
+
 
 
 
@@ -182,15 +208,13 @@ angular.module('myAppAngularMinApp')
       };
 
 
-
+      /* avisa antes de cambiarlo si es erroneo o no */
       $scope.checkGroupName = function(data, tagGroup) {
     		if (data === '') {
       			return "Group name should be not blank";
       		}
       		else{
-
-
-
+      			console.log('entro en check');
       			return GroupService.editGroup(tagGroup.id, data).then(
           			function(data) {
           				return ;
@@ -211,38 +235,16 @@ angular.module('myAppAngularMinApp')
           		},function(err){
                   // Tratar el error
 
-		            /*$scope.errorEditGroupModal = 1;
-		            $scope.messageEditGroupModal = err.message;*/
 		            console.log("Hay error");
-          			console.log(err.message);
+          			console.log(err);
           			//$scope.error = err.message;
-          			return err.message;
+          			$scope.messageNewGroupModal = err.data.message;
+          			
           		}
         		);
 
       		}
   	  };
-
-
-      /*********************************************/
-
-      $scope.editGroup = function(group){
-        $scope.messageEditGroupModal = '';
-        $scope.errorEditGroupModal = 0;
-        GroupService.editGroup($scope.groupid,group).then(
-          function(data) {
-            $("#editGroupModal").modal("hide");
-            $("#editGroupNameTxt").val('').trigger('input');
-          },function(err){
-            // Tratar el error
-            $("#editGroupNameTxt").val('').trigger('input');
-            $scope.errorEditGroupModal = 1;
-            $scope.messageEditGroupModal = err.message;
-          }
-        );
-      };
-
-
 
 
 
@@ -337,34 +339,6 @@ angular.module('myAppAngularMinApp')
           }
         );
       };
-
-
-
-    $scope.removeGroup = function () {
-
-        GroupService.removeGroup($scope.tagGroup).then(
-          function(data) {
-            console.log(data);
-            $("#deleteGroupModal").modal("hide");
-            $scope.tagGroup='';
-            $scope.tagChannel='';
-            
-
-
-
-          },function(err){
-            // Tratar el error
-            console.log("Hay error");
-            
-            $scope.errorG = err.data.message;
-            $("#deleteGroupModal").modal("hide");
-            $scope.tagGroup='';
-            $("#errorGroupModal").modal("show");
-          }
-        );
-      };
-
-
 
 
 
@@ -568,11 +542,12 @@ angular.module('myAppAngularMinApp')
       ProfileService.getGroupMembers(group.id)
         .then(function (data) {
           $scope.members = data;
-          $scope.membersSettings = data;
+          
           for (var i = 0; i < data.length; i++ ) {
-                $scope.members[i].color = getRandomColor();
+                data[i].color = getRandomColor();
 
           }
+          $scope.membersSettings = data;
 
 
         }
@@ -611,16 +586,49 @@ angular.module('myAppAngularMinApp')
 
       }
       else if (option == 2){
+
+
           $scope.membersSettings = $scope.members;
+          /*console.log("members1");
+          console.log($scope.members);
+          var indice = 0;
+          var memberp = '';
+          for (var i = 0; i < $scope.membersSettings.length; i++ ) {
+                if($scope.user.mail == $scope.membersSettings[i].mail){
+                    memberp = $scope.membersSettings.splice(i,1);
+                    
+                    i= $scope.membersSettings.length;
+                }
+                
+          }
+          console.log("members2");
+          console.log($scope.members);
+          console.log("members3");
+          console.log(memberp[0]);
+          $scope.members.push(memberp[0]);
+
+          
           $scope.option = option;
+          console.log("membersSettings1");
           console.log($scope.membersSettings);
           $scope.searchinputplaceholder = "Search member to remove and click on it ...";
+          */
+          $scope.option = option;
+          $scope.searchinputplaceholder = "Search member to remove and click on it ...";
       }
+
       else {
+          /* si no lo tiene */
           $scope.membersSettings = $scope.members;
+
+          /*$scope.membersSettings.push($scope.user);
+          console.log(option);
+          console.log("members3 en buscar");
+          console.log($scope.members);
+          console.log($scope.membersSettings);*/
           $scope.option = option;
           $scope.searchinputplaceholder = "Search member ...";
-          console.log($scope.membersSettings);
+          
 
 
       }
@@ -628,32 +636,53 @@ angular.module('myAppAngularMinApp')
     };
 
 
+ 
+
     function getSystemUsers(group) {
             ProfileService.getSystemUsers(group.id)
             .then(function (data) {
 
-              /* para coger usuarios que no estan en el grupo y si en el sistema*/
-              var temp = data;
+              /* para coger usuarios que no estan en el grupo y si en el sistema,
+                 y marcar los ya invitados
+              */
+                var temp = data;
 
-              for (var i = 0; i < $scope.members.length; i++ ) {
-                console.log($scope.members[i].mail);
+                for (var i = 0; i < $scope.members.length; i++ ) {        
+                  for (var j = 0; j < data.length; j++ ) {
+                        if($scope.members[i].mail == data[j].mail){
+                            temp.splice(j,1);
+                            j = data.length;
 
-                for (var j = 0; j < data.length; j++ ) {
-
-                      if($scope.members[i].mail == data[j].mail){
-                          temp.splice(j,1);
-                          j = data.length;
-
-                      }
+                        }
+                  }
                 }
-              }
-
-              $scope.membersSettings = temp;
 
 
-              for (var i = 0; i < data.length; i++ ) {
-                $scope.membersSettings[i].color = getRandomColor();
-              }
+                for (var i = 0; i < data.length; i++ ) {
+                  temp[i].color = getRandomColor();
+                  temp[i].isinvited = 0;
+                }
+
+                GroupService.getInvitedUsers(group.id).then(function (data2) {            
+                
+                    for (var i = 0; i < data2.length; i++ ) {        
+                      for (var j = 0; j < temp.length; j++ ) {
+                            if(data2[i].mail == temp[j].mail){
+                                temp[j].isinvited = 1;            
+                            }
+                      }
+                    }
+                  
+                    $scope.membersSettings = temp;             
+               
+                }
+                , function (err) {
+                  // Tratar el error
+                  console.log("Hay error");
+                  console.log(err.message);
+                  $scope.error = err.message;
+
+                });
 
             }
             , function (err) {
@@ -663,7 +692,7 @@ angular.module('myAppAngularMinApp')
               $scope.error = err.message;
 
             });
-    }
+    };
 
 
 
@@ -939,13 +968,127 @@ angular.module('myAppAngularMinApp')
     });
 
 
+
+      /* settings de grupo */
+
+      /* recibir evento de nombre de grupo editado
+         por usuario US */
+
+      Socket.on('newGroup', function (data) {
+        console.log ("newGroup received from server");
+        console.log(data);
+        $scope.groups.push(data);
+        /* cuando cree el nuevo grupo que le muestre los settings, si el es el que lo crea */
+        if(data.users.length == 1){
+        	console.log("entro con 1 solo user");
+        	$scope.selectGroup(data);
+        	$scope.tagChannel = '';
+        }
+
+        
+        $scope.$apply();
+        
+
+      });
+
+
+      /* recibir evento de grupo eliminado 
+         por usuario US */
+      Socket.on('deletedGroup', function (data) {
+        console.log ("deletedGroup receive from server");
+        /* mostrar advertencia de que se ha borrado un grupo */
+        /* solo hay que hacerlo si estas dentro del grupo */
+        if($scope.tagGroup.id == data.id){
+        	/*$scope.privateChannels = '';
+	        $scope.publicChannels = '';
+	        $scope.members = '';
+	        $scope.channelMembers = '';
+	        $scope.channelSelected = false;
+	        $scope.directChannels = '';*/
+	        $scope.tagGroup = '';
+	        $scope.tagChannel = '';
+	        $scope.$apply();
+        }
+
+        for (var i=0;i<$scope.groups.length;i++){
+
+          if ($scope.groups[i].id == data.id){
+            $scope.groups.splice(i,1);
+            i = $scope.groups.length;
+          }
+        } 
+       
+      });
+
+
+      //recibir evento de nombre de grupo editado
+      /* a los usuarios que pertenecen al grupo US */
+      Socket.on('editedGroup', function (data) {
+        console.log ("editedGroup received from server");
+        console.log(data);
+
+        for (var i=0; i<$scope.groups.length; i++){
+          if ($scope.groups[i].id == data.id){
+            $scope.groups[i].groupName = data.groupName;
+            $scope.$apply();
+            i = $scope.groups.length;
+          }
+        }
+      });
+
+
+
       //recibir evento de invitación a grupo
+      /* socket para el usuario que le compete la invitacion */
+      /* llega pero, aunque se actualiza el scope no lo piya */
       Socket.on('newGroupInvitation', function (data) {
         console.log ("newGroupInvitation received from server");
-        console.log(data);
         $scope.invitations.push(data);
+        console.log(data);
+        console.log(data.groupName);
+        console.log($scope.invitations);
         $scope.$apply();
+        console.log($scope.invitations);
+
       });
+
+
+       //recibir evento de nuevo usuario en grupo
+       /* si esta en los settings del grupo hay que actualizar los miembros de los settings */
+      Socket.on('newMemberInGroup', function (data) {
+        console.log ("newMemberInGroup receive from server");
+        /*estas devolviendo el id del user y deberias devolver todo, el user entero
+        pero solo cuando acepte la peticion*/
+        console.log(data);
+        $scope.members = data.users;
+        /*
+			// data tiene que ser solo el usuario añadido
+			$scope.members.push(user);
+
+        	// si 1 esta viendo los usuarios del sistema, luego hay que sacarlo de ahí
+        	if($scope.option == 1) {
+        		var ind = $scope.membersSettings.indexOf(user);
+        		if(ind > -1){
+					$scope.membersSettings.splice(ind, 1);
+        		}
+      		}
+      		// si 2 esta viendo los que estan en el grupo, hay que añadirlo
+		    else if ($scope.option == 2){
+		        $scope.membersSettings.push(user);
+		    }
+		    // si esta buscando igual
+		    else {
+		        $scope.membersSettings.push(user);
+
+		    }
+
+        */
+
+        $scope.$apply()
+      });
+
+
+
 
       //recibir evento de nuevo canal publico en grupo
       Socket.on('newPublicChannel', function (data) {
@@ -963,15 +1106,7 @@ angular.module('myAppAngularMinApp')
         $scope.$apply();
       });
 
-      //recibir evento de nuevo usuario en grupo
-      Socket.on('newMemberInGroup', function (data) {
-        console.log ("newMemberInGroup receive from server");
-        /*estas devolviendo el id del user y deberias devolver todo, el user entero
-        pero solo cuando acepte la peticion*/
-        console.log(data);
-        $scope.members = data.users;
-        $scope.$apply()
-      });
+     
 
       
       //recibir evento de usuario eliminado de grupo
@@ -981,11 +1116,12 @@ angular.module('myAppAngularMinApp')
       Socket.on('deletedMemberInGroup', function (data) {
         console.log ("deletedMemberInGroup receive from server");
         console.log(data);
-        /*if(data.user.id !== $scope.user.id && $scope.tagGroup.id == data.group.id){
+        
+        if(data.user.id !== $scope.userid && $scope.tagGroup.id == data.groupid){
         	console.log ("xsockets actualizo miembros");
 	        $scope.members = data.users;
 	        $scope.$apply();
-        }*/
+        }
         	
       });
 
@@ -1024,25 +1160,10 @@ angular.module('myAppAngularMinApp')
         $scope.$apply();
       });
 
-      //recibir evento de nombre de grupo editado
-      Socket.on('editedGroup', function (data) {
-        console.log ("editedGroup received from server");
-        console.log(data);
-        for (var i=0;i<$scope.groups.length;i++){
-          if ($scope.groups[i].id == data.id){
-            $scope.groups[i].groupName = data.groupName;
-            $scope.$apply();
-          }
-        }
-      });
+      
 
-      //recibir evento de nombre de grupo editado
-      Socket.on('newGroup', function (data) {
-        console.log ("newGroup received from server");
-        console.log(data);
-        $scope.groups.push(data);
-        $scope.$apply();
-      });
+
+
 
       //recibir evento de nombre de canal publico editado
       Socket.on('editedPublicChannel', function (data) {
@@ -1097,29 +1218,6 @@ angular.module('myAppAngularMinApp')
         $scope.$apply();
       });
 
-      //recibir evento de grupo eliminado
-      Socket.on('deletedGroup', function (data) {
-        console.log ("deletedGroup receive from server");
-        /* mostrar advertencia de que se ha borrado un grupo*/
-        /* solo hay que hacerlo si estas dentro del grupo */
-        if(tagGroup.id == data.id){
-        	$scope.privateChannels = '';
-	        $scope.publicChannels = '';
-	        $scope.members = '';
-	        $scope.channelMembers = '';
-	        $scope.channelSelected = false;
-	        $scope.directChannels = '';
-	        $scope.tagGroup = '';
-	        $scope.tagChannel = '';
-	        $scope.$apply();
-        }
-        for (var i=0;i<$scope.groups.length;i++){
-          if ($scope.groups[i].id == data.id){
-            $scope.groups.splice(i,1);
-            i = $scope.groups.length;
-          }
-        } 
-       
-      });
+      
 
     }]);

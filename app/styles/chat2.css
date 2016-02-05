@@ -53,6 +53,15 @@
 }
 
 
+#alertnotusers {
+    text-align: center;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0em;
+    
+}
+
 #containermembersettings{
 	height: 75%;
 	padding-right: 0px;
@@ -65,6 +74,10 @@
 
 #btneditgroup button{
 	float:left;
+}
+
+#btnviewinvitation{
+     background-color: #F0AD4E;
 }
 
 #btnviewright a{

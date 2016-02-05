@@ -9,6 +9,7 @@ angular.module('myAppAngularMinApp')
         editGroup: editGroup, 
         inviteUserToGroup : inviteUserToGroup, 
         removeUserFromGroup : removeUserFromGroup, 
+        getInvitedUsers : getInvitedUsers,
         removeGroup : removeGroup
 
       };
@@ -125,6 +126,26 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      
+      function getInvitedUsers (groupid) {
+          var defered = $q.defer();
+          var promise = defered.promise;
+          var userid = $localStorage.id;
+          console.log("entro en getinvitedusers");
+
+          
+          $http.get(API_BASE+'/api/v1/users/'+ $localStorage.id +'/chat/groups/'+groupid+'/invitedUsers', {
+                  headers: {'x-access-token': $localStorage.token}
+            }).success(function(data) {
+                          defered.resolve(data);
+                      })
+                      .error(function(err) {
+                          defered.reject(err)
+                      });
+
+          return promise;
+      };
+       
 
       function editGroup (groupid,data2) {
         var defered = $q.defer();

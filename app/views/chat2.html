@@ -18,7 +18,7 @@
 
 
         <li class="activeInvitations" ng-show="invitations.length > 0">
-          <a class="btn btn-warning" href="" aria-expanded="true">Invitations<i class="fa fa-exclamation-triangle fa-fw"></i></a>
+          <a class="btn btn-warning" href="" aria-expanded="true">Invitations<i class="fa fa-bell fa-fw"></i></a>
           <ul aria-expanded="true" class="emphasis">
             <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0">
               {{invitation.groupname}}
@@ -338,7 +338,8 @@
 
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(2)" class="input-group-addon" id="btnremoveuser" >
                                                 <i class="fa fa-user-times"></i>
-                                            </span>                                    
+                                            </span>  
+                                
                                         </div>                           
 
                                       </div>
@@ -353,7 +354,18 @@
                               </div> <!-- panel-settings(panel-body) -->
 
 
-                              <div class="container-fluid panel-container" id="containermembersettings">
+
+                               <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettings.length == 0"> 
+                                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettings.length == 0">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
+                                                      <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h3>Not users yet</h3>  
+                                      </div>
+                                </div>
+
+
+                              <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettings.length > 0">
 
                                      
                                       <ul class="list-group" id="list-group">
@@ -381,12 +393,13 @@
                                       data-toggle="(option == 1) ? 'modal' : ((option == 2) ? modal :  '')" 
                                       data-target="#add-removeuserFromGroupModal" 
 -->
-
-
-                                      <li ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)" 
+<!--
+ng-disabled="checkinvitations(member)
+ng-class="{'disabled':condition}"-->
+                                      <li  ng-class="{'disabled':member.isinvited}" ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)" 
                                       class="list-group-item"
-                                      ng-class="members.length > 2 ? 'col-lg-4': 'col-lg-12'"
-                                      ng-repeat="member in membersSettings | filter:searchText" ng-if="members.length > 0">
+                                      ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
+                                      ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
                                       
                                       <!-- si options = 1 add / options = 2 remove -->
                                                <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
@@ -394,6 +407,7 @@
                                                         
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
 
+                                                        <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
                                                         
                                                         <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
                                                         </p>
@@ -780,35 +794,7 @@
 
 
 
-  <!-- Edit Group Modal -->
-  <div id="editGroupModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header" style="padding:35px 50px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit Group</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="editGroupNameTxt">New Group Name:</label>
-            <input type="text" class="form-control" name="editGroupNameTxt" id="editGroupNameTxt" placeholder="Enter New Group Name..." ng-model="group.groupName">
-          </div>
-          <div>
-            <button type="submit" class="btn btn-success" id="btn-edit-group" ng-click="editGroup(group)"><span class="fa fa-floppy-o"></span> Save</button>
-            <button type="button" class="btn btn-success" id="btn-edit-group-reset" ng-click="resetEditGroup()"><span class="fa fa-refresh"></span> Reset</button>
-            <button type="button" class="btn btn-success" id="btn-edit-group-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorEditGroupModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorEditGroupModal=0"><span aria-hidden="true">&times;</span>{{messageEditGroupModal}}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+ 
   <!-- New Channel Modal -->
   <div id="newChannelModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-sm">
