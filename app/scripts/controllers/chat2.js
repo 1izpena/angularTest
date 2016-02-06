@@ -609,14 +609,14 @@ angular.module('myAppAngularMinApp')
 
                     $scope.membersSettings = temp;
 
-                }
-                , function (err) {
-                  // Tratar el error
-                  console.log("Hay error");
-                  console.log(err.message);
-                  $scope.error = err.message;
+            }
+            , function (err) {
+              // Tratar el error
+              console.log("Hay error");
+              console.log(err.message);
+              $scope.error = err.message;
 
-                });
+            });
 
             }
             , function (err) {
@@ -657,6 +657,25 @@ angular.module('myAppAngularMinApp')
       );
     };
 
+      $scope.newAnswer = function (messageid) {
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/answerModal.html',
+          controller: 'answerModalCtrl',
+          size: 'lg',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.groupid,
+                channelid: $scope.channelid,
+                messageid: messageid
+              }
+            }
+          }
+        });
+
+      };
+
       $scope.confirmUploadFile = function () {
 
         var modalInstance = $uibModal.open({
@@ -682,9 +701,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
-    $scope.sendText = function (text) {
-      console.log(text);
-      $scope.text = text;
+    $scope.sendText = function () {
       if ($scope.text) {
         var data = {
           userid: $localStorage.id,
@@ -696,7 +713,6 @@ angular.module('myAppAngularMinApp')
 
         ChatService.postMessage(data).then(
           function (result) {
-            text = null;
             $scope.text = null;
           },
           function (error) {
@@ -828,6 +844,28 @@ angular.module('myAppAngularMinApp')
     };
 
 
+      $scope.createQuestion = function () {
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/questionModal.html',
+          controller: 'questionModalCtrl',
+          size: 'lg',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.groupid,
+                channelid: $scope.channelid
+              }
+            }
+          }
+        });
+
+
+      };
+
+
+
+
     $scope.channelSelected = false;
     $scope.listaMensajes = [];
     $scope.listaUsuariosConectados = {};
@@ -878,6 +916,18 @@ angular.module('myAppAngularMinApp')
 
     //
     Socket.on('newMessage', function (data) {
+      $scope.listaMensajes.push(data);
+      $scope.$apply();
+    });
+
+    Socket.on('newQuestionAnswer', function (data) {
+      var message = data
+      for (var i=0; i < $scope.listaMensajes.length; i++) {
+        if ($scope.listaMensajes[i].id == message.id) {
+          $scope.listaMensajes[i].answers.push(message.answer);
+          break;
+        }
+      }
       $scope.listaMensajes.push(data);
       $scope.$apply();
     });
@@ -1043,8 +1093,8 @@ angular.module('myAppAngularMinApp')
 
         /*if(data.user.id !== $scope.user.id && $scope.tagGroup.id == data.group.id){
          console.log ("xsockets actualizo miembros");
-         $scope.members = data.users;
-         $scope.$apply();
+        $scope.members = data.users;
+        $scope.$apply();
          }*/
 
         for (var i=0;i<$scope.members.length;i++){
@@ -1083,9 +1133,9 @@ angular.module('myAppAngularMinApp')
           for (var i=0;i<$scope.privateChannels.length;i++){
             if ($scope.privateChannels[i].id == data.id){
               $scope.privateChannels.splice(i,1);
-              $scope.$apply();
-            }
+            $scope.$apply();
           }
+        }
         }
         $scope.channelMembers = data.users;
         $scope.$apply();
@@ -1132,7 +1182,7 @@ angular.module('myAppAngularMinApp')
         $scope.channelMembers = '';
         $scope.channelSelected = false;
         $scope.tagChannel = '';
-        $scope.$apply();
+            $scope.$apply();
       });
 
       //recibir evento de canal publico eliminado
@@ -1146,7 +1196,7 @@ angular.module('myAppAngularMinApp')
         $scope.channelMembers = '';
         $scope.channelSelected = false;
         $scope.tagChannel = '';
-        $scope.$apply();
+            $scope.$apply();
       });
 
 

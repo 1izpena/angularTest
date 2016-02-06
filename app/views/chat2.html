@@ -175,13 +175,13 @@
                 </div>
 
 
-                <div class="col-xs-10 text-center">
-                   <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
+                <div class="col-xs-10 text-center ">
+                    <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
 
-                        {{tagGroup.groupName}}
-                   </a>
-                   <a ng-click="" class="" id="menu-tag" ng-if= "tagChannel !== '' ">
-                        #{{tagChannel.channelName}}
+                      {{tagGroup.groupName}}
+                    </a>
+                    <a ng-click="" class="" id="menu-tag" ng-if= "tagChannel !== '' ">
+                      #{{tagChannel.channelName}}
                     </a>
                 </div>
 
@@ -251,7 +251,7 @@
                                          ng-hide="textBtnForm.$visible || adminGroup.id == userid">
                                                   <span class="fa fa-chain-broken fa-fw"></span>
 
-                                        </button>
+                                   </button>
 
 
                                         <!-- falta implementar, tambien modal -->
@@ -261,9 +261,9 @@
                                                   <span class="fa fa-trash fa-fw"></span>
                                         </button>
 
-                                      </div>
+                              </div>
 
-                                 </div>
+                    </div>
 
 
                             </div>  <!-- container-fluid panel-container -->
@@ -306,7 +306,7 @@
                                                 <li><a ng-click="setSettingsOptions(2)"><span class="fa fa-user-times fa-fw">
                                                           </span>Remove</a></li>
 
-                                         </ul>
+                                       </ul>
 
                                       </div>
                                       -->
@@ -340,7 +340,7 @@
                                                 <i class="fa fa-user-times"></i>
                                             </span>
 
-                                        </div>
+                                </div>
 
                                       </div>
 
@@ -376,7 +376,7 @@
 
 
 <!--
-<li ng-click=
+                                      <li ng-click=
                                       "(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
                                       class="list-group-item"
                                       ng-class="members.length > 2 ? 'col-lg-4': 'col-lg-12'"
@@ -445,9 +445,9 @@ ng-class="{'disabled':condition}"-->
             <div ng-if= "tagChannel !== '' " class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
               <ul class="chat">
                 <li ng-repeat="msg in listaMensajes" send-last
-                    ng-class="($storage.id==msg.user.id) ? 'right clearfix' : 'left clearfix'">
+                    class="left clearfix">
                   <hr ng-if="showUserInfo($index)">
-                  <span ng-class="($storage.id==msg.user.id) ? 'chat-img pull-right' : 'chat-img pull-left'"
+                  <span class="chat-img pull-left"
                         ng-if="showUserInfo($index)">
                     <img
                       ng-src="http://placehold.it/50/{{($storage.id!=msg.user.id)?'55C1E7':'FA6F57'}}/fff&text={{msg.user.username | limitTo:2 | uppercase }}"
@@ -455,27 +455,18 @@ ng-class="{'disabled':condition}"-->
                   </span>
 
                   <div class="chat-body clearfix">
-                    <div class="header text-left" ng-if="$storage.id!=msg.user.id && showUserInfo($index)">
+                    <div class="header text-left" ng-if="showUserInfo($index)">
                       <strong class="username">{{msg.user.username}}</strong>
                       <small class="date" >
                         <span class="glyphicon glyphicon-time"></span>
                         <span am-time-ago="msg.date"></span>
                       </small>
                     </div>
-                    <div class="header text-right" ng-if="$storage.id==msg.user.id && showUserInfo($index)">
-                      <small class="date" >
-                        <span class="glyphicon glyphicon-time"></span>
-                        <span am-time-ago="msg.date"></span>
-                      </small>
-                      <strong class="pull-right username">{{msg.user.username}}</strong>
-                    </div>
-                    <p ng-if="msg.messageType=='TEXT'"
-                       ng-class="($storage.id==msg.user.id) ? 'text-right' : 'text-left'">
+
+                    <p ng-if="msg.messageType=='TEXT'" class="text-left">
                       {{msg.text}}
                     </p>
-
-                    <p ng-if="msg.messageType=='FILE'"
-                      ng-class="($storage.id==msg.user.id) ? 'text-right' : 'text-left'">
+                    <p ng-if="msg.messageType=='FILE'" class="text-left">
                       {{msg.text}}
                       <br ng-if="msg.text">
                       <a ng-href="#" ng-click="getDownloadLink(msg.filename, $event)">
@@ -483,12 +474,52 @@ ng-class="{'disabled':condition}"-->
                       </a>
                       <br>
                     </p>
+                    <uib-accordion ng-if="msg.messageType=='QUESTION'"
+                      class="question-panels text-left" close-others="false" >
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title"><span class="question-title"> QUESTION:</span> {{msg.title}}</h4>
+                        </div>
+                        <div class="panel-collapse">
+                          <div class="panel-body">
+                            <p>
+                              <span ng-bind-html="msg.text"></span>
+                            </p>
+
+                          </div>
+                        </div>
+                      </div>
+                      <uib-accordion-group ng-repeat="answer in msg.answers" is-open="status.open">
+                        <uib-accordion-heading>
+                          <i class="glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                          <span class="question-title"> ANSWER {{$index+1}}:</span>
+                          <strong class="username">{{answer.user.username}}</strong>
+                          <small class="date">
+                            <span class="glyphicon glyphicon-time"></span>
+                            <span am-time-ago="answer.date"></span>
+                          </small>
+                        </uib-accordion-heading>
+                        <p ng-bind-html="answer.text"></p>
+                      </uib-accordion-group>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a href="" ng-click="newAnswer(msg.id)">
+                              <span class="fa fa-plus-square-o"></span>
+                              <span class="question-new-answer"> Add new answer </span>
+                            </a>
+                          </h4>
+                        </div>
+                      </div>
+
+                    </uib-accordion>
+
                   </div>
                 </li>
                 <hr ng-if="listaMensajes.length > 0">
               </ul>
             </div>
-            <div ng-if= "tagChannel !== '' " class="panel-footer" id="panel-footer">
+            <div ng-show= "tagChannel !== '' " class="panel-footer" id="panel-footer">
               <form name="sendMessageForm">
                 <div class="input-group">
                 <span class="input-group-btn">
@@ -507,7 +538,7 @@ ng-class="{'disabled':condition}"-->
                        </li>
                        <li class="divider"></li>
                        <li>
-                         <a href="">
+                         <a ng-click="createQuestion()">
                           <span class="glyphicon glyphicon-question-sign"></span>Create a question
                          </a>
                        </li>
@@ -519,7 +550,7 @@ ng-class="{'disabled':condition}"-->
                        ng-model="text"/>
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-warning btn-sm" id="btn-chat"
-                            ng-disabled="!channelSelected" ng-click="sendText(text)">
+                            ng-disabled="!channelSelected" ng-click="sendText()">
                               Send
                     </button>
                 </span>
