@@ -817,15 +817,18 @@ ng-class="{'disabled':condition}"-->
               <option value="PUBLIC"><span><label> PUBLIC </label></span></option>
             </select>
           </div>
+          <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{messageNewChannelModal}}
+          </div>
+        </div>
+        <div class="modal-footer">
           <div>
             <button type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel(channel)"><span class="fa fa-floppy-o"></span> Create</button>
             <button type="button" class="btn btn-success" id="btn-new-channel-reset" ng-click="resetNewChannel()"><span class="fa fa-refresh"></span> Reset</button>
             <button type="button" class="btn btn-success" id="btn-new-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorNewChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorNewChannelModal=0"><span aria-hidden="true">{{messageNewChannelModal}} &times;</span></button>
           </div>
         </div>
       </div>
@@ -856,11 +859,14 @@ ng-class="{'disabled':condition}"-->
         <div class="modal-footer">
           <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorEditChannelModal">
             <button type="button" class="close"  aria-label="Close" ng-click="errorEditChannelModal=0"><span aria-hidden="true">{{messageEditChannelModal}} &times;</span></button>
+            {{messageEditChannelModal}}
           </div>
         </div>
       </div>
     </div>
   </div>
+
+
 
   <!-- Users in channel Modal -->
   <div id="channelMemberInfoModal" class="modal fade" role="dialog">
@@ -885,8 +891,13 @@ ng-class="{'disabled':condition}"-->
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorChannelMemberInfoModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorChannelMemberInfoModal=0"><span aria-hidden="true">{{messageChannelMemberInfoModal}} &times;</span></button>
+          <div class="alert alert-danger" role="alert" ng-if="messageChannelMemberInfoModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageChannelMemberInfoModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageChannelMemberInfoModal}}
+
           </div>
         </div>
       </div>
@@ -909,8 +920,13 @@ ng-class="{'disabled':condition}"-->
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorUnsuscribeFromChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorUnsuscribeFromChannelModal=0"><span aria-hidden="true">&times;</span>{{messageUnsuscribeFromChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageUnsuscribeFromChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageUnsuscribeFromChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageUnsuscribeFromChannelModal}}
+
           </div>
         </div>
       </div>
@@ -932,8 +948,13 @@ ng-class="{'disabled':condition}"-->
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorDeleteChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorDeleteChannelModal=0"><span aria-hidden="true">&times;</span>{{messageDeleteChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageDeleteChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageDeleteChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageDeleteChannelModal}}
+
           </div>
         </div>
       </div>
@@ -963,8 +984,13 @@ ng-class="{'disabled':condition}"-->
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorDeleteUserFromChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorDeleteUserFromChannelModal=0"><span aria-hidden="true">&times;</span>{{messageDeleteUserFromChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageDeleteUserFromChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageDeleteUserFromChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageDeleteUserFromChannelModal}}
+
           </div>
         </div>
       </div>
@@ -995,8 +1021,13 @@ ng-class="{'disabled':condition}"-->
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorAddUserToChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorAddUserToChannelModal=0"><span aria-hidden="true">&times;</span>{{messageAddUserToChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageAddUserToChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageAddUserToChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageAddUserToChannelModal}}
+
           </div>
         </div>
       </div>
@@ -1050,7 +1081,4 @@ ng-class="{'disabled':condition}"-->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
 <!---------- iconos -------------------------->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-
-
-
 
