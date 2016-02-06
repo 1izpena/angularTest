@@ -212,7 +212,7 @@ angular.module('myAppAngularMinApp')
           if (tagGroup.groupName === data){
             return "New group name should be different"
           } else{
-            GroupService.editGroup(tagGroup.id, data).then(
+            return GroupService.editGroup(tagGroup.id, data).then(
               function(data) {
                 return ;
               },function(err){
