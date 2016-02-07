@@ -59,14 +59,14 @@ $scope.getQuestions = function()
 $scope.newquestion = function(question)
 {
   console.log(question.tags);
-  /*QuestionService.createQuestion(question).then(function (res){
+  QuestionService.createQuestion(question).then(function (res){
     $scope.goTo('foro/question/'+res.data._id);
     $scope.success = 1;
     $scope.success = "Question create!!"
   },function(err){
     $scope.error = 1;
     $scope.error = err.message;
-  });*/
+  });
 }
 
   $scope.upvote = function()
