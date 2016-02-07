@@ -13,8 +13,6 @@ angular.module('myAppAngularMinApp')
       };
 
 
-
-
 /*
     $scope.logoutLogin = function () {
         sharedProperties.setProperty('/chat2');
@@ -957,6 +955,30 @@ angular.module('myAppAngularMinApp')
 
       });
 
+      Socket.on('regretGroupInvitation', function (data) {
+        console.log ("regretGroupInvitation received from server");
+        /* si es el administrador, poner que pueda de nuevo invitar al usuario a ese grupo */
+        if ($scope.adminGroup.id == $scope.userid){
+        	data.userid
+        	if($scope.option == 1) {
+        		for (var i = 0; i < $scope.membersSettings.length; i++){
+        			if ($scope.membersSettings[i].id == data.userid){
+            			$scope.membersSettings[i].isinvited = 0;        
+            			i = $scope.membersSettings.length;
+          			}
+        		}
+        	}
+      
+        }
+       
+        $scope.$apply();
+        $scope.invitations.push(data);
+        $scope.$apply();
+        
+
+      });
+
+
 
        //recibir evento de nuevo usuario en grupo
        /* si esta en los settings del grupo hay que actualizar los miembros de los settings */
@@ -976,7 +998,7 @@ angular.module('myAppAngularMinApp')
         		for (var i = 0; i < $scope.membersSettings.length; i++){
         			if ($scope.membersSettings[i].id == data.user.id){
         				$scope.membersSettings.splice(i, 1);          
-            			i = $scope.groups.length;
+            			i = $scope.membersSettings.length;
           			}
         		}
         	}
