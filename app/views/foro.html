@@ -36,6 +36,7 @@
 	        	<div class="row">
 	        		<div ng-repeat="question in questions | orderBy: '-created'" class="col-md-12 pregunta">
 	        			<div class="col-md-12 contentright">
+	        			 <h2>{{question.error}}</h2> 
 	        				<h2 class="questiontitle"><a href="" ng-click="goQuestion(question._id)">{{question.title}}</a></h2>
 	        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
 	        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>

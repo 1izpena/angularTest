@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, LoginService, AnswerService, $localStorage, $uibModal) {
+  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, searchservice, LoginService, AnswerService, $localStorage, $uibModal) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -220,12 +220,9 @@ $scope.getQuestion = function()
 //////////// elastic ///////////////////
  $scope.search = function(request)
     {
-      
-    searchservice.forumsearch(request).then(function (res){
-      console.log(res);
-      $scope.questions = "";
-      $scope.questions = res;
-      
+     $scope.questions = [];
+    searchservice.forumsearch(request).then(function (res){  
+    $scope.questions= $scope.questions.concat(res);
     },function(err){
       console.log(err);
     });
