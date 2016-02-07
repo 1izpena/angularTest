@@ -116,8 +116,8 @@
           </ul>
         </li>
         <!-------separator------>
-        <li class="activeMembers">
-          <a href="" class="btn btn-primary" aria-expanded="false" ng-show= "tagGroup !== ''">Direct Messages<i class="fa fa-user fa-fw"></i></a>
+        <li class="activeMembers" ng-show= "tagGroup !== ''">
+          <a href="" class="btn btn-primary" aria-expanded="false">Direct Messages<i class="fa fa-user fa-fw"></i></a>
 
           <ul aria-expanded="true" class="emphasis">
             <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
@@ -396,7 +396,7 @@
 <!--
 ng-disabled="checkinvitations(member)
 ng-class="{'disabled':condition}"-->
-                                      <li  ng-class="{'disabled':member.isinvited}" ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
+                                      <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}" ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
                                       class="list-group-item"
                                       ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
                                       ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
