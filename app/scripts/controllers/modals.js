@@ -2,7 +2,9 @@
 
 angular.module('myAppAngularMinApp')
   .controller('uploadModalCtrl', ['$scope', '$uibModalInstance', 'data', '$localStorage', 'ChatService',
-    function ($scope, $uibModalInstance, inputData, $localStorage, ChatService) {
+    function ($scope, $uibModalInstance, data, $localStorage, ChatService) {
+
+      var inputData = data;
 
       $scope.filename = inputData.file.name;
       $scope.uploading = false;
@@ -67,5 +69,93 @@ angular.module('myAppAngularMinApp')
       };
 
 
+
+    }])
+
+  .controller('questionModalCtrl', ['$scope', '$uibModalInstance', 'data', '$localStorage', 'ChatService',
+  function ($scope, $uibModalInstance, data, $localStorage, ChatService) {
+
+    $scope.ok = function () {
+
+      if (!$scope.title) {
+        $scope.errorMessage = "Question title required";
+      }
+      else if (!$scope.question) {
+        $scope.errorMessage = "Question text required";
+      }
+      else {
+        var requestData = {
+          userid: $localStorage.id,
+          groupid: data.groupid,
+          channelid: data.channelid,
+          title: $scope.title,
+          text: $scope.question,
+          messageType: 'QUESTION'
+        };
+
+        ChatService.postMessage(requestData).then(
+          function (result) {
+            $uibModalInstance.close();
+          },
+          function (error) {
+            $scope.errorMessage="Error sending question";
+            console.log("Error sending question");
+            console.log(error);
+          }
+        );
+
+        $uibModalInstance.close();
+      }
+
+
+    };
+
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss();
+    };
+
+  }])
+
+  .controller('answerModalCtrl', ['$scope', '$uibModalInstance', 'data', '$localStorage', 'ChatService',
+    function ($scope, $uibModalInstance, data, $localStorage, ChatService) {
+
+      $scope.ok = function () {
+
+        if (!$scope.answer) {
+          $scope.errorMessage = "Answer text required"
+        }
+        else {
+          var requestData = {
+            userid: $localStorage.id,
+            groupid: data.groupid,
+            channelid: data.channelid,
+            messageid: data.messageid,
+            text: $scope.answer,
+            messageType: 'QUESTION'
+          };
+
+          ChatService.postAnswer(requestData).then(
+            function (result) {
+              console.log(result);
+              $uibModalInstance.close();
+            },
+            function (error) {
+              $scope.errorMessage="Error sending answer";
+              console.log("Error sending answer");
+              console.log(error);
+            }
+          );
+
+          $uibModalInstance.close();
+        }
+
+
+      };
+
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss();
+      };
 
     }]);

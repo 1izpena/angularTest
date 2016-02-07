@@ -18,10 +18,10 @@
 
 
         <li class="activeInvitations" ng-show="invitations.length > 0">
-          <a class="btn btn-warning" href="" aria-expanded="true">Invitations<i class="fa fa-exclamation-triangle fa-fw"></i></a>
+          <a class="btn btn-warning" href="" aria-expanded="true">Invitations<i class="fa fa-bell fa-fw"></i></a>
           <ul aria-expanded="true" class="emphasis">
             <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0">
-              {{invitation.groupname}}
+              {{invitation.groupName}}
 
 
               <div class="btn-group">
@@ -116,8 +116,8 @@
           </ul>
         </li>
         <!-------separator------>
-        <li class="activeMembers">
-          <a href="" class="btn btn-primary" aria-expanded="false" ng-show= "tagGroup !== ''">Direct Messages<i class="fa fa-user fa-fw"></i></a>
+        <li class="activeMembers" ng-show= "tagGroup !== ''">
+          <a href="" class="btn btn-primary" aria-expanded="false">Direct Messages<i class="fa fa-user fa-fw"></i></a>
 
           <ul aria-expanded="true" class="emphasis">
             <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
@@ -167,21 +167,21 @@
 
              <div class="container-fluid panel-container">
 
-            
+
                 <div class="col-xs-1">
-                      <a ng-href="#menu-toggle" 
+                      <a ng-href="#menu-toggle"
                       class="glyphicon glyphicon-th-list" id="menu-toggle">
-                      </a>      
-                </div> 
+                      </a>
+                </div>
 
 
-                <div class="col-xs-10 text-center">
-                   <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
-                
-                        {{tagGroup.groupName}}
-                   </a>    
-                   <a ng-click="" class="" id="menu-tag" ng-if= "tagChannel !== '' "> 
-                        #{{tagChannel.channelName}}
+                <div class="col-xs-10 text-center ">
+                    <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
+
+                      {{tagGroup.groupName}}
+                    </a>
+                    <a ng-click="" class="" id="menu-tag" ng-if= "tagChannel !== '' ">
+                      #{{tagChannel.channelName}}
                     </a>
                 </div>
 
@@ -191,10 +191,10 @@
 
                 <!--  <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
                    </a> -->
-  
-                </div>  
 
-            </div>  <!-- container-fluid panel-container -->    
+                </div>
+
+            </div>  <!-- container-fluid panel-container -->
 
             </div> <!-- panel-heading -->
 
@@ -202,7 +202,7 @@
 
             <!-- si no hemos seleccionado canal se muestra otro panel (settings grupo) -->
             <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
-           
+
                 <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
                     <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set">
 
@@ -213,11 +213,11 @@
 
                                       <div class="col-xs-1">
                                          <h3 class="panel-title">Settings </h3>
-                                           <!-- <h3 ng-click="#menu-toggle" class="glyphicon glyphicon-th-list" id="menu-toggle"></a>    -->  
+                                           <!-- <h3 ng-click="#menu-toggle" class="glyphicon glyphicon-th-list" id="menu-toggle"></a>    -->
                                       </div>
 
 
-                              </div>  <!-- container-fluid panel-container -->    
+                              </div>  <!-- container-fluid panel-container -->
 
 
                          </div> <!-- end panel-heading-settings  -->
@@ -227,51 +227,51 @@
                             <div class="container-fluid panel-container">
 
                                 <div class="col-xs-5 col-sm-3 col-md-3">
-                                  <p> 
+                                  <p>
                                      <span editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
                                   {{ tagGroup.groupName || 'empty' }}
-                                     </span>                      
-                                    </p>                        
+                                     </span>
+                                    </p>
                                 </div>
 
 
 
                                  <div class="col-xs-7 col-sm-9 col-md-9 " id="btneditgroup">
-                             
+
                                       <div class="btn-group" role="group" aria-label="">
                                         <button type="button" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminGroup.id != userid">
-                                                  <span class="fa fa-pencil fa-fw"></span>  
+                                                  <span class="fa fa-pencil fa-fw"></span>
                                         </button>
 
-                                        <!--  de momento si el usuario es el admin, 
+                                        <!--  de momento si el usuario es el admin,
                                               no se puede salir hasta que no gestionemos eso
                                         -->
-                                        <button type="button" class="btn btn-warning" 
+                                        <button type="button" class="btn btn-warning"
                                         data-toggle="modal" data-target="#unsuscribeFromGroupModal"
                                          ng-hide="textBtnForm.$visible || adminGroup.id == userid">
                                                   <span class="fa fa-chain-broken fa-fw"></span>
- 
-                                        </button>
+
+                                   </button>
 
 
                                         <!-- falta implementar, tambien modal -->
-                                        <button type="button" class="btn btn-danger" 
+                                        <button type="button" class="btn btn-danger"
                                         data-toggle="modal" data-target="#deleteGroupModal"
                                         ng-hide="textBtnForm.$visible || adminGroup.id != userid">
-                                                  <span class="fa fa-trash fa-fw"></span>  
+                                                  <span class="fa fa-trash fa-fw"></span>
                                         </button>
-                        
-                                      </div>
 
-                                 </div> 
+                              </div>
+
+                    </div>
 
 
-                            </div>  <!-- container-fluid panel-container -->    
+                            </div>  <!-- container-fluid panel-container -->
 
-                        </div> <!-- end panel-body -->  
+                        </div> <!-- end panel-body -->
 
-                    </div>   <!-- end panel-info -->  
-                 </div>     <!-- end row --> 
+                    </div>   <!-- end panel-info -->
+                 </div>     <!-- end row -->
 
 
                  <div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
@@ -284,7 +284,7 @@
                                       <div class="col-xs-11">
                                           <h3 class="panel-title">Team Directory
                                         <span class="badge">{{membersSettings.length}}</span>
-                                        </h3>  
+                                        </h3>
                                       </div>
 
 
@@ -305,13 +305,13 @@
                                                           </span>Add</a></li>
                                                 <li><a ng-click="setSettingsOptions(2)"><span class="fa fa-user-times fa-fw">
                                                           </span>Remove</a></li>
-                                                
-                                         </ul>
-                        
-                                      </div>
-                                      -->  
 
-                              </div>  <!-- container-fluid panel-container -->    
+                                       </ul>
+
+                                      </div>
+                                      -->
+
+                              </div>  <!-- container-fluid panel-container -->
 
                          </div> <!-- end panel-heading-settings  1-->
 
@@ -320,17 +320,17 @@
 
                                   <div class="container-fluid panel-container">
 
-                                      <div class="col-xs-8 col-xs-offset-2 text-center"> 
+                                      <div class="col-xs-8 col-xs-offset-2 text-center">
 
-                                      <!-- me falta hacer el remove dentro de los grid --> 
+                                      <!-- me falta hacer el remove dentro de los grid -->
 
                                         <div class="input-group input-group-unstyled">
                                              <span ng-click="setSettingsOptions(0)" class="input-group-addon">
                                                 <i class="fa fa-search"></i>
                                             </span>
-                                            
-                                    
-                                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>   
+
+
+                                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
 
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(1)" class="input-group-addon" id="btnadduser">
                                                 <i class="fa fa-user-plus"></i>
@@ -338,24 +338,36 @@
 
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(2)" class="input-group-addon" id="btnremoveuser" >
                                                 <i class="fa fa-user-times"></i>
-                                            </span>                                    
-                                        </div>                           
+                                            </span>
+
+                                </div>
 
                                       </div>
 
 
                                       <div class="col-xs-2" id="btnviewright">
-                                      </div>  
+                                      </div>
 
-                                  </div>  <!-- container-fluid panel-container -->    
+                                  </div>  <!-- container-fluid panel-container -->
 
 
                               </div> <!-- panel-settings(panel-body) -->
 
 
-                              <div class="container-fluid panel-container" id="containermembersettings">
 
-                                     
+                               <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettings.length == 0">
+                                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettings.length == 0">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
+                                                      <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <h3>Not users yet</h3>
+                                      </div>
+                                </div>
+
+
+                              <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettings.length > 0">
+
+
                                       <ul class="list-group" id="list-group">
 
 <!--ng-class="$index%3 != 0? 'col-md-offset-1': ''"
@@ -364,8 +376,8 @@
 
 
 <!--
-<li ng-click=
-                                      "(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)" 
+                                      <li ng-click=
+                                      "(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
                                       class="list-group-item"
                                       ng-class="members.length > 2 ? 'col-lg-4': 'col-lg-12'"
                                       ng-repeat="member in membersSettings | filter:searchText" ng-if="members.length > 0">
@@ -377,24 +389,26 @@
 -->
 
 <!--
-                                      <li data-toggle="modal" 
-                                      data-toggle="(option == 1) ? 'modal' : ((option == 2) ? modal :  '')" 
-                                      data-target="#add-removeuserFromGroupModal" 
+                                      <li data-toggle="modal"
+                                      data-toggle="(option == 1) ? 'modal' : ((option == 2) ? modal :  '')"
+                                      data-target="#add-removeuserFromGroupModal"
 -->
-
-
-                                      <li ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)" 
+<!--
+ng-disabled="checkinvitations(member)
+ng-class="{'disabled':condition}"-->
+                                      <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}" ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
                                       class="list-group-item"
-                                      ng-class="members.length > 2 ? 'col-lg-4': 'col-lg-12'"
-                                      ng-repeat="member in membersSettings | filter:searchText" ng-if="members.length > 0">
-                                      
+                                      ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
+                                      ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
+
                                       <!-- si options = 1 add / options = 2 remove -->
                                                <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
                                                         alt="User Avatar" class="img-circle" id="img-circle"/>
-                                                        
+
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
 
-                                                        
+                                                        <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
+
                                                         <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
                                                         </p>
 
@@ -403,27 +417,27 @@
 
                                       </li>
 
-                                    
+
                                     </ul>
-                                     <!--  <div class="col-md-4">  
+                                     <!--  <div class="col-md-4">
                                       </div>
                                       -->
 
-                                       
 
-                                  </div>  <!-- container-fluid panel-container --> 
+
+                                  </div>  <!-- container-fluid panel-container -->
 
 
 
                     </div> <!-- panel-set1 (team directory)-->
 
-                 </div> <!-- row-settings --> 
-                 
+                 </div> <!-- row-settings -->
+
 
 
             </div> <!--  panel-body1 -->
 
-            
+
 
 
 
@@ -431,9 +445,9 @@
             <div ng-if= "tagChannel !== '' " class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
               <ul class="chat">
                 <li ng-repeat="msg in listaMensajes" send-last
-                    ng-class="($storage.id==msg.user.id) ? 'right clearfix' : 'left clearfix'">
+                    class="left clearfix">
                   <hr ng-if="showUserInfo($index)">
-                  <span ng-class="($storage.id==msg.user.id) ? 'chat-img pull-right' : 'chat-img pull-left'"
+                  <span class="chat-img pull-left"
                         ng-if="showUserInfo($index)">
                     <img
                       ng-src="http://placehold.it/50/{{($storage.id!=msg.user.id)?'55C1E7':'FA6F57'}}/fff&text={{msg.user.username | limitTo:2 | uppercase }}"
@@ -441,27 +455,18 @@
                   </span>
 
                   <div class="chat-body clearfix">
-                    <div class="header text-left" ng-if="$storage.id!=msg.user.id && showUserInfo($index)">
+                    <div class="header text-left" ng-if="showUserInfo($index)">
                       <strong class="username">{{msg.user.username}}</strong>
                       <small class="date" >
                         <span class="glyphicon glyphicon-time"></span>
                         <span am-time-ago="msg.date"></span>
                       </small>
                     </div>
-                    <div class="header text-right" ng-if="$storage.id==msg.user.id && showUserInfo($index)">
-                      <small class="date" >
-                        <span class="glyphicon glyphicon-time"></span>
-                        <span am-time-ago="msg.date"></span>
-                      </small>
-                      <strong class="pull-right username">{{msg.user.username}}</strong>
-                    </div>
-                    <p ng-if="msg.messageType=='TEXT'"
-                       ng-class="($storage.id==msg.user.id) ? 'text-right' : 'text-left'">
+
+                    <p ng-if="msg.messageType=='TEXT'" class="text-left">
                       {{msg.text}}
                     </p>
-
-                    <p ng-if="msg.messageType=='FILE'"
-                      ng-class="($storage.id==msg.user.id) ? 'text-right' : 'text-left'">
+                    <p ng-if="msg.messageType=='FILE'" class="text-left">
                       {{msg.text}}
                       <br ng-if="msg.text">
                       <a ng-href="#" ng-click="getDownloadLink(msg.filename, $event)">
@@ -469,12 +474,52 @@
                       </a>
                       <br>
                     </p>
+                    <uib-accordion ng-if="msg.messageType=='QUESTION'"
+                      class="question-panels text-left" close-others="false" >
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title"><span class="question-title"> QUESTION:</span> {{msg.title}}</h4>
+                        </div>
+                        <div class="panel-collapse">
+                          <div class="panel-body">
+                            <p>
+                              <span ng-bind-html="msg.text"></span>
+                            </p>
+
+                          </div>
+                        </div>
+                      </div>
+                      <uib-accordion-group ng-repeat="answer in msg.answers" is-open="status.open">
+                        <uib-accordion-heading>
+                          <i class="glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                          <span class="question-title"> ANSWER {{$index+1}}:</span>
+                          <strong class="username">{{answer.user.username}}</strong>
+                          <small class="date">
+                            <span class="glyphicon glyphicon-time"></span>
+                            <span am-time-ago="answer.date"></span>
+                          </small>
+                        </uib-accordion-heading>
+                        <p ng-bind-html="answer.text"></p>
+                      </uib-accordion-group>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a href="" ng-click="newAnswer(msg.id)">
+                              <span class="fa fa-plus-square-o"></span>
+                              <span class="question-new-answer"> Add new answer </span>
+                            </a>
+                          </h4>
+                        </div>
+                      </div>
+
+                    </uib-accordion>
+
                   </div>
                 </li>
                 <hr ng-if="listaMensajes.length > 0">
               </ul>
             </div>
-            <div ng-if= "tagChannel !== '' " class="panel-footer" id="panel-footer">
+            <div ng-show= "tagChannel !== '' " class="panel-footer" id="panel-footer">
               <form name="sendMessageForm">
                 <div class="input-group">
                 <span class="input-group-btn">
@@ -493,7 +538,7 @@
                        </li>
                        <li class="divider"></li>
                        <li>
-                         <a href="">
+                         <a ng-click="createQuestion()">
                           <span class="glyphicon glyphicon-question-sign"></span>Create a question
                          </a>
                        </li>
@@ -505,7 +550,7 @@
                        ng-model="text"/>
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-warning btn-sm" id="btn-chat"
-                            ng-disabled="!channelSelected" ng-click="sendText(text)">
+                            ng-disabled="!channelSelected" ng-click="sendText()">
                               Send
                     </button>
                 </span>
@@ -603,7 +648,7 @@
         <div class="modal-header">
 
             <!-- options 1 add -->
-            <!-- options 2 remove 
+            <!-- options 2 remove
             <h4 ng-show="option == 1" class="modal-title" id="adduserLabel">Adding User Notification</h4>
             <h4 ng-show="option == 2" class="modal-title" id="removeuserLabel">Deleting User Notification</h4>
 
@@ -618,15 +663,15 @@
             <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorUnsuscribeFromChannelModal">
                       <button type="button" class="close"  aria-label="Close" ng-click="errorUnsuscribeFromGroupModal=0"><span aria-hidden="true">&times;</span>{{messageUnsuscribeFromChannelModal}}</button>
             </div>
-         
-          
+
+
         </div>
         <div class="modal-footer">
          <button type="button" class="btn btn-danger" id="btn-unsuscribe-group-close" data-dismiss="modal"><span class="fa fa-remove"></span></button>
-         <button type="submit" class="btn btn-success" id="btn-unsuscribe-group-accept" 
+         <button type="submit" class="btn btn-success" id="btn-unsuscribe-group-accept"
 
          ng-click="(option == 1) ? inviteUserToGroup(member) : removeUserFromGroup(member)"><span class="fa fa-check"></span></button>
-          
+
 
 
         </div>
@@ -658,7 +703,7 @@
 
         <div class="modal-footer">
          <button type="button" class="btn btn-success" id="btn-ok" data-dismiss="modal" ng-click="errorG=''"><span class="fa fa-check"> Close</span></button>
-          
+
         </div>
 
       </div>
@@ -682,20 +727,20 @@
 
 
         <div class="modal-body">
-            <p>Do you really want to remove this group?</p>       
+            <p>Do you really want to remove this group?</p>
         </div>
 
 
         <div class="modal-footer">
             <button type="submit" class="btn btn-success" ng-click="removeGroup()"><span class="fa fa-trash-o"> Remove</span></button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button> 
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
         </div>
-    
+
       </div>
 
     </div>
 </div>
- 
+
 
 
 
@@ -716,13 +761,13 @@
         <div class="modal-body">
 
             <p>Do you really want to unsuscribe from this group?</p>
-          
+
         </div>
 
         <div class="modal-footer">
-          
+
          <button type="submit" class="btn btn-success" ng-click="unsuscribeFromGroup()"><span class="fa fa-chain-broken"> Unsuscribe</span></button>
-         <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button> 
+         <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
 
         </div>
 
@@ -740,7 +785,7 @@
 
       <div class="modal-content">
         <div class="modal-header" >
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" 
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
             ng-click="messageNewGroupModal=''; removeInput()">
                     <span aria-hidden="true">&times;</span>
             </button>
@@ -760,16 +805,16 @@
              {{messageNewGroupModal}}
 
             </div>
-          </div>  
+          </div>
         </div>
 
 
         <div class="modal-footer">
 
             <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewGroup(group)"><span class="fa fa-floppy-o"></span> Create</button>
-            
+
             <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="messageNewGroupModal=''; removeInput()"><span class="fa fa-remove"></span> Close</button>
-           
+
         </div>
       </div>
     </div>
@@ -780,34 +825,6 @@
 
 
 
-  <!-- Edit Group Modal -->
-  <div id="editGroupModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header" style="padding:35px 50px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit Group</h4>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="editGroupNameTxt">New Group Name:</label>
-            <input type="text" class="form-control" name="editGroupNameTxt" id="editGroupNameTxt" placeholder="Enter New Group Name..." ng-model="group.groupName">
-          </div>
-          <div>
-            <button type="submit" class="btn btn-success" id="btn-edit-group" ng-click="editGroup(group)"><span class="fa fa-floppy-o"></span> Save</button>
-            <button type="button" class="btn btn-success" id="btn-edit-group-reset" ng-click="resetEditGroup()"><span class="fa fa-refresh"></span> Reset</button>
-            <button type="button" class="btn btn-success" id="btn-edit-group-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorEditGroupModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorEditGroupModal=0"><span aria-hidden="true">&times;</span>{{messageEditGroupModal}}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- New Channel Modal -->
   <div id="newChannelModal" class="modal fade" role="dialog">
@@ -831,15 +848,18 @@
               <option value="PUBLIC"><span><label> PUBLIC </label></span></option>
             </select>
           </div>
+          <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{messageNewChannelModal}}
+          </div>
+        </div>
+        <div class="modal-footer">
           <div>
             <button type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel(channel)"><span class="fa fa-floppy-o"></span> Create</button>
             <button type="button" class="btn btn-success" id="btn-new-channel-reset" ng-click="resetNewChannel()"><span class="fa fa-refresh"></span> Reset</button>
             <button type="button" class="btn btn-success" id="btn-new-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorNewChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorNewChannelModal=0"><span aria-hidden="true">{{messageNewChannelModal}} &times;</span></button>
           </div>
         </div>
       </div>
@@ -870,11 +890,14 @@
         <div class="modal-footer">
           <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorEditChannelModal">
             <button type="button" class="close"  aria-label="Close" ng-click="errorEditChannelModal=0"><span aria-hidden="true">{{messageEditChannelModal}} &times;</span></button>
+            {{messageEditChannelModal}}
           </div>
         </div>
       </div>
     </div>
   </div>
+
+
 
   <!-- Users in channel Modal -->
   <div id="channelMemberInfoModal" class="modal fade" role="dialog">
@@ -899,8 +922,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorChannelMemberInfoModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorChannelMemberInfoModal=0"><span aria-hidden="true">{{messageChannelMemberInfoModal}} &times;</span></button>
+          <div class="alert alert-danger" role="alert" ng-if="messageChannelMemberInfoModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageChannelMemberInfoModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageChannelMemberInfoModal}}
+
           </div>
         </div>
       </div>
@@ -923,8 +951,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorUnsuscribeFromChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorUnsuscribeFromChannelModal=0"><span aria-hidden="true">&times;</span>{{messageUnsuscribeFromChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageUnsuscribeFromChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageUnsuscribeFromChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageUnsuscribeFromChannelModal}}
+
           </div>
         </div>
       </div>
@@ -946,8 +979,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorDeleteChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorDeleteChannelModal=0"><span aria-hidden="true">&times;</span>{{messageDeleteChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageDeleteChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageDeleteChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageDeleteChannelModal}}
+
           </div>
         </div>
       </div>
@@ -977,8 +1015,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorDeleteUserFromChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorDeleteUserFromChannelModal=0"><span aria-hidden="true">&times;</span>{{messageDeleteUserFromChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageDeleteUserFromChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageDeleteUserFromChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageDeleteUserFromChannelModal}}
+
           </div>
         </div>
       </div>
@@ -1009,8 +1052,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorAddUserToChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorAddUserToChannelModal=0"><span aria-hidden="true">&times;</span>{{messageAddUserToChannelModal}}</button>
+          <div class="alert alert-danger" role="alert" ng-if="messageAddUserToChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageAddUserToChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageAddUserToChannelModal}}
+
           </div>
         </div>
       </div>
@@ -1064,7 +1112,4 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
 <!---------- iconos -------------------------->
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-
-
-
 
