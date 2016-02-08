@@ -44,16 +44,6 @@ angular.module('myAppAngularMinApp')
 
 
 
-      $scope.errorNewChannelModal = 0;
-      $scope.errorEditChannelModal = 0;
-      $scope.errorChannelMemberInfoModal = 0;
-      $scope.errorUnsuscribeFromChannelModal = 0;
-      $scope.errorDeleteChannelModal = 0;
-      $scope.errorDeleteUserFromChannelModal = 0;
-      $scope.errorAddUserToChannelModal = 0;
-      //messages in channel setting modals
-
-
 
       $scope.messageNewChannelModal = '';
       $scope.messageEditChannelModal = '';
@@ -162,7 +152,7 @@ angular.module('myAppAngularMinApp')
 	    $scope.showGrouptoEdit = function(group){
        		$scope.tagGroup = group;
        		$scope.tagChannel = '';
-       	
+
       	};
 
 
@@ -183,7 +173,7 @@ angular.module('myAppAngularMinApp')
 
                 console.log("Hay error: " + err.message);
                 return err.message;
-              
+
 
               }
             );
@@ -269,7 +259,7 @@ angular.module('myAppAngularMinApp')
       ProfileService.acceptGroup(invitation.groupid).then(
         function (data) {
           $scope.invitations.splice(ind,1);
-          
+
         }
         ,function (err) {
           // Tratar el error
@@ -302,7 +292,7 @@ angular.module('myAppAngularMinApp')
           },function(err){
             // Tratar el error
             console.log("Hay error al crear canal: " + err.data.message);
-            $scope.messageCreateNewChannelModal = err.data.message;
+            $scope.messageNewChannelModal = err.data.message;
             $("#channelNameTxt").val('').trigger('input');
             $("#channelTypeTxt").val('').trigger('input');
           }
@@ -323,17 +313,23 @@ angular.module('myAppAngularMinApp')
       };
 
       $scope.editChannel = function(channel){
-        ChannelService.editChannel($scope.groupid,$scope.channelid,channel).then(
-          function(data) {
-            console.log(data);
-            $("#editChannelModal").modal("hide");
-          },function(err){
-            // Tratar el error
-            console.log("Hay error en edit channel: " + err.data.message);
-            $("#editChannelNameTxt").val('').trigger('input');
-            $scope.messageEditChannelModal = err.data.message;
+          console.log("tagChannel: " + $scope.tagChannel.channelName);
+          console.log("newChannelName body: " + channel.channelName);
+          if ($scope.tagChannel.channelName == channel.channelName){
+            $scope.messageEditChannelModal = 'new channelName should be different';
+          } else {
+            ChannelService.editChannel($scope.groupid, $scope.channelid, channel).then(
+              function (data) {
+                console.log(data);
+                $("#editChannelModal").modal("hide");
+              }, function (err) {
+                // Tratar el error
+                console.log("Hay error en edit channel: " + err.data.message);
+                $("#editChannelNameTxt").val('').trigger('input');
+                $scope.messageEditChannelModal = err.data.message;
+              }
+            );
           }
-        );
       };
 
       $scope.addUserToChannel = function(userid1){
@@ -362,7 +358,16 @@ angular.module('myAppAngularMinApp')
       $scope.unsuscribeFromChannel = function(){
         ChannelService.unsubscribeFromChannel($scope.groupid,$scope.channelid).then(
           function(data) {
+            $scope.tagChannel='';
+            $scope.channelSelected = false;
             $("#unsuscribeFromChannelModal").modal("hide");
+            console.log("unsuscribe ok");
+            for (var i=0;i<$scope.privateChannels.length;i++){
+              if ($scope.privateChannels[i].id === data.data.id){
+                $scope.privateChannels.splice(i,1);
+              }
+            }
+
           },function(err){
             // Tratar el error
             console.log("Hay error en unsuscribe from channel: " + err.data.message);
@@ -374,7 +379,6 @@ angular.module('myAppAngularMinApp')
 
       $scope.resetNewChannel = function(){
         $scope.messageNewChannelModal = '';
-        $scope.errorNewChannelModal = 0;
         $("#channelNameTxt").val('').trigger('input');
         $("#channelTypeTxt").val('').trigger('input');
       };
@@ -383,13 +387,11 @@ angular.module('myAppAngularMinApp')
 
       $scope.resetEditGroup = function(){
         $scope.messageEditGroupModal = '';
-        $scope.errorEditGroupModal = 0;
         $("#editGroupNameTxt").val('').trigger('input');
       };
 
       $scope.resetEditChannel = function(){
         $scope.messageEditChannelModal = '';
-        $scope.errorEditChannelModal = 0;
         $("#editChannelNameTxt").val('').trigger('input');
       };
 
@@ -407,7 +409,7 @@ angular.module('myAppAngularMinApp')
             console.log(err.message);
             $scope.errorG = err.message;
           	$("#errorGroupModal").modal("show");
-            
+
           });
       };
 
@@ -481,7 +483,7 @@ angular.module('myAppAngularMinApp')
       else {
 
           $scope.membersSettings = $scope.members;
-         
+
           $scope.option = option;
           if(option == 2){
           	   $scope.searchinputplaceholder = "Search member to remove and click on it ...";
@@ -489,7 +491,7 @@ angular.module('myAppAngularMinApp')
           else {
                $scope.searchinputplaceholder = "Search member ...";
           }
-          
+
       }
 
     };
@@ -538,7 +540,7 @@ angular.module('myAppAngularMinApp')
               // Tratar el error
               console.log("Hay error");
               console.log(err.message);
-              
+
               $scope.errorG = err.message;
           	  $("#errorGroupModal").modal("show");
 
@@ -551,7 +553,7 @@ angular.module('myAppAngularMinApp')
               // Tratar el error
               console.log("Hay error");
               console.log(err.message);
-              
+
               $scope.errorG = err.message;
               $("#errorGroupModal").modal("show");
 
@@ -810,7 +812,7 @@ angular.module('myAppAngularMinApp')
         // Tratar el error
         console.log("Hay error");
         console.log(err.message);
-        
+
         $scope.errorG = err.message;
         $("#errorGroupModal").modal("show");
 
@@ -855,7 +857,7 @@ angular.module('myAppAngularMinApp')
     });
 
     Socket.on('newQuestionAnswer', function (data) {
-      var message = data
+      var message = data;
       for (var i=0; i < $scope.listaMensajes.length; i++) {
         if ($scope.listaMensajes[i].id == message.id) {
           $scope.listaMensajes[i].answers.push(message.answer);
@@ -951,7 +953,7 @@ angular.module('myAppAngularMinApp')
         console.log ("newGroupInvitation received from server");
         $scope.invitations.push(data);
         $scope.$apply();
-        
+
 
       });
 
@@ -963,18 +965,18 @@ angular.module('myAppAngularMinApp')
         	if($scope.option == 1) {
         		for (var i = 0; i < $scope.membersSettings.length; i++){
         			if ($scope.membersSettings[i].id == data.userid){
-            			$scope.membersSettings[i].isinvited = 0;        
+            			$scope.membersSettings[i].isinvited = 0;
             			i = $scope.membersSettings.length;
           			}
         		}
         	}
-      
+
         }
-       
+
         $scope.$apply();
         $scope.invitations.push(data);
         $scope.$apply();
-        
+
 
       });
 
@@ -986,25 +988,25 @@ angular.module('myAppAngularMinApp')
         console.log ("newMemberInGroup receive from server");
         console.log(data);
 
-        
+
         data.user.color = getRandomColor();
         $scope.members.push(data.user);
 
-        
+
         /* si es el administrador, cambiarle los membersettings */
         if ($scope.adminGroup.id == $scope.userid){
         	/* sacamos al usuario añadido en el grupo de membersettings */
         	if($scope.option == 1) {
         		for (var i = 0; i < $scope.membersSettings.length; i++){
         			if ($scope.membersSettings[i].id == data.user.id){
-        				$scope.membersSettings.splice(i, 1);          
+        				$scope.membersSettings.splice(i, 1);
             			i = $scope.membersSettings.length;
           			}
         		}
         	}
-      
+
         }
-       
+
         $scope.$apply();
 
       });
@@ -1049,7 +1051,7 @@ angular.module('myAppAngularMinApp')
         }
 
 
-        
+
         /* si es el administrador, cambiarle los membersettings */
         if ($scope.adminGroup.id == $scope.userid){
         	/* añadimos al usuario borrado del grupo en membersettings (usuarios de sistema) */
@@ -1058,10 +1060,10 @@ angular.module('myAppAngularMinApp')
         		$scope.membersSettings.push(data.user);
 
         	}
-      
+
         }
 
-        
+
         $scope.$apply();
 
       });
@@ -1073,15 +1075,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('newMemberInChannel', function (data) {
         console.log ("newMemberInChannel received from server");
         console.log(data);
-        $scope.channelMembers = data.users;
-        $scope.$apply();
-      });
-
-      //recibir evento de usuario eliminado de canal
-      Socket.on('deletedMemberInChannel', function (data) {
-        console.log ("deletedMemberInChannel received from server");
-        console.log(data);
-        $scope.channelMembers = data.users;
+        $scope.channelMembers.push(data.user);
         $scope.$apply();
       });
 
@@ -1090,22 +1084,14 @@ angular.module('myAppAngularMinApp')
         console.log ("deletedUserFromChannel received from server");
         console.log(data);
         if (data.userid == $localStorage.id){
-          for (var i=0;i<$scope.privateChannels.length;i++){
-            if ($scope.privateChannels[i].id == data.id){
-              $scope.privateChannels.splice(i,1);
-            $scope.$apply();
+          for (var i=0;i<$scope.channelMembers.length;i++){
+            if ($scope.channelMembers[i].id == data.user.id){
+              $scope.channelMembers.splice(i,1);
+              $scope.$apply();
           }
         }
         }
-        $scope.channelMembers = data.users;
-        $scope.$apply();
       });
-
-
-
-
-
-
       //recibir evento de nombre de canal publico editado
       Socket.on('editedPublicChannel', function (data) {
         console.log ("editedPublicChannel received from server");
@@ -1116,6 +1102,7 @@ angular.module('myAppAngularMinApp')
             $scope.$apply();
           }
         }
+
       });
 
       //recibir evento de nombre de canal privado editado
@@ -1132,31 +1119,36 @@ angular.module('myAppAngularMinApp')
 
       //recibir evento de canal privado eliminado
       Socket.on('deletedPrivateChannel', function (data) {
-        console.log ("deletedPrivateChannelInGroup received from server");
+        console.log ("deletedPrivateChannel received from server");
         console.log(data);
         for (var i=0;i<$scope.privateChannels.length;i++){
           if ($scope.privateChannels[i].id == data.id){
             $scope.privateChannels.splice(i,1);
           }
         }
-        $scope.channelMembers = '';
-        $scope.channelSelected = false;
-        $scope.tagChannel = '';
-            $scope.$apply();
+        if($scope.tagChannel.id == data.id){
+          $scope.channelMembers = '';
+          $scope.channelSelected = false;
+          $scope.tagChannel = '';
+        }
+        $scope.$apply();
       });
 
       //recibir evento de canal publico eliminado
       Socket.on('deletedPublicChannel', function (data) {
         console.log ("deletedPublicChannel received from server");
+        console.log(data);
         for (var i=0;i<$scope.publicChannels.length;i++){
           if ($scope.publicChannels[i].id == data.id){
             $scope.publicChannels.splice(i,1);
           }
         }
-        $scope.channelMembers = '';
-        $scope.channelSelected = false;
-        $scope.tagChannel = '';
-            $scope.$apply();
+        if($scope.tagChannel.id == data.id){
+          $scope.channelMembers = '';
+          $scope.channelSelected = false;
+          $scope.tagChannel = '';
+        }
+        $scope.$apply();
       });
 
 

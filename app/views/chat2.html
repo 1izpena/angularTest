@@ -888,8 +888,10 @@ ng-class="{'disabled':condition}"-->
           </div>
         </div>
         <div class="modal-footer">
-          <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="errorEditChannelModal">
-            <button type="button" class="close"  aria-label="Close" ng-click="errorEditChannelModal=0"><span aria-hidden="true">{{messageEditChannelModal}} &times;</span></button>
+          <div class="alert alert-danger" role="alert" ng-show="messageEditChannelModal!== ''">
+            <button type="button" class="close"  aria-label="Close" ng-click="messageEditChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
             {{messageEditChannelModal}}
           </div>
         </div>
