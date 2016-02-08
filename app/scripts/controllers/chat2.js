@@ -41,10 +41,6 @@ angular.module('myAppAngularMinApp')
 
       $scope.searchinputplaceholder = "Search member ...";
 
-
-
-
-
       $scope.messageNewChannelModal = '';
       $scope.messageEditChannelModal = '';
       $scope.messageChannelMemberInfoModal = '';
@@ -109,8 +105,6 @@ angular.module('myAppAngularMinApp')
 
         GroupService.createNewGroup(group).then(
           function(data) {
-
-
             $("#newGroupModal").modal("hide");
             $scope.removeInput();
             $scope.messageNewGroupModal = '';
@@ -118,7 +112,7 @@ angular.module('myAppAngularMinApp')
 
           },function(err){
             // Tratar el error
-
+            console.log("Error on create new group: " + err.data.message);
             $scope.removeInput();
             $scope.messageNewGroupModal = err.data.message;
 
@@ -138,6 +132,7 @@ angular.module('myAppAngularMinApp')
             $scope.tagChannel='';
           },function(err){
             // Tratar el error
+            console.log("Error on delete group: " + err.data.message);
             console.log("Hay error");
             $scope.errorG = err.data.message;
             $("#deleteGroupModal").modal("hide");
@@ -170,7 +165,7 @@ angular.module('myAppAngularMinApp')
                 return ;
               },function(err){
                 // Tratar el error
-
+                console.log("Error on edit group name: " + err.data.message);
                 console.log("Hay error: " + err.message);
                 return err.message;
 
@@ -191,6 +186,7 @@ angular.module('myAppAngularMinApp')
              $scope.tagChannel='';
           },function(err){
             // Tratar el error
+            console.log("Error on unsuscribe from group: " + err.data.message);
             console.log("Hay error");
             $scope.errorG = err.data.message;
             $("#unsuscribeFromGroupModal").modal("hide");
@@ -335,9 +331,10 @@ angular.module('myAppAngularMinApp')
       $scope.addUserToChannel = function(userid1){
         ChannelService.addUserToChannel($scope.groupid,$scope.channelid,userid1).then(
           function(data) {
+            console.log("Ok add user to channel");
             $("#addUserToChannelModal").modal("hide");
           },function(err){
-            console.log("Hay error en add user to channel: " + err.data.message);
+            console.log("Error en add user to channel: " + err.data.message);
             $scope.messageAddUserToChannelModal = err.data.message;
           }
         );
@@ -347,6 +344,7 @@ angular.module('myAppAngularMinApp')
       $scope.deleteUserFromChannel = function(userid1){
         ChannelService.deleteUserFromChannel($scope.groupid,$scope.channelid,userid1).then(
           function(data) {
+            console.log("Ok delete user from channel");
             $("#deleteUserFromChannelModal").modal("hide");
           },function(err){
             console.log("Hay error en delete user from channel: " + err.data.message);
@@ -360,6 +358,7 @@ angular.module('myAppAngularMinApp')
           function(data) {
             $scope.tagChannel='';
             $scope.channelSelected = false;
+            console.log("Ok unsuscribe from channel");
             $("#unsuscribeFromChannelModal").modal("hide");
             console.log("unsuscribe ok");
             for (var i=0;i<$scope.privateChannels.length;i++){
@@ -423,7 +422,7 @@ angular.module('myAppAngularMinApp')
         }
         , function (err) {
           // Tratar el error
-          console.log("Hay error");
+          console.log("Error on getChannelMembers: " + err.message);
           console.log(err.message);
           $scope.error = err.message;
 
