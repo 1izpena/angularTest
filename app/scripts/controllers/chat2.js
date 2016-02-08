@@ -242,9 +242,10 @@ angular.module('myAppAngularMinApp')
 
           },function(err){
             // Tratar el error
-            console.log("Hay error sacando a usuario de grupo: " + err.message);
-            //$scope.errorG = err.data.message;
-            console.log(error);
+            
+            console.log("Hay error");          
+            console.log(err);
+            $scope.errorG = err.data.message;
             $("#errorGroupModal").modal("show");
           }
         );
