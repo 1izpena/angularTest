@@ -13,7 +13,7 @@ angular.module('myAppAngularMinApp')
 
       $http({
           method: 'POST',
-          url: API_BASE + '/api/v1/search',
+          url: API_BASE + '/api/v1/forumsearch',
           data: {key: request}
         }).then(
           function(response) {
@@ -21,11 +21,11 @@ angular.module('myAppAngularMinApp')
 
             var hits = (Object.keys(response.data.hits.hits).length)-1;
             var data = [];
-            
+
             for (var cont=0;cont<=hits;cont++){
             data.push(response.data.hits.hits[ cont ]._source);
-            }     
-        
+            }
+
             }else{
               data=({error:"No hay coincidencias"});
             }
@@ -36,6 +36,6 @@ angular.module('myAppAngularMinApp')
             defered.reject(error);
           }
         );
-      return promise; 
+      return promise;
   };
 }]);
