@@ -445,6 +445,8 @@ ng-class="{'disabled':condition}"-->
             <div ng-if= "tagChannel !== '' " class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
               <ul class="chat">
                 <li ng-repeat="msg in listaMensajes" send-last
+                    ng-class="{'internal-message':isInternalMessage($index)}"
+                    name="{{msg.id}}" id="{{msg.id}}"
                     class="left clearfix">
                   <hr ng-if="showUserInfo($index)">
                   <span class="chat-img pull-left"
@@ -463,7 +465,11 @@ ng-class="{'disabled':condition}"-->
                       </small>
                     </div>
 
-                    <p ng-if="msg.messageType=='TEXT'" class="text-left">
+                    <p ng-if="isInternalMessage($index)" class="text-left">
+
+                      <span bind-html-compile="getInternalMessage($index)"></span>
+                    </p>
+                    <p ng-if="msg.messageType=='TEXT' && !isInternalMessage($index)" class="text-left">
                       {{msg.text}}
                     </p>
                     <p ng-if="msg.messageType=='FILE'" class="text-left">

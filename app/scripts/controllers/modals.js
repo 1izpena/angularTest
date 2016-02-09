@@ -137,7 +137,6 @@ angular.module('myAppAngularMinApp')
 
           ChatService.postAnswer(requestData).then(
             function (result) {
-              console.log(result);
               $uibModalInstance.close();
             },
             function (error) {

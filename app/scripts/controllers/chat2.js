@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll) {
 
       $scope.init = function()
       {
@@ -162,7 +162,7 @@ angular.module('myAppAngularMinApp')
 	    $scope.showGrouptoEdit = function(group){
        		$scope.tagGroup = group;
        		$scope.tagChannel = '';
-       	
+
       	};
 
 
@@ -183,7 +183,7 @@ angular.module('myAppAngularMinApp')
 
                 console.log("Hay error: " + err.message);
                 return err.message;
-              
+
 
               }
             );
@@ -269,7 +269,7 @@ angular.module('myAppAngularMinApp')
       ProfileService.acceptGroup(invitation.groupid).then(
         function (data) {
           $scope.invitations.splice(ind,1);
-          
+
         }
         ,function (err) {
           // Tratar el error
@@ -407,7 +407,7 @@ angular.module('myAppAngularMinApp')
             console.log(err.message);
             $scope.errorG = err.message;
           	$("#errorGroupModal").modal("show");
-            
+
           });
       };
 
@@ -481,7 +481,7 @@ angular.module('myAppAngularMinApp')
       else {
 
           $scope.membersSettings = $scope.members;
-         
+
           $scope.option = option;
           if(option == 2){
           	   $scope.searchinputplaceholder = "Search member to remove and click on it ...";
@@ -489,7 +489,7 @@ angular.module('myAppAngularMinApp')
           else {
                $scope.searchinputplaceholder = "Search member ...";
           }
-          
+
       }
 
     };
@@ -538,7 +538,7 @@ angular.module('myAppAngularMinApp')
               // Tratar el error
               console.log("Hay error");
               console.log(err.message);
-              
+
               $scope.errorG = err.message;
           	  $("#errorGroupModal").modal("show");
 
@@ -551,7 +551,7 @@ angular.module('myAppAngularMinApp')
               // Tratar el error
               console.log("Hay error");
               console.log(err.message);
-              
+
               $scope.errorG = err.message;
               $("#errorGroupModal").modal("show");
 
@@ -750,6 +750,65 @@ angular.module('myAppAngularMinApp')
 
     };
 
+    $scope.isInternalMessage = function ($index) {
+      if ($scope.listaMensajes[$index].text.indexOf('internalMessage#') == 0) {
+        return true;
+      }
+      return false;
+    };
+
+    $scope.getInternalMessage = function ($index) {
+      var internalMessage = $scope.listaMensajes[$index].text;
+      var re = /internalMessage#(\w+)\./i;
+      var matchArr, answerData;
+      var messageType, messageText = "";
+
+      var matchArr = internalMessage.match(re);
+      if (matchArr) (matchArr.length > 1) ? messageType=matchArr[1] : messageType="";
+
+      if (messageType == 'NEW_ANSWER') {
+        answerData = getAnswerData(internalMessage);
+        messageText = "<strong>"+answerData.answerUser + "</strong> add new answer for <a class=\"question-link\" ng-click=\"gotoAnchor('" + answerData.questionId + "')\">"+answerData.questionTitle+"</a>";
+      }
+
+      return messageText;
+
+    };
+
+      // Get answer data for a NEW_ANSWER internal message
+      function getAnswerData (internalMessage) {
+        var re, matchArr;
+        var answerData = {};
+
+        re = /QuestionId: \'(\w+)\'/i;
+        matchArr = internalMessage.match(re);
+        if (matchArr) answerData.questionId=matchArr[1];
+
+        re = /AnswerId: \'(\w+)\'/i;
+        matchArr = internalMessage.match(re);
+        if (matchArr) answerData.answerId=matchArr[1];
+
+        for (var i = 0; i < $scope.listaMensajes.length; i++) {
+          if ($scope.listaMensajes[i].id == answerData.questionId) {
+            answerData.questionTitle = $scope.listaMensajes[i].title;
+            for (var j=0; j < $scope.listaMensajes[i].answers.length; j++) {
+              if ($scope.listaMensajes[i].answers[j].id == answerData.answerId) {
+                answerData.answerUser = $scope.listaMensajes[i].answers[j].user.username;
+                break;
+              }
+            }
+            break;
+          }
+        }
+
+        return answerData;
+
+      }
+
+      $scope.gotoAnchor = function (anchor) {
+        $anchorScroll(anchor);
+      }
+
     $scope.showUserInfo = function ($index) {
       if ($index < 1) {
         return true;
@@ -810,7 +869,7 @@ angular.module('myAppAngularMinApp')
         // Tratar el error
         console.log("Hay error");
         console.log(err.message);
-        
+
         $scope.errorG = err.message;
         $("#errorGroupModal").modal("show");
 
@@ -855,14 +914,13 @@ angular.module('myAppAngularMinApp')
     });
 
     Socket.on('newQuestionAnswer', function (data) {
-      var message = data
+      var message = data;
       for (var i=0; i < $scope.listaMensajes.length; i++) {
         if ($scope.listaMensajes[i].id == message.id) {
           $scope.listaMensajes[i].answers.push(message.answer);
           break;
         }
       }
-      $scope.listaMensajes.push(data);
       $scope.$apply();
     });
 
@@ -951,7 +1009,7 @@ angular.module('myAppAngularMinApp')
         console.log ("newGroupInvitation received from server");
         $scope.invitations.push(data);
         $scope.$apply();
-        
+
 
       });
 
@@ -963,18 +1021,18 @@ angular.module('myAppAngularMinApp')
         	if($scope.option == 1) {
         		for (var i = 0; i < $scope.membersSettings.length; i++){
         			if ($scope.membersSettings[i].id == data.userid){
-            			$scope.membersSettings[i].isinvited = 0;        
+            			$scope.membersSettings[i].isinvited = 0;
             			i = $scope.membersSettings.length;
           			}
         		}
         	}
-      
+
         }
-       
+
         $scope.$apply();
         $scope.invitations.push(data);
         $scope.$apply();
-        
+
 
       });
 
@@ -986,25 +1044,25 @@ angular.module('myAppAngularMinApp')
         console.log ("newMemberInGroup receive from server");
         console.log(data);
 
-        
+
         data.user.color = getRandomColor();
         $scope.members.push(data.user);
 
-        
+
         /* si es el administrador, cambiarle los membersettings */
         if ($scope.adminGroup.id == $scope.userid){
         	/* sacamos al usuario añadido en el grupo de membersettings */
         	if($scope.option == 1) {
         		for (var i = 0; i < $scope.membersSettings.length; i++){
         			if ($scope.membersSettings[i].id == data.user.id){
-        				$scope.membersSettings.splice(i, 1);          
+        				$scope.membersSettings.splice(i, 1);
             			i = $scope.membersSettings.length;
           			}
         		}
         	}
-      
+
         }
-       
+
         $scope.$apply();
 
       });
@@ -1049,7 +1107,7 @@ angular.module('myAppAngularMinApp')
         }
 
 
-        
+
         /* si es el administrador, cambiarle los membersettings */
         if ($scope.adminGroup.id == $scope.userid){
         	/* añadimos al usuario borrado del grupo en membersettings (usuarios de sistema) */
@@ -1058,10 +1116,10 @@ angular.module('myAppAngularMinApp')
         		$scope.membersSettings.push(data.user);
 
         	}
-      
+
         }
 
-        
+
         $scope.$apply();
 
       });
