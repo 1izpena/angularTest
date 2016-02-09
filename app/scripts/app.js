@@ -20,6 +20,8 @@ angular
     'ngMaterial',
     'ngStorage',
     'angularMoment',
+    'textAngular',
+    'ngTagsInput',
     'ngFileUpload',
     'ui.bootstrap',
     'xeditable',
@@ -71,6 +73,26 @@ angular
         templateUrl: 'views/chat2.html',
         controller: 'Chat2Ctrl',
         controllerAs: 'chat2'
+      })
+      .when('/foro', {
+        templateUrl: 'views/foro.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro',
+      })
+      .when('/foro/question/:questionid', {
+        templateUrl: 'views/question.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro'
+      })
+      .when('/foro/newquestion', {
+        templateUrl: 'views/newQuestion.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro'
+      })
+       .when('/foro/tags', {
+        templateUrl: 'views/tags.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro'
       })
       .otherwise({
         redirectTo: '/'

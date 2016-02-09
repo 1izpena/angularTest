@@ -1,0 +1,19 @@
+
+    <!-- Modal content-->
+      <div class="modal-header" style="padding:35px 50px;">
+        <button type="button" class="close" >&times;</button>
+        <h4 class="modal-title">Add your comment</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+	         <div class="form-group">
+				<textarea rows="5" placeholder="Your comment...." ng-model="questioncomment"> </textarea> 
+			 </div>
+			<button type="submit" ng-click="QuestionComment(questioncomment)" class="btn btn-primary">Comment</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>

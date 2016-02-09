@@ -1,0 +1,141 @@
+<div class="container" ng-controller="ForoCtrl" data-ng-init="getQuestion()">
+	<div class="row container">
+		<div class="col-md-8 headLeft">
+			<div class="col-md-6">
+			</div>	
+			<div class="col-md-6">
+				<div class="btn-group" role="group">
+  					<button type="button" class="btn btn-default active" ng-click="goToForo()">Preguntas</button>
+  					<button type="button" class="btn btn-default" ng-click="goToTags()">Tags</button>
+  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Hacer pregunta</button>
+				</div>
+			</div>	
+		</div>
+		<div class="col-md-4 headRight">
+			<form id="custom-search-form" class="form-search form-horizontal" ng-submit="search(request)">
+	            <div class="input-append span12">
+	                <input type="text" class="search-query mac-style" placeholder="Search" ng-model="request">
+	                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i></button>
+	            </div>
+            </form>
+		</div>
+		<div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+          <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
+          <h4><strong>Error!</strong></h4> {{message}}
+        </div>
+        <div class="alert alert-success fade in in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="success">
+          <button type="button" class="close"  aria-label="Close" ng-click="success=0"><span aria-hidden="true">&times;</span></button>
+          	{{message}}
+        </div>
+	</div>	
+	<div class="row">
+	    <div  class="col-md-12 preguntadetalle">
+	        <div class="col-md-12">
+	        	<div class="left">
+	    			<button class="glyphicon glyphicon-chevron-up voteup" aria-hidden="true" ng-click="upvote()"></button>
+	    			<span class="votes">{{question.votes}}</span>
+	    			<button class="glyphicon glyphicon-chevron-down downvote" aria-hidden="true" ng-click="downvote()"></button>
+	    		</div> 
+	    		<div class="right">
+		        	<h1 class="questiontitle"><a>{{question.title}}</a></h1>
+		        	<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
+		        	<p ng-bind-html="question.body"></p>
+		        	<div class="time col-md-12">
+		        		<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"> by {{question._user.username}}</span>
+		        	</div>
+		        	<div class="tags">
+		        		<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag.text}}</a>
+		        	</div>
+		        	<div>
+		        		<a href="" ng-show="linkQuestion">Delete Question</a>
+		        	</div>
+		        	<div class="col-md-12">
+						<div class="col-md-10">
+							<h3>Comments</h3>
+							<div class="collapse" id="questioncomments">
+								<div class="well">
+    								<ul class="list-group">
+									  <li class="list-group-item" ng-repeat="comment in question.comments | orderBy: '-created'">
+									    <span class="badge"  am-time-ago="comment.created"></span>
+									    {{comment.comment}}<b>-{{comment._user.username}}</b>
+									  </li>
+									</ul>
+									<button  class="btn btn-primary" ng-click="questionModal(question._id,'')">Add comment</button>
+
+ 								 </div>
+							</div>		
+							<a role="button" data-toggle="collapse" data-target="#questioncomments" aria-expanded="false" aria-controls="questioncomments"><i class="fa fa-sort-desc fa-3	">Show comments</i></a>	
+						</div>
+						<div id="shared" class="col-md-2">
+		        			<h3>Shared</h3>
+							<div data-addthis-toolbox data-url="{{path}}" id="bp-{{question._id}}" class="addthis_toolbox addthis_default_style addthis_32X32_style">
+								<a class="addthis_button_facebook"></a>
+								<a class="addthis_button_twitter"></a>
+								<a class="addthis_button_google_plusone_share"></a>
+							</div>
+		        		</div>	
+		        	</div>
+	        	</div>
+	        </div>
+	   </div>
+	   <div class="row">
+		   <div class="respuestas">
+		   		<h3 class="col-md-offset-1">{{question.answercount}} Answers</h3>
+				<div class="col-md-10 col-md-offset-1 respuestadetalle"  ng-repeat=" answer in question.answers">
+					<div class="col-md-12">
+	        	<div class="left">
+	    			<button class="glyphicon glyphicon-chevron-up voteup" aria-hidden="true" ng-click="answerUpVote($index,answer._id)"></button>
+	    			<span class="votes">{{answer.votes}}</span>
+	    			<button class="glyphicon glyphicon-chevron-down downvote" aria-hidden="true" ng-click="answerDownVote($index,answer._id)"></button>
+	    		</div> 
+	    		<div class="right">
+		        	<p ng-bind-html=" answer.body"></p>
+		        	<div class="time col-md-12">
+		        		<span class="glyphicon glyphicon-time pull-right text-muted"  am-time-ago="answer.created"></span>
+		        	</div>
+		        	<div>
+		        		<a href="" ng-show="viewLinks" ng-click="deleteAnswer($index,question._id,answer._id)">Delete answer</a>
+		        	</div>
+		        	<div class="col-md-12">
+		        		<div class="col-md-10">
+		        			<h3>Comments</h3>
+		        			<div class="collapse" id="{{answer._id}}">
+								<div class="well">
+    								<ul class="list-group">
+										<li class="list-group-item" ng-repeat="comment in answer.comments | orderBy: '-created'">
+										    <span class="badge"  am-time-ago="comment.created">{{comment.created}}</span>
+										    {{comment.comment}}<b>-{{comment._user.username}}</b>
+										 </li>
+									</ul>
+									<button class="btn btn-primary" ng-click="answerModal($index,question._id,answer._id)">Add comment</button>
+								</div>
+							</div>	
+							<a role="button" data-toggle="collapse" data-target="#{{answer._id}}" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-sort-desc fa-3	">Show comments</i></a>	
+			        	</div>	
+			        	<div id="shared" class="col-md-2">
+			        		<h3>Shared</h3>
+							<div data-addthis-toolbox data-url="{{path}}" data-title="{{answer.title}}" id="bp-{{answer._id}}" class="addthis_toolbox addthis_default_style addthis_32x32_style" >
+								<a class="addthis_button_facebook"></a>
+								<a class="addthis_button_twitter"></a>
+								<a class="addthis_button_google_plusone_share"></a>
+							</div>
+		        		</div>
+		        	</div>
+	        	</div>
+	        </div>
+				</div>
+		   		<hr>
+		   </div>
+		</div>
+	   <div class="answerquestion col-md-8 col-md-offset-1">
+	   	<h3>Your answer</h3>
+	   	<hr>
+	   	<form ng-submit="newanswer(answer)">
+	   		<div text-angular ng-model="answer.body"></div>
+	   		<button type="submit" class="btn btn-primary btn-lg col-md-2">Post answer</button>
+	   </form>
+	   </div>
+	</div>
+</div>
+<link rel="stylesheet" ng-href="styles/foro.css" >
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
