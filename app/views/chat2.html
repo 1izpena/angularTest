@@ -826,52 +826,79 @@ ng-class="{'disabled':condition}"-->
     </div>
   </div>
 
+<!--  *************************** -->
 
-<!--***************** hasta aqui uso ***********************************-->
-
-
-
-
-  <!-- New Channel Modal -->
+ <!-- New Channel Modal -->
   <div id="newChannelModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header" style="padding:35px 50px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            ng-click="messageNewChannelModal=''; removeInputChannelName()">
+                    <span aria-hidden="true">&times;</span>
+          </button> 
           <h4 class="modal-title">Add New Channel</h4>
         </div>
+
         <div class="modal-body">
+
           <div class="form-group">
             <label for="channelNameTxt">Channel Name:</label>
             <input type="text" class="form-control" name="channelNameTxt" id="channelNameTxt" placeholder="Enter Channel Name..." ng-model="channel.channelName">
           </div>
+
+
           <div class="form-group">
-            <span><label>Select Channel Type: </label></span>
-            <br>
-            <select ng-model="channel.channelType">
-              <option value="PRIVATE"><span><label> PRIVATE </label></span></option>
-              <option value="PUBLIC"><span><label> PUBLIC </label></span></option>
+            <label>Select Channel Type: </label>
+            <br><select class="btn btn-default" data-container="body" ng-model="channel.channelType">
+              <option value="PRIVATE"> PRIVATE </option>
+              <option value="PUBLIC"> PUBLIC </option>
             </select>
           </div>
+
           <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelModal=''">
               <span aria-hidden="true">&times;</span>
             </button>
+
             {{messageNewChannelModal}}
           </div>
+          
         </div>
+
         <div class="modal-footer">
           <div>
             <button type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel(channel)"><span class="fa fa-floppy-o"></span> Create</button>
-            <button type="button" class="btn btn-success" id="btn-new-channel-reset" ng-click="resetNewChannel()"><span class="fa fa-refresh"></span> Reset</button>
-            <button type="button" class="btn btn-success" id="btn-new-channel-close" data-dismiss="modal"><span class="fa fa-remove"></span> Close</button>
+
+            <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="messageNewChannelModal=''; removeInputChannelName()"><span class="fa fa-remove"></span> Close</button>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--***************** hasta aqui uso ***********************************-->
+
+
+
+
+ 
 
   <!-- Edit Channel Modal -->
   <div id="editChannelModal" class="modal fade" role="dialog">

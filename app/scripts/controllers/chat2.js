@@ -29,6 +29,8 @@ angular.module('myAppAngularMinApp')
       /* modal de errores para los settings del grupo */
       $scope.errorG= '';
       $scope.messageNewGroupModal = '';
+      $scope.messageNewChannelModal = '';
+      $scope.channel = {channelType:"PUBLIC"};
 
 
 
@@ -41,7 +43,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.searchinputplaceholder = "Search member ...";
 
-      $scope.messageNewChannelModal = '';
+      
       $scope.messageEditChannelModal = '';
       $scope.messageChannelMemberInfoModal = '';
       $scope.messageUnsuscribeFromChannelModal = '';
@@ -97,9 +99,16 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.removeInputChannelName = function(){
+        $("#channelNameTxt").val('').trigger('input');
+      };
+
+
+
       $scope.removeInput = function(){
       	$("#groupNameTxt").val('').trigger('input');
       };
+
 
       $scope.createNewGroup = function(group){
 
@@ -284,14 +293,16 @@ angular.module('myAppAngularMinApp')
         ChannelService.createNewChannel($scope.groupid,channel).then(
           function(data) {
             $("#newChannelModal").modal("hide");
-            $("#channelNameTxt").val('').trigger('input');
-            $("#channelTypeTxt").val('').trigger('input');
+
+            $scope.removeInputChannelName();
+            $scope.messageNewChannelModal = '';
+
           },function(err){
             // Tratar el error
             console.log("Hay error al crear canal: " + err.data.message);
+            $scope.removeInputChannelName();
             $scope.messageNewChannelModal = err.data.message;
-            $("#channelNameTxt").val('').trigger('input');
-            $("#channelTypeTxt").val('').trigger('input');
+            
           }
         );
       };
@@ -377,19 +388,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
-      $scope.resetNewChannel = function(){
-        $scope.messageNewChannelModal = '';
-        $("#channelNameTxt").val('').trigger('input');
-        $("#channelTypeTxt").val('').trigger('input');
-      };
-
-
-
-      $scope.resetEditGroup = function(){
-        $scope.messageEditGroupModal = '';
-        $("#editGroupNameTxt").val('').trigger('input');
-      };
-
+     
       $scope.resetEditChannel = function(){
         $scope.messageEditChannelModal = '';
         $("#editChannelNameTxt").val('').trigger('input');

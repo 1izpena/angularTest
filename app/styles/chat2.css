@@ -16,6 +16,10 @@
 	/*antes 11*/
   height: 15%!important;
 }
+.selectpicker{
+  style: 'btn-info'
+}
+
 
 /*
 #list-group {
