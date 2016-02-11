@@ -27,7 +27,7 @@
 
 
   <!--navbar-fixed-top-->
-  <div class="navbar navbar-default" role="navigation" ng-controller="MainCtrl">
+  <div class="navbar navbar-default" id="customNavbar" role="navigation" ng-controller="MainCtrl">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -62,7 +62,7 @@
 
 
    <div class="content">
-   <div ng-view=""></div>
+   <div ng-view="" class="viewContainer"></div>
    </div>
 
    <div class="footer">
@@ -127,6 +127,6 @@
         <script src="scripts/directives.js"></script>
         <script src="scripts/services.js"></script>
         <!-- endbuild -->
-   
+
 </body>
 </html>
