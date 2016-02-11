@@ -43,7 +43,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.searchinputplaceholder = "Search member ...";
 
-      
+
       $scope.messageEditChannelModal = '';
       $scope.messageChannelMemberInfoModal = '';
       $scope.messageUnsuscribeFromChannelModal = '';
@@ -251,8 +251,8 @@ angular.module('myAppAngularMinApp')
 
           },function(err){
             // Tratar el error
-            
-            console.log("Hay error");          
+
+            console.log("Hay error");
             console.log(err);
             $scope.errorG = err.data.message;
             $("#errorGroupModal").modal("show");
@@ -302,7 +302,7 @@ angular.module('myAppAngularMinApp')
             console.log("Hay error al crear canal: " + err.data.message);
             $scope.removeInputChannelName();
             $scope.messageNewChannelModal = err.data.message;
-            
+
           }
         );
       };
@@ -388,7 +388,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
-     
+
       $scope.resetEditChannel = function(){
         $scope.messageEditChannelModal = '';
         $("#editChannelNameTxt").val('').trigger('input');
@@ -399,7 +399,7 @@ angular.module('myAppAngularMinApp')
           .then(function (data) {
             $scope.privateChannels = data.privateChannels;
             $scope.publicChannels = data.publicChannels;
-            $scope.directChannels = data.directChannels;
+            $scope.directChannels = data.directMessageChannels;
             $scope.adminGroup = data.admin;
 
           },function (err) {
@@ -736,7 +736,11 @@ angular.module('myAppAngularMinApp')
       else {
         ChannelService.createDirectChannel(userid, $scope.username, member, groupid)
           .then ( function (channel) {
-            $scope.directChannels.push(channel);
+            $scope.directChannels.push({
+              id: channel.id,
+              channelName: channel.channelName,
+              users: [channel.users[0].id, channel.users[1].id ]
+            });
             $scope.selectChannel (channel);
         },
         function (err) {
