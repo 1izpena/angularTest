@@ -402,8 +402,11 @@ ng-class="{'disabled':condition}"-->
                                       ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
 
                                       <!-- si options = 1 add / options = 2 remove -->
+                                               <!--
                                                <img ng-src="http://placehold.it/50/{{member.color}}/fff&text={{member.username | limitTo:2 | uppercase }}"
                                                         alt="User Avatar" class="img-circle" id="img-circle"/>
+                                                        -->
+                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" xclass="img-circle" id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
 
@@ -451,9 +454,8 @@ ng-class="{'disabled':condition}"-->
                   <hr ng-if="showUserInfo($index)">
                   <span class="chat-img pull-left"
                         ng-if="showUserInfo($index)">
-                    <img
-                      ng-src="http://placehold.it/50/{{($storage.id!=msg.user.id)?'55C1E7':'FA6F57'}}/fff&text={{msg.user.username | limitTo:2 | uppercase }}"
-                      alt="User Avatar" class="img-circle"/>
+                    <img ng-src="http://www.gravatar.com/avatar/{{getHash(msg.user.mail)}}?s=30&d=identicon"
+                         alt="User Avatar" xclass="img-circle"/>
                   </span>
 
                   <div class="chat-body clearfix">
@@ -837,7 +839,7 @@ ng-class="{'disabled':condition}"-->
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"
             ng-click="messageNewChannelModal=''; removeInputChannelName()">
                     <span aria-hidden="true">&times;</span>
-          </button> 
+          </button>
           <h4 class="modal-title">Add New Channel</h4>
         </div>
 
@@ -864,7 +866,7 @@ ng-class="{'disabled':condition}"-->
 
             {{messageNewChannelModal}}
           </div>
-          
+
         </div>
 
         <div class="modal-footer">
@@ -898,7 +900,7 @@ ng-class="{'disabled':condition}"-->
 
 
 
- 
+
 
   <!-- Edit Channel Modal -->
   <div id="editChannelModal" class="modal fade" role="dialog">

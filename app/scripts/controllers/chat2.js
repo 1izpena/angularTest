@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5) {
 
       $scope.init = function()
       {
@@ -11,7 +11,6 @@ angular.module('myAppAngularMinApp')
 
 
       };
-
 
 /*
     $scope.logoutLogin = function () {
@@ -437,8 +436,7 @@ angular.module('myAppAngularMinApp')
             $scope.members = data;
 
             for (var i = 0; i < data.length; i++ ) {
-                data[i].color = getRandomColor();
-
+                data[i].hash = md5.createHash(data[i].mail);
             }
             $scope.membersSettings = data;
 
@@ -454,15 +452,10 @@ angular.module('myAppAngularMinApp')
     };
 
 
-    function getRandomColor() {
-      var letters = '0123456789ABCDEF'.split('');
-      var color = '';
-      for (var i = 0; i < 6; i++ ) {
-          color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
 
+    $scope.getHash = function (str) {
+        return md5.createHash(str);
+      };
 
 
     $scope.setSettingsOptions = function (option) {
