@@ -418,6 +418,17 @@ ul {   list-style-type: none; }
 
 }
 
+#menu-tag:hover,
+#menu-tag:focus {
+    text-decoration: none;
+    font-weight:bolder;
+    cursor: pointer;
+
+
+}
+
+
+
 #menu-toggle:hover,
 #menu-toggle:focus {
     text-decoration: none;

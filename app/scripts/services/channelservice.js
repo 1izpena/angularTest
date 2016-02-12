@@ -34,25 +34,36 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
-      function editChannel (groupid,channelid,data) {
+
+      function editChannel (groupid,channelid,data2) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
+        console.log("entro en edit channel");
         $http({
           method: 'put',
-          headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid,
-          data: data
-        }).then(
-          function(response) {
-            defered.resolve(response);
-          },
-          function(error){
-            defered.reject(error);
-          }
-        );
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid +'/channels/'+channelid,
+          data: 'channelName='+data2
+                    
+        }).success(function(data) {
+                defered.resolve(data);
+          })
+          .error(function(err) {
+                defered.reject(err)
+          });
+
         return promise;
       }
+
+
+
+
+
+
+
+
+
 
       function deleteChannel (groupid,channelid) {
         var defered = $q.defer();
@@ -73,6 +84,9 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
+
+
+/************************************************************/
       function unsubscribeFromChannel (groupid,channelid) {
         var defered = $q.defer();
         var promise = defered.promise;
@@ -93,6 +107,31 @@ angular.module('myAppAngularMinApp')
       }
 
 
+
+
+      function unsuscribeFromGroup (group) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+        $http({
+          method: 'delete',
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+group.id+'/unsuscribe'
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+        return promise;
+      };
+
+
+
+
+/******************************************/
       function deleteUserFromChannel (groupid,channelid,data) {
         var defered = $q.defer();
         var promise = defered.promise;
