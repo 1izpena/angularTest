@@ -95,6 +95,11 @@ angular
         controller: 'ForoCtrl',
         controllerAs: 'foro'
       })
+ .when('/foro/tag/:tagid', {
+        templateUrl: 'views/foro.html',
+        controller: 'ForoCtrl',
+        controllerAs: 'foro',
+      })
       .otherwise({
         redirectTo: '/'
       });
