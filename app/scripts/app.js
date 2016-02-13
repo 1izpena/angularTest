@@ -25,6 +25,7 @@ angular
     'ngFileUpload',
     'ui.bootstrap',
     'xeditable',
+    'angular-md5',
     'textAngular'
   ])
   .run(function(editableOptions) {

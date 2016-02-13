@@ -27,7 +27,7 @@
 
 
   <!--navbar-fixed-top-->
-  <div class="navbar navbar-default" role="navigation" ng-controller="MainCtrl">
+  <div class="navbar navbar-default" id="customNavbar" role="navigation" ng-controller="MainCtrl">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -62,7 +62,7 @@
 
 
    <div class="content">
-   <div ng-view=""></div>
+   <div ng-view="" class="viewContainer"></div>
    </div>
 
    <div class="footer">
@@ -118,6 +118,7 @@
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -127,6 +128,6 @@
         <script src="scripts/directives.js"></script>
         <script src="scripts/services.js"></script>
         <!-- endbuild -->
-   
+
 </body>
 </html>

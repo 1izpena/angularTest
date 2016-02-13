@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5) {
 
       $scope.init = function()
       {
@@ -11,7 +11,6 @@ angular.module('myAppAngularMinApp')
 
 
       };
-
 
 /*
     $scope.logoutLogin = function () {
@@ -45,13 +44,15 @@ angular.module('myAppAngularMinApp')
       $scope.searchinputplaceholder = "Search member ...";
 
 
+
       /* flag para activar o no settings de canal */
       $scope.activeChannelSettings = 0;
 
       
       $scope.messageEditChannelModal = '';
       $scope.messageChannelMemberInfoModal = '';
-      $scope.messageUnsuscribeFromChannelModal = '';
+
+      /*$scope.messageUnsuscribeFromChannelModal = '';*/
       $scope.messageDeleteChannelModal = '';
       $scope.messageDeleteUserFromChannelModal = '';
       $scope.messageAddUserToChannelModal = '';
@@ -256,8 +257,8 @@ angular.module('myAppAngularMinApp')
 
           },function(err){
             // Tratar el error
-            
-            console.log("Hay error");          
+
+            console.log("Hay error");
             console.log(err);
             $scope.errorG = err.data.message;
             $("#errorGroupModal").modal("show");
@@ -359,7 +360,7 @@ angular.module('myAppAngularMinApp')
             console.log("Hay error al crear canal: " + err.data.message);
             $scope.removeInputChannelName();
             $scope.messageNewChannelModal = err.data.message;
-            
+
           }
         );
       };
@@ -430,23 +431,20 @@ angular.module('myAppAngularMinApp')
 
           	$("#unsuscribeFromChannelModal").modal("hide");
           	if($scope.tagChannel.type == 'private'){
-          		var ind = $scope.groups.indexOf($scope.tagGroup);
-	            if(ind>-1){
-	            	$scope.groups.splice(ind,1);
+
+          		var ind = $scope.privateChannels.indexOf($scope.tagChannel);
+	            if(ind > -1){
+	            	$scope.privateChannels.splice(ind,1);
 	            }
-          	}
-
-            
-
-            
+          	}          
 
             
             console.log("unsuscribe ok");
-            for (var i=0;i<$scope.privateChannels.length;i++){
+            /*for (var i=0;i<$scope.privateChannels.length;i++){
               if ($scope.privateChannels[i].id === data.data.id){
                 $scope.privateChannels.splice(i,1);
               }
-            }
+            }*/
 
             $scope.tagChannel='';
             $scope.channelSelected = false;
@@ -454,12 +452,18 @@ angular.module('myAppAngularMinApp')
           },function(err){
             // Tratar el error
             console.log("Hay error en unsuscribe from channel: " + err.data.message);
-            $scope.messageUnsuscribeFromChannelModal = err.data.message;
+            /*$scope.messageUnsuscribeFromChannelModal = err.data.message;*/
+            /**/
+            $scope.errorG = err.data.message;
+            $("#unsuscribeFromChannelModal").modal("hide");
+            $("#errorGroupModal").modal("show");
+
+
           }
         );
       };
 
-
+/*
       $scope.unsuscribeFromChannel = function(){
         GroupService.unsuscribeFromGroup($scope.tagGroup).then(
           function(data) {
@@ -488,6 +492,7 @@ angular.module('myAppAngularMinApp')
 
 
 /*******************/
+
       $scope.resetEditChannel = function(){
         $scope.messageEditChannelModal = '';
         $("#editChannelNameTxt").val('').trigger('input');
@@ -499,7 +504,7 @@ angular.module('myAppAngularMinApp')
           	console.log(data);
             $scope.privateChannels = data.privateChannels;
             $scope.publicChannels = data.publicChannels;
-            $scope.directChannels = data.directChannels;
+            $scope.directChannels = data.directMessageChannels;
             $scope.adminGroup = data.admin;
 
           },function (err) {
@@ -539,8 +544,7 @@ angular.module('myAppAngularMinApp')
             $scope.members = data;
 
             for (var i = 0; i < data.length; i++ ) {
-                data[i].color = getRandomColor();
-
+                data[i].hash = md5.createHash(data[i].mail);
             }
             $scope.membersSettings = data;
 
@@ -556,15 +560,10 @@ angular.module('myAppAngularMinApp')
     };
 
 
-    function getRandomColor() {
-      var letters = '0123456789ABCDEF'.split('');
-      var color = '';
-      for (var i = 0; i < 6; i++ ) {
-          color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
 
+    $scope.getHash = function (str) {
+        return md5.createHash(str);
+      };
 
 
     $scope.setSettingsOptions = function (option) {
@@ -841,7 +840,11 @@ angular.module('myAppAngularMinApp')
       else {
         ChannelService.createDirectChannel(userid, $scope.username, member, groupid)
           .then ( function (channel) {
-            $scope.directChannels.push(channel);
+            $scope.directChannels.push({
+              id: channel.id,
+              channelName: channel.channelName,
+              users: [channel.users[0].id, channel.users[1].id ]
+            });
             $scope.selectChannel (channel);
         },
         function (err) {
