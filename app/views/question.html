@@ -40,14 +40,16 @@
 		        	<h1 class="questiontitle"><a>{{question.title}}</a></h1>
 		        	<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
 		        	<p ng-bind-html="question.body"></p>
-		        	<div class="time col-md-12">
-		        		<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"> by {{question._user.username}}</span>
+		        	<div ng-if="linkQuestion">
+		        		<a href=""  ng-click="deleteQuestion(question._id, question.answers)" >Delete Question</a>
+		        		<a href=""  ng-click="deleteQuestion(question._id, question.answers)" >Edit Question</a>
 		        	</div>
 		        	<div class="tags">
-		        		<a ng-repeat="tag in question.tags" class="label label-info" href="">{{tag.text}}</a>
+		        		<a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
 		        	</div>
-		        	<div>
-		        		<a href="" ng-show="linkQuestion">Delete Question</a>
+		        	<div class="time col-md-12">
+		        		<span class="pull-right text-muted">by {{question._user.username}}</span>
+		        		<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
 		        	</div>
 		        	<div class="col-md-12">
 						<div class="col-md-10">
@@ -91,10 +93,12 @@
 	    		<div class="right">
 		        	<p ng-bind-html=" answer.body"></p>
 		        	<div class="time col-md-12">
+		        		<span class="pull-right text-muted">by {{answer._user.username}}</span>
 		        		<span class="glyphicon glyphicon-time pull-right text-muted"  am-time-ago="answer.created"></span>
 		        	</div>
-		        	<div>
-		        		<a href="" ng-show="viewLinks" ng-click="deleteAnswer($index,question._id,answer._id)">Delete answer</a>
+		        	<div ng-if="linkAnswer">
+		        		<a href="" ng-click="deleteAnswer($index,question._id,answer._id)">Delete answer</a>
+		        		<a href="" ng-click="deleteAnswer($index,question._id,answer._id)">Edit answer</a>
 		        	</div>
 		        	<div class="col-md-12">
 		        		<div class="col-md-10">
