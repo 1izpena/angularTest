@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, searchservice, LoginService, AnswerService, $localStorage, $uibModal) {
+  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, searchservice, LoginService, AnswerService, TagService, $localStorage, $uibModal) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -13,8 +13,9 @@ angular.module('myAppAngularMinApp')
     ];
   $scope.error = 0;
   $scope.success = 0;
-  $scope.viewLinks = false;
   $scope.linkQuestion = false;
+  $scope.linkAnswer = false;
+  $scope.tagQuestions ={};
   $scope.path = $location.path();
 
   $scope.goTo = function(url)
@@ -41,24 +42,12 @@ $scope.goQuestion = function(id)
   $scope.goTo('/foro/question/'+id);
 }
 
-/*Obtener lista de preguntas*/
-$scope.getQuestions = function()
-{
-  ForoService.getQuestions().then(function (res){
-    console.log(res.data);
-    $scope.questions = res.data;
-  },function(err){
-    $scope.error = err.message;
-  });
-}
-
 
 /****** Controlador Preguntas ********
 
 /*Funcion para crear pregunta*/
 $scope.newquestion = function(question)
 {
-  console.log(question.tags);
   QuestionService.createQuestion(question).then(function (res){
     $scope.goTo('foro/question/'+res.data._id);
     $scope.success = 1;
@@ -93,7 +82,15 @@ $scope.newquestion = function(question)
     });
   }
 
-
+ $scope.deleteQuestion = function(questionid,answers)
+ {
+    QuestionService.deleteQuestion(questionid,answers).then(function(res){
+      $scope.goTo('/foro');
+    },function(err){
+      $scope.error = 1;
+      $scope.message = err.data.message;
+    });
+ }
 
 
 /********* Answer function *******/
@@ -120,7 +117,6 @@ $scope.newquestion = function(question)
 $scope.deleteAnswer = function ($index,questionid,answerid)
 {
   AnswerService.deleteAnswer(questionid,answerid).then(function (res){
-
     $scope.question.answercount = res.data.answercount;
 
   },function(err){
@@ -151,7 +147,7 @@ $scope.answerUpVote = function($index,answerid)
   }
   else
   {
-
+    $scope.goTo('/login');
   }
 }
 
@@ -171,20 +167,15 @@ $scope.answerDownVote = function($index,answerid)
   }
   else
   {
-    
+        $scope.goTo('/login');
   }
 }
 
 
 /******* Controlador tags *******/
-$scope.loadTags = function(query){
-
-}
-
 $scope.getTags = function(){
-  QuestionService.getTags().then( function(res){
+  TagService.getTags().then( function(res){
     $scope.tags = res.data;
-
   },function(err)
   {
     $scope.error = 1;
@@ -192,27 +183,45 @@ $scope.getTags = function(){
   });
 }
 
+$scope.questionsByTag = function(id){
+   $scope.goTo('/foro/tag/'+id);
+}
+
+$scope.getQuestiontag = function (id)
+{
+  TagService.getQuestionsByTag(id).then(function(res){
+    console.log(res);
+    $scope.questions = res.data;
+
+  },function(err){
+
+  });
+}
+
 /****** Funciones de Inicio*******/
 $scope.getQuestion = function()
 {
   QuestionService.getQuestion($routeParams.questionid).then(function (res){
-    $scope.question = res.data;
-    $scope.question.answercount++;
-    for(var i =0; i < res.data.answers.length;i++)
+    $scope.question = res.data; 
+    if($scope.question._user._id == $localStorage.id)
     {
-      if($scope.question.answers[i]._user == $localStorage.id)
-      {
-        $scope.viewLinks = true;
-      }
-      if($scope.question._user == $localStorage.id)
-      {
-        $scope.linkQuestion = true;
-      }
-
+     $scope.linkQuestion= true;
     }
-    
+    if($scope.question.answer._user._id == $localStorage.id)
+    {
+     $scope.linkAnswer= true;
+    }
   },function(err){
     $scope.error = 1;
+    $scope.error = err.message;
+  });
+}
+
+$scope.getQuestions = function()
+{
+  ForoService.getQuestions().then(function (res){
+    $scope.questions = res.data;
+  },function(err){
     $scope.error = err.message;
   });
 }
@@ -231,7 +240,14 @@ $scope.getQuestion = function()
 
 $scope.init = function()
 {
-  $scope.getQuestions();
+  if($location.path() == '/foro')
+  {
+    $scope.getQuestions();
+  }
+  else
+  {
+    $scope.getQuestiontag($routeParams.tagid);
+  }
 }
 
 
