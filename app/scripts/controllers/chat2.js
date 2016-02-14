@@ -19,11 +19,19 @@ angular.module('myAppAngularMinApp')
         LoginService.logoutLogin();
     };
 */
+	  $scope.user = '';
+	  $scope.membersSettings = '';
+	  $scope.membersSettingschannel = '';
+
+	  $scope.members = '';
+	  $scope.channelMembers = '';
 
 
 	  $scope.tagChannel = '';
 	  $scope.tagGroup = '';
 	  $scope.adminGroup = '';
+	  $scope.adminChannel = '';
+
 
       /* modal de errores para los settings del grupo */
       $scope.errorG= '';
@@ -32,30 +40,17 @@ angular.module('myAppAngularMinApp')
       $scope.channel = {channelType:"PUBLIC"};
 
 
-
-
       $scope.error1 = 0;
       $scope.message1 = '';
       //error codes in channel setting modals
 
-      $scope.errorUnsuscribeFromGroupModal = 0;
-      $scope.messageUnsuscribeFromGroupModal = '';
 
       $scope.searchinputplaceholder = "Search member ...";
-
-
 
       /* flag para activar o no settings de canal */
       $scope.activeChannelSettings = 0;
 
-      
-      $scope.messageEditChannelModal = '';
-      $scope.messageChannelMemberInfoModal = '';
 
-      /*$scope.messageUnsuscribeFromChannelModal = '';*/
-      $scope.messageDeleteChannelModal = '';
-      $scope.messageDeleteUserFromChannelModal = '';
-      $scope.messageAddUserToChannelModal = '';
 
       $scope.logout = function () {
       LoginService.logout();
@@ -65,8 +60,10 @@ angular.module('myAppAngularMinApp')
       $scope.message1 = '';
       $scope.navsearch = 0;
       $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
+      
       /* group user settings tag */
       $scope.option = 0;
+      $scope.optionchannel = 0;
 
 
 
@@ -354,6 +351,7 @@ angular.module('myAppAngularMinApp')
 
             $scope.removeInputChannelName();
             $scope.messageNewChannelModal = '';
+            console.log("se crea el nuevo canal");
 
           },function(err){
             // Tratar el error
@@ -365,66 +363,88 @@ angular.module('myAppAngularMinApp')
         );
       };
 
-      $scope.deleteChannel = function(channel){
-        ChannelService.deleteChannel($scope.groupid,$scope.channelid).then(
+      $scope.deleteChannel = function(){
+        ChannelService.deleteChannel($scope.tagGroup.id,$scope.tagChannel.id).then(
           function(data) {
             console.log("Delete channel OK");
             $("#deleteChannelModal").modal("hide");
+
+            $scope.tagChannel='';
+
           },function(err){
             // Tratar el error
             console.log("Hay error en delete channel: " + err.data.message);
-            $scope.messageDeleteChannelModal = err.data.message;
+            
+
+            $scope.errorG = err.data.message;
+            $("#deleteChannelModal").modal("hide");
+            $scope.tagGroup='';
+
+            $("#errorGroupModal").modal("show");
+
           }
         );
       };
 
-     /* $scope.editChannel = function(channel){
-          console.log("tagChannel: " + $scope.tagChannel.channelName);
-          console.log("newChannelName body: " + channel.channelName);
-          if ($scope.tagChannel.channelName == channel.channelName){
-            $scope.messageEditChannelModal = 'new channelName should be different';
-          } else {
-            ChannelService.editChannel($scope.groupid, $scope.channelid, channel).then(
-              function (data) {
-                console.log(data);
-                $("#editChannelModal").modal("hide");
-              }, function (err) {
-                // Tratar el error
-                console.log("Hay error en edit channel: " + err.data.message);
-                $("#editChannelNameTxt").val('').trigger('input');
-                $scope.messageEditChannelModal = err.data.message;
-              }
-            );
-          }
-      };
-*/
-      $scope.addUserToChannel = function(userid1){
-        ChannelService.addUserToChannel($scope.groupid,$scope.channelid,userid1).then(
+
+    
+      $scope.addUserToChannel = function(member, ind){
+        ChannelService.addUserToChannel($scope.groupid,$scope.channelid,member.id).then(
           function(data) {
+
+          	/* si añadimos un miembro nuevo y es privado */
+          	/* hay que quitarlo de membersettings */
             console.log("Ok add user to channel");
-            $("#addUserToChannelModal").modal("hide");
+            //$("#addUserToChannelModal").modal("hide");
+            console.log(member);
+            /* option == 1 add*/
+            if($scope.optionchannel == 1){
+            	$scope.membersSettingschannel.splice(ind, 1);
+            }
+            //console.log("esto vale private channel");
+            //console.log($scope.privateChannels);
+            console.log("/////////////////77");
+            console.log("esto vale $scope.channelMembers en addUserToChannel");
+            console.log($scope.channelMembers);
+            $scope.channelMembers.push(member);
+            console.log("esto vale $scope.channelMembers despues del push en addUserToChannel");
+            console.log($scope.channelMembers);
+
           },function(err){
             console.log("Error en add user to channel: " + err.data.message);
-            $scope.messageAddUserToChannelModal = err.data.message;
+            $scope.errorG = err.data.message;
+            $("#errorGroupModal").modal("show");
+
           }
         );
       };
 
 
-      $scope.deleteUserFromChannel = function(userid1){
-        ChannelService.deleteUserFromChannel($scope.groupid,$scope.channelid,userid1).then(
+      $scope.deleteUserFromChannel = function(member, ind){
+        ChannelService.deleteUserFromChannel($scope.groupid,$scope.channelid,member.id).then(
           function(data) {
+
             console.log("Ok delete user from channel");
-            $("#deleteUserFromChannelModal").modal("hide");
+            console.log(member);
+            //$("#deleteUserFromChannelModal").modal("hide");
+            if($scope.optionchannel == 2){
+            	$scope.membersSettingschannel.splice(ind, 1);
+
+            }
+
+
           },function(err){
             console.log("Hay error en delete user from channel: " + err.data.message);
-            $scope.messageDeleteUserFromChannelModal = err.data.message;
+            $scope.errorG = err.data.message;
+            $("#errorGroupModal").modal("show");
+
+           
           }
         );
       };
 
 
-/********************/
+
       $scope.unsuscribeFromChannel = function(){
         ChannelService.unsubscribeFromChannel($scope.tagGroup.id,$scope.tagChannel.id).then(
           function(data) {
@@ -434,17 +454,11 @@ angular.module('myAppAngularMinApp')
 
           		var ind = $scope.privateChannels.indexOf($scope.tagChannel);
 	            if(ind > -1){
+	            	console.log("unsuscribe ok");
 	            	$scope.privateChannels.splice(ind,1);
 	            }
           	}          
 
-            
-            console.log("unsuscribe ok");
-            /*for (var i=0;i<$scope.privateChannels.length;i++){
-              if ($scope.privateChannels[i].id === data.data.id){
-                $scope.privateChannels.splice(i,1);
-              }
-            }*/
 
             $scope.tagChannel='';
             $scope.channelSelected = false;
@@ -454,6 +468,7 @@ angular.module('myAppAngularMinApp')
             console.log("Hay error en unsuscribe from channel: " + err.data.message);
             /*$scope.messageUnsuscribeFromChannelModal = err.data.message;*/
             /**/
+            $scope.tagChannel='';
             $scope.errorG = err.data.message;
             $("#unsuscribeFromChannelModal").modal("hide");
             $("#errorGroupModal").modal("show");
@@ -463,46 +478,17 @@ angular.module('myAppAngularMinApp')
         );
       };
 
-/*
-      $scope.unsuscribeFromChannel = function(){
-        GroupService.unsuscribeFromGroup($scope.tagGroup).then(
-          function(data) {
-             $("#unsuscribeFromGroupModal").modal("hide");
-             var ind = $scope.groups.indexOf($scope.tagGroup);
-             if(ind>-1){
-             	$scope.groups.splice(ind,1);
-             }
-             
-             $scope.tagGroup='';
-             $scope.tagChannel='';
-          },function(err){
-            // Tratar el error
-            console.log("Error on unsuscribe from group: " + err.data.message);
-            console.log("Hay error");
-            $scope.errorG = err.data.message;
-            $("#unsuscribeFromGroupModal").modal("hide");
-            $("#errorGroupModal").modal("show");
 
-
-          }
-        );
-      };
-
-
-
-
-/*******************/
-
-      $scope.resetEditChannel = function(){
-        $scope.messageEditChannelModal = '';
-        $("#editChannelNameTxt").val('').trigger('input');
-      };
+      
 
       $scope.getChannels = function (group) {
         ProfileService.getChannels(group.id)
           .then(function (data) {
           	console.log(data);
             $scope.privateChannels = data.privateChannels;
+            console.log("esto vale private channels");
+            console.log($scope.privateChannels);
+            console.log(data);
             $scope.publicChannels = data.publicChannels;
             $scope.directChannels = data.directMessageChannels;
             $scope.adminGroup = data.admin;
@@ -522,9 +508,20 @@ angular.module('myAppAngularMinApp')
 
       ProfileService.getChannelMembers($scope.channelid)
         .then(function (data) {
-          $scope.channelMembers = data;
+
+          for (var i = 0; i < data.users.length; i++ ) {
+          	data.users[i].hash = $scope.getHash(data.users[i].mail);
+
+          }
+          $scope.channelMembers = data.users;
+
+          $scope.adminChannel = data.admin;
+          $scope.membersSettingschannel = data.users;
           console.log("esto vale cahnnel members");
           console.log(data);
+          console.log($scope.channelMembers);
+          console.log($scope.adminChannel);
+
 
         }
         , function (err) {
@@ -544,7 +541,8 @@ angular.module('myAppAngularMinApp')
             $scope.members = data;
 
             for (var i = 0; i < data.length; i++ ) {
-                data[i].hash = md5.createHash(data[i].mail);
+                data[i].hash = $scope.getHash(data[i].mail);
+
             }
             $scope.membersSettings = data;
 
@@ -597,6 +595,74 @@ angular.module('myAppAngularMinApp')
     };
 
 
+    $scope.setSettingsOptionschannel = function (option) {
+      /* 0 to search users
+         1 to add users
+         2 to remove users
+      */
+      $scope.optionchannel = option;
+
+      if(option == 1) {
+
+      	  /* search users of group to add */
+      	  /* coger los que estan en el grupo y quitar los del canal */
+      	  /* scope.members = miembros del grupo */
+      	  /* scope.channelmembers = miembros del canal */
+
+      	  var temp = $scope.members.slice();
+      	  var indi = -1;
+
+      	  for (var i = 0; i < $scope.members.length; i++ ) {
+      	  	//console.log()
+      	  	for (var j = 0; j < $scope.channelMembers.length; j++ ) {
+                        if($scope.members[i].mail == $scope.channelMembers[j].mail){
+             				indi = temp.indexOf($scope.members[i]);
+             				if (indi > -1){
+             					temp.splice(indi,1);
+             				}
+
+                            j = $scope.channelMembers.length;
+
+                        }
+                  }
+
+      	  }
+
+      	  
+      	  $scope.membersSettingschannel = temp;
+      	  
+
+          $scope.option = option;
+          $scope.searchinputplaceholder = "Search user to add and click on it ...";
+          console.log("esto vale memberssettingschannels con ADD");
+          console.log($scope.membersSettingschannel);
+
+
+
+      }
+      else {
+
+          $scope.membersSettingschannel = $scope.channelMembers;
+          console.log("**********************");
+          console.log("**********************");
+          console.log($scope.channelMembers);
+          console.log($scope.membersSettingschannel);
+
+          $scope.option = option;
+          if(option == 2){
+          	   $scope.searchinputplaceholder = "Search member to remove and click on it ...";
+          }
+          else {
+               $scope.searchinputplaceholder = "Search member ...";
+          }
+
+      }
+
+    };
+
+
+
+
 
     function getSystemUsers(group) {
             ProfileService.getSystemUsers(group.id)
@@ -619,7 +685,8 @@ angular.module('myAppAngularMinApp')
 
 
                 for (var i = 0; i < data.length; i++ ) {
-                  temp[i].color = getRandomColor();
+                  //temp[i].color = getRandomColor();
+                  temp[i].hash = $scope.getHash(temp[i].mail);
                   temp[i].isinvited = 0;
                 }
 
@@ -659,8 +726,6 @@ angular.module('myAppAngularMinApp')
 
             });
     };
-
-
 
 
 
@@ -1006,6 +1071,10 @@ angular.module('myAppAngularMinApp')
         $scope.username = data.username;
 	    $scope.userid = data.id;
 	    $scope.user = data;
+
+		$scope.user.hash = $scope.getHash($scope.user.mail);	    
+	    //console.log("esto vale user");
+	    //console.log( $scope.user );
       }
       , function (err) {
         // Tratar el error
@@ -1153,8 +1222,8 @@ angular.module('myAppAngularMinApp')
         console.log ("newMemberInGroup receive from server");
         console.log(data);
 
-
-        data.user.color = getRandomColor();
+        data.user.hash = $scope.getHash(data.user.mail);
+        //data.user.color = getRandomColor();
         $scope.members.push(data.user);
 
 
@@ -1221,7 +1290,8 @@ angular.module('myAppAngularMinApp')
         if ($scope.adminGroup.id == $scope.userid){
         	/* añadimos al usuario borrado del grupo en membersettings (usuarios de sistema) */
         	if($scope.option == 1) {
-        		data.user.color = getRandomColor();
+        		//data.user.color = getRandomColor();
+        		data.user.hash = $scope.getHash(data.user.mail);
         		$scope.membersSettings.push(data.user);
 
         	}
@@ -1240,7 +1310,11 @@ angular.module('myAppAngularMinApp')
       Socket.on('newMemberInChannel', function (data) {
         console.log ("newMemberInChannel received from server");
         console.log(data);
-        $scope.channelMembers.push(data.user);
+        /* ahora devuelve el administrador, cuando lo haga bien arriba tengo que quitar la actualizacion de scope*/
+        //if ($scope.tagChannel.id == data.channelid ){
+        //	data.user.hash = $scope.getHash(data.user.mail);
+        //	$scope.channelMembers.push(data.user);
+        //}
         $scope.$apply();
       });
 
@@ -1248,15 +1322,54 @@ angular.module('myAppAngularMinApp')
       Socket.on('deletedUserFromChannel', function (data) {
         console.log ("deletedUserFromChannel received from server");
         console.log(data);
-        if (data.userid == $localStorage.id){
-          for (var i=0;i<$scope.channelMembers.length;i++){
-            if ($scope.channelMembers[i].id == data.user.id){
-              $scope.channelMembers.splice(i,1);
-              $scope.$apply();
-          }
+
+
+
+        if (data.user.id == $localStorage.id){
+        	if($scope.tagChannel.id == data.channelid){
+        		$scope.tagChannel = ''
+        	}
+
+        	for (var i = 0; i < $scope.privateChannels.length; i++){
+	            if ($scope.privateChannels[i].id == data.channelid){
+	              $scope.privateChannels.splice(i,1);
+	              
+	          }
+	        }
+
+        	$scope.privateChannels.splice(i,1);
+        	
         }
+
+        else {
+        	for (var i = 0; i < $scope.channelMembers.length; i++){
+	            if ($scope.channelMembers[i].id == data.user.id){
+	              $scope.channelMembers.splice(i,1);
+	              
+	          }
+	        }
+
+	        /* si es el administrador, cambiarle los membersettings */
+	        if ($scope.adminChannel.id == $scope.userid){
+	        	/* añadimos al usuario borrado del canal en membersettingschannel (usuarios de grupo) */
+	        	if($scope.optionchannel == 1) {
+	        		
+	        		data.user.hash = $scope.getHash(data.user.mail);
+	        		$scope.membersSettingschannel.push(data.user);
+
+	        	}
+
+	        }
+
+
+
+
         }
+        
+        $scope.$apply();
+
       });
+
 
 
 

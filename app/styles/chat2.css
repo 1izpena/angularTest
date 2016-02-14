@@ -1,21 +1,21 @@
 /*Añadidos para izaskun*/
 
-#row-settings {
-  height: 20%!important;
-}
 
-#row-settings1 {
-  height: 80%!important;
-}
 
-#panel-set1 {
-  height: 100%;
-}
+
 
 #panel-settings {
 	/*antes 11*/
   height: 15%!important;
 }
+
+#panel-settingschannels {
+  /*antes 11*/
+  height: 15%!important;
+}
+
+
+
 .selectpicker{
   style: 'btn-info'
 }
@@ -265,6 +265,11 @@ img#avatar {
 }
 
 
+#panel-settingschannels .fa {
+  color: white;
+}
+
+
 /*#jumboalert .fa {  color: black; }*/
 
 
@@ -274,9 +279,6 @@ img#avatar {
 }
 
 
-#panel-settings {
-
-}
 
 
 .c-align-left {    text-align: left; }
@@ -442,10 +444,18 @@ ul {   list-style-type: none; }
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 85px;
+    /*height: 85px;*/
     font-size: 18px;
-    line-height: 60px;
+    /*line-height: 60px;*/
+    height: 7.7em;
 }
+
+.sidebar-brand h3{
+  margin-bottom: 0px;
+  margin-top: 10px;
+
+}
+
 
 .sidebar-nav > .sidebar-brand a {
     color: white;
@@ -640,14 +650,33 @@ ul {   list-style-type: none; }
 }
 
 
+
+
 #row-settings {
     margin: 0px;
-    height: 18.2%;
+    height: 20%;
+}
+
+#row-settingschannels {
+    margin: 0px;
+    height: 20%;
+}
+
+
+
+#row-settings0 {
+    margin: 0px;
+    height: 20%;
 }
 
 #row-settings1 {
     margin: 0px;
-    height: 81.8%;
+    height: 80%;
+}
+
+#row-settings1channels {
+    margin: 0px;
+    height: 80%;
 }
 
 #panel-set {
@@ -655,10 +684,30 @@ ul {   list-style-type: none; }
     border-color: white;
 }
 
-#panel-set1 {
+#panel-setchannels {
     margin: 0px;
     border-color: white;
 }
+
+
+
+
+#panel-set1 {
+    margin: 0px;
+    border-color: white;
+    height: 100%;
+
+}
+
+#panel-set1channels {
+    margin: 0px;
+    border-color: white;
+    height: 100%;
+
+}
+
+
+
 
 #panel-info
 {
@@ -686,6 +735,17 @@ ul {   list-style-type: none; }
 #panel-heading-settings h3{
     /*font-size: inherit;*/
 }
+
+
+#panel-heading-settingschannels {
+    border-color: #bce8f1;
+    height:10%;
+}
+
+#panel-heading-settingschannels h3{
+    /*font-size: inherit;*/
+}
+
 
 
 #panel-info1
@@ -798,6 +858,14 @@ ul {   list-style-type: none; }
     padding: 0px;
 }
 
+#panel-body1channels
+{
+
+    min-height: 33em;
+    height: 94%;
+    padding: 0px;
+}
+
 
 
 #panel-body2
@@ -816,6 +884,18 @@ ul {   list-style-type: none; }
 
 
 }
+
+
+#panel-settingschannels {
+   height: 94%;
+   border-color: transparent;
+   min-height: 1px;
+
+
+}
+
+
+
 
 #list-group {
 
