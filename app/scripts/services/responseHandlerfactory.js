@@ -17,8 +17,8 @@ angular.module('myAppAngularMinApp')
           location.path('/login');
 
         }
-        return $q.reject(response);
-        //return response;
+        //return $q.reject(response);
+        return response;
       }
     };
     return responseHandler;
