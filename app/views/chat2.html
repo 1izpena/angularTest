@@ -13,7 +13,7 @@
                     <!--<a href=""><img id="avatar" src="images/yeoman.png" class="profile-image img-circle">-->
 
                     <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=50&d=identicon" alt="User Avatar" class="profile-image img-circle" id="avatar"/>
-                    <h3>{{username}}</h3> 
+                    <h3>{{username}}</h3>
                      <!--{{username}} -->
                    <!--   {{username}}
                     </a> -->
@@ -295,7 +295,7 @@
                                         </h3>
                                       </div>
 
-                                     
+
 
                               </div>  <!-- container-fluid panel-container -->
 
@@ -308,7 +308,7 @@
 
                                       <div class="col-xs-8 col-xs-offset-2 text-center">
 
-                                      
+
                                         <div class="input-group input-group-unstyled">
                                              <span ng-click="setSettingsOptions(0)" class="input-group-addon">
                                                 <i class="fa fa-search"></i>
@@ -361,7 +361,7 @@
                                       ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
 
                                       <!-- si options = 1 add / options = 2 remove -->
-                                        
+
                                                <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" xclass="img-circle" id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
@@ -412,7 +412,7 @@
 
                                       <div class="col-xs-12">
                                          <h3 class="panel-title">Channel Settings </h3>
-                                           
+
                                       </div>
 
                               </div>  <!-- container-fluid panel-container -->
@@ -438,10 +438,10 @@
                                         <button type="button" title="Edit channel name" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminChannel.id != userid">
                                                   <span class="fa fa-pencil fa-fw"></span>
                                         </button>
-                                       
+
                                         <button type="button" title="Unsuscribe from group" class="btn btn-warning"
                                         data-toggle="modal" data-target="#unsuscribeFromChannelModal"
-                                         ng-hide="textBtnForm.$visible || 
+                                         ng-hide="textBtnForm.$visible ||
                                          adminChannel.id == userid ||
                                          tagChannel.type == 'public'">
                                                   <span class="fa fa-chain-broken fa-fw"></span>
@@ -479,7 +479,7 @@
                                         </h3>
                                       </div>
 
-                                     
+
 
                               </div>  <!-- container-fluid panel-container -->
 
@@ -492,7 +492,7 @@
 
                                       <div class="col-xs-8 col-xs-offset-2 text-center">
 
-                                      
+
                                         <div class="input-group input-group-unstyled">
                                              <span ng-click="setSettingsOptionschannel(0)" class="input-group-addon">
                                                 <i class="fa fa-search"></i>
@@ -545,7 +545,7 @@
                                       ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
 
                                       <!-- si options = 1 add / options = 2 remove -->
-                               
+
                                         <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" xclass="img-circle" id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
@@ -623,7 +623,13 @@
                       class="question-panels text-left" close-others="false" >
                       <div class="panel panel-default">
                         <div class="panel-heading">
-                          <h4 class="panel-title"><span class="question-title"> QUESTION:</span> {{msg.title}}</h4>
+                          <h4 class="panel-title">
+                            <span class="question-title"> QUESTION:</span> {{msg.title}}
+                            <span class="pull-right">
+                              <a ng-if="!msg.publish" class="question-link" ng-click="shareInForum($index)">Share in forum</a>
+                              <span ng-if="msg.publish" >shared</span>
+                            </span>
+                          </h4>
                         </div>
                         <div class="panel-collapse">
                           <div class="panel-body">

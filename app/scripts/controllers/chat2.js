@@ -1006,6 +1006,29 @@ angular.module('myAppAngularMinApp')
 
     };
 
+      $scope.shareInForum = function (index) {
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/publishMessageModal.html',
+          controller: 'publishMessageModalCtrl',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.groupid,
+                channelid: $scope.channelid,
+                message: $scope.listaMensajes[index]
+              }
+            }
+          }
+        });
+
+        // Al cerra la modal marcamos el mensaje como publicado
+        modalInstance.result.then(function () {
+          $scope.listaMensajes[index].publish = true;
+        });
+
+
+      };
 
       $scope.createQuestion = function () {
 
