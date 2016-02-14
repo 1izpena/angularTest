@@ -27,4 +27,9 @@ angular.module('myAppAngularMinApp')
 		      $scope.message = err.data.message;
 		    });
 	    };
+
+	    $scope.close = function ()
+	    {
+	    	$uibModalInstance.dismiss();
+	    }
 }]);

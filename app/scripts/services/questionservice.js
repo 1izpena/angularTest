@@ -9,7 +9,7 @@ angular.module('myAppAngularMinApp')
         commentQuestion: commentQuestion,
         upVote: upVote,
         downVote: downVote,
-        getTags: getTags     
+        deleteQuestion: deleteQuestion
   		};
     function createQuestion(data)
     {
@@ -125,14 +125,17 @@ angular.module('myAppAngularMinApp')
       return promise;     
     };
 
-
-    function getTags()
+     function deleteQuestion(questionId,answers)
     {
       var defered = $q.defer();
       var promise = defered.promise;
       $http({
-          method: 'get',
-          url: API_BASE + '/api/v1/forum/tags',
+          method: 'delete',
+          headers: {'x-access-token': $localStorage.token},
+          url: API_BASE + '/api/v1/forum/question/'+ questionId+ "/delete",
+          data:{
+            answers: answers
+          }
         }).then(
           function(response) {
             defered.resolve(response);
@@ -141,6 +144,6 @@ angular.module('myAppAngularMinApp')
             defered.reject(error);
           }
         );
-      return promise;   
+      return promise;     
     };
 }]);

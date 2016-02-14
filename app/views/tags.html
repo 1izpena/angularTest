@@ -1,7 +1,7 @@
 <div class="container" ng-controller="ForoCtrl" data-ng-init="getTags()">
 	<div class="row container">
 		<div class="col-md-8 headLeft">
-			<div class="col-md-6">
+			<div class="col-md-6">	
 			</div>	
 			<div class="col-md-6">
 				<div class="btn-group" role="group">
@@ -30,10 +30,10 @@
 	</div>
 	<div class="row">
 		<div class="ui-widget">
-  <label for="tags">Tags: </label>
-  <input id="tags">
-</div>
-		<div class="col-md-1" ng-repeat="tag in tags | orderBy:'tag.text'"><button class="btn btn-primary" ngclick="">{{tag.text}}</button></div>
+		  <label for="tags">Tags: </label>
+		  <input id="tags" ng-model="searchTag">
+		</div>
+		<div class="col-md-3 col-xs-4 tagbutton" ng-repeat="tag in tags | filter:searchTag"><button class="btn" ng-click="questionsByTag(tag._id)">{{tag.text}} ({{tag.tagQuestions.length}})</button></div>
 	</div>	
 </div>
 <link rel="stylesheet" ng-href="styles/foro.css" >

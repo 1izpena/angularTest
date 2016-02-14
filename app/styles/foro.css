@@ -9,7 +9,7 @@
 p
 {
     font-family: lora;
-    font-size:1.1em;
+    font-size: 1.5rem;
 }
 h1 a
 {
@@ -71,6 +71,10 @@ h1 a
     width: 260px;
 }   
 
+#exTab2 ul.nav
+{
+    margin-top:13%;
+}
 
 
 /************CONTENIDO PRINCIPAL FORO*************/
@@ -216,6 +220,17 @@ h1 a
     margin:20px 0;
 }
 
+/*BUSCADOR DE TAGS*/
+.tagbutton
+{
+    text-align: center;
+    margin-bottom: 2%;
+
+}
+.tagbutton button
+{
+    width: 120px;
+}
 
 
 /***********RESPONSIVE*********/
@@ -225,4 +240,8 @@ h1 a
  {
     float:none
  }    
+ .headRight,.headLeft
+ {
+    text-align: center;
+ }
 }
