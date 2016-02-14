@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
- 
+
   .factory('responseHandler', ['$q', '$injector', 'sharedProperties', function($q, $injector, sharedProperties) {
     var responseHandler = {
       responseError: function(response) {
@@ -18,6 +18,7 @@ angular.module('myAppAngularMinApp')
 
         }
         return $q.reject(response);
+        //return response;
       }
     };
     return responseHandler;
