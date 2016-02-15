@@ -1,3 +1,8 @@
+/********** LOGO BLANCO SOLO INDEX *************/
+.logo-white{
+  display: none;
+}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -102,4 +107,29 @@ nav {
 
 .logo {
   max-width:30px;
+}
+
+/********* BARRA MENU ***********/
+ul a{
+  border:none !important;
+}
+ul .btn{
+  font-size: 16px;
+font-weight: 400;
+margin: 30px auto 0;
+padding: 15px 22px;
+background: none;
+color:white;
+}
+navbar-right {
+margin-right: 0px;
+}
+ul .btn {
+     margin: 0;
+}
+
+.navbar-brand {
+    height: auto;
+     padding: 0;
+    margin-left: 5% !important;
 }

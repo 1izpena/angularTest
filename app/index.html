@@ -28,7 +28,7 @@
 
   <!--navbar-fixed-top-->
   <div class="navbar navbar-default" id="customNavbar" role="navigation" ng-controller="MainCtrl">
-    <div class="container">
+    <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="sr-only">Toggle navigation</span>
@@ -37,23 +37,22 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand pull-left" href="#/">
-          <img alt="Brand" class="logo" src="images/logos/full-white.png "/>
+          <img alt="Brand" class="logo-white" src="images/logos/full-white.png "/>
+            <img alt="Brand" class="logo-black" src="images/logos/full-black.png "/>
         </a>
-        <a class="navbar-brand hidden-front" href="#/" ng-click="goTo('/foro')">DESSIAPP</a>
       </div>
       <div class="navbar-collapse collapse">
         <!-- Si no esta logueado -->
         <ul ng-if="!auth.isLogged()" class="nav navbar-nav navbar-right">
-          <li><a ng-click="goTo('/register')" class="btn btn-success navbar-btn">Register</a></li>
-          <li><a ng-click="goTo('/login')" class="btn btn-success navbar-btn">Login</a></li>
+          <li><a ng-click="goTo('/register')" class="btn btn-success navbar-btn reg">Register</a></li>
+          <li><a ng-click="goTo('/login')" class="btn btn-success navbar-btn log">Login</a></li>
         </ul>
 
 
         <!-- Si esta logueado -->
         <ul ng-if="auth.isLogged()" class="nav navbar-nav navbar-right">
-          <a ng-click="goTo('/chat2')" class="btn btn-success navbar-btn">Chat</a>
-
-          <a ng-click="logout()" class="btn btn-success navbar-btn">Salir</a>
+          <li><a ng-click="goTo('/chat2')" class="btn btn-success navbar-btn">Chat</a></li>
+          <li><a ng-click="logout()" class="btn btn-success navbar-btn">Salir</a></li>
         </ul>
       </div>
     </div>
@@ -67,8 +66,8 @@
 
    <div class="footer">
      <div class="navbar navbar-default" role="navigation">
-       <div class="container messageContainer">
-         <p class="navbar-text hidden-front">&copy <span class="glyphicon glyphicon-heart"></span> from the DESSI team</p>
+       <div class="container messageContainer hidden-front">
+          <div class="filter"><p class="navbar-text">&copy <span class="glyphicon glyphicon-heart"></span> from the DESSI team</p></div>
        </div>
      </div>
 

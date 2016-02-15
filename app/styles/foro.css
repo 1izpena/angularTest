@@ -1,7 +1,7 @@
 @font-face{
     font-family:roboto;
     src: url('../fonts/RobotoCondensed-Regular.ttf');
-} 
+}
 @font-face{
     font-family: lora;
     src: url('../fonts/Lora-Regular.ttf');
@@ -65,11 +65,11 @@ h1 a
     border-radius: 3px;
 }
 .search-query:focus + button {
-    z-index: 3;   
-}   
+    z-index: 3;
+}
 .search-query:focus{
     width: 260px;
-}   
+}
 
 #exTab2 ul.nav
 {
@@ -168,7 +168,7 @@ h1 a
 }
 .preguntadetalle button.voteup:hover,.preguntadetalle button.downvote:hover,.respuestadetalle button.voteup:hover, .respuestadetalle button.downvote:hover
 {
-   
+
     text-decoration: none;
     cursor: pointer;
     opacity: 0.8;
@@ -206,7 +206,7 @@ h1 a
 {
     overflow: hidden;
 }
-.questionform input 
+.questionform input
 {
     width: 100%;
 }
@@ -239,7 +239,7 @@ h1 a
  #custom-search-form
  {
     float:none
- }    
+ }
  .headRight,.headLeft
  {
     text-align: center;

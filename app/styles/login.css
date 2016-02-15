@@ -1,13 +1,111 @@
-/*LOGIN*/
-.content {
-  min-height: 675px;
-  height: 90%;
-  padding-top: 10em;
-  background-image: url(../../images/cielo.jpg);
-  -webkit-background-size: cover;
-  background-size: cover;
+
+/******************* Bootstrap reset ************************/
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .container-fluid {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.header1{
+  position: relative;
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
+box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
+}
+
+.filter{
+  position: absolute;
+  color:white;
+	left:0px;
+	z-index: 100;
+	width: 100%;
+	min-height: 100%;
+	background: rgba(0, 37, 128, 0.5);
+	background-image: url('../images/patern.png');
+
+}
+
+.image-header{
+  width: 100%;
+  z-index: -10;
+}
+
+.logo-black{
+  display: block;
+  padding-top: 0%;
+  max-width: none;
+  width: 150px !important;
+}
+.logo-white{
+  display: none !important;
+}
+.log{
+  display: none;
+}
+.footer{
+  border-top: solid 0.5px black;
+}
+
+/***************** Hasta aqui cabecera y menu ****************/
+body{
+  color:#555459;
+}
+.form-logo{
+  width: 120px;
+}
+.form-group-lg{
+  width: 100% !important;
+}
+
+/* titulo */
+.title {
+    font-size: 40px;
+    font-weight: 600;
+    width: 50%;
+}
+.form-horizontal .form-group {
+     margin-right: 0;
+     margin-left: 0;
+}
+
+p {
+    line-height: 25px;
+    font-weight: 400;
+    color: #6a6a6a;
+}
+
+h3 {
+    font-size: 40px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 60px;
+}
+/******************* hasta aqui **************/
+.jumbotron{
+  	background: rgba(0, 0, 0, 0);
 }
 
 .remember {
   cursor: pointer;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #33282E;
+    border-color: #33282E;
+    border-radius: 0;
+}
+.form-group-lg .form-control {
+    border-radius: 0;
+}
+.social-icon{
+  padding-top: 3%;
+}
+
+.morado{
+  color:#775064;
+}
+.orange{
+  color:#DA7341;
+}
+.blue{
+  color:#A19673;
 }

@@ -14,15 +14,20 @@ body{
 	font-family: 'Oswald', sans-serif;
   background: rgba(0, 0, 0, 0) !important;
 }
-.logo {
-  max-width:100px;
+.logo-white{
+  display: block;
+  padding-top: 1%;
+  max-width: none;
+  width: 350px !important;
 }
+.logo-black{
+  display: none !important;
+}
+
 ul a{
   border:none !important;
 }
-.hidden-front{
-  display: none !important;
-}
+
 .footer{
 display:none !important;
 }
@@ -63,11 +68,7 @@ background-size: cover;
 	margin-bottom: 5%;
 }
 
-.logo{
-  padding-top: 1%;
-  max-width: none;
-  width: 350px !important;
-}
+
 img-responsive{
 	width:100%;
 }

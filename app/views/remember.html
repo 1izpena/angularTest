@@ -1,3 +1,9 @@
+<link rel="stylesheet" ng-href="styles/login.css">
+<link rel="stylesheet" ng-href="styles/remember.css">
+<div class="container-fluid header1">
+    <div class="filter"></div>
+  <img class="image-header" src="images/header/header.jpg">
+</div>
 <div class="remember-container container" ng-controller="RememberCtrl">
   <div class="jumbotron">
     <div class="container">
@@ -15,7 +21,7 @@
           <div class="col-md-3">
              <input class="form-control input-lg text-center" name="email" type="email" ng-model="FormData.mail"/>
           </div>
-        </div> 
+        </div>
         <button class="btn btn-primary btn-lg col-md-offset-5" ng-click="check()">Enviar email de recuperación</button>
     </form>
      <div class="result" ng-show="ResponseVisibility"><p>Te hemos enviado un email</p><br/></div>
@@ -23,4 +29,3 @@
     </div>
   </div>
 </div>
-<link rel="stylesheet" ng-href="styles/login.css">
