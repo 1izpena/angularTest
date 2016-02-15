@@ -1,0 +1,240 @@
+
+/******************* Bootstrap reset ************************/
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+  padding-right: 0;
+  padding-left: 0;
+}
+.row{
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body{
+	color:white;
+	font-family: 'Oswald', sans-serif;
+  background: rgba(0, 0, 0, 0) !important;
+}
+.logo {
+  max-width:100px;
+}
+ul a{
+  border:none !important;
+}
+.hidden-front{
+  display: none !important;
+}
+.footer{
+display:none !important;
+}
+video#bgvid {
+
+position: fixed; right: 0; bottom: 0;
+
+min-width: 100%; min-height: 100%;
+
+width: auto; height: auto; z-index: -100;
+
+/*background: url(polina.jpg) no-repeat;*/
+
+background-size: cover;
+
+}
+#filter{
+	position: fixed;
+	top:0px;
+	left:0px;
+	z-index: -8;
+	width: 100%;
+	min-height: 100%;
+	background: rgba(0, 37, 128, 0.5);
+	background-image: url('../images/patern.png');
+
+}
+.filter-content{
+
+		height: 100%;
+}
+.filter-content h2{
+	font-size: 18px;
+	font-weight: 700;
+	color: white;
+	letter-spacing: -.03em;
+	line-height: 1.5em;
+	margin-bottom: 5%;
+}
+
+.logo{
+  padding-top: 1%;
+  max-width: none;
+  width: 350px !important;
+}
+img-responsive{
+	width:100%;
+}
+.wrapper{
+  position: absolute;
+  width:100%;
+}
+header{
+  position:relative;
+  width:100%;
+  top:0px;
+  padding-left: 10px;
+}
+
+footer{
+    margin-bottom: 0px !important;
+}
+.blocks{
+  padding-top: 10%;
+  color:#ddd;
+}
+
+.block1, .block2{
+  border-right: dotted 0.5px #ddd;
+}
+.block1, .block2, .block3{
+  padding:0.5%;
+}
+.title{
+  color:#9BB70D;
+  font-size: 1.825rem;
+  line-height: 1.375rem;
+  font-weight: 900;
+   text-shadow: 1.5px 1.5px #000;
+}
+.btn{
+  font-size: 16px;
+font-weight: 400;
+margin: 30px auto 0;
+padding: 15px 22px;
+background: none;
+color:white;
+}
+.navbar-default {
+    background: rgba(0, 37, 128, 0) !important;
+    border: none !important;
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+      color: #9BB70D;
+}
+.img-responsive{
+  width: 100%;
+}
+.morado{
+  color:#775064;
+}
+.orange{
+  color:#DA7341;
+}
+.blue{
+  color:#A19673;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: none;
+    border:none;
+}
+
+
+
+
+/******************* MEDIA QUERIES ************************/
+
+@media (max-width: 480px) { /* col-xs  default */
+
+  .block1, .block2, .block3{
+    padding-top: 5%;
+  }
+
+  .block1, .block2{
+    border-bottom: dotted 0.5px #ddd;
+    border-right: none;
+  }
+  .navbar-toggle {
+    margin-top: 25%;
+  }
+  .logo{
+    width: 200px !important;
+
+  }
+  .btn{
+    margin-bottom: 5%;
+  }
+  section{
+    height: none !important;
+  }
+  footer{
+    display: none;
+  }
+
+}
+
+@media (min-width: 481px) and (max-width: 767px) { /* col-xs  default */
+.blocks{
+padding-top: 0;
+}
+.block1, .block2, .block3{
+  padding-top: 5%;
+}
+
+.block1, .block2{
+  border-bottom: dotted 0.5px #ddd;
+  border-right: none;
+}
+.navbar-toggle {
+  margin-top: 25%;
+}
+.logo{
+  width: 350px !important;
+
+}
+.btn{
+  margin-bottom: 5%;
+}
+section{
+  height: none !important;
+}
+footer{
+  display: none;
+}
+
+}
+
+@media (min-width: 768px) and (max-width: 991px) { /* col-sm */
+  .mean-logo{
+  display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) { /* col-md */
+header{
+  height: 15%;
+}
+section{
+  height: 75%;
+}
+footer{
+  height: 10%;
+}
+.mean-logo{
+display: none !important;
+}
+}
+
+@media (min-width: 1200px) { /* col-lg */
+
+  header{
+    height: 15%;
+  }
+  section{
+    height: 70%;
+  }
+  footer{
+    height: 10%;
+  }
+  .mean-logo{
+  display: none !important;
+  }
+
+}
