@@ -157,4 +157,46 @@ angular.module('myAppAngularMinApp')
         $uibModalInstance.dismiss();
       };
 
-    }]);
+    }])
+
+.controller('publishMessageModalCtrl', ['$scope', '$uibModalInstance', 'data', '$localStorage', 'ChatService',
+  function ($scope, $uibModalInstance, data, $localStorage, ChatService) {
+
+    $scope.message = data.message;
+
+    $scope.ok = function () {
+
+      if (!$scope.tags) {
+        $scope.errorMessage = "Tags required"
+      }
+      else {
+        var requestData = {
+          userid: $localStorage.id,
+          groupid: data.groupid,
+          channelid: data.channelid,
+          messageid: data.message.id,
+          tags: $scope.tags
+        };
+
+        ChatService.publishMessage(requestData).then(
+          function(result) {
+            $uibModalInstance.close();
+
+          },
+          function(error) {
+            console.log("error publishing message in forum");
+            console.log(error);
+          }
+        );
+
+      }
+
+
+    };
+
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss();
+    };
+
+  }]);

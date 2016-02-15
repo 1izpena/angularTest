@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h3 class="modal-title">Share question in Forum</h3>
+</div>
+<div class="modal-body">
+  <form>
+    <div>
+      <h4>{{message.title}}</h4>
+    </div>
+    <div ng-bind-html="message.text">
+    </div>
+    <div >
+      <tags-input ng-model="tags" display-property="text" placeholder="Add tags for the question" replace-spaces-with-dashes="false">
+      </tags-input>
+    </div>
+  </form>
+  <div class="text-danger" ng-show="errorMessage">
+    <strong>{{errorMessage}}</strong>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary" type="button" ng-click="ok()">Share</button>
+</div>

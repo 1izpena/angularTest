@@ -9,11 +9,10 @@
     </fieldset>
     <fieldset class="form-group">
       <label>Ask your question:</label>
-      <p>To Add code snippets use PRE button</p>
       <text-angular ng-model="question"></text-angular>
     </fieldset>
   </form>
-  <div class="text-danger" ng-show="errors">
+  <div class="text-danger" ng-show="errorMessage">
     <strong>{{errorMessage}}</strong>
   </div>
 

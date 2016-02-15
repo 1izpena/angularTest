@@ -9,8 +9,36 @@ angular.module('myAppAngularMinApp')
         getDownloadUrl: getDownloadUrl,
         postMessage: postMessage,
         getMessages: getMessages,
-        postAnswer: postAnswer
+        postAnswer: postAnswer,
+        publishMessage: publishMessage
       };
+
+      function publishMessage (data) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        var userid=data.userid;
+        var groupid=data.groupid;
+        var channelid=data.channelid;
+        var messageid=data.messageid;
+
+        $http({
+          method: 'post',
+          headers: {'x-access-token': $localStorage.token},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages/'+messageid+'/publish',
+          data: { tags: data.tags }
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      }
 
       function getDownloadUrl (data) {
         var defered = $q.defer();
