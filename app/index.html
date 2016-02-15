@@ -37,15 +37,15 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand pull-left" href="#/">
-          <img alt="Brand" class="logo" src="images/yeoman.png "/>
+          <img alt="Brand" class="logo" src="images/logos/full-white.png "/>
         </a>
-        <a class="navbar-brand" href="#/" ng-click="goTo('/foro')">DESSIAPP</a>
+        <a class="navbar-brand hidden-front" href="#/" ng-click="goTo('/foro')">DESSIAPP</a>
       </div>
       <div class="navbar-collapse collapse">
         <!-- Si no esta logueado -->
         <ul ng-if="!auth.isLogged()" class="nav navbar-nav navbar-right">
-          <a ng-click="goTo('/register')" class="btn btn-success navbar-btn">Registrar</a>
-          <a ng-click="goTo('/login')" class="btn btn-success navbar-btn">Entrar</a>
+          <li><a ng-click="goTo('/register')" class="btn btn-success navbar-btn">Register</a></li>
+          <li><a ng-click="goTo('/login')" class="btn btn-success navbar-btn">Login</a></li>
         </ul>
 
 
@@ -68,7 +68,7 @@
    <div class="footer">
      <div class="navbar navbar-default" role="navigation">
        <div class="container messageContainer">
-         <p class="navbar-text">&copy <span class="glyphicon glyphicon-heart"></span> from the DESSI team</p>
+         <p class="navbar-text hidden-front">&copy <span class="glyphicon glyphicon-heart"></span> from the DESSI team</p>
        </div>
      </div>
 

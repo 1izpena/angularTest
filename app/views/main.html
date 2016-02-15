@@ -1,30 +1,36 @@
-<div class="jumbotron forumjumbo">
-  <div class=" flex-container animation-element bounce-up cf in-view">
-    <img class="img-responsive col-md-7 col-xs-7" src="../../images/pantalla.png">
-    <div class="flex-column col-md-5 col-xs-5">
-      <label class="descargaMessage">Accede a nuestro foro!!</label>
-      <a ng-click="auth.isLogged() ? goTo('/', 'foro') : goTo('/login', 'foro')" type="button" class="btn btn-danger btn-lg">Entrar al Foro</a>
-    </div>
-  </div>
+<video autoplay loop poster="" id="bgvid" muted>
+<source src="media/back.mp4" type="video/mp4">
+</video>
+<div id="filter"></div>
+<div class="wrapper container-fluid">
+
+<section class="text-center blocks">
+<div class="row">
+<div class="col-sm-2 col-sm-offset-3  block1">
+<p class="title">Forum</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+<button class="btn btn-default" type="submit">Forum</button>
+</div>
+<div class="col-sm-2 block2">
+<p class="title">Chat</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+<button class="btn btn-default" type="submit">Chat</button>
+</div>
+<div class="col-sm-2 block3">
+<p class="title">App</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+<button class="btn btn-default" type="submit">App</button>
+</div></div>
+</section>
+<footer>
+<div class="container-fluid">
+<div class="col-sm-1 col-xs-1">
+  <img src="images/mean.png">
+</div></div>
+</footer>
 </div>
 
-<div class="jumbotron chatjumbo">
-  <div class=" flex-container animation-element bounce-up cf">
-    <img class="img-responsive col-md-7 col-xs-7" src="../../images/trabajoengrupo.png">
-    <div class="flex-column col-md-5 col-xs-5">
-      <label class="descargaMessage">Trabaja en grupo en nuestro sistema!!</label>
-
-      <a ng-click="auth.isLogged() ? goTo('/chat2', 'chat') : goTo('/login', 'chat')" type="button" class="btn btn-danger btn-lg">Entrar al Chat</a>
-    </div>
-  </div>
-</div>
-
-<div class="jumbotron mobilejumbo">
-  <div class=" flex-container animation-element bounce-up cf">
-      <img class="img-responsive img-movil col-md-7 col-xs-7" src="../../images/movil.png">
-      <div class="flex-column col-md-5 col-xs-5">
-        <label class="descargaMessage ">Descarga nuestra APP!!</label>
-        <a type="button" class="btn btn-danger btn-lg">Descargar</a>
-      </div>
-    </div>
-</div>
+<link href="styles/only-index.css" rel="stylesheet">
