@@ -9,11 +9,15 @@
            <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
               <ul class="sidebar-nav" id="menu" >
                 <li class="sidebar-brand">
+                  <div>
+                    <img src="images/logos/full-white-mini.png" alt="Logo" class="logo"/>
+                  </div>
+                  <div class="logged-user">
+                    <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=30&d=identicon"
+                         alt="User Avatar" class="img-circle avatar" id="avatar"/>
+                    <span>{{username}}</span>
+                  </div>
 
-                    <!--<a href=""><img id="avatar" src="images/yeoman.png" class="profile-image img-circle">-->
-
-                    <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=50&d=identicon" alt="User Avatar" class="profile-image img-circle" id="avatar"/>
-                    <h3>{{username}}</h3>
                      <!--{{username}} -->
                    <!--   {{username}}
                     </a> -->
@@ -22,7 +26,7 @@
 
 
         <li class="activeInvitations" ng-show="invitations.length > 0">
-          <a class="btn btn-warning" href="" aria-expanded="true">Invitations<i class="fa fa-bell fa-fw"></i></a>
+          <a class="btn btn-warning" href="" aria-expanded="true"><i class="fa fa-bell fa-fw"></i>Invitations</a>
           <ul aria-expanded="true" class="emphasis">
             <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0">
               {{invitation.groupName}}
@@ -43,16 +47,25 @@
 
 
         <li class="active">
-          <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"><span class="badge-mod" id="groupAlert" name="groupAlert" title="">{{groupEventsCount}}</span></i></a>
+          <a class="btn btn-primary" href="" aria-expanded="true">
+            <i class="fa fa-group fa-fw"></i>Groups
+            <span class="pull-right">
+              <span class="badge badge-mod" id="groupAlert" name="groupAlert" title="">{{groupEventsCount}}</span>
+              <span class="badge" ng-show="notifications.group.total > 0">{{notifications.group.total}}</span>
+            </span>
+
+
+          </a>
+
           <ul aria-expanded="true" class="emphasis cgroups" id="grouplist">
-            <li ng-repeat="group in groups" ng-if="groups.length > 0">
+            <li ng-repeat="group in groups" ng-show="groups.length > 0" class="menu-option">
 
               <a ng-click="selectGroup(group)">
-
                 {{group.groupName}}
+                <span class="badge pull-right" ng-show="$parent.notifications.group[group.id].total > 0">{{ $parent.notifications.group[group.id].total}}</span>
               </a></li>
             <!----  add group ------>
-            <li>
+            <li class="menu-option">
               <a href="" class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new Group</a>
             </li>
           </ul>
@@ -61,12 +74,19 @@
 
         <!----separator------>
         <li class="activeChannels" ng-show= "tagGroup !== ''">
-          <a class="btn btn-primary" href="" aria-expanded="false" >Channels<i class="fa fa-comment fa-fw"></i></a>
+          <a class="btn btn-primary" href="" aria-expanded="false" >
+            <i class="fa fa-comment fa-fw"></i>Channels
+            <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel.total > 0">{{notifications.group[tagGroup.id].channel.total}}</span>
+          </a>
           <ul aria-expanded="false">
-            <li class="activeChannelsPublic active">
-              <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
+            <li class="activeChannelsPublic channel-type active">
+              <a href="" class="btn btn-danger" aria-expanded="false">
+                Public
+                <span class="fa fa-chevron-down fa-fw" ng-class=""></span>
+                <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['PUBLIC'].total > 0">{{notifications.group[tagGroup.id].channel['PUBLIC'].total}}</span>
+              </a>
               <ul class="emphasis" aria-expanded="false">
-                <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0">
+                <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
                 <!--
                   <span class="input-group-btn pull-left">
                     <div class="dropdown">
@@ -85,14 +105,19 @@
                   </span> -->
                   <a ng-click="selectChannel(channel, 'public')">
                     {{channel.channelName}}
+                    <span class="badge pull-right" ng-show="$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id] > 0">{{$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id]}}</span>
                   </a>
                 </li>
               </ul>
             </li>
-            <li>
-              <a href="" class="btn btn-danger">Private<span class="fa fa-chevron-down"></span></a>
+            <li class="channel-type">
+              <a href="" class="btn btn-danger">
+                Private
+                <span class="fa fa-chevron-down"></span>
+                <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['PRIVATE'].total > 0">{{notifications.group[tagGroup.id].channel['PRIVATE'].total}}</span>
+              </a>
               <ul class="emphasis">
-                <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0">
+                <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
 
                 <!--
                   <span class="input-group-btn pull-left">
@@ -113,33 +138,40 @@
                   -->
                   <a ng-click="selectChannel(channel, 'private')">
                     {{channel.channelName}}
+                    <span class="badge pull-right" ng-show="$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id] > 0">{{$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id]}}</span>
                   </a>
                 </li>
               </ul>
             </li>
             <!----  add channel ------>
-            <li>
-              <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
+            <li class="menu-option">
+              <a href="" class="" data-toggle="modal" data-target="#newChannelModal">
+                <span class="fa fa-plus"></span> Add new channel</a>
             </li>
           </ul>
         </li>
         <!-------separator------>
         <li class="activeMembers" ng-show= "tagGroup !== ''">
-          <a href="" class="btn btn-primary" aria-expanded="false">Direct Messages<i class="fa fa-user fa-fw"></i></a>
+          <a href="" class="btn btn-primary" aria-expanded="false">
+            <i class="fa fa-user fa-fw"></i>Direct Messages
+            <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['DIRECT'].total > 0">{{notifications.group[tagGroup.id].channel['DIRECT'].total}}</span>
+          </a>
 
           <ul aria-expanded="true" class="emphasis">
             <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
 
-            <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid">
+            <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid" class="menu-option">
               <a ng-click="searchDirectChannel(member)">
                 <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'"></span>
                 {{member.username}}
+                <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['DIRECT'][getDirectChannelId(member)] > 0">{{notifications.group[tagGroup.id].channel['DIRECT'][getDirectChannelId(member)]}}</span>
+
               </a>
             </li>
 
 
             <!----  invite user ------>
-            <li><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span> Invite new
+            <li class="menu-option"><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span> Invite new
               user</a></li>
           </ul>
         </li>
@@ -865,6 +897,7 @@
 
 
 
+            </div>
             </div>
 
       	</div>
