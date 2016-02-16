@@ -232,9 +232,10 @@
                 <div ng-show="tagGroup !== '' && tagChannel !== ''" class="input-group input-group-unstyled" id="inline-group">
 
 
-                    <input id="searchbox" type="text" class="search-query form-control" placeholder="Search" />
+                    <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
+
                     <span class="input-group-btn">
-                        <button ng-click="changeSearchNav()" class="btn btn-info" type="button">
+                        <button ng-click="changeSearchNav(); searchtextinchannel(textsearchbox)" class="btn btn-info" type="button">
                             <span class=" glyphicon glyphicon-search"></span>
                         </button>
                     </span>
@@ -844,54 +845,72 @@
 <!-- ******************************** -->
 
 
-                   <ul class="searchcontent">
-                        <li class="left clearfix">
+                   <ul class="searchcontent" ng-if="searchresults.length > 0">
+                        <li class="left clearfix" ng-repeat="result in searchresults">
                           <span class="searchcontent-img pull-left">
 
-                            <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" />
+
+                            <img ng-src="http://www.gravatar.com/avatar/{{result.source._user.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" />
 
                           </span>
                           <div class="searchcontent-body clearfix">
                               <div class="header">
 
-                                  <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                                  <strong class="primary-font">{{result.source._user.username}}</strong> 
 
-                                      <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                  <small class="date2" >
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        <span am-time-ago="result.source.datetime"></span>
+                                  </small>
+<!--
 
-                              </div>
-                              <p>
-                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                  dolor, quis ullamcorper ligula sodales.
-                              </p>
-                          </div>
-                        </li>
+                                  <small class="pull-right text-muted">
 
-
-
-                        <li class="left clearfix">
-                          <span class="searchcontent-img pull-left">
-
-                            <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" />
-
-                          </span>
-                          <div class="searchcontent-body clearfix">
-                              <div class="header">
-
-                                  <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-
-                                      <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                      <span class="glyphicon glyphicon-time">
+                                      <span am-time-ago="result.source.datetime"></span>
+                                 -->     
 
                               </div>
-                              <p>
-                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                  dolor, quis ullamcorper ligula sodales.
+                              <p ng-if="result.source.messageType == 'QUESTION'">
+
+                                  <span ng-bind-html="highlight(result.source.content.text, textsearchbox)" class="ng-binding"></span>
+                                  
+                                  <!--
+                                  <ul class="searchcontentanswer">
+                                        <li class="left clearfix" >
+                                        oli
+                                        </li>
+                                        <li class="left clearfix" >
+                                        oli2
+                                        </li>
+                                        <li class="left clearfix" >
+                                        oli33333333333333333333333
+                                        </li>
+                                  </ul>
+
+                                  -->
+                                  <!--
+                                    <ul ng-if="result.source.content.answers.length > 0" class="searchcontentanswer">
+                                        <li class="left clearfix" ng-repeat="answer in result.source.content.answers" >
+
+                                        -->
                               </p>
+
+
+
+                              <p ng-bind-html="highlight(result.source.content.text, textsearchbox)" ng-if="result.source.messageType == 'TEXT'">
+                              
+                              </p>
+
                           </div>
                         </li>
-
-
 
                     </ul>
+
+
+                    <h3 ng-if="searchresults.length == 0"> 
+                              No matches found
+                    </h3>
 
 <!-- ******************************** -->
 

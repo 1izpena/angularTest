@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5', 'searchservice',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5, searchservice) {
 
       $scope.init = function()
       {
@@ -66,6 +66,11 @@ angular.module('myAppAngularMinApp')
       $scope.option = 0;
       $scope.optionchannel = 0;
 
+
+
+      /* content of channel searchbox */
+      $scope.textsearchbox = '';
+      $scope.searchresults = '';
 
 
     $scope.changeSearchNav = function()
@@ -729,6 +734,51 @@ angular.module('myAppAngularMinApp')
     };
 
 
+/******************nuevo**************************/
+/* searchtextinchannel */
+
+
+
+    $scope.searchtextinchannel = function (textsearchbox, channel) {
+
+	    searchservice.chatsearch(textsearchbox, $scope.tagChannel.id).then(function (res){  
+
+		    console.log("esto vale la vuelta del api con res");
+		    console.log(res);
+		    
+		    console.log("esto vale res con");
+		    console.log(res.error);
+
+		    if(res.error == undefined){
+		    	
+		    	$scope.searchresults = res.slice();
+		   
+
+			    for (var i = 0; i < $scope.searchresults.length; i++) {
+			    	for ( var j = 0; j < $scope.channelMembers.length; j++){
+			    		if ($scope.searchresults[i].source._user == $scope.channelMembers[j].id){
+			    			$scope.searchresults[i].source._user =  $scope.channelMembers[j];
+			    		}
+			    	}
+		    	
+		    	}
+
+		    }
+		    else {
+		    	$scope.searchresults = '';
+		    }
+		    
+
+
+	    },function(err){
+	      console.log(err);
+	      $scope.errorG = err.message;
+          $("#errorGroupModal").modal("show");
+	    });
+    };
+      
+    
+/*******************nuevo********************************/
 
     $scope.getMessages = function (channel) {
 
