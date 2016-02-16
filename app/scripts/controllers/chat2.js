@@ -7,9 +7,10 @@ angular.module('myAppAngularMinApp')
       $scope.init = function()
       {
         // Emitimos evento de conexion a chat para recibir nuevas invitaciones a grupos
+        console.log("ha entrado a crear socket newChatConnection");
         Socket.emit('newChatConnection', {'userid': $localStorage.id });
-
-
+        $scope.groupEventsCount='';
+        $scope.groupEvents=[];
       };
 
 /*
@@ -60,7 +61,7 @@ angular.module('myAppAngularMinApp')
       $scope.message1 = '';
       $scope.navsearch = 0;
       $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
-      
+
       /* group user settings tag */
       $scope.option = 0;
       $scope.optionchannel = 0;
@@ -315,11 +316,11 @@ angular.module('myAppAngularMinApp')
 
     /* avisa antes de cambiarlo si es erroneo o no */
       $scope.checkChannelName = function(data, tagChannel) {
-    	console.log("esto tiene tagChannel"); 
+    	console.log("esto tiene tagChannel");
     	console.log($scope.tagChannel);
     	console.log($scope.tagGroup);
 
-    	console.log(tagChannel); 
+    	console.log(tagChannel);
 
     		if (data === '') {
       			return "Channel name should be not blank";
@@ -379,7 +380,7 @@ angular.module('myAppAngularMinApp')
           },function(err){
             // Tratar el error
             console.log("Hay error en delete channel: " + err.data.message);
-            
+
 
             $scope.errorG = err.data.message;
             $("#deleteChannelModal").modal("hide");
@@ -392,7 +393,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
-    
+
       $scope.addUserToChannel = function(member, ind){
         ChannelService.addUserToChannel($scope.groupid,$scope.channelid,member.id).then(
           function(data) {
@@ -443,7 +444,7 @@ angular.module('myAppAngularMinApp')
             $scope.errorG = err.data.message;
             $("#errorGroupModal").modal("show");
 
-           
+
           }
         );
       };
@@ -462,7 +463,7 @@ angular.module('myAppAngularMinApp')
 	            	console.log("unsuscribe ok");
 	            	$scope.privateChannels.splice(ind,1);
 	            }
-          	}          
+          	}
 
 
             $scope.tagChannel='';
@@ -484,7 +485,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
-      
+
 
       $scope.getChannels = function (group) {
         ProfileService.getChannels(group.id)
@@ -633,9 +634,9 @@ angular.module('myAppAngularMinApp')
 
       	  }
 
-      	  
+
       	  $scope.membersSettingschannel = temp;
-      	  
+
 
           $scope.option = option;
           $scope.searchinputplaceholder = "Search user to add and click on it ...";
@@ -880,6 +881,8 @@ angular.module('myAppAngularMinApp')
       $scope.tagGroup=group;
       $scope.channelSelected = false;
       $scope.tagChannel='';
+      $scope.groupEventsCount='';
+      $scope.groupEvents=[];
 
 
 
@@ -1122,7 +1125,7 @@ angular.module('myAppAngularMinApp')
 
       });
 
-      Socket.emit('newChatConnection', {'userid': $localStorage.id });
+      //Socket.emit('newChatConnection', {'userid': $localStorage.id });
 
     ProfileService
       .getGroups()
@@ -1145,7 +1148,7 @@ angular.module('myAppAngularMinApp')
 	    $scope.userid = data.id;
 	    $scope.user = data;
 
-		$scope.user.hash = $scope.getHash($scope.user.mail);	    
+		$scope.user.hash = $scope.getHash($scope.user.mail);
 	    //console.log("esto vale user");
 	    //console.log( $scope.user );
       }
@@ -1331,10 +1334,13 @@ angular.module('myAppAngularMinApp')
 
       //recibir evento de nuevo canal privado en grupo
       Socket.on('newPrivateChannel', function (data) {
-        console.log ("newPrivateChannel receive from server");
-        console.log(data);
-        $scope.privateChannels.push(data);
-        $scope.$apply();
+        if($scope.tagGroup.id == data.group.groupId){
+          console.log ("newPrivateChannel received from server");
+          console.log(data);
+          $scope.privateChannels.push(data);
+          $scope.$apply();
+        } //ELSE --> no tiene el grupo elegido pero q le notifique en ventana q tiene un evento nuevo
+
       });
 
 
@@ -1406,19 +1412,19 @@ angular.module('myAppAngularMinApp')
         	for (var i = 0; i < $scope.privateChannels.length; i++){
 	            if ($scope.privateChannels[i].id == data.channelid){
 	              $scope.privateChannels.splice(i,1);
-	              
+
 	          }
 	        }
 
         	$scope.privateChannels.splice(i,1);
-        	
+
         }
 
         else {
         	for (var i = 0; i < $scope.channelMembers.length; i++){
 	            if ($scope.channelMembers[i].id == data.user.id){
 	              $scope.channelMembers.splice(i,1);
-	              
+
 	          }
 	        }
 
@@ -1426,7 +1432,7 @@ angular.module('myAppAngularMinApp')
 	        if ($scope.adminChannel.id == $scope.userid){
 	        	/* añadimos al usuario borrado del canal en membersettingschannel (usuarios de grupo) */
 	        	if($scope.optionchannel == 1) {
-	        		
+
 	        		data.user.hash = $scope.getHash(data.user.mail);
 	        		$scope.membersSettingschannel.push(data.user);
 
@@ -1438,7 +1444,7 @@ angular.module('myAppAngularMinApp')
 
 
         }
-        
+
         $scope.$apply();
 
       });
@@ -1474,6 +1480,25 @@ angular.module('myAppAngularMinApp')
         }
       });
 
+      //recibir evento de nombre de canal privado editado
+      Socket.on('newGroupEvent', function (data) {
+        console.log ("newGroupEvent received from server");
+        console.log(data);
+        console.log ("$scope.tagGroup.id: " + $scope.tagGroup.id);
+        console.log ("data.groupid: " + data.groupid);
+        if ($scope.tagGroup.id!=data.groupid){
+          if ($scope.groupEventsCount){
+            //$scope.groupEventsCount ++;
+            //$('#groupAlert').title = data.message;
+            console.log("Event: " + data.message);
+          } else {
+            //$scope.groupEventsCount = 1;
+            //$('#groupAlert').title.text(data.message);
+            console.log("Event: " + data.message);
+          }
+        }
+        $scope.$apply();
+      });
 
 /**/
       //recibir evento de canal privado eliminado
