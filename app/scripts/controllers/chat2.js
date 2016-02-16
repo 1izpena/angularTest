@@ -73,16 +73,17 @@ angular.module('myAppAngularMinApp')
       $scope.searchresults = '';
 
 
-    $scope.changeSearchNav = function()
+    $scope.changeSearchNav = function(optionsearch)
     {
       console.log("estoy en chat js");
-      if($scope.navsearch === 0){
+
+      if(optionsearch == 1){
           console.log("estoy en id cambiando a 1");
 
           $scope.navsearch = 1;
-          $scope.class1 = "col-xs-7 col-sm-7 col-md-8 col-lg-8";
+          $scope.class1 = "col-xs-8 col-sm-8 col-md-8 col-lg-8";
       }
-      else{
+      else {
         console.log("estoy en id cambiando a 0");
           $scope.navsearch = 0;
 
@@ -90,6 +91,10 @@ angular.module('myAppAngularMinApp')
       }
 
     };
+
+
+
+
 
     /* subraya las coincidencias */
     $scope.highlight = function(text, search) {

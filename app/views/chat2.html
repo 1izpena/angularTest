@@ -235,7 +235,7 @@
                     <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
 
                     <span class="input-group-btn">
-                        <button ng-click="changeSearchNav(); searchtextinchannel(textsearchbox)" class="btn btn-info" type="button">
+                        <button ng-click="changeSearchNav(1); searchtextinchannel(textsearchbox)" class="btn btn-info" type="button">
                             <span class=" glyphicon glyphicon-search"></span>
                         </button>
                     </span>
@@ -432,7 +432,7 @@
 
                                       <!-- si options = 1 add / options = 2 remove -->
 
-                                               <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" xclass="img-circle" id="img-circle"/>
+                                               <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
 
@@ -616,7 +616,7 @@
 
                                       <!-- si options = 1 add / options = 2 remove -->
 
-                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" xclass="img-circle" id="img-circle"/>
+                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
 
@@ -662,7 +662,7 @@
                   <span class="chat-img pull-left"
                         ng-if="showUserInfo($index)">
                     <img ng-src="http://www.gravatar.com/avatar/{{getHash(msg.user.mail)}}?s=30&d=identicon"
-                         alt="User Avatar" xclass="img-circle"/>
+                         alt="User Avatar" class="img-circle"/>
                   </span>
 
                   <div class="chat-body clearfix">
@@ -793,20 +793,44 @@
 
 <!-- contenedor de busquedas:: actualmente comentado -->
 
-<div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
+<div ng-show="navsearch" class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="col4">
 
           <div class="panel panel-info" id="panel-info2">
 
             <div  class="panel-heading" id="panel-heading2">
 
+<!-- ******************* -->
 
+<div class="container-fluid panel-container">
+
+
+                <div class="col-xs-2">
+
+
+                      <a ng-click="changeSearchNav(0)"
+                      class="glyphicon glyphicon-chevron-left" id="menusearch-toggle">
+                      </a>
+                </div>
+
+
+                <div class="col-xs-10 text-center" id="searchresult">
+                    <h3>Search Results</h3>
+                </div>
+</div>
+
+
+<!-- ********************* -->
+
+
+
+<!--
               <div class="col-xs-12 text-center" id="searchresult">
 
                 <h3>Search Results</h3>
 
                 </div>
 
-
+-->
 
           <!--  <h3>Search Results</h3>--<
 
