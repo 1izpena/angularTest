@@ -110,10 +110,10 @@ nav {
 }
 
 /********* BARRA MENU ***********/
-ul a{
+.collapse ul a{
   border:none !important;
 }
-ul .btn{
+.collapse ul .btn{
   font-size: 16px;
 font-weight: 400;
 margin: 30px auto 0;
@@ -121,10 +121,10 @@ padding: 15px 22px;
 background: none;
 color:white;
 }
-navbar-right {
+ .collapsenavbar-right {
 margin-right: 0px;
 }
-ul .btn {
+ .collapse ul .btn {
      margin: 0;
 }
 
