@@ -3,6 +3,9 @@
 
 /********nuevo********/
 
+#panel-body2 h3{
+  text-align: center;
+}
 
 .searchcontent
 {
@@ -912,6 +915,12 @@ ul {   list-style-type: none; }
   font-style: italic;
   margin-right: 20px;
   margin-left: 20px;
+}
+
+.date2 {
+  float: right;
+  
+
 }
 
 .chat li .header {
