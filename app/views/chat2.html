@@ -1,5 +1,5 @@
 
-<div class="chatContainer">
+<div class="chatContainer" ng-init="init()">
 
 
  <div id="wrapper">
@@ -43,7 +43,7 @@
 
 
         <li class="active">
-          <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i></a>
+          <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"><span class="badge-mod" id="groupAlert" name="groupAlert" title="">{{groupEventsCount}}</span></i></a>
           <ul aria-expanded="true" class="emphasis cgroups" id="grouplist">
             <li ng-repeat="group in groups" ng-if="groups.length > 0">
 
@@ -215,7 +215,7 @@
 
                                             <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
 
-                                            
+
 -->
                  </div>
 
@@ -227,7 +227,7 @@
                                         <span class=" glyphicon glyphicon-search"></span>
                                     </button>
                                 </span>
-                                
+
 -->
 
                 <!-- ************************* -->
@@ -770,7 +770,7 @@
               <div class="col-xs-12 text-center" id="searchresult">
 
                 <h3>Search Results</h3>
-                
+
                 </div>
 
 
