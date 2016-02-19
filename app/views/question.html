@@ -5,9 +5,9 @@
 			</div>	
 			<div class="col-md-6">
 				<div class="btn-group" role="group">
-  					<button type="button" class="btn btn-default active" ng-click="goToForo()">Preguntas</button>
+  					<button type="button" class="btn btn-default active" ng-click="goToForo()">Questions</button>
   					<button type="button" class="btn btn-default" ng-click="goToTags()">Tags</button>
-  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Hacer pregunta</button>
+  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Ask question</button>
 				</div>
 			</div>	
 		</div>
@@ -42,14 +42,26 @@
 		        	<p ng-bind-html="question.body"></p>
 		        	<div ng-if="linkQuestion">
 		        		<a href=""  ng-click="deleteQuestion(question._id, question.answers)" >Delete Question</a>
-		        		<a href=""  ng-click="deleteQuestion(question._id, question.answers)" >Edit Question</a>
+		        		<a href=""  ng-click="questionEditModal(question)" >Edit Question</a>
 		        	</div>
-		        	<div class="tags">
-		        		<a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
-		        	</div>
-		        	<div class="time col-md-12">
-		        		<span class="pull-right text-muted">by {{question._user.username}}</span>
-		        		<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
+		        	<div class="col-md-12">
+		        		<div class="tags col-md-8">
+		        			<a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
+		        		</div>
+		        		<div class="col-md-4">
+				        	<div class="time-asked">
+				        		<i class="fa fa-clock-o fa-2 text-muted"></i>
+				        		<span class="text-muted">Asked</span>
+				        		<span class="text-muted" am-time-ago="question.created"></span>
+				        		<span class="text-muted">by {{question._user.username}}</span>
+				        	</div>
+				        	<div class="time-edited" ng-if="question.modified != null">
+				        		<i class="fa fa-clock-o fa-2 text-muted"></i>
+				        		<span class=" text-muted">Edited</span>
+				        		<span class="text-muted" am-time-ago="question.modified"></span>
+				        		<span class="text-muted">by {{question._user.username}}</span>			        		
+				        	</div>
+			       		 </div>
 		        	</div>
 		        	<div class="col-md-12">
 						<div class="col-md-10">
@@ -66,7 +78,7 @@
 
  								 </div>
 							</div>		
-							<a role="button" data-toggle="collapse" data-target="#questioncomments" aria-expanded="false" aria-controls="questioncomments"><i class="fa fa-sort-desc fa-3	">Show comments</i></a>	
+							<a role="button" data-toggle="collapse" data-target="#questioncomments" aria-expanded="false" aria-controls="questioncomments"><i class="fa fa-sort-desc fa-3">Show comments</i></a>	
 						</div>
 						<div id="shared" class="col-md-2">
 		        			<h3>Shared</h3>
@@ -92,14 +104,24 @@
 	    		</div> 
 	    		<div class="right">
 		        	<p ng-bind-html=" answer.body"></p>
-		        	<div class="time col-md-12">
-		        		<span class="pull-right text-muted">by {{answer._user.username}}</span>
-		        		<span class="glyphicon glyphicon-time pull-right text-muted"  am-time-ago="answer.created"></span>
-		        	</div>
-		        	<div ng-if="linkAnswer">
+		        	<div ng-if="answerLinks(answer)">
 		        		<a href="" ng-click="deleteAnswer($index,question._id,answer._id)">Delete answer</a>
-		        		<a href="" ng-click="deleteAnswer($index,question._id,answer._id)">Edit answer</a>
+		        		<a href="" ng-click="answerEditModal(question._id,$index,answer)">Edit answer</a>
 		        	</div>
+		        	<div class="col-md-12">
+				        	<div class="time-asked">
+				        		<i class="fa fa-clock-o fa-2 text-muted"></i>
+				        		<span class="text-muted">Asked</span>
+				        		<span class="text-muted" am-time-ago="answer.created"></span>
+				        		<span class="text-muted">by {{answer._user.username}}</span>
+				        	</div>
+				        	<div class="time-edited" ng-if="answer.modified != null">
+				        		<i class="fa fa-clock-o fa-2 text-muted"></i>
+				        		<span class=" text-muted">Edited</span>
+				        		<span class="text-muted" am-time-ago="answer.modified"></span>
+				        		<span class="text-muted">by {{answer._user.username}}</span>			        		
+				        	</div>
+			       </div>
 		        	<div class="col-md-12">
 		        		<div class="col-md-10">
 		        			<h3>Comments</h3>

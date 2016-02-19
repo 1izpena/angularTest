@@ -2,13 +2,13 @@
 	<div class="row container">
 		<div class="col-md-8 headLeft">
 			<div class="col-md-6">
-				<h1>Preguntas</h1>
+				<h1>Questions</h1>
 			</div>
 			<div class="col-md-6">
 				<div class="btn-group" role="group">
-  					<button type="button" class="btn btn-default active" ng-click="goToForo()">Preguntas</button>
+  					<button type="button" class="btn btn-default active" ng-click="goToForo()">Questions</button>
   					<button type="button" class="btn btn-default" ng-click="goToTags()">Tags</button>
-  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Hacer pregunta</button>
+  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Ask question</button>
 				</div>
 			</div>
 		</div>
@@ -28,9 +28,9 @@
 	<div id="exTab2" class="container">
 		<div class="col-md-2">
 		<ul class="nav nav-pills nav-stacked">
-			<li class="active"><a  href="/foro#1" data-toggle="tab">Últimas preguntas</a></li>
-			<li><a href="/foro#2" data-toggle="tab">Más visitadas</a></li>
-			<li><a href="/foro#3" data-toggle="tab">Más votadas</a></li>
+			<li class="active"><a  href="/foro#1" data-toggle="tab">Last questions</a></li>
+			<li><a href="/foro#2" data-toggle="tab">Most Viewed</a></li>
+			<li><a href="/foro#3" data-toggle="tab">Most voted</a></li>
 		</ul>
 	</div>
 		<div class="col-md-10">
@@ -58,7 +58,7 @@
 				</div>
 				<div class="tab-pane" id="2">
 		         	<div class="row">
-		        		<div ng-repeat="question in questions " class="col-md-12 pregunta">
+		        		<div ng-repeat="question in questions | orderBy: '-views' " class="col-md-12 pregunta">
 		        			<div class="col-md-12 contentright">
 		        				<h2 class="questiontitle"><a href="" ng-click="goQuestion(question._id)">{{question.title}}</a></h2>
 		        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>

@@ -2,12 +2,13 @@
 	<div class="row container">
 		<div class="col-md-8 headLeft">
 			<div class="col-md-6">	
+				<h1>Forum Tags</h1>
 			</div>	
 			<div class="col-md-6">
 				<div class="btn-group" role="group">
-  					<button type="button" class="btn btn-default" ng-click="goToForo()">Preguntas</button>
+  					<button type="button" class="btn btn-default" ng-click="goToForo()">Questions</button>
   					<button type="button" class="btn btn-default active" ng-click="goToTags()">Tags</button>
-  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Hacer pregunta</button>
+  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Ask question</button>
 				</div>
 			</div>	
 		</div>
@@ -29,11 +30,13 @@
         </div>
 	</div>
 	<div class="row">
-		<div class="ui-widget">
+		<div class="ui-widget search">
 		  <label for="tags">Tags: </label>
 		  <input id="tags" ng-model="searchTag">
 		</div>
-		<div class="col-md-3 col-xs-4 tagbutton" ng-repeat="tag in tags | filter:searchTag"><button class="btn" ng-click="questionsByTag(tag._id)">{{tag.text}} ({{tag.tagQuestions.length}})</button></div>
+		<div class="container">
+			<div class="col-md-3 col-xs-4 tagbutton" ng-repeat="tag in tags | filter:searchTag"><button class="btn" ng-click="questionsByTag(tag._id)">{{tag.text}} ({{tag.tagQuestions.length}})</button></div>
+		</div>
 	</div>	
 </div>
 <link rel="stylesheet" ng-href="styles/foro.css" >
