@@ -200,9 +200,11 @@
                 <div ng-show="tagGroup !== '' && tagChannel !== ''" class="input-group input-group-unstyled" id="inline-group">
 
 
-                    <input id="searchbox" type="text" class="search-query form-control" placeholder="Search" />
+                    
+                    <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
+
                     <span class="input-group-btn">
-                        <button ng-click="changeSearchNav()" class="btn btn-info" type="button">
+                        <button ng-click="changeSearchNav(1); searchtextinchannel(textsearchbox)" class="btn btn-info" type="button">
                             <span class=" glyphicon glyphicon-search"></span>
                         </button>
                     </span>
@@ -399,7 +401,7 @@
 
                                       <!-- si options = 1 add / options = 2 remove -->
 
-                                               <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" xclass="img-circle" id="img-circle"/>
+                                               <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
 
@@ -583,7 +585,7 @@
 
                                       <!-- si options = 1 add / options = 2 remove -->
 
-                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" xclass="img-circle" id="img-circle"/>
+                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
 
@@ -629,7 +631,7 @@
                   <span class="chat-img pull-left"
                         ng-if="showUserInfo($index)">
                     <img ng-src="http://www.gravatar.com/avatar/{{getHash(msg.user.mail)}}?s=30&d=identicon"
-                         alt="User Avatar" xclass="img-circle"/>
+                         alt="User Avatar" class="img-circle"/>
                   </span>
 
                   <div class="chat-body clearfix">
@@ -756,54 +758,43 @@
 
 
 
-<!--        <div ng-show="!error && navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4"> -->
-
 <!-- contenedor de busquedas:: actualmente comentado -->
 
-<div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
+<div ng-show="navsearch" class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="col4">
 
           <div class="panel panel-info" id="panel-info2">
 
             <div  class="panel-heading" id="panel-heading2">
 
 
+              <!-- ******************* -->
+  
+              <div class="container-fluid panel-container"> 
+                  <div class="col-xs-2">
+ 
+ 
+                       <a ng-click="changeSearchNav(0)"
+                       class="glyphicon glyphicon-chevron-left" id="menusearch-toggle">
+                       </a>
+
+                  </div>
+ 
+ 
+                  <div class="col-xs-10 text-center" id="searchresult">
+                      <h3>Search Results</h3>
+                 </div>
+              </div>
+<!--
+
+
               <div class="col-xs-12 text-center" id="searchresult">
 
                 <h3>Search Results</h3>
 
-                </div>
+              </div>
 
+-->
 
-
-          <!--  <h3>Search Results</h3>--<
-
-            	<!--<a href="" class="glyphicon glyphicon-search" id="searchTag"></a>
-
-
-				<input type="text" id="search_terms" class="search_input search_input_highlighted" placeholder="Search" autocomplete="off" value="" maxlength="250">
-
-
-
-              <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                  <span class="glyphicon glyphicon-option-horizontal"></span>
-                </button>
-                <ul class="dropdown-menu slidedown">
-                  <li class="dropdown-header">Type Filter</li>
-
-                  <li><a href=""><span class="glyphicon glyphicon-user">
-                            </span>Members</a></li>
-                  <li><a href=""><span class="glyphicon glyphicon-star">
-                            </span>Favorites</a></li>
-                  <li><a href=""><span class="glyphicon glyphicon-file">
-                  	        </span>Files</a></li>
-
-                  <li><a href=""><span class="glyphicon glyphicon-tag">
-                  	        </span>Mentions</a></li>
-
-
-                </ul>
-              </div> -->
             </div>
 
 
@@ -811,55 +802,72 @@
 
 <!-- ******************************** -->
 
-
-                   <ul class="searchcontent">
-                        <li class="left clearfix">
+                   <ul class="searchcontent" ng-if="searchresults.length > 0">
+                        <li class="left clearfix" ng-repeat="result in searchresults">
                           <span class="searchcontent-img pull-left">
 
-                            <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" />
+
+                            <img ng-src="http://www.gravatar.com/avatar/{{result.source._user.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" />
 
                           </span>
                           <div class="searchcontent-body clearfix">
                               <div class="header">
 
-                                  <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
+                                  <strong class="primary-font">{{result.source._user.username}}</strong> 
 
-                                      <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                  <small class="date2" >
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        <span am-time-ago="result.source.datetime"></span>
+                                  </small>
+<!--
 
-                              </div>
-                              <p>
-                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                  dolor, quis ullamcorper ligula sodales.
-                              </p>
-                          </div>
-                        </li>
+                                  <small class="pull-right text-muted">
 
-
-
-                        <li class="left clearfix">
-                          <span class="searchcontent-img pull-left">
-
-                            <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" />
-
-                          </span>
-                          <div class="searchcontent-body clearfix">
-                              <div class="header">
-
-                                  <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-
-                                      <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                                      <span class="glyphicon glyphicon-time">
+                                      <span am-time-ago="result.source.datetime"></span>
+                                 -->     
 
                               </div>
-                              <p>
-                                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                  dolor, quis ullamcorper ligula sodales.
+                              <p ng-if="result.source.messageType == 'QUESTION'">
+
+                                  <span ng-bind-html="highlight(result.source.content.text, textsearchbox)" class="ng-binding"></span>
+                                  
+                                  <!--
+                                  <ul class="searchcontentanswer">
+                                        <li class="left clearfix" >
+                                        oli
+                                        </li>
+                                        <li class="left clearfix" >
+                                        oli2
+                                        </li>
+                                        <li class="left clearfix" >
+                                        oli33333333333333333333333
+                                        </li>
+                                  </ul>
+
+                                  -->
+                                  <!--
+                                    <ul ng-if="result.source.content.answers.length > 0" class="searchcontentanswer">
+                                        <li class="left clearfix" ng-repeat="answer in result.source.content.answers" >
+
+                                        -->
                               </p>
+
+
+
+                              <p ng-bind-html="highlight(result.source.content.text, textsearchbox)" ng-if="result.source.messageType == 'TEXT'">
+                              
+                              </p>
+
                           </div>
                         </li>
-
-
 
                     </ul>
+
+
+                    <h3 ng-if="searchresults.length == 0"> 
+                              No matches found
+                    </h3>
 
 <!-- ******************************** -->
 
@@ -867,7 +875,7 @@
 
             </div>
 
-      	</div>
+        </div>
         <!-- /#col-md-4 -->
 
 

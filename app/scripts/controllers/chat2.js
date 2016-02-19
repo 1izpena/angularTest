@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5', 'searchservice',
+    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5, searchservice) {
 
       $scope.init = function()
       {
@@ -67,24 +67,80 @@ angular.module('myAppAngularMinApp')
       $scope.optionchannel = 0;
 
 
+      /* content of channel searchbox */
+      $scope.textsearchbox = '';
+      $scope.searchresults = '';
 
-    $scope.changeSearchNav = function()
+
+    $scope.changeSearchNav = function(optionsearch)
     {
       console.log("estoy en chat js");
-      if($scope.navsearch === 0){
+      if(optionsearch == 1){
           console.log("estoy en id cambiando a 1");
 
           $scope.navsearch = 1;
-          $scope.class1 = "col-xs-7 col-sm-7 col-md-8 col-lg-8";
+          $scope.class1 = "col-xs-8 col-sm-8 col-md-8 col-lg-8";
       }
-      else{
-        console.log("estoy en id cambiando a 0");
+      else {
+          console.log("estoy en id cambiando a 0");
           $scope.navsearch = 0;
-
           $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
       }
 
     };
+
+
+/******************nuevo**************************/
+
+ 
+     $scope.searchtextinchannel = function (textsearchbox, channel) {
+ 
+      searchservice.chatsearch(textsearchbox, $scope.tagChannel.id).then(function (res){  
+ 
+         console.log("esto vale la vuelta del api con res");
+         console.log(res);
+         
+         console.log("esto vale res con");
+         console.log(res.error);
+
+         if(res.error == undefined){
+           
+           $scope.searchresults = res.slice();
+        
+
+           for (var i = 0; i < $scope.searchresults.length; i++) {
+             for ( var j = 0; j < $scope.channelMembers.length; j++){
+               if ($scope.searchresults[i].source._user == $scope.channelMembers[j].id){
+                 $scope.searchresults[i].source._user =  $scope.channelMembers[j];
+               }
+             }
+           
+           }
+
+         }
+         else {
+           $scope.searchresults = '';
+         }
+           
+   
+ 
+      },function(err){
+         console.log(err);
+         $scope.errorG = err.message;
+           $("#errorGroupModal").modal("show");
+       });
+ 
+     };
+       
+     
+ /*******************nuevo********************************/
+
+
+
+
+
+
+
 
     /* subraya las coincidencias */
     $scope.highlight = function(text, search) {
