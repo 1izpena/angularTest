@@ -6,11 +6,12 @@
 </div>
 <div class="login-container container" >
   <div class="jumbotron">
+    <h2 class="page-header">Register</h2>
+    <p>By registering an account, you will have access to your own personal forum or chat</p>
     <div class="container text-center">
-      <h2 class="page-header">Register new user</h2>
       <form class="form-horizontal" name="register.registerForm" novalidate="" ng-model-options="{ updateOn: 'blur'}">
         <div class="row">
-          <div class="col-sm-offset-3 col-sm-6  alert alert-danger small text-left"
+          <div class="col-md-offset-3 col-md-6  alert alert-danger small text-left"
              ng-show="register.errorMessage||
                      (register.registerForm.mail.$invalid && (register.registerForm.$submitted || register.registerForm.mail.$dirty)) ||
                      (register.registerForm.username.$invalid && (register.registerForm.$submitted || register.registerForm.username.$dirty)) ||
@@ -31,27 +32,24 @@
         <div class="form-group"
              ng-class="{'has-error': (register.registerForm.$submitted || register.registerForm.mail.$touched) &&
                                       register.registerForm.mail.$invalid}">
-          <label class="col-sm-4 control-label" for="mail">Email</label>
-          <div class="col-sm-4">
-            <input type="email" class="form-control" id="mail" name="mail" placeholder=""
+          <div class="col-md-6 col-md-offset-3">
+            <input type="email" class="form-control" id="mail" name="mail" placeholder="Email"
                    ng-model="register.user.mail" strict-email-format required="">
           </div>
         </div>
         <div class="form-group"
              ng-class="{'has-error': (register.registerForm.$submitted || register.registerForm.username.$touched) &&
                                       register.registerForm.username.$invalid}">
-          <label class="col-sm-4 control-label" for="username">Username</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="username" name="username" placeholder=""
+          <div class="col-md-6 col-md-offset-3">
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username"
                    ng-model="register.user.username" required="" >
           </div>
         </div>
         <div class="form-group"
              ng-class="{'has-error': (register.registerForm.$submitted || register.registerForm.password.$touched) &&
                                       register.registerForm.password.$invalid}">
-          <label class="col-sm-4 control-label" for="password">Password</label>
-          <div class="col-sm-4">
-            <input type="text" class="form-control" id="password" name="password" placeholder=""
+          <div class="col-md-6 col-md-offset-3">
+            <input type="text" class="form-control" id="password" name="password" placeholder="Password"
                    ng-model="register.user.password" required="" >
           </div>
         </div>
@@ -66,4 +64,4 @@
     </div>
   </div>
 </div>
-<link rel="stylesheet" ng-href="styles/login.css">
+<link rel="stylesheet" ng-href="styles/register.css">

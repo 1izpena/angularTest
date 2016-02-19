@@ -1,5 +1,3 @@
-<link rel="stylesheet" ng-href="styles/login.css">
-<link rel="stylesheet" ng-href="styles/remember.css">
 <div class="container-fluid header1">
     <div class="filter"></div>
   <img class="image-header" src="images/header/header.jpg">
@@ -9,23 +7,28 @@
     <div class="container">
       <form class="form-horizontal" ng-show="FormVisibility">
         <div class="form-group">
-          <h1 class="col-md-offset-2 col-md-12">Restablecer contraseña</h1>
-          <p>¿Ha olvidado la contraseña de su cuenta? Introduzca su dirección de correo electrónico y te enviaremos un enlace de recuperación.</p>
+            <h2 class="page-header">password recovery</h2>
+          <p>Enter your username (email) below</br>
+You will receive an email with a link to create a password</p>
         </div>
-        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+        <div class="alert alert-danger fade in col-md-6 col-md-offset-3 alert-dismissible ng-hide" role="alert" ng-show="error">
           <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
           <h4><strong>Error!</strong></h4> {{message}}
         </div>
         <div class="form-group form-group-lg">
-          <label class="col-md-4 col-md-offset-1 control-label" for="email">Email</label>
-          <div class="col-md-3">
-             <input class="form-control input-lg text-center" name="email" type="email" ng-model="FormData.mail"/>
+          <div class="col-md-6 col-md-offset-3 text-center">
+             <input class="form-control input-lg" name="email" type="email" ng-model="FormData.mail" placeholder="Email"/>
           </div>
-        </div>
-        <button class="btn btn-primary btn-lg col-md-offset-5" ng-click="check()">Enviar email de recuperación</button>
+        </div><div class="col-md-6 col-md-offset-3">
+        <button class="btn btn-primary btn-lg col-md-offset-5" ng-click="check()">Send</button>
+      </div>
     </form>
-     <div class="result" ng-show="ResponseVisibility"><p>Te hemos enviado un email</p><br/></div>
+     <div class="result" ng-show="ResponseVisibility"><p>We just sent you a recovery email</p><br/>
+      <img src="images/mail.png"
+     </div>
     <div class="result" ng-show="ResponseError"><p>Ha habido un error.Intentalo más tarde</p><br/></div>
     </div>
   </div>
 </div>
+<link rel="stylesheet" ng-href="styles/login.css">
+<link rel="stylesheet" ng-href="styles/remember.css">

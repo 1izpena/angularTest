@@ -4,12 +4,19 @@
   padding-right: 0;
   padding-left: 0;
 }
-
+body{
+  font-family: 'Oswald', sans-serif;
+}
 .header1{
   position: relative;
   -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
 -moz-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
 box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
+}
+.alert-danger {
+    color: #FFFFFF;
+    background-color: #140F27;
+    border-color: #ebccd1;
 }
 
 .filter{
@@ -39,11 +46,46 @@ box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
   display: none !important;
 }
 .log{
-  display: none;
+  display: none !important;
+}
+.reg{
+  display: block !important;
 }
 .footer{
+  position: relative ;
   border-top: solid 0.5px black;
+  height: 10% !important;
+  min-height: 10%;
 }
+.login-menu{
+height: 7%;
+min-height: 7%;
+}
+.content{
+  height:83%;
+  min-height: 83%;
+}
+.navbar {
+    min-height: 0 !important;
+}
+
+form .btn {
+    padding: 10px 16px !important;
+    height: 46px !important;
+    color: #fff;
+    background-color: #163B5A;
+    background: rgba(0, 37, 128, 0.5);
+    background-image: url('../images/patern.png');
+    border-color: #163B5A;
+    font-size: 18px !important;
+    line-height: 1.3333333;
+    border-radius: 1px !important;
+    width: 150px;
+}
+.login{
+  min-height: 100% !important;
+}
+
 
 /***************** Hasta aqui cabecera y menu ****************/
 body{
@@ -56,12 +98,7 @@ body{
   width: 100% !important;
 }
 
-/* titulo */
-.title {
-    font-size: 40px;
-    font-weight: 600;
-    width: 50%;
-}
+
 .form-horizontal .form-group {
      margin-right: 0;
      margin-left: 0;
@@ -89,15 +126,16 @@ h3 {
 }
 .btn-primary {
     color: #fff;
-    background-color: #33282E;
-    border-color: #33282E;
+    background-color: #163B5A;
+    border-color: #163B5A;
     border-radius: 0;
 }
 .form-group-lg .form-control {
     border-radius: 0;
 }
-.social-icon{
-  padding-top: 3%;
+.jumbotron {
+    padding-top: 0px;
+    /* padding-bottom: 48px; */
 }
 
 .morado{
@@ -108,4 +146,12 @@ h3 {
 }
 .blue{
   color:#A19673;
+}
+a:hover {
+    color: #163B5A;
+    text-decoration: none;
+    cursor: pointer;
+}
+a, h2 {
+    color: #163B5A;
 }

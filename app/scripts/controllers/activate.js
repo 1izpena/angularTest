@@ -22,13 +22,13 @@ angular.module('myAppAngularMinApp')
       ResetService.activate($routeParams.token).then(function(res)
       {
         $scope.success=1;
-        $scope.message1 = "Cuenta activada";
-
+        $scope.message1 = "welcome to meanstack !!";
+          $scope.message2 = "now you can login";
       },function(res)
       {
           $scope.error = 1;
           $scope.message2 = "Email de activación expirado,ingresa tu datos en login para volver a recibir tu email de activación";
-          
+
       });
     }
   });
