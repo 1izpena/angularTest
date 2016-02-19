@@ -1,0 +1,62 @@
+<!-- Sidebar -->
+<div id="sidebar-wrapper" >
+  <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
+  <ul class="sidebar-nav"  >
+    <li class="sidebar-brand">
+      <div class="text-center">
+        <img src="images/logos/full-white-mini.png" alt="Logo" class="logo"/>
+      </div>
+      <div class="zone-buttons">
+        <a class="btn-zone left" ng-click="goTo('/foro')" >Chat</a>
+        <a class="btn-zone right active" href="">Forum</a>
+      </div>
+      <!--<div class="logged-user">
+        <div class="dropdown">
+          <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=30&d=identicon"
+               class="img-circle avatar" id="avatar"/>
+          <span class="dropdown-toggle" data-toggle="dropdown">{{username}}</span>
+          <span class="caret"></span>
+          <ul class="dropdown-menu menu-logout" role="menu">
+            <li><a ng-click="logout()">Logout</a></li>
+          </ul>
+        </div>
+      </div>-->
+    </li>
+    <li class="active">
+      <a class="btn btn-primary" href="" aria-expanded="true">
+        <i class="fa fa-group fa-fw"></i>Questions
+      </a>
+      <ul aria-expanded="true" class="emphasis cgroups" id="grouplist">
+        <li class="menu-option">
+          <a ng-click="goToForo(1)" data-toggle="tab"  data-toggle="tab">Lasts questions</a>
+        </li>
+        <li class="menu-option">
+          <a ng-click="goToForo(2)" data-toggle="tab"  data-toggle="tab">Most viewed</a>
+        </li>
+        <li class="menu-option">
+          <a ng-click="goToForo(3)" data-toggle="tab"  data-toggle="tab">Most voted</a>
+        </li>
+
+        <!----  add group ------>
+        <li class="menu-option">
+          <a href="" ng-click="gotoNewQuestion()"><span class="fa fa-plus"></span> Ask question</a>
+        </li>
+      </ul>
+    </li>
+
+
+    <!----separator------>
+    <li class="" >
+      <a class="btn btn-primary" href="" aria-expanded="true">
+        <i class="fa fa-group fa-fw"></i>Tags
+      </a>
+      <ul aria-expanded="true" class="emphasis">
+        <li class="menu-option">
+          <a href="" ng-click="goToTags()" data-toggle="tab">View Tags</a>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+</div>
+

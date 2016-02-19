@@ -18,6 +18,17 @@ angular.module('myAppAngularMinApp')
   $scope.tagQuestions ={};
   $scope.path = $location.path();
 
+
+    $scope.location_hash = $location.hash();
+
+    console.log ($scope.location_hash);
+
+    $scope.order_criteria = '-created';
+    if ($scope.location_hash == 2)
+      $scope.order_criteria = '-views';
+    else if ($scope.location_hash == 3)
+      $scope.order_criteria = '-votes';
+
 $scope.answerLinks = function(answer){
   if(answer._user._id === $localStorage.id)
   {
@@ -26,22 +37,30 @@ $scope.answerLinks = function(answer){
   else
   {
     return false;
-  }  
+  }
 };
 
 
-$scope.goTo = function(url)
+$scope.goTo = function(url, hash)
 {
   $location.path(url);
+  if (hash) {
+    $location.hash(hash)
+  }
 };
 /*Redirecciones*/
 $scope.gotoNewQuestion = function()
 {
   $scope.goTo('/foro/newquestion');
 };
-$scope.goToForo = function()
+$scope.goToForo = function(pos)
 {
-  $scope.goTo('/foro');
+  if (!pos) {
+    $scope.goTo('/foro');
+  }
+  else {
+    $scope.goTo('/foro',pos);
+  }
 };
 
 $scope.goToTags = function()
@@ -111,7 +130,7 @@ $scope.upvote = function()
   {
     if(LoginService.isLogged())
     {
-      AnswerService.newAnswer($routeParams.questionid, answer).then(function(res){  
+      AnswerService.newAnswer($routeParams.questionid, answer).then(function(res){
       $scope.question.answers.push(res.data);
       $scope.question.answercount++;
 
@@ -212,7 +231,7 @@ $scope.getQuestiontag = function (id)
 $scope.getQuestion = function()
 {
   QuestionService.getQuestion($routeParams.questionid).then(function (res){
-    $scope.question = res.data; 
+    $scope.question = res.data;
     if($scope.question._user._id === $localStorage.id)
     {
      $scope.linkQuestion= true;
@@ -236,7 +255,7 @@ $scope.getQuestions = function()
  $scope.search = function(request)
     {
      $scope.questions = [];
-    searchservice.forumsearch(request).then(function (res){  
+    searchservice.forumsearch(request).then(function (res){
     $scope.questions= $scope.questions.concat(res);
     },function(err){
       console.log(err);
@@ -292,7 +311,7 @@ $scope.answerModal = function ($index,questionid,answerid) {
             }
       }
     });
-    modalInstance.result.then(function (comments) { 
+    modalInstance.result.then(function (comments) {
       $scope.question.answers[$index].comments=comments;
     }
   );
@@ -312,7 +331,7 @@ var modalInstance = $uibModal.open({
       }
     }
   });
-  modalInstance.result.then(function (question) { 
+  modalInstance.result.then(function (question) {
     $scope.question.title = question.title;
     $scope.question.modified = question.modified;
     $scope.question.body= question.body;
@@ -334,7 +353,7 @@ var modalInstance = $uibModal.open({
       }
     }
   });
-   modalInstance.result.then(function (answer) { 
+   modalInstance.result.then(function (answer) {
       $scope.question.answers[$index].modified = answer.modified;
       $scope.question.answers[$index].body= answer.body;
       }
