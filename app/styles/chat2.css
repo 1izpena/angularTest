@@ -561,6 +561,11 @@ ul {   list-style-type: none; }
   margin-right: 8px;
 }
 
+.sidebar-nav .badge {
+  color: #337ab7;
+  background-color: #fff;
+  top: 1px;
+}
 
 .sidebar-nav .badge.badge-mod {
 /*
