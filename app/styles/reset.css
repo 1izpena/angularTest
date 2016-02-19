@@ -1,0 +1,16 @@
+.reg{
+  display:none !important;
+}
+.btn {
+    padding: 10px 16px !important;
+    height: 46px !important;
+    color: #fff;
+    background-color: #163B5A;
+    background: rgba(0, 37, 128, 0.5);
+    background-image: url('../images/patern.png');
+    border-color: #163B5A;
+    font-size: 18px !important;
+    line-height: 1.3333333;
+    border-radius: 1px !important;
+    width: 150px;
+}

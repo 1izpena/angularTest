@@ -11,6 +11,10 @@
 body{
   font-family: 'Oswald', sans-serif;
 }
+.jumbotron p {
+
+     font-size: 15px;
+}
 .header1{
   position: relative;
   -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
@@ -72,6 +76,7 @@ min-height: 7%;
 .navbar {
     min-height: 0 !important;
 }
+
 
 form .btn {
     padding: 10px 16px !important;

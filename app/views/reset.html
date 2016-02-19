@@ -3,7 +3,8 @@
     <div class="container">
       <form class="form-horizontal" name="resetForm" novalidate="" >
         <div class="form-group">
-          <h1 class="col-md-offset-2 col-md-12">Restablecer contraseña</h1>
+          <h2>Password restart</h2>
+          <p> Insert your new password</p>
         </div>
         <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
           <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
@@ -11,29 +12,29 @@
         </div>
         <div class="alert alert-success fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="success">
           <button ng-click="success=0" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-          <strong>Success!</strong> {{message}} 
+          <strong>Success!</strong> {{message}}
         </div>
 
-        <div class="form-group form-group-lg" 
+        <div class="form-group form-group-lg has-feedback"
         ng-class="{'has-error': (resetForm.$submitted || resetForm.password.$touched) &&
                                       resetForm.password.$invalid}">
-          <label class="col-md-4 col-md-offset-1 control-label" for="password">Contraseña</label>
-          <div class="col-md-3">
-             <input type="password" name="password" class="form-control" id="password" ng-model="user.password" ng-required="true" minlength="8">
+          <div class="col-md-6 col-md-offset-3">
+             <input type="password" name="password" placeholder="new password" class="form-control" id="password" ng-model="user.password" ng-required="true" minlength="8">
+                <i class="glyphicon glyphicon-asterisk form-control-feedback"></i>
               <li ng-show="(resetForm.$submitted || resetForm.password.$touched) &&
                           resetForm.password.$error.required">Password required</li>
               <li ng-show="(resetForm.$submitted || resetForm.password.$touched) &&
                           resetForm.password.$error.minlength">Password is less than 8 characters</li>
           </div>
         </div>
-        <div class="form-group form-group-lg" 
+        <div class="form-group form-group-lg has-feedback"
         ng-class="{'has-error': (resetForm.$submitted || resetForm.repassword.$touched) &&
                                       resetForm.repassword.$invalid}">
-          <label class="col-md-4 col-md-offset-1 control-label" for="repassword">Repetir contraseña</label>
-          <div class="col-md-3">
-            <input type="password" name="repassword" class="form-control" id="repassword" ng-model="user.repassword" ng-required="true" pw-check="user.password" minlength="8">
+          <div class="col-md-6 col-md-offset-3">
+            <input type="password" name="repassword" class="form-control" placeholder="type again" id="repassword" ng-model="user.repassword" ng-required="true" pw-check="user.password" minlength="8">
+              <i class="glyphicon glyphicon-asterisk form-control-feedback"></i>
              <span class="help-block" ng-show="">
-          
+
         </span>
            <li ng-show="(resetForm.$submitted || resetForm.repassword.$touched) &&
                           resetForm.repassword.$error.required">Password required</li>
@@ -44,9 +45,10 @@
           </div>
         </div>
         <br>
-        <button ng-disabled="resetForm.repassword.$dirty && resetForm.repassword.$invalid ||  resetForm.password.$invalid || resetForm.repassword.$invalid" ng-click="reset()" class="btn btn-primary btn-lg col-md-offset-5 col-md-3">Cambiar contraseña</button>
+        <button ng-disabled="resetForm.repassword.$dirty && resetForm.repassword.$invalid ||  resetForm.password.$invalid || resetForm.repassword.$invalid" ng-click="reset()" class="btn btn-primary  col-md-offset-5 col-md-3">Submit</button>
       </form>
     </div>
   </div>
 </div>
 <link rel="stylesheet" ng-href="styles/login.css">
+<link rel="stylesheet" ng-href="styles/reset.css">

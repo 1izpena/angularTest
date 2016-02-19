@@ -14,18 +14,20 @@
             <img class="form-logo" src="images/logos/simple-black.png">
             <p><h3 class="title">Login</h3> & have fun !</p>
         </div></div>-->
-        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+        <div class="alert alert-danger fade in col-md-12 alert-dismissible ng-hide has-feedback" role="alert" ng-show="error">
           <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
           <h4><strong>Error!</strong></h4> {{message}}
         </div>
         <div class="form-group form-group-lg">
           <div class="col-md-12">
             <input type="email" name="mail" class="form-control" id="email" placeholder="Email" ng-model="user.mail" ng-required="true">
+            <i class="glyphicon glyphicon-envelope form-control-feedback"></i>
           </div>
         </div>
         <div class="form-group form-group-lg">
           <div class="col-md-12">
             <input type="password" name="password" class="form-control" id="password" placeholder="Password" ng-model="user.password" ng-required="true">
+              <i class="glyphicon glyphicon-asterisk form-control-feedback"></i>
           </div>
         </div>
         <div class="form-group form-group-lg">
