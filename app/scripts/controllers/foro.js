@@ -18,29 +18,41 @@ angular.module('myAppAngularMinApp')
   $scope.tagQuestions ={};
   $scope.path = $location.path();
 
-  $scope.goTo = function(url)
+$scope.answerLinks = function(answer){
+  if(answer._user._id === $localStorage.id)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }  
+};
+
+
+$scope.goTo = function(url)
 {
   $location.path(url);
-}
+};
 /*Redirecciones*/
 $scope.gotoNewQuestion = function()
 {
   $scope.goTo('/foro/newquestion');
-}
+};
 $scope.goToForo = function()
 {
   $scope.goTo('/foro');
-}
+};
 
 $scope.goToTags = function()
 {
   $scope.goTo('/foro/tags');
-}
+};
 
 $scope.goQuestion = function(id)
 {
   $scope.goTo('/foro/question/'+id);
-}
+};
 
 
 /****** Controlador Preguntas ********
@@ -51,24 +63,24 @@ $scope.newquestion = function(question)
   QuestionService.createQuestion(question).then(function (res){
     $scope.goTo('foro/question/'+res.data._id);
     $scope.success = 1;
-    $scope.success = "Question create!!"
+    $scope.success = "Question create!!";
   },function(err){
     $scope.error = 1;
     $scope.error = err.message;
   });
-}
+};
 
-  $scope.upvote = function()
-  {
-    QuestionService.upVote($routeParams.questionid).then(function(res){
-      $scope.success =1;
-      $scope.question.votes++;
-      $scope.message = res.data;
-    },function(err){
-      $scope.error = 1;
-      $scope.message = err.data.message;
-    });
-  }
+$scope.upvote = function()
+{
+  QuestionService.upVote($routeParams.questionid).then(function(res){
+    $scope.success =1;
+    $scope.question.votes++;
+    $scope.message = res.data;
+  },function(err){
+    $scope.error = 1;
+    $scope.message = err.data.message;
+  });
+};
 
   $scope.downvote = function()
   {
@@ -80,7 +92,7 @@ $scope.newquestion = function(question)
       $scope.error = 1;
       $scope.message = err.data.message;
     });
-  }
+  };
 
  $scope.deleteQuestion = function(questionid,answers)
  {
@@ -90,7 +102,7 @@ $scope.newquestion = function(question)
       $scope.error = 1;
       $scope.message = err.data.message;
     });
- }
+ };
 
 
 /********* Answer function *******/
@@ -113,7 +125,7 @@ $scope.newquestion = function(question)
     {
       $scope.goTo('/login');
     }
-  }
+  };
 $scope.deleteAnswer = function ($index,questionid,answerid)
 {
   AnswerService.deleteAnswer(questionid,answerid).then(function (res){
@@ -123,12 +135,7 @@ $scope.deleteAnswer = function ($index,questionid,answerid)
     $scope.error = 1;
     $scope.message = err.data.message;
   });
-}
-
-$scope.editAnswer = function()
-{
-
-}
+};
 
 
 /*Voto positivo para la respuesta*/
@@ -149,14 +156,15 @@ $scope.answerUpVote = function($index,answerid)
   {
     $scope.goTo('/login');
   }
-}
+};
 
 /*Voto negativo para la respuesta*/
 $scope.answerDownVote = function($index,answerid)
 {
    if(LoginService.isLogged())
   {
-     AnswerService.downVote($routeParams.questionid, answerid).then(function(res){
+    AnswerService.downVote($routeParams.questionid, answerid).then(function(res)
+    {
       $scope.success =1;
       $scope.message = "Vote succesfully";
       $scope.question.answers[$index].votes--;
@@ -169,7 +177,7 @@ $scope.answerDownVote = function($index,answerid)
   {
         $scope.goTo('/login');
   }
-}
+};
 
 
 /******* Controlador tags *******/
@@ -181,11 +189,11 @@ $scope.getTags = function(){
     $scope.error = 1;
     $scope.message = err;
   });
-}
+};
 
 $scope.questionsByTag = function(id){
    $scope.goTo('/foro/tag/'+id);
-}
+};
 
 $scope.getQuestiontag = function (id)
 {
@@ -193,29 +201,27 @@ $scope.getQuestiontag = function (id)
     console.log(res);
     $scope.questions = res.data;
 
-  },function(err){
-
+  },function(err)
+  {
+    $scope.error = 1;
+    $scope.message = err;
   });
-}
+};
 
 /****** Funciones de Inicio*******/
 $scope.getQuestion = function()
 {
   QuestionService.getQuestion($routeParams.questionid).then(function (res){
     $scope.question = res.data; 
-    if($scope.question._user._id == $localStorage.id)
+    if($scope.question._user._id === $localStorage.id)
     {
      $scope.linkQuestion= true;
-    }
-    if($scope.question.answer._user._id == $localStorage.id)
-    {
-     $scope.linkAnswer= true;
     }
   },function(err){
     $scope.error = 1;
     $scope.error = err.message;
   });
-}
+};
 
 $scope.getQuestions = function()
 {
@@ -224,7 +230,7 @@ $scope.getQuestions = function()
   },function(err){
     $scope.error = err.message;
   });
-}
+};
 
 //////////// elastic ///////////////////
  $scope.search = function(request)
@@ -235,12 +241,12 @@ $scope.getQuestions = function()
     },function(err){
       console.log(err);
     });
-  }
+  };
 
 
 $scope.init = function()
 {
-  if($location.path() == '/foro')
+  if($location.path() === '/foro')
   {
     $scope.getQuestions();
   }
@@ -248,7 +254,7 @@ $scope.init = function()
   {
     $scope.getQuestiontag($routeParams.tagid);
   }
-}
+};
 
 
 
@@ -292,5 +298,47 @@ $scope.answerModal = function ($index,questionid,answerid) {
   );
 };
 
+$scope.questionEditModal = function(data){
+var modalInstance = $uibModal.open({
+    templateUrl: 'views/modals/editQuestionModal.html',
+    controller: 'editModalCtrl',
+    size: 'lg',
+    resolve: {
+      data: function(){
+        return data;
+      },
+      questionid: function(){
+        return data._id;
+      }
+    }
+  });
+  modalInstance.result.then(function (question) { 
+    $scope.question.title = question.title;
+    $scope.question.modified = question.modified;
+    $scope.question.body= question.body;
+    }
+  );
+};
 
-});
+$scope.answerEditModal = function(questionid,$index,data){
+var modalInstance = $uibModal.open({
+    templateUrl: 'views/modals/editAnswerModal.html',
+    controller: 'editModalCtrl',
+    size: 'lg',
+    resolve: {
+      data: function(){
+        return data;
+      },
+      questionid: function(){
+        return questionid;
+      }
+    }
+  });
+   modalInstance.result.then(function (answer) { 
+      $scope.question.answers[$index].modified = answer.modified;
+      $scope.question.answers[$index].body= answer.body;
+      }
+    );
+};
+
+})
