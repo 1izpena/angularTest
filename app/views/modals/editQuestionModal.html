@@ -1,0 +1,24 @@
+
+    <!-- Modal content-->
+      <div class="modal-header" style="padding:35px 50px;">
+        <button type="button" class="close" ng-click="close()" >&times;</button>
+        <h4 class="modal-title">Edit question</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+	       <div class="form-group">
+				    <label class="control-label" for="title">Title</label>
+            <input class="form-control ng-pristine ng-valid ng-touched" type="text" name="title" ng-model="question.title" ng-required="true"  >
+			   </div>
+          <div class="form-group">
+            <label>Body</div>
+            <div text-angular ng-model="question.body"></div>
+          </div>
+			<button type="submit" ng-click="editQuestion(question._id,question)" class="btn btn-primary">Send</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+          <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+        </div>
+      </div>

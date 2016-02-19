@@ -1,0 +1,18 @@
+<!-- Modal content-->
+<div class="modal-header" style="padding:35px 50px;">
+  <button type="button" class="close" ng-click="close()" >&times;</button>
+  <h4 class="modal-title">Edit answer</h4>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <div class="form-group">
+      <div text-angular ng-model="answer.body"></div>
+		</div>
+    <button type="submit" ng-click="updateAnswer(questionid,answer._id,answer)" class="btn btn-primary">Send</button>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error1">
+  <button type="button" class="close"  aria-label="Close" ng-click="error1=0"><span aria-hidden="true">&times;</span>{{message1}}</button>
+  </div>
+</div>
