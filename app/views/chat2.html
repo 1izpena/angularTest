@@ -394,7 +394,7 @@
                               <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettings.length > 0">
 
 
-                                      <ul class="list-group" id="list-group">
+                                      <ul ng-class="(option == 1) ? 'list-group-add' : ((option == 2) ? 'list-group-remove' :  'list-group')"id="list-group">
 
                                       <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}" ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
                                       class="list-group-item"

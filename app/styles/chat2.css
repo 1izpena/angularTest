@@ -3,6 +3,22 @@
 
 /********nuevo********/
 
+.list-group-remove li:hover,
+.list-group-remove li:focus {
+
+  background-color: rgba(217, 83, 79, 0.71);
+
+}
+
+.list-group-add li:hover,
+.list-group-add li:focus {
+
+  background-color: rgba(0, 150, 5, 0.39);
+
+}
+
+
+
 
 #menusearch-toggle:hover,
 #menusearch-toggle:focus {
@@ -1123,7 +1139,6 @@ ul {   list-style-type: none; }
 
 
 }
-
 
 
 
