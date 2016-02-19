@@ -1,0 +1,15 @@
+.log{
+  display: block !important;
+}
+.reg{
+  display: none !important;
+}
+.result{
+  margin-top: 2%;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #163B5A;
+    border-color: #163B5A;
+    border-radius: 0;
+}
