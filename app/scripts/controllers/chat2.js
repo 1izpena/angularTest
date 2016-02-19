@@ -874,7 +874,37 @@ angular.module('myAppAngularMinApp')
       // Emitimos evento de selecion de canal para recibir nuevos mensajes
       Socket.emit('selectChannel', { 'channelid': channel.id , 'userid': $localStorage.id} );
 
+      // Actualizamos notificaciones
+      $scope.updateNotifications($scope.tagGroup.id, channel.id, type.toUpperCase());
+
     };
+
+      // Actualizamos notificaciones para el canal, y para el grupo correspondiente
+      $scope.updateNotifications = function (groupid, channelid, channelType) {
+        var num;
+        if (!$scope.notifications)
+          return;
+
+        // Comprobamos si notificaciones del canal
+        if ($scope.notifications.group &&
+            $scope.notifications.group[groupid] &&
+            $scope.notifications.group[groupid].channel[channelType] &&
+            $scope.notifications.group[groupid].channel[channelType][channelid]) {
+
+          num = $scope.notifications.group[groupid].channel[channelType][channelid];
+
+          // Actualizamos notificacioens de canales
+          $scope.notifications.group[groupid].channel[channelType][channelid] = 0;
+          $scope.notifications.group[groupid].channel[channelType].total -= num;
+          if (channelType != 'DIRECT')
+            $scope.notifications.group[groupid].channel.total -= num;
+
+          // Actualizamos notificacioens de grupo
+          $scope.notifications.group[groupid].total -= num;
+          $scope.notifications.group.total -= num;
+        }
+      }
+
 
     $scope.getDownloadLink = function (filename, ev) {
 
@@ -909,6 +939,16 @@ angular.module('myAppAngularMinApp')
       return ret;
     };
 
+      $scope.getDirectChannelId = function (member) {
+        var channel = ChannelService.searchDirectChannel($localStorage.id, member, $scope.directChannels);
+        if (channel != null) {
+          return channel.id;
+        }
+        else {
+          return 0;
+        }
+      };
+
     $scope.searchDirectChannel = function (member) {
 
       var userid = $localStorage.id;
@@ -917,7 +957,7 @@ angular.module('myAppAngularMinApp')
 
       var channel = ChannelService.searchDirectChannel(userid, member, directChannels);
       if (channel != null) {
-        $scope.selectChannel (channel);
+        $scope.selectChannel (channel, 'DIRECT');
       }
       else {
         ChannelService.createDirectChannel(userid, $scope.username, member, groupid)
@@ -927,7 +967,7 @@ angular.module('myAppAngularMinApp')
               channelName: channel.channelName,
               users: [channel.users[0].id, channel.users[1].id ]
             });
-            $scope.selectChannel (channel);
+            $scope.selectChannel (channel, 'DIRECT');
         },
         function (err) {
           // Tratar el error
@@ -1131,7 +1171,48 @@ angular.module('myAppAngularMinApp')
 
     //
     Socket.on('newMessage', function (data) {
-      $scope.listaMensajes.push(data);
+
+      console.log("newMessage from server")
+      console.log(data.message.channel)
+
+      // Si es el canal actual, añadimos mensaje a la listaMensaje
+      if (data.message.channel.id == $scope.tagChannel.id) {
+        $scope.listaMensajes.push(data.message);
+      }
+      // Incrementamos las notificaciones
+      else {
+        if (!$scope.notifications) {
+          $scope.notifications = {};
+          $scope.notifications.group = { total: 0 };
+        }
+        // Para el grupo
+        if (!$scope.notifications.group[data.groupid]) {
+          $scope.notifications.group[data.groupid]={total: 0};
+        }
+        $scope.notifications.group[data.groupid].total++;
+        $scope.notifications.group.total++;
+
+        // Para los canales canal
+        var channelType = data.message.channel.channelType.toUpperCase();
+        var channelid = data.message.channel.id;
+
+        if (!$scope.notifications.group[data.groupid].channel) {
+          $scope.notifications.group[data.groupid].channel={total: 0};
+        }
+        if (!$scope.notifications.group[data.groupid].channel[channelType]) {
+          $scope.notifications.group[data.groupid].channel[channelType]={total: 0};
+        }
+        if (!$scope.notifications.group[data.groupid].channel[channelType][channelid]) {
+          $scope.notifications.group[data.groupid].channel[channelType][channelid]=0;
+        }
+        $scope.notifications.group[data.groupid].channel[channelType][channelid]++;
+        $scope.notifications.group[data.groupid].channel[channelType].total++;
+        if (channelType != 'DIRECT') {
+          $scope.notifications.group[data.groupid].channel.total++;
+        }
+
+      }
+
       $scope.$apply();
     });
 
