@@ -94,41 +94,47 @@ angular.module('myAppAngularMinApp')
 
  
      $scope.searchtextinchannel = function (textsearchbox, channel) {
- 
-      searchservice.chatsearch(textsearchbox, $scope.tagChannel.id).then(function (res){  
- 
-         console.log("esto vale la vuelta del api con res");
-         console.log(res);
-         
-         console.log("esto vale res con");
-         console.log(res.error);
+      console.log("esto vale searchboz");
+      console.log(textsearchbox);
+      if ( textsearchbox !== 'undefined' && textsearchbox !== '' ){
 
-         if(res.error == undefined){
-           
-           $scope.searchresults = res.slice();
-        
 
-           for (var i = 0; i < $scope.searchresults.length; i++) {
-             for ( var j = 0; j < $scope.channelMembers.length; j++){
-               if ($scope.searchresults[i].source._user == $scope.channelMembers[j].id){
-                 $scope.searchresults[i].source._user =  $scope.channelMembers[j];
+        searchservice.chatsearch(textsearchbox, $scope.tagGroup.id, $scope.tagChannel.id).then(function (res){  
+          
+          
+           if(res.error == undefined){
+             
+             $scope.searchresults = res.slice();
+          
+
+             for (var i = 0; i < $scope.searchresults.length; i++) {
+               for ( var j = 0; j < $scope.channelMembers.length; j++){
+                 if ($scope.searchresults[i].source._user == $scope.channelMembers[j].id){
+                   $scope.searchresults[i].source._user =  $scope.channelMembers[j];
+                 }
                }
+             
              }
-           
-           }
 
-         }
-         else {
-           $scope.searchresults = '';
-         }
-           
+           }
+           else {
+             $scope.searchresults = '';
+           }
+             
    
  
-      },function(err){
-         console.log(err);
-         $scope.errorG = err.message;
-           $("#errorGroupModal").modal("show");
-       });
+        },function(err){
+           $scope.searchresults = '';
+           console.log(err);
+           $scope.errorG = err.message;
+             $("#errorGroupModal").modal("show");
+         });
+
+      } else {
+        $scope.searchresults = '';
+      }
+ 
+      
  
      };
        

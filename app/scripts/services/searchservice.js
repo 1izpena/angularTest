@@ -42,21 +42,24 @@ angular.module('myAppAngularMinApp')
   };
 
 
-  function chatsearch(text, channelid)
+  function chatsearch(text, groupid, channelid)
   {
       var defered = $q.defer();
       var promise = defered.promise;
+      var userid = $localStorage.id;
       console.log("esto vale text y channelid");
       console.log(text);
       console.log(channelid);
 
+
       $http({
           method: 'POST',
-          url: API_BASE + '/api/v1/chatsearch',
-          data: {key: text, channel: channelid}
+          headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid +'/channels/'+channelid +'/search/',
+          data: 'key='+text
         }).then(
           function(response) {
-            console.log("entro en .then");
+            
              if(response.data.hits.hits.length > 0 ){
               
 
