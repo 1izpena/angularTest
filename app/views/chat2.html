@@ -43,14 +43,14 @@
 
 
         <li class="active">
-          <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"><span class="badge-mod" id="groupAlert" name="groupAlert" title="">{{groupEventsCount}}</span></i></a>
+          <a class="btn btn-primary" href="" aria-expanded="true">Groups<i class="fa fa-group fa-fw"></i><button class="badge pull-right" type="button" data-toggle="modal" data-target="#groupsNotificationListModal" ng-if="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</button></a>
+
           <ul aria-expanded="true" class="emphasis cgroups" id="grouplist">
             <li ng-repeat="group in groups" ng-if="groups.length > 0">
 
               <a ng-click="selectGroup(group)">
 
-                {{group.groupName}}
-              </a></li>
+                {{group.groupName}}         <button class="badge" type="button" data-toggle="modal" data-target="#groupNotificationListModal" ng-if="group.groupNotificationsCount > 0" ng-click="getNotificationList(group)">{{group.groupNotificationsCount}}</button></a></li>
             <!----  add group ------>
             <li>
               <a href="" class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new Group</a>
@@ -67,22 +67,6 @@
               <a href="" class="btn btn-danger" aria-expanded="false">Public<span class="fa fa-chevron-down"></span></a>
               <ul class="emphasis" aria-expanded="false">
                 <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0">
-                <!--
-                  <span class="input-group-btn pull-left">
-                    <div class="dropdown">
-                      <button type="button" id="btn-public-channel-settings" name="btn-public-channel-settings" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                        <span><i class="fa fa-gear"></i></span>
-                      </button>
-                      <ul class="dropdown-menu slidedown">
-                        <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="selectChannel(channel)"> Edit channel</a></li>
-                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#channelMemberInfoModal" ng-click="selectChannel(channel)"> Members</a></li>
-                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#deleteChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#deleteUserFromChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#unsuscribeFromChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
-                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#addUserToChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
-                      </ul>
-                    </div>
-                  </span> -->
                   <a ng-click="selectChannel(channel, 'public')">
                     {{channel.channelName}}
                   </a>
@@ -93,24 +77,6 @@
               <a href="" class="btn btn-danger">Private<span class="fa fa-chevron-down"></span></a>
               <ul class="emphasis">
                 <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0">
-
-                <!--
-                  <span class="input-group-btn pull-left">
-                    <div class="dropdown">
-                      <button type="button" id="btn-private-channel-settings" name="btn-private-channel-settings" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" ng-click="selectChannel(channel)">
-                        <span><i class="fa fa-gear"></i></span>
-                      </button>
-                      <ul class="dropdown-menu slidedown">
-                        <li><a href="" class="fa fa-pencil-square-o" data-toggle="modal" data-target="#editChannelModal" ng-click="getChannelMembers()"> Edit channel</a></li>
-                        <li><a href="" class="fa fa-users" data-toggle="modal" data-target="#channelMemberInfoModal" ng-click="selectChannel(channel)"> Members</a></li>
-                        <li><a href="" class="fa fa-times" data-toggle="modal" data-target="#deleteChannelModal" ng-click="selectChannel(channel)"> Delete channel</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#deleteUserFromChannelModal" ng-click="selectChannel(channel)"> Delete user</a></li>
-                        <li><a href="" class="fa fa-user-times" data-toggle="modal" data-target="#unsuscribeFromChannelModal" ng-click="selectChannel(channel)"> Unsuscribe</a></li>
-                        <li><a href="" class="fa fa-user-plus" data-toggle="modal" data-target="#addUserToChannelModal" ng-click="selectChannel(channel)"> Add user</a></li>
-                      </ul>
-                    </div>
-                  </span>
-                  -->
                   <a ng-click="selectChannel(channel, 'private')">
                     {{channel.channelName}}
                   </a>
@@ -200,7 +166,7 @@
                 <div ng-show="tagGroup !== '' && tagChannel !== ''" class="input-group input-group-unstyled" id="inline-group">
 
 
-                    
+
                     <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
 
                     <span class="input-group-btn">
@@ -768,18 +734,18 @@
 
 
               <!-- ******************* -->
-  
-              <div class="container-fluid panel-container"> 
+
+              <div class="container-fluid panel-container">
                   <div class="col-xs-2">
- 
- 
+
+
                        <a ng-click="changeSearchNav(0)"
                        class="glyphicon glyphicon-chevron-left" id="menusearch-toggle">
                        </a>
 
                   </div>
- 
- 
+
+
                   <div class="col-xs-10 text-center" id="searchresult">
                       <h3>Search Results</h3>
                  </div>
@@ -813,7 +779,7 @@
                           <div class="searchcontent-body clearfix">
                               <div class="header">
 
-                                  <strong class="primary-font">{{result.source._user.username}}</strong> 
+                                  <strong class="primary-font">{{result.source._user.username}}</strong>
 
                                   <small class="date2" >
                                         <span class="glyphicon glyphicon-time"></span>
@@ -825,13 +791,13 @@
 
                                       <span class="glyphicon glyphicon-time">
                                       <span am-time-ago="result.source.datetime"></span>
-                                 -->     
+                                 -->
 
                               </div>
                               <p ng-if="result.source.messageType == 'QUESTION'">
 
                                   <span ng-bind-html="highlight(result.source.content.text, textsearchbox)" class="ng-binding"></span>
-                                  
+
                                   <!--
                                   <ul class="searchcontentanswer">
                                         <li class="left clearfix" >
@@ -856,7 +822,7 @@
 
 
                               <p ng-bind-html="highlight(result.source.content.text, textsearchbox)" ng-if="result.source.messageType == 'TEXT'">
-                              
+
                               </p>
 
                           </div>
@@ -865,7 +831,7 @@
                     </ul>
 
 
-                    <h3 ng-if="searchresults.length == 0"> 
+                    <h3 ng-if="searchresults.length == 0">
                               No matches found
                     </h3>
 
@@ -1157,7 +1123,47 @@
       </div>
   </div>
 
+  <div id="groupsNotificationListModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:35px 50px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Notifications</h4>
+        </div>
+        <div class="modal-body">
+          <ul aria-expanded="true" class="emphasis">
+            <li ng-repeat="notification in groupsNotifications" ng-if="groupsNotifications.length > 0">
+              {{notification.message}}
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div id="groupNotificationListModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="padding:35px 50px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Notifications</h4>
+        </div>
+        <div class="modal-body">
+          <ul aria-expanded="true" class="emphasis">
+            <li ng-repeat="notification in groupNotifications" ng-if="groupNotifications.length > 0">
+              {{notification.message}}
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script src="scripts/myscripts.js"></script>
 <!-- Menu Toggle Script -->
