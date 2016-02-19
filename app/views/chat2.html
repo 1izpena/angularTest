@@ -785,15 +785,9 @@
                                         <span class="glyphicon glyphicon-time"></span>
                                         <span am-time-ago="result.source.datetime"></span>
                                   </small>
-<!--
-
-                                  <small class="pull-right text-muted">
-
-                                      <span class="glyphicon glyphicon-time">
-                                      <span am-time-ago="result.source.datetime"></span>
-                                 -->
 
                               </div>
+
                               <p ng-if="result.source.messageType == 'QUESTION'">
 
                                   <span ng-bind-html="highlight(result.source.content.text, textsearchbox)" class="ng-binding"></span>
@@ -824,6 +818,11 @@
                               <p ng-bind-html="highlight(result.source.content.text, textsearchbox)" ng-if="result.source.messageType == 'TEXT'">
 
                               </p>
+
+                              <medium class="detail" >
+                                        <span class="glyphicon glyphicon-eye-open" ng-click="gotoAnchor(result.id)"></span>
+                                       
+                              </medium>
 
                           </div>
                         </li>

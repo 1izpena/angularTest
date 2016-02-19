@@ -24,6 +24,22 @@
    float: right;
 }
 
+.detail {
+   float: right;
+}
+
+
+.detail:hover,
+.detail:focus {
+    text-decoration: none;
+    font-weight:bolder;
+    cursor: pointer;
+}
+
+
+
+
+
 
 #panel-body2 h3{
   text-align: center;
