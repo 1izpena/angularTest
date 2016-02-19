@@ -105,6 +105,14 @@ nav {
   clear: both;
 }
 
+@font-face{
+    font-family: Oswald;
+    src: url('../fonts/Oswald-Regular.ttf');
+}
+body{
+  font-family: 'Oswald', sans-serif;
+}
+
 .logo {
   max-width:30px;
 }
