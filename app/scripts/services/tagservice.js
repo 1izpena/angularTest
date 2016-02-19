@@ -2,12 +2,7 @@
 
 angular.module('myAppAngularMinApp')
   .service('TagService', ['$http', '$localStorage', '$location', '$q', 'API_BASE',
-  	function($http, $localStorage, $location, $q ,API_BASE){
-  		return{
-        getTags: getTags,
-        getQuestionsByTag    
-  		};
-    
+  	function($http, $localStorage, $location, $q ,API_BASE){	 
     function getTags()
     {
       var defered = $q.defer();
@@ -24,8 +19,7 @@ angular.module('myAppAngularMinApp')
           }
         );
       return promise;   
-    };
-
+    }
 
     function getQuestionsByTag(tagid)
     {
@@ -43,5 +37,10 @@ angular.module('myAppAngularMinApp')
           }
         );
       return promise;   
+    }
+    
+    return{
+        getTags: getTags,
+        getQuestionsByTag    
     };
 }]);

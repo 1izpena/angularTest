@@ -2,15 +2,7 @@
 
 angular.module('myAppAngularMinApp')
   .service('QuestionService', ['$http', '$localStorage', '$location', '$q', 'API_BASE',
-  	function($http, $localStorage, $location, $q ,API_BASE){
-  		return{
-        createQuestion: createQuestion,
-  			getQuestion: getQuestion,
-        commentQuestion: commentQuestion,
-        upVote: upVote,
-        downVote: downVote,
-        deleteQuestion: deleteQuestion
-  		};
+    function($http, $localStorage, $location, $q ,API_BASE){
     function createQuestion(data)
     {
       var defered = $q.defer();
@@ -38,9 +30,10 @@ angular.module('myAppAngularMinApp')
           }
         );
       return promise;     
-    };
-  	function getQuestion(questionId)
-  	{
+    }
+
+    function getQuestion(questionId)
+    {
       var defered = $q.defer();
       var promise = defered.promise;
       $http({
@@ -54,8 +47,9 @@ angular.module('myAppAngularMinApp')
             defered.reject(error);
           }
         );
-      return promise; 		
-	  };
+      return promise;
+    }
+
     function commentQuestion(questionId, data)
     {
       var defered = $q.defer();
@@ -79,7 +73,8 @@ angular.module('myAppAngularMinApp')
           }
         );
       return promise;     
-    };
+    }
+
     function upVote(questionId)
     {
       var defered = $q.defer();
@@ -101,7 +96,8 @@ angular.module('myAppAngularMinApp')
           }
         );
       return promise;     
-    };
+    }
+
     function downVote(questionId)
     {
       var defered = $q.defer();
@@ -123,7 +119,7 @@ angular.module('myAppAngularMinApp')
           }
         );
       return promise;     
-    };
+    }
 
      function deleteQuestion(questionId,answers)
     {
@@ -145,5 +141,40 @@ angular.module('myAppAngularMinApp')
           }
         );
       return promise;     
+    }
+
+    function editQuestion(questionId,data)
+    {
+
+      var defered = $q.defer();
+      var promise = defered.promise;
+      var nowDate = new Date().getTime();
+      $http({
+          method: 'PUT',
+          headers: {'x-access-token': $localStorage.token},
+          url: API_BASE + '/api/v1/forum/question/'+ questionId+ "/edit",
+          data:{
+            modified:nowDate,
+            body:data.body,
+            title: data.title
+          }
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+      return promise;     
+    }
+    return{
+      createQuestion: createQuestion,
+      getQuestion: getQuestion,
+      commentQuestion: commentQuestion,
+      upVote: upVote,
+      downVote: downVote,
+      deleteQuestion: deleteQuestion,
+      editQuestion:   editQuestion
     };
 }]);
