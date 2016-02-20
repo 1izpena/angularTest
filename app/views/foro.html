@@ -1,103 +1,56 @@
-<div class="container" ng-controller="ForoCtrl" data-ng-init="init()">
-	<div class="row container">
-		<div class="col-md-8 headLeft">
-			<div class="col-md-6">
-				<h1>Questions</h1>
-			</div>
-			<div class="col-md-6">
-				<div class="btn-group" role="group">
-  					<button type="button" class="btn btn-default active" ng-click="goToForo()">Questions</button>
-  					<button type="button" class="btn btn-default" ng-click="goToTags()">Tags</button>
-  					<button type="button" class="btn btn-default" ng-click="gotoNewQuestion()">Ask question</button>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4 headRight">
-			<form id="custom-search-form" class="form-search form-horizontal" ng-submit="search(request)">
-	            <div class="input-append span12">
-	                <input type="text" class="search-query mac-style" placeholder="Search" ng-model="request">
-	                 <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i></button>
-	            </div>
-            </form>
-		</div>
-		<div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
+<div id="wrapper">
+  <div ng-include="'views/menuForo.html'"></div>
+  <div id="page-content-wrapper">
+    <div class="container-fluid" ng-controller="ForoCtrl" data-ng-init="init()">
+      <div class="row container-fluid boton-menu">
+        <a ng-href="#menu-toggle"
+           class="glyphicon glyphicon-th-list" id="menu-toggle">
+        </a>
+      </div>
+	    <div class="row container-fluid">
+		    <div class="col-md-8 headLeft">
+				    <h1>Questions</h1>
+		    </div>
+        <div class="col-md-4 headRight">
+          <form id="custom-search-form" class="form-search form-horizontal" ng-submit="search(request)">
+                  <div class="input-append span12">
+                      <input type="text" class="search-query mac-style" placeholder="Search" ng-model="request">
+                       <button type="submit" class="btn"><i class="glyphicon glyphicon-search"></i></button>
+                  </div>
+                </form>
+        </div>
+		    <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
           <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
           <h4><strong>Error!</strong></h4> {{message}}
         </div>
-	</div>
-	<div id="exTab2" class="container">
-		<div class="col-md-2">
-		<ul class="nav nav-pills nav-stacked">
-			<li class="active"><a  href="/foro#1" data-toggle="tab">Last questions</a></li>
-			<li><a href="/foro#2" data-toggle="tab">Most Viewed</a></li>
-			<li><a href="/foro#3" data-toggle="tab">Most voted</a></li>
-		</ul>
-	</div>
-		<div class="col-md-10">
-			<div class="tab-content">
-				<div class="tab-pane active" id="1">
-		        	<div class="row">
-		        		<div ng-repeat="question in questions | orderBy: '-created'" class="col-md-12 pregunta">
-		        			<div class="col-md-12 contentright">
-		        			 <h2>{{question.error}}</h2> 
-		        				<h2 class="questiontitle"><a href="" ng-click="goQuestion(question._id)">{{question.title}}</a></h2>
-		        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
-		        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
-		        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
-		        				<p ng-bind-html="question.body"></p>
-		        				<div class="time">
-	                                                  <span class="pull-right text-muted">by {{question._user.username}}</span>
-		        				<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
-		        				</div>
-		        				<div class="tags">
-		        					<a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
-		        				</div>
-		        			</div>
-		        		</div>
-		        	</div>
-				</div>
-				<div class="tab-pane" id="2">
-		         	<div class="row">
-		        		<div ng-repeat="question in questions | orderBy: '-views' " class="col-md-12 pregunta">
-		        			<div class="col-md-12 contentright">
-		        				<h2 class="questiontitle"><a href="" ng-click="goQuestion(question._id)">{{question.title}}</a></h2>
-		        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
-		        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
-		        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
-		        				<p ng-bind-html="question.body"></p>
-		        				<div class="time">
-	                                                         <span class="pull-right text-muted">by {{question._user.username}}</span>
-		        					<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
-		        				</div>
-		        				<div class="tags">
-		        					<a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
-		        				</div>
-		        			</div>
-		        		</div>
-		        	</div>
-				</div>
-		        <div class="tab-pane" id="3">
-		          	<div class="row">
-		        		<div ng-repeat="question in questions | orderBy: '-votes' " class="col-md-12 pregunta">
-		        			<div class="col-md-12 contentright">
-		        				<h2 class="questiontitle"><a href="" ng-click="goQuestion(question._id)">{{question.title}}</a></h2>
-		        				<div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
-		        				<div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
-		        				<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
-		        				<p ng-bind-html="question.body"></p>
-		        				<div class="time">
-	                                                        <span class="pull-right text-muted">by {{question._user.username}}</span>
-		        					<span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
-		        				</div>
-		        				<div class="tags">
-		        					<a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
-		        				</div>
-		        			</div>
-		        		</div>
-		        	</div>
-				</div>
-			</div>
-		</div>
-	 </div>
+	    </div>
+      <div class="row">
+        <div ng-repeat="question in questions | orderBy: order_criteria" class="col-md-12 pregunta">
+          <div class="col-md-12 contentright">
+            <h2>{{question.error}}</h2>
+            <h2 class="questiontitle"><a href="" ng-click="goQuestion(question._id)">{{question.title}}</a></h2>
+            <div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
+            <div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
+            <div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
+            <p ng-bind-html="question.body"></p>
+            <div class="time">
+                                            <span class="pull-right text-muted">by {{question._user.username}}</span>
+            <span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
+            </div>
+            <div class="tags">
+              <a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 <link rel="stylesheet" ng-href="styles/foro.css">
+<script>
+  $("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+</script>

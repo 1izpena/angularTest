@@ -501,11 +501,8 @@ ul {   list-style-type: none; }
     position: absolute;
     left: 250px;
     width: 0;
-
     margin-top: 0;
     min-height: 600px;
-
-
     height: 100%;
     margin-left: -250px;
     overflow-y: auto;
@@ -518,7 +515,7 @@ ul {   list-style-type: none; }
 
   background: rgba(0, 37, 128, 0.5);
   background-image: url('../images/patern.png');
-
+  font-family: 'Oswald', sans-serif;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -1275,9 +1272,6 @@ a.question-link:hover {
 }
 
 .sidebar-nav > .sidebar-brand a.btn-zone:hover {
-  background-color: rgba(221, 221, 221, 0.37);
-  color: #EFEFEF;
-
   background-color: rgba(221, 221, 221, 0.22);
   color: rgba(221, 221, 221, 0.67);
 }
