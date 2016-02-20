@@ -24,6 +24,16 @@ angular.module('myAppAngularMinApp')
         LoginService.logoutLogin();
     };
 */
+
+/* variables para el menu sidebar-nav */
+    $scope.activeInvitations = 0;
+    $scope.activeGroups = 0;
+    $scope.activeChannels = 0;
+    $scope.groupindex = -1;
+    $scope.activeDirects = 0;
+
+
+
 	  $scope.user = '';
 	  $scope.membersSettings = '';
 	  $scope.membersSettingschannel = '';
@@ -80,6 +90,88 @@ angular.module('myAppAngularMinApp')
       /* content of channel searchbox */
       $scope.textsearchbox = '';
       $scope.searchresults = '';
+
+
+    /* change vars of sidebar-nav menu */
+    $scope.changeVarMenu = function(varmenu)
+    {
+      console.log("entro en cambiar");
+      console.log(varmenu);
+
+      /* var de invitaciones */
+      if(varmenu == 'activeInvitations'){
+        if ($scope.activeInvitations){
+          $scope.activeInvitations = 0;
+
+        }
+        else {
+          $scope.activeInvitations = 1;
+          $scope.activeGroups = 0;
+          $scope.activeChannels = 0;
+          $scope.activeDirects = 0;
+
+        }
+        
+      }
+      /* var de grupos */
+      else if(varmenu == 'activeGroups'){
+        if ($scope.activeGroups){
+          if ($scope.groupindex !== -1){
+             $scope.activeGroups = 1;
+             $scope.groupindex = -1;
+             $scope.tagGroup = '';
+             $scope.tagChannel = '';
+          }
+          else {
+            $scope.activeGroups = 0;
+          
+          }
+          
+        }
+        else {
+
+          $scope.groupindex = -1;
+          $scope.activeGroups = 1;
+          $scope.tagGroup = '';
+          $scope.tagChannel = '';
+          $scope.activeInvitations = 0;
+          $scope.activeChannels = 0;
+          $scope.activeDirects = 0;
+        }
+        
+      }
+
+      /* var de canales publicos y privados */
+      else if(varmenu == 'activeChannels'){
+        if ($scope.activeChannels){
+          $scope.activeChannels = 0;
+        }
+        else {
+          $scope.activeChannels = 1;
+          $scope.activeGroups = 1;
+          $scope.activeInvitations = 0;
+          $scope.activeDirects = 0;
+        }
+        
+      } 
+      /* var de canales directos */
+      else if(varmenu == 'activeDirects'){
+        if ($scope.activeDirects){
+          $scope.activeDirects = 0;
+        }
+        else {
+          $scope.activeDirects = 1;
+          $scope.activeGroups = 1;
+          $scope.activeChannels = 0;
+          $scope.activeInvitations = 0;
+        }
+        
+      } 
+
+
+
+
+    }
 
 
     $scope.changeSearchNav = function(optionsearch)
@@ -193,6 +285,9 @@ angular.module('myAppAngularMinApp')
             $("#newGroupModal").modal("hide");
             $scope.removeInput();
             $scope.messageNewGroupModal = '';
+            $scope.tagGroup = '';
+            $scope.groupindex = -1;
+            $scope.tagChannel = '';
 
 
           },function(err){
@@ -816,8 +911,9 @@ angular.module('myAppAngularMinApp')
       }
     };
 
-    $scope.selectGroup= function (group) {
+    $scope.selectGroup= function (group, ind) {
       $scope.groupid=group.id;
+      $scope.groupindex = ind;
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);
