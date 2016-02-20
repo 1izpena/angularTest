@@ -9,8 +9,8 @@
     background-color: #140F27;
     border-color: #ebccd1;
 }
-.page-header {
-     margin: 20px 0 0px;
+.footer{
+  min-height: 10.6% !important;
 }
 
 .form-control {
@@ -28,12 +28,4 @@
     font-size: 18px !important;
     line-height: 1.3333333;
     border-radius: 0px !important;
-}
-
-
-
-
-.navbar-text {
-    margin-top: 15px;
-    margin-bottom: 15px;
 }

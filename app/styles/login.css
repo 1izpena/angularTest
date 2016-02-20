@@ -8,15 +8,44 @@
     font-family: Oswald;
     src: url('../fonts/Oswald-Regular.ttf');
 }
+.page-header {
+    padding-bottom: 0;
+    margin: 20px 0 0px;
+    border-bottom: 1px solid #eee;
+}
+.jumbotron{
+  padding-bottom: 0px;
+}
+
+
+
 body{
   font-family: 'Oswald', sans-serif;
+}
+.btn{
+  background: white;
+  border:white;
+}
+.navbar{
+  border:none !important;
+}
+ul.nav{
+  background: none !important;
 }
 .jumbotron p {
 
      font-size: 15px;
 }
+.jumbotron{
+  margin-bottom:18px !important;
+}
+.content{
+  min-height: 83%;
+}
+
 .header1{
   position: relative;
+  min-height: 8%;
   -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
 -moz-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
 box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
@@ -62,17 +91,9 @@ box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.75);
 .footer{
   position: relative ;
   border-top: solid 0.5px black;
-  height: 10% !important;
-  min-height: 10%;
+  min-height: 10.5% !important;
 }
-.login-menu{
-height: 7%;
-min-height: 7%;
-}
-.content{
-  height:83%;
-  min-height: 83%;
-}
+
 .navbar {
     min-height: 0 !important;
 }
@@ -91,9 +112,7 @@ form .btn {
     border-radius: 1px !important;
     width: 150px;
 }
-.login{
-  min-height: 100% !important;
-}
+
 
 
 /***************** Hasta aqui cabecera y menu ****************/
