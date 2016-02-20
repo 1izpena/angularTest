@@ -15,14 +15,14 @@ angular.module('myAppAngularMinApp')
     };
 
       //login redes sociales
-     
-hello.init({ 
+
+hello.init({
     facebook : '521665668004329',
     linkedin : '77vl3ewozemhas',
     github: '7293fa073d2243c582dc',
     google:  '339950630008-blnat1i0offoljor7i0oahbq1s4mduu0.apps.googleusercontent.com'
-},{redirect_uri:'http://localhost:9000/'});
-     
+},{redirect_uri:'http://Meanstack.tk/'});
+
 $scope.social = function(social) {
       $scope.message = '';
       $scope.error = 0;
@@ -45,7 +45,7 @@ hello.on('auth.login', function(auth){
           $scope.error = 1;
           $scope.message = res.data.message;
 
-        }); 
+        });
     });
-});} 
+});}
 });

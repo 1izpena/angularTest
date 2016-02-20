@@ -10,12 +10,14 @@
 <div class="col-sm-2 col-sm-offset-3  block1">
 <p class="title">Forum</p>
 <p>Meanstack is your resource to discuss support topics with your peers, and learn from each.The easiest way to share</p>
-<button class="btn btn-default" type="submit">Forum</button>
+<a ng-click="goTo('/login', 'foro')" ng-if="!auth.isLogged()" type="button" class="btn btn-default">forum</a>
+<a ng-click="goTo('/foro')" ng-if="auth.isLogged()" type="button" class="btn btn-default">forum</a>
 </div>
 <div class="col-sm-2 block2">
 <p class="title">Chat</p>
 <p>The place where every developer, idealist, entrepreneur or geek is welcome to discuss ideas in realtime chat</p>
-<button class="btn btn-default" type="submit">Chat</button>
+<a ng-click="goTo('/login', 'chat')" ng-if="!auth.isLogged()" type="button" class="btn btn-default">chat</a>
+<a ng-click="goTo('/chat')" ng-if="auth.isLogged()" type="button" class="btn btn-default">chat</a>
 </div>
 <div class="col-sm-2 block3">
 <p class="title">App</p>
