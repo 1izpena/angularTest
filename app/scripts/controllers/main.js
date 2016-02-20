@@ -25,7 +25,7 @@ angular.module('myAppAngularMinApp')
           sharedProperties.setProperty('/chat2');
       }
       else if (from === 'foro'){
-          sharedProperties.setProperty('/');
+          sharedProperties.setProperty('/foro');
       }
       $location.path(url);
     };
