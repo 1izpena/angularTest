@@ -61,7 +61,7 @@ h2 a, h1 a
   overflow-y: auto;
   background: #000;
   border-color: #000;
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
   background: rgba(0, 37, 128, 0.5);
   background-image: url('../images/patern.png');
 }
@@ -168,6 +168,7 @@ h2 a, h1 a
   text-decoration: none;
   color: white;
   text-align: left;
+  cursor: pointer;
 }
 
 .sidebar-nav .menu-option {
@@ -278,6 +279,10 @@ a
 {
     overflow: hidden;
 }
+.votes-count
+{
+  font-size:1.4rem;
+}
 .votes,.answers,.views
 {
     display:inline-block;
@@ -306,6 +311,10 @@ a
 {
     text-decoration: none;
     cursor: pointer;
+}
+.tags .label
+{
+  font-weight: 400;
 }
 .label-info[href]:hover, .label-info[href]:focus
 {
@@ -433,7 +442,7 @@ a
 /*BUSCADOR DE TAGS*/
 .search
 {
-    margin-bottom:2%;
+  padding-top: 4%;
 }
 .tagbutton
 {

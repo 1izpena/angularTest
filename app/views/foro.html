@@ -33,9 +33,11 @@
             <div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
             <div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
             <p ng-bind-html="question.body"></p>
-            <div class="time">
-                                            <span class="pull-right text-muted">by {{question._user.username}}</span>
-            <span class="glyphicon glyphicon-time pull-right text-muted" am-time-ago="question.created"></span>
+            <div class="time-asked">
+              <i class="fa fa-clock-o fa-2 text-muted"></i>
+              <span class="text-muted">Asked</span>
+              <span class="text-muted" am-time-ago="question.created"></span>
+              <span class="text-muted">by {{question._user.username}}</span>
             </div>
             <div class="tags">
               <a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
