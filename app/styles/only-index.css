@@ -168,6 +168,9 @@ color:white;
   footer{
     display: none;
   }
+  .logo-white{
+    width: 200px !important;
+  }
 
 }
 
@@ -206,6 +209,9 @@ footer{
   .mean-logo{
   display: none !important;
   }
+  .blockcont{
+    height: 130px;
+  }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) { /* col-md */
@@ -217,6 +223,9 @@ section{
 }
 footer{
   height: 10%;
+}
+.blockcont{
+  height: 100px;
 }
 .mean-logo{
 display: none !important;

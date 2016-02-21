@@ -4,18 +4,26 @@
   padding-right: 0;
   padding-left: 0;
 }
+
+.jumbotron {
+    color: #163B5A !important;
+}
 @font-face{
     font-family: Oswald;
     src: url('../fonts/Oswald-Regular.ttf');
 }
+hr{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-top-color: #d5d5d5;
+}
+.hr-login{
+    margin-bottom: 20px;
+}
 input, button{
     font-family: 'Oswald', sans-serif;
 }
-.page-header {
-    padding-bottom: 0;
-    margin: 20px 0 0px;
-    border-bottom: 1px solid #eee;
-}
+
 .jumbotron{
   padding-bottom: 0px;
 }

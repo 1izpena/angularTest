@@ -3,8 +3,8 @@
     <div class="container">
       <form class="form-horizontal" name="resetForm" novalidate="" >
         <div class="form-group">
-          <h2>Password restart</h2>
-          <p> Insert your new password</p>
+          <h2>password restart</h2>
+          <p> insert your new password</p>
         </div>
         <div class="alert alert-danger fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="error">
           <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
@@ -12,7 +12,7 @@
         </div>
         <div class="alert fade in col-md-offset-4 col-md-4 alert-dismissible ng-hide" role="alert" ng-show="success">
           <button ng-click="success=0" class="close" data-dismiss="alert" aria-label="close" title="close"></a>
-        <h4><strong>Password restarted</strong> {{message}}</h4>
+        <h4><strong>password restarted</strong> {{message}}</h4>
         </div>
 
         <div class="form-group form-group-lg has-feedback"
@@ -45,8 +45,9 @@
           </div>
         </div>
         <br>
-        <button ng-disabled="resetForm.repassword.$dirty && resetForm.repassword.$invalid ||  resetForm.password.$invalid || resetForm.repassword.$invalid" ng-click="reset()" class="btn btn-primary  col-md-offset-5 col-md-3">Submit</button>
-      </form>
+        <div class="col-md-4 col-md-offset-4 text-center">
+        <button ng-disabled="resetForm.repassword.$dirty && resetForm.repassword.$invalid ||  resetForm.password.$invalid || resetForm.repassword.$invalid" ng-click="reset()" class="btn btn-primary ">Submit</button>
+      </div></form>
     </div>
   </div>
 </div>

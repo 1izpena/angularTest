@@ -31,3 +31,6 @@
 .collapse, .navbar-collapse{
     background: white !important;
 }
+.collapse ul .btn {
+    background: white !important;
+}

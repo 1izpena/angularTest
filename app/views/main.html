@@ -7,21 +7,21 @@
 
 <section class="text-center blocks">
 <div class="row">
-<div class="col-sm-2 col-sm-offset-3  block1">
+<div class=" col-xs-8 col-xs-offset-2 col-sm-2 col-sm-offset-3 block1">
 <p class="title">Forum</p>
-<p>Meanstack is your resource to discuss support topics with your peers, and learn from each.The easiest way to share</p>
+<p class="blockcont">Meanstack is your resource to discuss support topics with your peers, and learn from each.The easiest way to share</p>
 <a ng-click="goTo('/login', 'foro')" ng-if="!auth.isLogged()" type="button" class="btn btn-default">forum</a>
 <a ng-click="goTo('/foro')" ng-if="auth.isLogged()" type="button" class="btn btn-default">forum</a>
 </div>
-<div class="col-sm-2 block2">
+<div class="block2 col-xs-8 col-xs-offset-2 col-sm-2 col-sm-offset-0">
 <p class="title">Chat</p>
-<p>The place where every developer, idealist, entrepreneur or geek is welcome to discuss ideas in realtime chat</p>
+<p class="blockcont">The place where every developer, idealist, entrepreneur or geek is welcome to discuss ideas in realtime chat</p>
 <a ng-click="goTo('/login', 'chat')" ng-if="!auth.isLogged()" type="button" class="btn btn-default">chat</a>
 <a ng-click="goTo('/chat2')" ng-if="auth.isLogged()" type="button" class="btn btn-default">chat</a>
 </div>
-<div class="col-sm-2 block3">
+<div class=" block3 col-xs-8 col-xs-offset-2 col-sm-2 col-sm-offset-0">
 <p class="title">App</p>
-<p>Meanstack also provides mobile application development resources from Google Play Store for Android and Apple store</p>
+<p class="blockcont">Meanstack also provides mobile application development resources from Google Play Store for Android and Apple store</p>
 <button class="btn btn-default" type="submit">App</button>
 </div></div>
 </section>

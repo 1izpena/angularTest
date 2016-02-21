@@ -1,7 +1,11 @@
-.reg{
-  display:none !important;
+.log{
+  display: block !important;
 }
-.btn {
+.reg{
+  display: none !important;
+}
+
+.content .btn {
     padding: 10px 16px !important;
     height: 46px !important;
     color: #fff;
@@ -14,6 +18,19 @@
     border-radius: 1px !important;
     width: 150px;
 }
+
+.navbar-default .navbar-nav > li > a {
+    color: #777;
+}
+
+.collapse ul .btn {
+    background: white !important;
+}
+.collapse ul .btn {
+    margin: 0;
+}
+
+
 .footer{
   min-height: 10.6%;
 }

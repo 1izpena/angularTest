@@ -7,9 +7,9 @@
     <div class="container">
       <form class="form-horizontal" ng-show="FormVisibility">
         <div class="form-group">
-            <h2 class="page-header">password recovery</h2>
-          <p>Enter your email below</br>
-You will receive an email with a link to create a password</p>
+            <h2>password recovery</h2>
+            <hr/>
+          <p>Enter your email below.You will receive an email with a link to create a password</p>
         </div>
         <div class="alert alert-danger fade in col-md-6 col-md-offset-3 alert-dismissible ng-hide" role="alert" ng-show="error">
           <button type="button" class="close"  aria-label="Close" ng-click="error=0"><span aria-hidden="true">&times;</span></button>
@@ -20,8 +20,8 @@ You will receive an email with a link to create a password</p>
              <input class="form-control input-lg" name="email" type="email" ng-model="FormData.mail" placeholder="Email"/>
               <i class="glyphicon glyphicon-envelope form-control-feedback"></i>
           </div>
-        </div><div class="col-md-6 col-md-offset-3">
-        <button class="btn btn-primary btn-lg col-md-offset-5" ng-click="check()">Send</button>
+        </div><div class="col-md-6 col-md-offset-3 text-center">
+        <button class="btn btn-primary btn-lg" ng-click="check()">Send</button>
       </div>
     </form>
      <div class="result" ng-show="ResponseVisibility"><p>We just sent you a recovery email</p><br/>
