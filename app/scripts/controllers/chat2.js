@@ -41,36 +41,43 @@ angular.module('myAppAngularMinApp')
     };
 */
 
-    //variables para el menu sidebar-nav
+    /* variables para el menu sidebar-nav */
       $scope.activeInvitations = 0;
       $scope.activeGroups = 0;
       $scope.activeChannels = 0;
       $scope.groupindex = -1;
       $scope.activeDirects = 0;
+
+
+
       $scope.user = '';
-	    $scope.membersSettings = '';
-	    $scope.membersSettingschannel = '';
-	    $scope.members = '';
-	    $scope.channelMembers = '';
-	    $scope.tagChannel = '';
+	  $scope.membersSettings = '';
+	  $scope.membersSettingschannel = '';
+
+	  $scope.members = '';
+	  $scope.channelMembers = '';
+
+	  $scope.tagChannel = '';
       $scope.tagGroup = '';
-	    $scope.adminGroup = '';
-	    $scope.adminChannel = '';
+	  $scope.adminGroup = '';
+	  $scope.adminChannel = '';
+
       /* modal de errores para los settings del grupo */
       $scope.errorG= '';
       $scope.messageNewGroupModal = '';
       $scope.messageNewChannelModal = '';
       $scope.channel = {channelType:"PUBLIC"};
+
+
       $scope.error1 = 0;
       $scope.message1 = '';
       //error codes in channel setting modals
+
+
       $scope.searchinputplaceholder = "Search member ...";
       /* flag para activar o no settings de canal */
       $scope.activeChannelSettings = 0;
 
-      $scope.logout = function () {
-      $scope.error1 = 0;
-      $scope.message1 = '';
       $scope.navsearch = 0;
       $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
       /* group user settings tag */
@@ -80,8 +87,12 @@ angular.module('myAppAngularMinApp')
       $scope.textsearchbox = '';
       $scope.searchresults = '';
 
+
+    $scope.logout = function () {
       LoginService.logout();
-      };
+    };
+
+    
 
     /* change vars of sidebar-nav menu */
     $scope.changeVarMenu = function(varmenu)
