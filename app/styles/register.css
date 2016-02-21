@@ -23,9 +23,11 @@
 .btn {
       height: 46px !important;
     color: #fff;
-    background-color: #163B5A;
-    border-color: #163B5A;
+
     font-size: 18px !important;
     line-height: 1.3333333;
     border-radius: 0px !important;
+}
+.collapse, .navbar-collapse{
+    background: white !important;
 }

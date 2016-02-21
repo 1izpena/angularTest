@@ -20,12 +20,12 @@ angular.module('myAppAngularMinApp')
     $scope.auth = LoginService;
 
     $scope.goTo = function(url, from) {
-      
+
       if (from === 'chat'){
           sharedProperties.setProperty('/chat2');
       }
       else if (from === 'foro'){
-          sharedProperties.setProperty('/');
+          sharedProperties.setProperty('/foro');
       }
       $location.path(url);
     };
