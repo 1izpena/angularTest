@@ -1229,52 +1229,59 @@ angular.module('myAppAngularMinApp')
 
       });
 
-    //
-    Socket.on('newMessage', function (data) {
+    /*
+     Socket.on('newMessage', function (data) {
 
-      console.log("newMessage from server")
-      console.log(data.message.channel)
+     console.log("newMessage from server")
+     console.log(data.message.channel)
 
-      // Si es el canal actual, añadimos mensaje a la listaMensaje
-      if (data.message.channel.id == $scope.tagChannel.id) {
-        $scope.listaMensajes.push(data.message);
-      }
-      // Incrementamos las notificaciones
-      else {
-        if (!$scope.notifications) {
-          $scope.notifications = {};
-          $scope.notifications.group = { total: 0 };
-        }
-        // Para el grupo
-        if (!$scope.notifications.group[data.groupid]) {
-          $scope.notifications.group[data.groupid]={total: 0};
-        }
-        $scope.notifications.group[data.groupid].total++;
-        $scope.notifications.group.total++;
+     // Si es el canal actual, añadimos mensaje a la listaMensaje
+     if (data.message.channel.id == $scope.tagChannel.id) {
+     $scope.listaMensajes.push(data.message);
+     }
+     // Incrementamos las notificaciones
+     else {
+     if (!$scope.notifications) {
+     $scope.notifications = {};
+     $scope.notifications.group = { total: 0 };
+     }
+     // Para el grupo
+     if (!$scope.notifications.group[data.groupid]) {
+     $scope.notifications.group[data.groupid]={total: 0};
+     }
+     $scope.notifications.group[data.groupid].total++;
+     $scope.notifications.group.total++;
 
-        // Para los canales canal
-        var channelType = data.message.channel.channelType.toUpperCase();
-        var channelid = data.message.channel.id;
+     // Para los canales canal
+     var channelType = data.message.channel.channelType.toUpperCase();
+     var channelid = data.message.channel.id;
 
-        if (!$scope.notifications.group[data.groupid].channel) {
-          $scope.notifications.group[data.groupid].channel={total: 0};
-        }
-        if (!$scope.notifications.group[data.groupid].channel[channelType]) {
-          $scope.notifications.group[data.groupid].channel[channelType]={total: 0};
-        }
-        if (!$scope.notifications.group[data.groupid].channel[channelType][channelid]) {
-          $scope.notifications.group[data.groupid].channel[channelType][channelid]=0;
-        }
-        $scope.notifications.group[data.groupid].channel[channelType][channelid]++;
-        $scope.notifications.group[data.groupid].channel[channelType].total++;
-        if (channelType != 'DIRECT') {
-          $scope.notifications.group[data.groupid].channel.total++;
-        }
+     if (!$scope.notifications.group[data.groupid].channel) {
+     $scope.notifications.group[data.groupid].channel={total: 0};
+     }
+     if (!$scope.notifications.group[data.groupid].channel[channelType]) {
+     $scope.notifications.group[data.groupid].channel[channelType]={total: 0};
+     }
+     if (!$scope.notifications.group[data.groupid].channel[channelType][channelid]) {
+     $scope.notifications.group[data.groupid].channel[channelType][channelid]=0;
+     }
+     $scope.notifications.group[data.groupid].channel[channelType][channelid]++;
+     $scope.notifications.group[data.groupid].channel[channelType].total++;
+     if (channelType != 'DIRECT') {
+     $scope.notifications.group[data.groupid].channel.total++;
+     }
 
-      }
+     }
 
-      $scope.$apply();
-    });
+     $scope.$apply();
+     });
+
+    */
+     */
+      Socket.on('newMessage', function (data) {
+        $scope.listaMensajes.push(data);
+        $scope.$apply();
+      });
 
     Socket.on('newQuestionAnswer', function (data) {
       var message = data;
