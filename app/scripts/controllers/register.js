@@ -10,6 +10,9 @@
 angular.module('myAppAngularMinApp')
   .controller('RegisterCtrl', [ '$http', '$location', '$localStorage', '$scope', 'API_BASE', function ($http, $location, $localStorage, $scope, API_BASE) {
 
+this.FormVisibility = true;
+this.IntroText = true;
+
       this.register = function () {
         var self=this;
         if (this.registerForm.$valid) {
@@ -19,11 +22,14 @@ angular.module('myAppAngularMinApp')
             data: self.user
           })
           .then(function(res) {
-            alert("Te hemos enviado un mail de activación");
-            $location.path('/login');
+          $scope.register.FormVisibility = false;
+          $scope.register.ResponseVisibility = true;
+          $scope.register.IntroText = false;
 
           },
           function(error){
+              $scope.error = 1;
+                self.ResponseError = true;
             if (error.data && error.data.message) {
               self.errorMessage = error.data.message;
             }else{

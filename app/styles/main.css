@@ -116,7 +116,9 @@ body{
 .logo {
   max-width:30px;
 }
-
+title p{
+  min-height: 25%;
+}
 /********* BARRA MENU ***********/
 .collapse ul a{
   border:none !important;

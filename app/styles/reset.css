@@ -15,5 +15,13 @@
     width: 150px;
 }
 .footer{
-  min-height: 10.6%
+  min-height: 10.6%;
+}
+.close {
+    float: left !important;
+    font-size: 15px;
+    color: #163B5A !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+    font-weight: normal !important;
 }

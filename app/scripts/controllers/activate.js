@@ -27,7 +27,7 @@ angular.module('myAppAngularMinApp')
       },function(res)
       {
           $scope.error = 1;
-          $scope.message2 = "Email de activación expirado,ingresa tu datos en login para volver a recibir tu email de activación";
+          $scope.message2 = "Email expirated";
 
       });
     }
