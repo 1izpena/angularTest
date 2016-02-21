@@ -10,11 +10,27 @@ angular.module('myAppAngularMinApp')
         console.log("ha entrado a crear socket newChatConnection");
         Socket.emit('newChatConnection', {'userid': $localStorage.id });
         $scope.groupsNotificationsCount=0;
-        $scope.groupsNotifications=[];
-        $scope.groupNotifications=[];
         $scope.channelsNotificationsCount=0;
+        $scope.directMessagesNotificationsCount=0;
+        $scope.publicChannelsNotificationsCount=0;
+        $scope.privateChannelsNotificationsCount=0;
+        //message arrays
+        $scope.groupsNotifications=[];
         $scope.channelsNotifications=[];
-        $scope.channelNotifications=[];
+        $scope.directMessagesNotifications=[];
+        $scope.publicChannelsNotifications=[];
+        $scope.privateChannelsNotifications=[];
+
+        //popover contents
+        $('#groupsNotificationBadge').popover({html: true,content: function() {return $('#groupsNotificationList').html();}});
+        $('#channelsNotificationBadge').popover({html: true,content: function() {return $('#channelsNotificationList').html();}});
+        $('#directMessagesNotificationBadge').popover({html: true,content: function() {return $('#directMessagesNotificationList').html();}});
+        $('#publicChannelsNotificationBadge').popover({html: true,content: function() {return $('#publicChannelsNotificationList').html();}});
+        $('#privateChannelsNotificationBadge').popover({html: true,content: function() {return $('#privateChannelsNotificationList').html();}});
+        $('#groupNotificationBadge').popover({html: true,content: function() {return $('#groupNotificationList').html();}});
+        $('#publicChannelNotificationBadge').popover({html: true,content: function() {return $('#publicChannelNotificationList').html();}});
+        $('#privateChannelNotificationBadge').popover({html: true,content: function() {return $('#privateChannelNotificationList').html();}});
+        $('#directMessageNotificationBadge').popover({html: true,content: function() {return $('#directMessageNotificationList').html();}});
       };
 
 /*
@@ -25,72 +41,47 @@ angular.module('myAppAngularMinApp')
     };
 */
 
-/* variables para el menu sidebar-nav */
-    $scope.activeInvitations = 0;
-    $scope.activeGroups = 0;
-    $scope.activeChannels = 0;
-    $scope.groupindex = -1;
-    $scope.activeDirects = 0;
-
-
-
-	  $scope.user = '';
-	  $scope.membersSettings = '';
-	  $scope.membersSettingschannel = '';
-
-	  $scope.members = '';
-	  $scope.channelMembers = '';
-
-
-	  $scope.tagChannel = '';
-	  $scope.tagGroup = '';
-	  $scope.adminGroup = '';
-	  $scope.adminChannel = '';
-
-
+    //variables para el menu sidebar-nav */
+      $scope.activeInvitations = 0;
+      $scope.activeGroups = 0;
+      $scope.activeChannels = 0;
+      $scope.groupindex = -1;
+      $scope.activeDirects = 0;
+      $scope.user = '';
+	    $scope.membersSettings = '';
+	    $scope.membersSettingschannel = '';
+	    $scope.members = '';
+	    $scope.channelMembers = '';
+	    $scope.tagChannel = '';
+      $scope.tagGroup = '';
+	    $scope.adminGroup = '';
+	    $scope.adminChannel = '';
       /* modal de errores para los settings del grupo */
       $scope.errorG= '';
       $scope.messageNewGroupModal = '';
       $scope.messageNewChannelModal = '';
       $scope.channel = {channelType:"PUBLIC"};
-
-
       $scope.error1 = 0;
       $scope.message1 = '';
       //error codes in channel setting modals
-
-
       $scope.searchinputplaceholder = "Search member ...";
-
       /* flag para activar o no settings de canal */
       $scope.activeChannelSettings = 0;
 
-      //notificaciones no conectado
-      $scope.groupsNotificationsCount=0;
-      $scope.groupsNotifications=[];
-      $scope.groupNotifications=[];
-      $scope.channelsNotificationsCount=0;
-      $scope.channelsNotifications=[];
-
-
       $scope.logout = function () {
-      LoginService.logout();
-      };
-
       $scope.error1 = 0;
       $scope.message1 = '';
       $scope.navsearch = 0;
       $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
-
       /* group user settings tag */
       $scope.option = 0;
       $scope.optionchannel = 0;
-
-
       /* content of channel searchbox */
       $scope.textsearchbox = '';
       $scope.searchresults = '';
 
+      LoginService.logout();
+      };
 
     /* change vars of sidebar-nav menu */
     $scope.changeVarMenu = function(varmenu)
@@ -111,7 +102,7 @@ angular.module('myAppAngularMinApp')
           $scope.activeDirects = 0;
 
         }
-        
+
       }
       /* var de grupos */
       else if(varmenu == 'activeGroups'){
@@ -124,9 +115,9 @@ angular.module('myAppAngularMinApp')
           }
           else {
             $scope.activeGroups = 0;
-          
+
           }
-          
+
         }
         else {
 
@@ -138,7 +129,7 @@ angular.module('myAppAngularMinApp')
           $scope.activeChannels = 0;
           $scope.activeDirects = 0;
         }
-        
+
       }
 
       /* var de canales publicos y privados */
@@ -152,27 +143,20 @@ angular.module('myAppAngularMinApp')
           $scope.activeInvitations = 0;
           $scope.activeDirects = 0;
         }
-        
-      } 
+
+      }
       /* var de canales directos */
       else if(varmenu == 'activeDirects'){
         if ($scope.activeDirects){
           $scope.activeDirects = 0;
-        }
-        else {
+        } else {
           $scope.activeDirects = 1;
           $scope.activeGroups = 1;
           $scope.activeChannels = 0;
           $scope.activeInvitations = 0;
         }
-        
-      } 
-
-
-
-
-    }
-
+      }
+    };
 
     $scope.changeSearchNav = function(optionsearch)
     {
@@ -194,21 +178,13 @@ angular.module('myAppAngularMinApp')
 
 /******************nuevo**************************/
 
-
      $scope.searchtextinchannel = function (textsearchbox, channel) {
       console.log("esto vale searchboz");
       console.log(textsearchbox);
       if ( textsearchbox !== 'undefined' && textsearchbox !== '' ){
-
-
         searchservice.chatsearch(textsearchbox, $scope.tagGroup.id, $scope.tagChannel.id).then(function (res){
-
-
            if(res.error == undefined){
-
              $scope.searchresults = res.slice();
-
-
              for (var i = 0; i < $scope.searchresults.length; i++) {
                for ( var j = 0; j < $scope.channelMembers.length; j++){
                  if ($scope.searchresults[i].source._user == $scope.channelMembers[j].id){
@@ -217,13 +193,10 @@ angular.module('myAppAngularMinApp')
                }
 
              }
-
            }
            else {
              $scope.searchresults = '';
            }
-
-
 
         },function(err){
            $scope.searchresults = '';
@@ -235,20 +208,9 @@ angular.module('myAppAngularMinApp')
       } else {
         $scope.searchresults = '';
       }
-
-
-
      };
 
-
  /*******************nuevo********************************/
-
-
-
-
-
-
-
 
     /* subraya las coincidencias */
     $scope.highlight = function(text, search) {
@@ -258,24 +220,18 @@ angular.module('myAppAngularMinApp')
 	    return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
 	};
 
-
-
     $scope.goTo = function(url)
     {
       $location.path(url);
     };
 
+    $scope.removeInputChannelName = function(){
+      $("#channelNameTxt").val('').trigger('input');
+    };
 
-
-      $scope.removeInputChannelName = function(){
-        $("#channelNameTxt").val('').trigger('input');
-      };
-
-
-
-      $scope.removeInput = function(){
-      	$("#groupNameTxt").val('').trigger('input');
-      };
+    $scope.removeInput = function(){
+      $("#groupNameTxt").val('').trigger('input');
+    };
 
 
       $scope.createNewGroup = function(group){
@@ -348,8 +304,6 @@ angular.module('myAppAngularMinApp')
                 console.log("Error on edit group name: " + err.data.message);
                 console.log("Hay error: " + err.message);
                 return err.message;
-
-
               }
             );
           }
@@ -655,8 +609,6 @@ angular.module('myAppAngularMinApp')
           console.log(data);
           console.log($scope.channelMembers);
           console.log($scope.adminChannel);
-
-
         }
         , function (err) {
           // Tratar el error
@@ -906,7 +858,7 @@ angular.module('myAppAngularMinApp')
     $scope.getNotificationList= function (group) {
       for (var i=0;i<$scope.groups.length;i++){
         if ($scope.groups[i].id == group.id){
-          $scope.groupNotifications = $scope.groups[i].notifications;
+          $scope.groupNotifications = $scope.groups[i].groupNotifications;
         }
       }
     };
@@ -923,24 +875,37 @@ angular.module('myAppAngularMinApp')
       $scope.tagChannel='';
       //restar notificaciones generales de grupo
       for (var i=0;i<$scope.groupsNotifications.length;i++){
-        console.log("$scope.groupsNotifications[i].groupid : " + $scope.groupsNotifications[i].groupid);
-        console.log("group.id : " + group.id);
         if ($scope.groupsNotifications[i].groupid == group.id){
-          $scope.groupsNotifications.splice(i,1);
-          $scope.groupsNotificationsCount -- ;
+          if ($scope.groupsNotifications.length == 1){
+            $scope.groupsNotifications=[];
+            $scope.groupsNotificationsCount = 0 ;
+          }else{
+            $scope.groupsNotifications.splice(i,1);
+            $scope.groupsNotificationsCount = $scope.groupsNotificationsCount - 1 ;
+          }
+
         }
       }
       for (var j=0;j<$scope.groups.length;j++){
-        console.log("$scope.groups[j].id : " + $scope.groups[j].id);
-        console.log("group.id : " + group.id);
         if ($scope.groups[j].id == group.id){
-          console.log("ENTRA A ACTUALIZAR $scope.groups[j].groupNotificationsCount y $scope.groups[j].notifications");
-          $scope.groups[j].notifications = [];
+          $scope.groups[j].groupNotifications = [];
           $scope.groups[j].groupNotificationsCount = 0;
         }
       }
-      $scope.channelsNotificationsCount=0;
-      $scope.channelsNotifications=[];
+
+      for (var k=0;k<$scope.channelsNotifications.length;k++){
+        if ($scope.channelsNotifications[k].groupid == group.id){
+          if ($scope.groupsNotifications.length == 1){
+            $scope.groupsNotifications=[];
+            $scope.groupsNotificationsCount = 0 ;
+          }else{
+            $scope.groupsNotifications.splice(k,1);
+            $scope.groupsNotificationsCount = $scope.groupsNotificationsCount - 1 ;
+          }
+
+        }
+      }
+
       // Emitimos evento de selecion de grupo para notificaciones de usuarios coenctados al grupo
       Socket.emit('selectGroup', { 'groupid': group.id, 'userid': $localStorage.id } );
 
@@ -955,7 +920,7 @@ angular.module('myAppAngularMinApp')
       };
 
     $scope.selectChannel = function (channel, type) {
-      $scope.channelsNotificationsCount='';
+      $scope.channelsNotificationsCount=0;
       $scope.channelsNotifications=[];
       $scope.channelid=channel.id;
       $scope.tagChannel=channel;
@@ -999,7 +964,7 @@ angular.module('myAppAngularMinApp')
           $scope.notifications.group[groupid].total -= num;
           $scope.notifications.group.total -= num;
         }
-      }
+      };
 
 
     $scope.getDownloadLink = function (filename, ev) {
@@ -1204,7 +1169,6 @@ angular.module('myAppAngularMinApp')
 
 
 
-
     $scope.channelSelected = false;
     $scope.listaMensajes = [];
     $scope.listaUsuariosConectados = {};
@@ -1231,7 +1195,7 @@ angular.module('myAppAngularMinApp')
       .then(function (data) {
         $scope.groups = data;
         for (var i=0;i<$scope.groups.length;i++){
-          $scope.groups[i].notifications = [];
+          $scope.groups[i].groupNotifications = [];
           $scope.groups[i].groupNotificationsCount = 0;
         }
 
@@ -1352,7 +1316,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('newGroup', function (data) {
         console.log ("newGroup received from server");
         console.log(data);
-        data.notifications = [];
+        data.groupNotifications = [];
         data.groupNotificationsCount = 0;
         $scope.groups.push(data);
 
@@ -1419,7 +1383,6 @@ angular.module('myAppAngularMinApp')
         console.log ("regretGroupInvitation received from server");
         /* si es el administrador, poner que pueda de nuevo invitar al usuario a ese grupo */
         if ($scope.adminGroup.id == $scope.userid){
-        	data.userid
         	if($scope.option == 1) {
         		for (var i = 0; i < $scope.membersSettings.length; i++){
         			if ($scope.membersSettings[i].id == data.userid){
@@ -1667,35 +1630,31 @@ angular.module('myAppAngularMinApp')
       Socket.on('newGroupEvent', function (data) {
         console.log ("newGroupEvent received from server");
         console.log("Received Data: " + data);
-        console.log ("$scope.tagGroup.id: " + $scope.tagGroup.id);
-        console.log ("data.groupid: " + data.groupid);
         console.log ("$scope.groupsNotificationsCount: " + $scope.groupsNotificationsCount);
         if ($scope.tagGroup.id!=data.groupid){
           $scope.groupsNotificationsCount ++;
           //añadimos notificacion al grupo en si
+          console.log("tamaño grupos: " + $scope.groups.length);
           for (var i=0;i<$scope.groups.length;i++){
             if ($scope.groups[i].id == data.groupid){
-              console.log ("$scope.groupNotificationsCount: " + $scope.groupNotificationsCount);
+              console.log ("$scope.groups[i].groupNotificationsCount: " + $scope.groups[i].groupNotificationsCount);
               $scope.groups[i].groupNotificationsCount ++;
-              $scope.groups[i].notifications.push(data);
+              $scope.groups[i].groupNotifications.push(data);
               console.log("Received new group notification: " +data.groupid + " , " + data.message);
             }
           }
           $scope.groupsNotifications.push(data);
-          console.log("Received new groups notification: " +data.groupid + " , " + data.message);
+          console.log("newGroupsNotification received from server: groupid: " +data.groupid + ", message: " + data.message);
           $scope.$apply();
         }
       });
 
       //Eventos de canales listados y no conectados
       Socket.on('newChannelEvent', function (data) {
-        console.log ("newChannelEvent received from server");
-        console.log(data);
-        console.log ("$scope.tagChannel.id: " + $scope.tagChannel.id);
-        console.log ("data.channelid: " + data.channelid);
+        console.log ("newChannelEvent received from server: groupid: " + data.groupid + ", channelid: " + data.channelid + ", channelType: " + data.channelType + ", message: " + data.message);
         if ($scope.tagChannel.id!=data.channelid){
           $scope.channelsNotificationsCount ++;
-          console.log("Event: " + data.message);
+          $scope.channelsNotifications.push(data);
         }
         $scope.$apply();
       });

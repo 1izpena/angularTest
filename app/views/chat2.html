@@ -54,8 +54,7 @@
                 <!-- grupos -->
                 <li class="active">
                   <a class="btn btn-primary" ng-click="changeVarMenu('activeGroups')"><i class="fa fa-group fa-fw"></i>Groups
-                    <button class="badge pull-right" type="button" data-toggle="modal" data-target="#groupsNotificationListModal" ng-if="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</button>
-                    <span class="badge" ng-show="notifications.group.total > 0">{{notifications.group.total}}</span>
+                    <span class="badge badge-info pull-right" id="groupsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="NOTIFICATIONS" data-container="body" ng-show="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</span>
                   </a>
 
                   <ul ng-show="activeGroups" class="emphasis cgroups" id="grouplist">
@@ -63,8 +62,7 @@
 
                       <a ng-click="selectGroup(group, $index); changeVarMenu('activeChannels')">
                         {{group.groupName}}
-                        <button class="badge" type="button" data-toggle="modal" data-target="#groupNotificationListModal" ng-if="group.groupNotificationsCount > 0" ng-click="getNotificationList(group)">{{group.groupNotificationsCount}}</button>
-                        <span class="badge pull-right" ng-show="$parent.notifications.group[group.id].total > 0">{{ $parent.notifications.group[group.id].total}}</span>
+                        <span class="badge badge-info pull-right" id="groupNotificationBadge" data-toggle="popover" popover-group data-html="true" data-placement="top" data-trigger="hover" ng-mouseover="getNotificationList(group)" data-title="NOTIFICATIONS" data-container="body" ng-show="group.groupNotificationsCount > 0">{{group.groupNotificationsCount}}</span>
 
                       </a>
                     </li>
@@ -81,20 +79,20 @@
                 <li class="activeChannels" ng-show= "tagGroup !== ''">
                   <a class="btn btn-primary" ng-click="changeVarMenu('activeChannels')">
                     <i class="fa fa-comment fa-fw"></i>Channels
-                    <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel.total > 0">{{notifications.group[tagGroup.id].channel.total}}</span>
+                    <span class="badge badge-info pull-right" id="channelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Channels Notifications" data-container="body" ng-show="channelsNotificationsCount > 0">{{channelsNotificationsCount}}</span>
                   </a>
                   <ul ng-show= "activeChannels">
                     <li class="activeChannelsPublic channel-type active">
                       <a ng-show= "publicChannels.length > 0" class="btn btn-danger">
                         Public
-                        
-                        <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['PUBLIC'].total > 0">{{notifications.group[tagGroup.id].channel['PUBLIC'].total}}</span>
+
+                        <span class="badge badge-info pull-right" id="publicChannelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Public Channels Notificatio" data-container="body" ng-show="publicChannelsNotificationsCount > 0">{{publicChannelsNotificationsCount}}</span>
                       </a>
                       <ul class="emphasis">
                         <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
                           <a ng-click="selectChannel(channel, 'public')">
                             {{channel.channelName}}
-                            <span class="badge pull-right" ng-show="$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id] > 0">{{$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id]}}</span>
+                            <span popover-channel class="badge badge-info pull-right" id="publicChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Public Channel Notifications" data-container="body" ng-show="channel.publicChannelNotificationsCount > 0">{{channel.publicChannelNotificationsCount}}</span>
                           </a>
                         </li>
                       </ul>
@@ -102,13 +100,13 @@
                     <li class="channel-type">
                       <a ng-show= "privateChannels.length > 0" class="btn btn-danger">
                         Private
-                        <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['PRIVATE'].total > 0">{{notifications.group[tagGroup.id].channel['PRIVATE'].total}}</span>
+                        <span class="badge badge-info pull-right" id="privateChannelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Private Channels Notifications" data-container="body" ng-show="privateChannelsNotificationsCount > 0">{{privateChannelsNotificationsCount}}</span>
                       </a>
                       <ul class="emphasis">
                         <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
                           <a ng-click="selectChannel(channel, 'private')">
                             {{channel.channelName}}
-                            <span class="badge pull-right" ng-show="$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id] > 0">{{$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id]}}</span>
+                            <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Private Channel Notifications" data-container="body" ng-show="channel.privateChannelNotificationsCount > 0">{{channel.privateChannelNotificationsCount}}</span>
                           </a>
                         </li>
                       </ul>
@@ -127,7 +125,7 @@
                 <li class="activeMembers" ng-show= "tagGroup !== ''">
                   <a ng-click="changeVarMenu('activeDirects')" class="btn btn-primary" aria-expanded="false">
                     <i class="fa fa-user fa-fw"></i>Direct Messages
-                    <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['DIRECT'].total > 0">{{notifications.group[tagGroup.id].channel['DIRECT'].total}}</span>
+                    <span class="badge pull-right">{{}}</span>
                   </a>
 
                   <ul ng-show="activeDirects" class="emphasis">
@@ -137,7 +135,7 @@
                       <a ng-click="searchDirectChannel(member)">
                         <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'"></span>
                         {{member.username}}
-                        <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['DIRECT'][getDirectChannelId(member)] > 0">{{notifications.group[tagGroup.id].channel['DIRECT'][getDirectChannelId(member)]}}</span>
+                        <span class="badge pull-right">{{}}</span>
                       </a>
                     </li>
 
@@ -939,7 +937,7 @@
 
                                   <span ng-bind-html="highlight(result.source.content.text, textsearchbox)" class="ng-binding"></span>
 
-                                
+
                               </p>
 
 
@@ -1251,46 +1249,68 @@
       </div>
   </div>
 
-  <div id="groupsNotificationListModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header" style="padding:35px 50px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Notifications</h4>
-        </div>
-        <div class="modal-body">
-          <ul aria-expanded="true" class="emphasis">
-            <li ng-repeat="notification in groupsNotifications" ng-if="groupsNotifications.length > 0">
-              {{notification.message}}
-            </li>
-          </ul>
-        </div>
-        <div class="modal-footer">
-        </div>
-      </div>
-    </div>
+  <div id="groupsNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in groupsNotifications" ng-if="groupsNotifications.length > 0">
+        {{notification.message}}
+      </li>
+    </ul>
   </div>
 
-  <div id="groupNotificationListModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header" style="padding:35px 50px;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Notifications</h4>
-        </div>
-        <div class="modal-body">
-          <ul aria-expanded="true" class="emphasis">
-            <li ng-repeat="notification in groupNotifications" ng-if="groupNotifications.length > 0">
-              {{notification.message}}
-            </li>
-          </ul>
-        </div>
-        <div class="modal-footer">
-        </div>
-      </div>
-    </div>
+  <div id="channelsNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in channelsNotifications" ng-if="channelsNotifications.length > 0">
+        {{notification.message}}
+      </li>
+    </ul>
+  </div>
+
+  <div id="directMessagesNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in directMessagesNotifications" ng-if="directMessagesNotifications.length > 0">
+        {{notification.message}}
+      </li>
+    </ul>
+  </div>
+
+  <div id="groupNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in groupNotifications">
+        {{notification.message}}
+      </li>
+    </ul>
+  </div>
+
+  <div id="publicChannelsNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in publicChannelsNotifications">
+        {{notification.message}}
+      </li>
+    </ul>
+  </div>
+
+  <div id="privateChannelsNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in privateChannelsNotifications">
+        {{notification.message}}
+      </li>
+    </ul>
+  </div>
+
+  <div id="publicChannelNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in publicChannels.publicChannelNotifications">
+        {{notification.message}}
+      </li>
+    </ul>
+  </div>
+
+  <div id="privateChannelNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in privateChannels.privateChannelNotifications">
+        {{notification.message}}
+      </li>
+    </ul>
   </div>
 
 <!--<script src="scripts/myscripts.js"></script>-->
@@ -1322,9 +1342,6 @@
 
     /*class="col-xs-7 col-sm-7 col-md-8 col-lg-8"*/
   });
-
-
-
 
 </script>
 
