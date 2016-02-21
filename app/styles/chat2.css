@@ -1,20 +1,80 @@
+@font-face{
+  font-family: lora;
+  src: url('../fonts/Lora-Regular.ttf');
+}
+
+#page-content-wrapper
+{
+  font-family: lora;
+}
+
 /*Añadidos para izaskun*/
 
 
 /********nuevo********/
-
+/*
 .list-group-remove li:hover,
 .list-group-remove li:focus {
-
   background-color: rgba(217, 83, 79, 0.71);
-
 }
 
 .list-group-add li:hover,
 .list-group-add li:focus {
-
   background-color: rgba(0, 150, 5, 0.39);
+}
+*/
 
+.white-label {
+  color: white;
+  font-weight: 600;
+}
+
+.group-name, .channel-name {
+  font-size: 15px;
+}
+
+.member-container:focus{
+  outline-style: none;
+}
+
+.member-container.list-group-default,
+.member-container:focus.list-group-default{
+  cursor: default;
+}
+
+.member-container:hover.list-group-add,
+.member-container:focus.list-group-add{
+  box-shadow: 5px 5px 5px 0px rgba(0, 150, 5, 0.39);
+}
+
+.member-container:hover.list-group-remove,
+.member-container:focus.list-group-remove{
+  box-shadow: 5px 5px 5px 0px rgba(217, 83, 79, 0.71);
+}
+
+.member-container {
+  padding: 20px;
+  padding-bottom: 15px;
+  border: 1px solid #d3d3d3;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(211,211,211,1);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(211,211,211,1);
+  box-shadow: 5px 5px 5px 0px rgba(211,211,211,1);
+}
+
+.member-container .username {
+  text-align: left;
+  padding-top: 15px;
+  padding-left: 60px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.member-container .mail {
+  text-align: center;
+  font-style: italic;
 }
 
 
@@ -302,7 +362,7 @@
 
 
 #page-content-wrapper {
-    min-height: 600px;
+  min-height: 600px;
 }
 
 
@@ -406,6 +466,9 @@ img#avatar {
     margin-top:20px;
 }
 */
+
+
+
 
 .sidebar-brand .logo {
   width: 150px;
@@ -549,12 +612,22 @@ ul {   list-style-type: none; }
   padding-left: 34px;
 }
 
+.sidebar-nav .channel-type a.type-name {
+  padding-left: 11px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #337ab7;;
+  padding-top: 18px;
+}
+
+/*
 .sidebar-nav .channel-type .btn {
   padding-left: 20px;
 }
+*/
 
 .sidebar-nav li.channel-type ul {
-  padding-left: 10px;
+  padding-left: 0px;
 }
 
 
@@ -1146,11 +1219,8 @@ ul {   list-style-type: none; }
    overflow-y: scroll;
    height: 100%;
    max-height: none;
-   margin-bottom: 0px;
-
-
-
-
+   margin: 0px 0px;
+   padding-right: 12px;
 
 }
 
@@ -1159,6 +1229,12 @@ ul {   list-style-type: none; }
 	padding-bottom: 0px;
 	border-color: transparent;
 }
+
+.member-item {
+
+  padding: 12px 20px;
+}
+
 
 
 
@@ -1220,7 +1296,7 @@ uib-accordion.question-panels a:hover {
 span.question-title,
 span.question-new-answer{
   font-weight: 700;
-  font-family:  "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family:  roboto;
   margin-right: 5px;
 }
 

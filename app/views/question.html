@@ -2,15 +2,15 @@
   <div ng-include="'views/menuForo.html'"></div>
   <div id="page-content-wrapper">
 	<div class="container-fluid" ng-controller="ForoCtrl" data-ng-init="getQuestion()">
-		<div class="row container-fluid boton-menu">
-        	<a ng-href="#menu-toggle"
-           class="glyphicon glyphicon-th-list" id="menu-toggle">
-        </a>
-      	</div>
+    <div class="container-fluid boton-menu">
+      <a ng-href="#menu-toggle"
+         class="glyphicon glyphicon-th-list" id="menu-toggle">
+      </a>
+    </div>
 		<div class="row container-fluid">
 			<div class="col-md-8 headLeft">
 				<div class="col-md-6">
-				</div>	
+				</div>
 			</div>
 			<div class="col-md-4 headRight">
 				<form id="custom-search-form" class="form-search form-horizontal" ng-submit="search(request)">
@@ -28,7 +28,7 @@
 	          <button type="button" class="close"  aria-label="Close" ng-click="success=0"><span aria-hidden="true">&times;</span></button>
 	          	{{message}}
 	        </div>
-		</div>	
+		</div>
 		<div class="row">
 		    <div  class="col-md-12 preguntadetalle">
 		        <div class="col-md-12">
@@ -36,7 +36,7 @@
 		    			<button class="glyphicon glyphicon-chevron-up voteup" aria-hidden="true" ng-click="upvote()"></button>
 		    			<span class="votes">{{question.votes}}</span>
 		    			<button class="glyphicon glyphicon-chevron-down downvote" aria-hidden="true" ng-click="downvote()"></button>
-		    		</div> 
+		    		</div>
 		    		<div class="right">
 			        	<h1 class="questiontitle"><a>{{question.title}}</a></h1>
 			        	<div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
@@ -60,7 +60,7 @@
 					        		<i class="fa fa-clock-o fa-2 text-muted"></i>
 					        		<span class=" text-muted">Edited</span>
 					        		<span class="text-muted" am-time-ago="question.modified"></span>
-					        		<span class="text-muted">by {{question._user.username}}</span>			        		
+					        		<span class="text-muted">by {{question._user.username}}</span>
 					        	</div>
 				       		 </div>
 			        	</div>
@@ -78,8 +78,8 @@
 										<button  class="btn btn-primary" ng-click="questionModal(question._id,'')">Add comment</button>
 
 	 								 </div>
-								</div>		
-								<a role="button" data-toggle="collapse" data-target="#questioncomments" aria-expanded="false" aria-controls="questioncomments"><i class="fa fa-sort-desc fa-3">Show comments</i></a>	
+								</div>
+								<a role="button" data-toggle="collapse" data-target="#questioncomments" aria-expanded="false" aria-controls="questioncomments"><i class="fa fa-sort-desc fa-3">Show comments</i></a>
 							</div>
 							<div id="shared" class="col-md-2">
 			        			<h3>Shared</h3>
@@ -88,12 +88,12 @@
 									<a class="addthis_button_twitter"></a>
 									<a class="addthis_button_google_plusone_share"></a>
 								</div>
-			        		</div>	
+			        		</div>
 			        	</div>
 		        	</div>
 		        </div>
 		   </div>
-		   <div class="row">
+		   <div>
 			   <div class="respuestas">
 			   		<h3 class="col-md-offset-1">{{question.answercount}} Answers</h3>
 					<div class="col-md-10 col-md-offset-1 respuestadetalle"  ng-repeat=" answer in question.answers">
@@ -102,7 +102,7 @@
 		    			<button class="glyphicon glyphicon-chevron-up voteup" aria-hidden="true" ng-click="answerUpVote($index,answer._id)"></button>
 		    			<span class="votes">{{answer.votes}}</span>
 		    			<button class="glyphicon glyphicon-chevron-down downvote" aria-hidden="true" ng-click="answerDownVote($index,answer._id)"></button>
-		    		</div> 
+		    		</div>
 		    		<div class="right">
 			        	<p ng-bind-html=" answer.body"></p>
 			        	<div ng-if="answerLinks(answer)">
@@ -120,7 +120,7 @@
 					        		<i class="fa fa-clock-o fa-2 text-muted"></i>
 					        		<span class=" text-muted">Edited</span>
 					        		<span class="text-muted" am-time-ago="answer.modified"></span>
-					        		<span class="text-muted">by {{answer._user.username}}</span>			        		
+					        		<span class="text-muted">by {{answer._user.username}}</span>
 					        	</div>
 				       </div>
 			        	<div class="col-md-12">
@@ -136,9 +136,9 @@
 										</ul>
 										<button class="btn btn-primary" ng-click="answerModal($index,question._id,answer._id)">Add comment</button>
 									</div>
-								</div>	
-								<a role="button" data-toggle="collapse" data-target="#{{answer._id}}" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-sort-desc fa-3	">Show comments</i></a>	
-				        	</div>	
+								</div>
+								<a role="button" data-toggle="collapse" data-target="#{{answer._id}}" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-sort-desc fa-3	">Show comments</i></a>
+				        	</div>
 				        	<div id="shared" class="col-md-2">
 				        		<h3>Shared</h3>
 								<div data-addthis-toolbox data-url="{{path}}" data-title="{{answer.title}}" id="bp-{{answer._id}}" class="addthis_toolbox addthis_default_style addthis_32x32_style" >
@@ -174,3 +174,4 @@
     $("#wrapper").toggleClass("toggled");
   });
 </script>
+

@@ -20,8 +20,10 @@
                     <div class="dropdown">
                       <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=30&d=identicon"
                            class="img-circle avatar" id="avatar"/>
-                      <span class="dropdown-toggle" data-toggle="dropdown">{{username}}</span>
-                      <span class="caret"></span>
+                      <span class="dropdown-toggle" data-toggle="dropdown">
+                        {{username}} <span class="caret"></span>
+                      </span>
+
                       <ul class="dropdown-menu menu-logout" role="menu">
                         <li><a ng-click="logout()">Logout</a></li>
                       </ul>
@@ -83,7 +85,7 @@
                   </a>
                   <ul ng-show= "activeChannels">
                     <li class="activeChannelsPublic channel-type active">
-                      <a ng-show= "publicChannels.length > 0" class="btn btn-danger">
+                      <a ng-show= "publicChannels.length > 0" class="type-name">
                         Public
 
                         <span class="badge badge-info pull-right" id="publicChannelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Public Channels Notificatio" data-container="body" ng-show="publicChannelsNotificationsCount > 0">{{publicChannelsNotificationsCount}}</span>
@@ -98,7 +100,7 @@
                       </ul>
                     </li>
                     <li class="channel-type">
-                      <a ng-show= "privateChannels.length > 0" class="btn btn-danger">
+                      <a ng-show= "privateChannels.length > 0" class="type-name">
                         Private
                         <span class="badge badge-info pull-right" id="privateChannelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Private Channels Notifications" data-container="body" ng-show="privateChannelsNotificationsCount > 0">{{privateChannelsNotificationsCount}}</span>
                       </a>
@@ -395,7 +397,7 @@
 
                                 <div class="col-xs-5 col-sm-3 col-md-3">
                                   <p>
-                                     <span editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
+                                     <span class="group-name" editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
                                   {{ tagGroup.groupName || 'empty' }}
                                      </span>
                                     </p>
@@ -416,9 +418,9 @@
                                         <button type="button" title="unsuscribe from group" class="btn btn-warning"
                                         data-toggle="modal" data-target="#unsuscribeFromGroupModal"
                                          ng-hide="textBtnForm.$visible || adminGroup.id == userid">
-                                                  <span class="fa fa-chain-broken fa-fw"></span>
+                                                  <span class="fa fa-chain-broken fa-fw"> </span> <span class="white-label"><strong>Unsubscribe</strong> </span>
 
-                                   </button>
+                                        </button>
 
 
                                         <!-- falta implementar, tambien modal -->
@@ -475,13 +477,12 @@
 
 
                                             <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
-
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(1)" class="input-group-addon" title="Add user to group" id="btnadduser">
-                                                <i class="fa fa-user-plus"></i>
+                                                <i class="fa fa-user-plus"></i><span class="white-label"> Invite</span>
                                             </span>
 
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(2)" class="input-group-addon" title="Delete user from group" id="btnremoveuser" >
-                                                <i class="fa fa-user-times"></i>
+                                                <i class="fa fa-user-times"></i><span class="white-label"> Unsubscribe</span>
                                             </span>
 
                                         </div>
@@ -511,16 +512,36 @@
 
                               <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettings.length > 0">
 
+                                <div id="list-group">
+                                  <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                                  <div class="col-md-4 col-xs-6 member-item"
+                                         ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
 
-                                      <ul ng-class="(option == 1) ? 'list-group-add' : ((option == 2) ? 'list-group-remove' :  'list-group')"id="list-group">
+                                      <div class="member-container"
+                                           ng-class="(option == 1 && !member.isinvited) ? 'list-group-add' :
+                                                     ((option == 2 && (member.id != adminGroup.id)) ? 'list-group-remove' :  'list-group-default')"
+                                           ng-click="(option == 1 && !member.isinvited) ? inviteUserToGroup(member) :
+                                                     ((option == 2 && (member.id != adminGroup.id)) ? removeUserFromGroup(member) :  null)">
+                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
 
-                                      <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}" ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
-                                      class="list-group-item"
-                                      ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
-                                      ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
+                                        <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
+                                        <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
 
-                                      <!-- si options = 1 add / options = 2 remove -->
+                                        <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
+                                        <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
+                                      </div>
+                                    </div>
+                                </div>
 
+
+                                     <!-- <ul ng-class="(option == 1) ? 'list-group-add' : ((option == 2) ? 'list-group-remove' :  'list-group')" id="list-group">
+
+                                      <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}"
+                                           ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
+                                           class="list-group-item"
+                                           ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
+                                           ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
+                                      &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
                                                <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
 
                                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
@@ -531,15 +552,8 @@
                                                         </p>
 
                                                         <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
-
-
                                       </li>
-
-
-                                    </ul>
-                                     <!--  <div class="col-md-4">
-                                      </div>
-                                      -->
+                                    </ul>-->
 
 
 
@@ -584,7 +598,7 @@
 
                                 <div class="col-xs-5 col-sm-3 col-md-3">
                                   <p>
-                                     <span editable-text="tagChannel.channelName" e-form="textBtnForm" e-required onbeforesave="checkChannelName($data, tagChannel)">
+                                     <span class="channel-name" editable-text="tagChannel.channelName" e-form="textBtnForm" e-required onbeforesave="checkChannelName($data, tagChannel)">
                                   {{ tagChannel.channelName || 'empty' }}
                                      </span>
                                     </p>
@@ -661,11 +675,11 @@
                                             <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
 
                                             <span ng-if="adminChannel.id == userid" ng-click="setSettingsOptionschannel(1)" class="input-group-addon" title="Add user to channel" id="btnadduser">
-                                                <i class="fa fa-user-plus"></i>
+                                                <i class="fa fa-user-plus"></i><span class="white-label"> Add</span>
                                             </span>
 
                                             <span ng-if="adminChannel.id == userid" ng-click="setSettingsOptionschannel(2)" class="input-group-addon" title="Delete user from channel" id="btnremoveuser" >
-                                                <i class="fa fa-user-times"></i>
+                                                <i class="fa fa-user-times"></i><span class="white-label"> Unsubscribe</span>
                                             </span>
 
                                         </div>
@@ -695,21 +709,41 @@
 
                               <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettingschannel.length > 0">
 
+                                <div id="list-group">
+                                  <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                                  <div class="col-md-4 col-xs-6 member-item"
+                                       ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
 
-                                      <ul class="list-group" id="list-group">
-<!-- cambiar remove, add y search-->
-                                      <li  ng-class="{'disabled': adminChannel.id == member.id}" ng-click="(option == 1) ? addUserToChannel(member, $index) : ((option == 2) ? deleteUserFromChannel(member, $index) :  null)"
+                                    <div class="member-container"
+                                         ng-class="(option == 1) ? 'list-group-add' :
+                                                  ((option == 2 && (adminChannel.id != member.id)) ? 'list-group-remove' :  'list-group-default')"
+                                         ng-click="(option == 1) ? addUserToChannel(member, $index) :
+                                                  ((option == 2 && (adminChannel.id != member.id)) ? deleteUserFromChannel(member, $index) :  null)">
+                                      <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
+
+                                      <span ng-if="adminGroup.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
+
+                                      <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
+                                      <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                      <!--<ul class="list-group" id="list-group">
+&lt;!&ndash; cambiar remove, add y search&ndash;&gt;
+                                      <li  ng-class="{'disabled': adminChannel.id == member.id}"
+                                           ng-click="(option == 1) ? addUserToChannel(member, $index) : ((option == 2) ? deleteUserFromChannel(member, $index) :  null)"
                                       class="list-group-item"
                                       ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
                                       ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
 
-                                      <!-- si options = 1 add / options = 2 remove -->
+                                      &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
 
                                         <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
 
-                                                        <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
+                                                        <span ng-if="adminGroup.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
 
-                                                      <!--  <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span> -->
+                                                      &lt;!&ndash;  <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span> &ndash;&gt;
 
                                                         <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
                                                         </p>
@@ -720,7 +754,7 @@
                                       </li>
 
 
-                                    </ul>
+                                    </ul>-->
                                      <!--  <div class="col-md-4">
                                       </div>
                                       -->

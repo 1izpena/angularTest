@@ -2,8 +2,8 @@
   <div ng-include="'views/menuForo.html'"></div>
   <div id="page-content-wrapper">
     <div class="container-fluid" ng-controller="ForoCtrl" data-ng-init="init()">
-      <div class="row container-fluid boton-menu">
-        <a ng-href="/#menu-toggle"
+      <div class="container-fluid boton-menu">
+        <a ng-href="#menu-toggle"
            class="glyphicon glyphicon-th-list" id="menu-toggle">
         </a>
       </div>
@@ -32,13 +32,19 @@
             <div class="votes"><div class="votes-count"><div class="glyphicon glyphicon-thumbs-up"></div>{{question.votes}}</div></div>
             <div class="answers"><div class="glyphicon glyphicon-comment"></div>{{question.answercount}}</div>
             <div class="views"><div class="glyphicon glyphicon-eye-open"></div>{{question.views}}</div>
-            <p ng-bind-html="question.body"></p>
-            <div class="time-asked">
+            <span class="pull-right">
               <i class="fa fa-clock-o fa-2 text-muted"></i>
               <span class="text-muted">Asked</span>
               <span class="text-muted" am-time-ago="question.created"></span>
               <span class="text-muted">by {{question._user.username}}</span>
-            </div>
+            </span>
+            <p class="question-body" ng-bind-html="question.body"></p>
+            <!--<div class="time-asked">
+              <i class="fa fa-clock-o fa-2 text-muted"></i>
+              <span class="text-muted">Asked</span>
+              <span class="text-muted" am-time-ago="question.created"></span>
+              <span class="text-muted">by {{question._user.username}}</span>
+            </div>-->
             <div class="tags">
               <a ng-repeat="tag in question.tags" class="label label-info" href="" ng-click="questionsByTag(tag._id)">{{tag.text}}</a>
             </div>

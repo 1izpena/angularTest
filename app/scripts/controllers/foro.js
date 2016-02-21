@@ -23,7 +23,6 @@ angular.module('myAppAngularMinApp')
 
     $scope.location_hash = $location.hash();
 
-    console.log ($scope.location_hash);
 
     $scope.order_criteria = '-created';
     if ($scope.location_hash == 2)
@@ -114,7 +113,7 @@ $scope.goQuestion = function(id)
   $scope.goTo('/foro/question/'+id);
 };
 
-$scope.logout = function () 
+$scope.logout = function ()
 {
   LoginService.logout();
 };

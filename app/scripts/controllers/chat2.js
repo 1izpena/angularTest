@@ -412,6 +412,7 @@ angular.module('myAppAngularMinApp')
 	$scope.changeSettingsChannelVisible = function(){
 		if($scope.activeChannelSettings == 0){
 			$scope.activeChannelSettings = 1;
+      $scope.option="";
 		}
 		else {
 			$scope.activeChannelSettings = 0;
@@ -877,6 +878,7 @@ angular.module('myAppAngularMinApp')
     $scope.selectGroup= function (group, ind) {
       $scope.groupid=group.id;
       $scope.groupindex = ind;
+      $scope.option="";
 
       $scope.getChannels(group);
       $scope.getGroupMembers(group);

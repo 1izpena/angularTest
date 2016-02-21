@@ -11,6 +11,9 @@ p
   font-family: lora;
   font-size: 1.5rem;
 }
+h1, h2 {
+  font-family: Oswald;
+}
 h2 a, h1 a
 {
   color:#000000;
@@ -37,6 +40,45 @@ h2 a, h1 a
 .logged-user .dropdown-toggle {
     cursor: pointer;
 }
+
+.boton-menu {
+  padding-top: 10px;
+  padding-left: 15px;
+  font-size: large;
+
+}
+.boton-menu a {
+  color: #33282E;
+}
+.boton-menu a:hover {
+  text-decoration: none;
+  color: #DA7341;;
+}
+
+a.btn-title-menu,
+a.btn-title-menu:hover {
+  color: white;
+  test-decoration: none;
+  background-color: #286090;
+  border-color: #204d74;
+  cursor: default;
+}
+
+.emphasis a:hover {
+  text-decoration: none;
+  color: rgba(255, 152, 0, 1);
+  cursor: pointer;
+}
+
+.question-body {
+  margin-top: 20px;
+}
+
+.tags-content {
+  margin-top: 30px;
+}
+
+
 /* MENU IZQUIERDA */
 #wrapper {
 
@@ -45,6 +87,9 @@ h2 a, h1 a
   padding: 0;
   min-height: 525px;
   height: 100% ;
+
+  background: rgba(0, 37, 128, 0.5);
+  background-image: url('../images/patern.png');
 
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
@@ -70,11 +115,7 @@ h2 a, h1 a
   height: 100%;
   margin-left: -250px;
   overflow-y: auto;
-  background: #000;
   border-color: #000;
-  transition: all 0.3s ease;
-  background: rgba(0, 37, 128, 0.5);
-  background-image: url('../images/patern.png');
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -83,9 +124,11 @@ h2 a, h1 a
 
 #page-content-wrapper {
   width: 100%;
-  /* position: absolute; */
   height: 100%;
   min-height: 600px;
+  background: white;
+  font-family: lora;
+
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -305,6 +348,7 @@ a
 {
     display:inline-block;
     margin:0 2px;
+    color: #777;
 }
 .votes
 {
@@ -330,18 +374,19 @@ a
     text-decoration: none;
     cursor: pointer;
 }
-.tags .label
+.tags .label-info
 {
   font-weight: 400;
+  background-color: rgba(40, 96, 144, 0.82);
+  font-size: 83%;
+  border-radius: 4px;
 }
-.label-info[href]:hover, .label-info[href]:focus
+.tags .label-info:hover,
+.tags .label-info:focus
 {
-     background-color: #33282E;
+     background-color: #337AB7;
 }
-.label-info
-{
-    background-color: #33282E;
-}
+
 .questiontitle
 {
     text-transform: uppercase;
