@@ -41,7 +41,7 @@ angular.module('myAppAngularMinApp')
     };
 */
 
-    //variables para el menu sidebar-nav */
+    //variables para el menu sidebar-nav 
       $scope.activeInvitations = 0;
       $scope.activeGroups = 0;
       $scope.activeChannels = 0;
@@ -1277,7 +1277,7 @@ angular.module('myAppAngularMinApp')
      });
 
     */
-     */
+    
       Socket.on('newMessage', function (data) {
         $scope.listaMensajes.push(data);
         $scope.$apply();

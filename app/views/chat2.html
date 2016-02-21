@@ -1249,31 +1249,31 @@
       </div>
   </div>
 
-  <div id="groupsNotificationList" class="popover-content">
+  <div ng-if="groupsNotifications.length > 0" id="groupsNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
-      <li ng-repeat="notification in groupsNotifications" ng-if="groupsNotifications.length > 0">
+      <li ng-repeat="notification in groupsNotifications" >
         {{notification.message}}
       </li>
     </ul>
   </div>
 
-  <div id="channelsNotificationList" class="popover-content">
+  <div ng-if="channelsNotifications.length > 0" id="channelsNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
-      <li ng-repeat="notification in channelsNotifications" ng-if="channelsNotifications.length > 0">
+      <li ng-repeat="notification in channelsNotifications" >
         {{notification.message}}
       </li>
     </ul>
   </div>
 
-  <div id="directMessagesNotificationList" class="popover-content">
+  <div ng-if="directMessagesNotifications.length > 0" id="directMessagesNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
-      <li ng-repeat="notification in directMessagesNotifications" ng-if="directMessagesNotifications.length > 0">
+      <li ng-repeat="notification in directMessagesNotifications" >
         {{notification.message}}
       </li>
     </ul>
   </div>
 
-  <div id="groupNotificationList" class="popover-content">
+  <div ng-if="groupsNotifications.length > 0" id="groupNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
       <li ng-repeat="notification in groupNotifications">
         {{notification.message}}
@@ -1281,7 +1281,7 @@
     </ul>
   </div>
 
-  <div id="publicChannelsNotificationList" class="popover-content">
+  <div ng-if="publicChannelsNotifications.length > 0" id="publicChannelsNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
       <li ng-repeat="notification in publicChannelsNotifications">
         {{notification.message}}
@@ -1289,7 +1289,7 @@
     </ul>
   </div>
 
-  <div id="privateChannelsNotificationList" class="popover-content">
+  <div ng-if="privateChannelsNotifications.length > 0" id="privateChannelsNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
       <li ng-repeat="notification in privateChannelsNotifications">
         {{notification.message}}
@@ -1297,7 +1297,7 @@
     </ul>
   </div>
 
-  <div id="publicChannelNotificationList" class="popover-content">
+  <div ng-if="publicChannels.publicChannelNotifications.length > 0" id="publicChannelNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
       <li ng-repeat="notification in publicChannels.publicChannelNotifications">
         {{notification.message}}
@@ -1305,7 +1305,7 @@
     </ul>
   </div>
 
-  <div id="privateChannelNotificationList" class="popover-content">
+  <div ng-if="privateChannels.privateChannelNotifications.length > 0" id="privateChannelNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
       <li ng-repeat="notification in privateChannels.privateChannelNotifications">
         {{notification.message}}
