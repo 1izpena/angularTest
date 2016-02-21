@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, searchservice, LoginService, AnswerService, TagService, $localStorage, $uibModal) {
+  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, searchservice, LoginService, AnswerService, TagService, $localStorage, $uibModal, md5, ProfileService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -17,6 +17,8 @@ angular.module('myAppAngularMinApp')
   $scope.linkAnswer = false;
   $scope.tagQuestions ={};
   $scope.path = $location.path();
+  $scope.user = '';
+  $scope.username = "";
 
 
     $scope.location_hash = $location.hash();
@@ -28,6 +30,45 @@ angular.module('myAppAngularMinApp')
       $scope.order_criteria = '-views';
     else if ($scope.location_hash == 3)
       $scope.order_criteria = '-votes';
+
+$scope.isLogged = function()
+{
+  if(LoginService.isLogged())
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+};
+
+
+$scope.userProfile = function()
+{
+  if(LoginService.isLogged())
+  {
+    ProfileService.getUserinfo().then(function (data) {
+    $scope.username = data.username;
+    $scope.userid = data.id;
+    $scope.user = data;
+    $scope.user.hash = $scope.getHash($scope.user.mail);
+    }, function (err) {
+        // Tratar el error
+        console.log("Hay error");
+        console.log(err.message);
+        $scope.error = err.data.message;
+        $scope.error = 1;
+      });
+  }
+
+};
+
+$scope.getHash = function (str) {
+  return md5.createHash(str);
+};
+
+
 
 $scope.answerLinks = function(answer){
   if(answer._user._id === $localStorage.id)
@@ -45,7 +86,7 @@ $scope.goTo = function(url, hash)
 {
   $location.path(url);
   if (hash) {
-    $location.hash(hash)
+    $location.hash(hash);
   }
 };
 /*Redirecciones*/
@@ -73,6 +114,10 @@ $scope.goQuestion = function(id)
   $scope.goTo('/foro/question/'+id);
 };
 
+$scope.logout = function () 
+{
+  LoginService.logout();
+};
 
 /****** Controlador Preguntas ********
 
@@ -217,7 +262,6 @@ $scope.questionsByTag = function(id){
 $scope.getQuestiontag = function (id)
 {
   TagService.getQuestionsByTag(id).then(function(res){
-    console.log(res);
     $scope.questions = res.data;
 
   },function(err)
