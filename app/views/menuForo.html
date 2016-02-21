@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<div id="sidebar-wrapper" >
+<div id="sidebar-wrapper" ng-init="userProfile()">
   <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
   <ul class="sidebar-nav"  >
     <li class="sidebar-brand">
@@ -10,7 +10,7 @@
         <a class="btn-zone left" href="" ng-click="goTo('/chat2')" >Chat</a>
         <a class="btn-zone right active" href="" ng-click="goTo('/foro')">Forum</a>
       </div>
-      <!--<div class="logged-user">
+      <div class="logged-user" ng-if="isLogged()">
         <div class="dropdown">
           <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=30&d=identicon"
                class="img-circle avatar" id="avatar"/>
@@ -20,7 +20,12 @@
             <li><a ng-click="logout()">Logout</a></li>
           </ul>
         </div>
-      </div>-->
+      </div>
+      <div class="logged-user" ng-if="!isLogged()">
+        <div class="dropdown">
+          <a href="" ng-click="goTo('/login')" class="loginButton">Login</a>
+        </div>
+      </div>
     </li>
     <li class="active">
       <a class="btn btn-primary" href="" aria-expanded="true">

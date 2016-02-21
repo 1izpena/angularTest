@@ -8,13 +8,12 @@
 }
 p
 {
-    font-family: lora;
-    font-size: 1.5rem;
+  font-family: lora;
+  font-size: 1.5rem;
 }
 h2 a, h1 a
 {
-    font-family: roboto;
-    color:#000000;
+  color:#000000;
 }
 
 
@@ -25,6 +24,18 @@ h2 a, h1 a
 .new-question-container {
   margin-top: 25px;
 
+}
+.dropdown-menu.menu-logout {
+  font-size: 12px;
+  left: 90px;
+  top: 25px;
+  background: rgba(94, 100, 117, 0.98);
+  background-image: url('../images/patern.png');
+  min-width: 120px;
+  padding-left: 10px;
+}
+.logged-user .dropdown-toggle {
+    cursor: pointer;
 }
 /* MENU IZQUIERDA */
 #wrapper {
@@ -119,9 +130,12 @@ h2 a, h1 a
   margin-top: 8px;
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 30px;
 }
 
+a.loginButton
+{
+  text-align:center!important;
+}
 .sidebar-nav > .sidebar-brand a.btn-zone {
   display: inline-block;
   width: 60px;
@@ -179,7 +193,13 @@ h2 a, h1 a
   margin-left: 5px;
   margin-right: 8px;
 }
-
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+.sidebar-nav li {
+    color: white;
+}
 
 a
 {
@@ -187,8 +207,6 @@ a
 }
 .btn-primary {
     color: #fff;
-    background-color: #33282E;
-    border-color: #33282E;
     border-radius: 0;
 }
 .nav-pills > li.active > a
