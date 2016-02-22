@@ -581,18 +581,18 @@ angular.module('myAppAngularMinApp')
             console.log("Ok add user to channel");
             //$("#addUserToChannelModal").modal("hide");
             console.log(member);
+
             /* option == 1 add*/
             if($scope.optionchannel == 1){
             	$scope.membersSettingschannel.splice(ind, 1);
             }
             //console.log("esto vale private channel");
             //console.log($scope.privateChannels);
-            console.log("/////////////////77");
-            console.log("esto vale $scope.channelMembers en addUserToChannel");
-            console.log($scope.channelMembers);
+            
+            
             $scope.channelMembers.push(member);
-            console.log("esto vale $scope.channelMembers despues del push en addUserToChannel");
-            console.log($scope.channelMembers);
+            $scope.tagChannel.users.push(member);
+            
 
           },function(err){
             console.log("Error en add user to channel: " + err.data.message);
@@ -1678,20 +1678,33 @@ angular.module('myAppAngularMinApp')
       Socket.on('newMemberInChannel', function (data) {
         console.log ("newMemberInChannel received from server");
         console.log(data);
-        /* ahora devuelve el administrador, cuando lo haga bien arriba tengo que quitar la actualizacion de scope*/
-        //if ($scope.tagChannel.id == data.channelid ){
-        //	data.user.hash = $scope.getHash(data.user.mail);
-        //	$scope.channelMembers.push(data.user);
-        //}
+        
+        /* se supone que estoy dentro del canal */
+        /* si soy el administrador no hago nada 
+        	sino, si esta en settings con la opcion 0 
+        	hay que actualizar los miembros y los miembros de settings que son los mismos*/
+        if ($scope.adminChannel.id !== $scope.userid){
+	    
+	    	if ($scope.tagChannel.id == data.channelid ){
+	        	data.user.hash = $scope.getHash(data.user.mail);
+	        	$scope.channelMembers.push(data.user);
+	        	$scope.tagChannel.users.push(data.user);
+
+        	}
+
+	        	
+	    }
+     
+        console.log("esto vale tagchannel");
+        console.log($scope.tagChannel);
         $scope.$apply();
       });
+
 
       //recibir evento de usuario eliminado de canal
       Socket.on('deletedUserFromChannel', function (data) {
         console.log ("deletedUserFromChannel received from server");
         console.log(data);
-
-
 
         if (data.user.id == $localStorage.id){
         	if($scope.tagChannel.id == data.channelid){
@@ -1704,32 +1717,38 @@ angular.module('myAppAngularMinApp')
 
 	          }
 	        }
-
         	$scope.privateChannels.splice(i,1);
-
         }
 
         else {
-        	for (var i = 0; i < $scope.channelMembers.length; i++){
-	            if ($scope.channelMembers[i].id == data.user.id){
-	              $scope.channelMembers.splice(i,1);
+        	if($scope.tagChannel.id == data.channelid){
 
-	          }
-	        }
+        		for (var i = 0; i < $scope.channelMembers.length; i++){
+	            	if ($scope.channelMembers[i].id == data.user.id){
+	              		$scope.channelMembers.splice(i,1);
+	              	}
 
-	        /* si es el administrador, cambiarle los membersettings */
-	        if ($scope.adminChannel.id == $scope.userid){
-	        	/* añadimos al usuario borrado del canal en membersettingschannel (usuarios de grupo) */
-	        	if($scope.optionchannel == 1) {
+	          	}
 
-	        		data.user.hash = $scope.getHash(data.user.mail);
-	        		$scope.membersSettingschannel.push(data.user);
+		        for (var i = 0; i < $scope.tagChannel.users.length; i++){
+		            if ($scope.tagChannel.users[i].id == data.user.id){
+		              $scope.tagChannel.users.splice(i,1);
 
-	        	}
+		          }
+		        }
 
-	        }
+		        /* si es el administrador, cambiarle los membersettings */
+		        if ($scope.adminChannel.id == $scope.userid){
+		        	/* añadimos al usuario borrado del canal en membersettingschannel (usuarios de grupo) */
+		        	if($scope.optionchannel == 1) {
 
+		        		data.user.hash = $scope.getHash(data.user.mail);
+		        		$scope.membersSettingschannel.push(data.user);
 
+		        	}
+
+		        }
+        	}
 
 
         }
@@ -1996,12 +2015,22 @@ angular.module('myAppAngularMinApp')
       });
 
       Socket.on('newMemberInChannelEvent', function (data) {
+
         console.log ("newMemberInChannelEvent received from server");
         $scope.channelsNotificationsCount ++;
+
+        /* si soy miembro del grupo y del canal y estoy en los settings
+        	cuando busque al miembro me tiene que salir */
+
+
+
+
+        /* si estoy en el grupo de donde es el canal */
         if (data.groupid == $scope.tagGroup.id){
           $scope.channelsNotificationsCount = $scope.channelsNotificationsCount + 1;
           $scope.channelsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': New Member: ' + data.username});
         }
+
         $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' +  data.channelName + ': New member: ' + data.username});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
@@ -2009,6 +2038,7 @@ angular.module('myAppAngularMinApp')
             $scope.groups[k].groupNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': New member: ' + data.username});
           }
         }
+
         if (data.channelType == "PUBLIC"){
           for (var i=0;i<$scope.publicChannels.length;i++){
             if ($scope.publicChannels[i].id == data.channelid){
