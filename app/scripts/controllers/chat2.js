@@ -43,7 +43,7 @@ angular.module('myAppAngularMinApp')
 
     /* variables para el menu sidebar-nav */
       $scope.activeInvitations = 0;
-      $scope.activeGroups = 0;
+      $scope.activeGroups = 1;
       $scope.activeChannels = 0;
       $scope.groupindex = -1;
       $scope.activeDirects = 0;
@@ -58,7 +58,8 @@ angular.module('myAppAngularMinApp')
 	  $scope.channelMembers = '';
 
 	  $scope.tagChannel = '';
-      $scope.tagGroup = '';
+    $scope.tagGroup = '';
+    $scope.tagMember = '';
 	  $scope.adminGroup = '';
 	  $scope.adminChannel = '';
 
@@ -86,6 +87,10 @@ angular.module('myAppAngularMinApp')
       /* content of channel searchbox */
       $scope.textsearchbox = '';
       $scope.searchresults = '';
+      $scope.classResalt = "oli2";
+      $scope.classResaltChannelPublic = "oli2";
+      $scope.classResaltChannelPrivate = "oli2";
+      $scope.classResaltDirect = "oli2";
 
 
     $scope.logout = function () {
@@ -107,7 +112,15 @@ angular.module('myAppAngularMinApp')
 
         }
         else {
+          $scope.classResalt= "oli2";
+          $scope.classResaltChannelPublic= "oli2";
+          $scope.classResaltChannelPrivate = "oli2";
+          $scope.classResaltDirect = "oli2";
+          
           $scope.activeInvitations = 1;
+          $scope.tagGroup = '';
+          $scope.tagChannel= '';
+          $scope.tagMember = '';
           $scope.activeGroups = 0;
           $scope.activeChannels = 0;
           $scope.activeDirects = 0;
@@ -119,24 +132,34 @@ angular.module('myAppAngularMinApp')
       else if(varmenu == 'activeGroups'){
         if ($scope.activeGroups){
           if ($scope.groupindex !== -1){
+            
+             $scope.classResalt= "oli2";
              $scope.activeGroups = 1;
              $scope.groupindex = -1;
              $scope.tagGroup = '';
              $scope.tagChannel = '';
+             $scope.tagMember = '';
           }
           else {
+            
+            $scope.classResalt= "oli";
             $scope.activeGroups = 0;
 
           }
 
         }
         else {
-
+          
+          $scope.classResalt= "oli2";
           $scope.groupindex = -1;
           $scope.activeGroups = 1;
           $scope.tagGroup = '';
           $scope.tagChannel = '';
           $scope.activeInvitations = 0;
+          $scope.classResaltChannelPublic= "oli2";
+          $scope.classResaltChannelPrivate = "oli2";
+
+          $scope.classResaltDirect = "oli2";
           $scope.activeChannels = 0;
           $scope.activeDirects = 0;
         }
@@ -147,20 +170,48 @@ angular.module('myAppAngularMinApp')
       else if(varmenu == 'activeChannels'){
         if ($scope.activeChannels){
           $scope.activeChannels = 0;
+          $scope.classResaltChannelPublic= "oli2";
+          $scope.classResaltChannelPrivate = "oli2";
+          $scope.tagChannel = '';
+          $scope.tagMember = '';
         }
         else {
           $scope.activeChannels = 1;
           $scope.activeGroups = 1;
           $scope.activeInvitations = 0;
           $scope.activeDirects = 0;
+          $scope.classResaltChannelPublic= "oli2";
+          $scope.classResaltChannelPrivate = "oli2";
+          $scope.classResaltDirect = "oli2";
+
         }
+
+      }
+       /* var de canales publicos y privados */
+      else if(varmenu == 'activeGroupChannels'){
+        
+          $scope.activeChannels = 1;
+          $scope.activeGroups = 1;
+          $scope.activeInvitations = 0;
+          $scope.activeDirects = 0;
+          $scope.classResaltChannelPublic= "oli2";
+          $scope.classResaltChannelPrivate = "oli2";
+          $scope.classResaltDirect = "oli2";
+
+        
 
       }
       /* var de canales directos */
       else if(varmenu == 'activeDirects'){
         if ($scope.activeDirects){
+          
           $scope.activeDirects = 0;
+          $scope.classResaltDirect = "oli2";
+          $scope.tagChannel = '';
+
         } else {
+          $scope.tagChannel = '';
+          $scope.classResaltDirect = "oli2";
           $scope.activeDirects = 1;
           $scope.activeGroups = 1;
           $scope.activeChannels = 0;
@@ -876,6 +927,11 @@ angular.module('myAppAngularMinApp')
     };
 
     $scope.selectGroup= function (group, ind) {
+
+      $scope.classResalt= "oli";
+
+      //angular.element(document).find(grouplist).children().addClass("oli");
+
       $scope.groupid=group.id;
       $scope.groupindex = ind;
       $scope.option="";
@@ -928,11 +984,25 @@ angular.module('myAppAngularMinApp')
         $scope.selectedUser=user.id;
       };
 
-      $scope.selectUser= function (user) {
-        $scope.selectedUser=user.id;
-      };
+     
 
     $scope.selectChannel = function (channel, type) {
+
+      if(type == "public"){
+        $scope.classResaltChannelPublic = "oli";
+        $scope.classResaltChannelPrivate = "oli2";
+        console.log("entro en public");
+
+      }
+      else {
+
+        $scope.classResaltChannelPublic = "oli2";
+        $scope.classResaltChannelPrivate = "oli";
+        console.log("entro en private");
+
+      }
+
+
       $scope.channelsNotificationsCount=0;
       $scope.channelsNotifications=[];
       $scope.channelid=channel.id;
@@ -1028,6 +1098,9 @@ angular.module('myAppAngularMinApp')
       var userid = $localStorage.id;
       var groupid = $scope.groupid;
       var directChannels = $scope.directChannels;
+      
+      $scope.classResaltDirect = "oli";
+      $scope.tagMember = member;
 
       var channel = ChannelService.searchDirectChannel(userid, member, directChannels);
       if (channel != null) {

@@ -8,7 +8,7 @@
   font-family: lora;
 }
 
-/*Añadidos para izaskun*/
+
 
 
 /********nuevo********/
@@ -23,6 +23,14 @@
   background-color: rgba(0, 150, 5, 0.39);
 }
 */
+
+.oli {
+  font-style: italic;
+}
+
+.oli2 {
+  font-style: normal;
+}
 
 .white-label {
   color: white;
@@ -627,7 +635,7 @@ ul {   list-style-type: none; }
 */
 
 .sidebar-nav li.channel-type ul {
-  padding-left: 0px;
+  /*padding-left: 0px;*/
 }
 
 
@@ -681,6 +689,20 @@ ul {   list-style-type: none; }
 .sidebar-nav .menu-option {
   padding: 10px 12px;
 }
+
+.sidebar-nav .menu-option.addlink {
+  
+  border:1px dotted #B3A9A9;
+
+}
+
+/*.emphasis .cchannel li{
+  padding-left: 43px;
+}*/
+
+
+
+
 
 .activeInvitations li {
     text-indent: 1px;

@@ -62,17 +62,23 @@
                   <ul ng-show="activeGroups" class="emphasis cgroups" id="grouplist">
                     <li ng-if="groupindex == $index || groupindex == -1" ng-repeat="group in groups" ng-show="groups.length > 0" class="menu-option">
 
-                      <a ng-click="selectGroup(group, $index); changeVarMenu('activeChannels')">
+                      <a ng-click="selectGroup(group, $index); changeVarMenu('activeGroupChannels')" ng-class="classResalt">
                         {{group.groupName}}
                         <span class="badge badge-info pull-right" id="groupNotificationBadge" data-toggle="popover" popover-group data-html="true" data-placement="top" data-trigger="hover" ng-mouseover="getNotificationList(group)" data-title="NOTIFICATIONS" data-container="body" ng-show="group.groupNotificationsCount > 0">{{group.groupNotificationsCount}}</span>
 
                       </a>
                     </li>
-                    <!----  add group -->
-                    <li class="menu-option">
-                      <a ng-if="groupindex == -1" class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new Group</a>
-                    </li>
+                    
                   </ul>
+
+                  <!----  add group -->
+                  
+                    <li ng-if="groupindex == -1 && activeGroups" class="menu-option addlink">
+                      <a class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new Group</a>
+                    </li>
+
+
+
                 </li>
 
 
@@ -90,9 +96,10 @@
 
                         <span class="badge badge-info pull-right" id="publicChannelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Public Channels Notificatio" data-container="body" ng-show="publicChannelsNotificationsCount > 0">{{publicChannelsNotificationsCount}}</span>
                       </a>
+
                       <ul class="emphasis">
                         <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
-                          <a ng-click="selectChannel(channel, 'public')">
+                          <a ng-click="selectChannel(channel, 'public')" ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
                             {{channel.channelName}}
                             <span popover-channel class="badge badge-info pull-right" id="publicChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Public Channel Notifications" data-container="body" ng-show="channel.publicChannelNotificationsCount > 0">{{channel.publicChannelNotificationsCount}}</span>
                           </a>
@@ -100,24 +107,30 @@
                       </ul>
                     </li>
                     <li class="channel-type">
-                      <a ng-show= "privateChannels.length > 0" class="type-name">
+                      <a ng-show= "privateChannels.length > 0" class="type-name" id="headerpublic">
                         Private
                         <span class="badge badge-info pull-right" id="privateChannelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Private Channels Notifications" data-container="body" ng-show="privateChannelsNotificationsCount > 0">{{privateChannelsNotificationsCount}}</span>
                       </a>
                       <ul class="emphasis">
                         <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
-                          <a ng-click="selectChannel(channel, 'private')">
+                          <a ng-click="selectChannel(channel, 'private')" ng-class="channel.id == tagChannel.id ?classResaltChannelPrivate : ''">
                             {{channel.channelName}}
                             <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Private Channel Notifications" data-container="body" ng-show="channel.privateChannelNotificationsCount > 0">{{channel.privateChannelNotificationsCount}}</span>
                           </a>
                         </li>
                       </ul>
                     </li>
-                    <!----  add channel -->
-                    <li class="menu-option">
-                      <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
-                    </li>
+                    
                   </ul>
+
+                  <!----  add channel -->  
+                  <li ng-show= "activeChannels && activeGroups && tagGroup !== ''" class="menu-option addlink">
+                      <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
+                  </li>
+
+                  
+                  
+
                 </li>
 
 
@@ -134,137 +147,18 @@
                     <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
 
                     <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid" class="menu-option">
-                      <a ng-click="searchDirectChannel(member)">
-                        <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'"></span>
+                      <a ng-click="searchDirectChannel(member)" ng-class="member.id == tagMember.id ?classResaltDirect : ''">
+                        <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'" ></span>
+<!--    <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o' ; member.id == tagMember.id ?classResaltDirect : ''" ></span>    -->
+
                         {{member.username}}
                         <span class="badge pull-right">{{}}</span>
                       </a>
                     </li>
 
-
-                    <!--  invite user -->
-                    <li class="menu-option"><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span> Invite new user</a></li>
                   </ul>
                 </li>
 
-
-
-
-
-
-<!--
-
-        <li class="activeInvitations" ng-show="invitations.length > 0">
-          <a class="btn btn-warning" href="" aria-expanded="true"><i class="fa fa-bell fa-fw"></i>Invitations</a>
-          <ul aria-expanded="true" class="emphasis">
-            <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0" class="menu-option">
-              {{invitation.groupName}}
-
-
-              <div class="btn-group btn-group-xs">
-                <a ng-click="acceptGroup(invitation, $index)" class="btn btn-success fa fa-thumbs-o-up"></a>
-                <a ng-click="refuseGroup(invitation, $index)" class="btn btn-danger fa fa-thumbs-o-down"></a>
-              </div>
-
-            </li>
-
-
-          </ul>
-        </li>
-
-
-
-
-        <li class="active">
-          <a class="btn btn-primary" href="" aria-expanded="true"><i class="fa fa-group fa-fw"></i>Groups
-            <button class="badge pull-right" type="button" data-toggle="modal" data-target="#groupsNotificationListModal" ng-if="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</button>
-            <span class="badge" ng-show="notifications.group.total > 0">{{notifications.group.total}}</span>
-          </a>
-
-          <ul aria-expanded="true" class="emphasis cgroups" id="grouplist">
-            <li ng-repeat="group in groups" ng-show="groups.length > 0" class="menu-option">
-
-              <a ng-click="selectGroup(group)">
-                {{group.groupName}}
-                <button class="badge" type="button" data-toggle="modal" data-target="#groupNotificationListModal" ng-if="group.groupNotificationsCount > 0" ng-click="getNotificationList(group)">{{group.groupNotificationsCount}}</button>
-                <span class="badge pull-right" ng-show="$parent.notifications.group[group.id].total > 0">{{ $parent.notifications.group[group.id].total}}</span>
-
-              </a>
-            </li>
-            <!----  add group -----
-            <li class="menu-option">
-              <a href="" class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new Group</a>
-            </li>
-          </ul>
-        </li>
-
-
-        <!----separator-----
-        <li class="activeChannels" ng-show= "tagGroup !== ''">
-          <a class="btn btn-primary" href="" aria-expanded="false" >
-            <i class="fa fa-comment fa-fw"></i>Channels
-            <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel.total > 0">{{notifications.group[tagGroup.id].channel.total}}</span>
-          </a>
-          <ul aria-expanded="false">
-            <li class="activeChannelsPublic channel-type active">
-              <a href="" class="btn btn-danger" aria-expanded="false">
-                Public
-                <span class="fa fa-chevron-down"></span>
-                <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['PUBLIC'].total > 0">{{notifications.group[tagGroup.id].channel['PUBLIC'].total}}</span>
-              </a>
-              <ul class="emphasis" aria-expanded="false">
-                <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
-                  <a ng-click="selectChannel(channel, 'public')">
-                    {{channel.channelName}}
-                    <span class="badge pull-right" ng-show="$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id] > 0">{{$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id]}}</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="channel-type">
-              <a href="" class="btn btn-danger">
-                Private<span class="fa fa-chevron-down"></span>
-                <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['PRIVATE'].total > 0">{{notifications.group[tagGroup.id].channel['PRIVATE'].total}}</span>
-              </a>
-              <ul class="emphasis">
-                <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
-                  <a ng-click="selectChannel(channel, 'private')">
-                    {{channel.channelName}}
-                    <span class="badge pull-right" ng-show="$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id] > 0">{{$parent.notifications.group[tagGroup.id].channel['PUBLIC'][channel.id]}}</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <!----  add channel -----
-            <li class="menu-option">
-              <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
-            </li>
-          </ul>
-        </li>
-        <!-------separator-----
-        <li class="activeMembers" ng-show= "tagGroup !== ''">
-          <a href="" class="btn btn-primary" aria-expanded="false">
-            <i class="fa fa-user fa-fw"></i>Direct Messages
-            <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['DIRECT'].total > 0">{{notifications.group[tagGroup.id].channel['DIRECT'].total}}</span>
-          </a>
-
-          <ul aria-expanded="true" class="emphasis">
-            <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart --
-
-            <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid" class="menu-option">
-              <a ng-click="searchDirectChannel(member)">
-                <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'"></span>
-                {{member.username}}
-                <span class="badge pull-right" ng-show="notifications.group[tagGroup.id].channel['DIRECT'][getDirectChannelId(member)] > 0">{{notifications.group[tagGroup.id].channel['DIRECT'][getDirectChannelId(member)]}}</span>
-              </a>
-            </li>
-
-
-            <!----  invite user ------
-            <li class="menu-option"><a href="" class="c-align-left"><span class="fa fa-plus"></span><span class=""> </span> Invite new
-              user</a></li>
-          </ul>
-        </li>-->
 
       </ul>
     </div>
