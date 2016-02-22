@@ -180,6 +180,7 @@ h3 {
 }
 .collapse ul .btn {
     background: white !important;
+    font-size: none !important;
 }
 
 .morado{
