@@ -74,7 +74,7 @@
                   <!----  add group -->
 
                     <li ng-if="groupindex == -1 && activeGroups" class="menu-option addlink">
-                      <a class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new Group</a>
+                      <a class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new group</a>
                     </li>
 
 
@@ -310,7 +310,7 @@
                                         <button type="button" title="unsuscribe from group" class="btn btn-warning"
                                         data-toggle="modal" data-target="#unsuscribeFromGroupModal"
                                          ng-hide="textBtnForm.$visible || adminGroup.id == userid">
-                                                  <span class="fa fa-chain-broken fa-fw"> </span> <span class="white-label"><strong>Unsubscribe</strong> </span>
+                                                  <span class="fa fa-chain-broken fa-fw"> </span> <span class="white-label"><strong></strong> </span>
 
                                         </button>
 
@@ -567,11 +567,11 @@
                                             <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
 
                                             <span ng-if="adminChannel.id == userid" ng-click="setSettingsOptionschannel(1)" class="input-group-addon" title="Add user to channel" id="btnadduser">
-                                                <i class="fa fa-user-plus"></i><span class="white-label"> Add</span>
+                                                <i class="fa fa-user-plus"></i><span class="white-label"></span>
                                             </span>
 
                                             <span ng-if="adminChannel.id == userid" ng-click="setSettingsOptionschannel(2)" class="input-group-addon" title="Delete user from channel" id="btnremoveuser" >
-                                                <i class="fa fa-user-times"></i><span class="white-label"> Unsubscribe</span>
+                                                <i class="fa fa-user-times"></i><span class="white-label"></span>
                                             </span>
 
                                         </div>
