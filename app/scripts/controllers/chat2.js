@@ -1471,7 +1471,6 @@ angular.module('myAppAngularMinApp')
       Socket.on('newGroup', function (data) {
         console.log ("newGroup received from server");
         console.log(data);
-        $scope.groupsNotifications.push()
         data.groupNotifications = [];
         data.groupNotificationsCount = 0;
         $scope.groups.push(data);
