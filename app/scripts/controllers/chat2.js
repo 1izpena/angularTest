@@ -1801,7 +1801,7 @@ angular.module('myAppAngularMinApp')
         $scope.groupsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.groupName + ': New group '});
         for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == data.groupid){
-            $scope.groups[i].groupNotificationsCount ++;
+            $scope.groups[i].groupNotificationsCount = $scope.groups[i].groupNotificationsCount +1;
             $scope.groups[i].groupNotifications.push({groupid: data.groupid, channelid: data.channelid, message:'New group'});
           }
         }
@@ -1816,7 +1816,7 @@ angular.module('myAppAngularMinApp')
           $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': Edited group '});
           for (var i=0;i<$scope.groups.length;i++){
             if ($scope.groups[i].id == data.groupid){
-              $scope.groups[i].groupNotificationsCount ++;
+              $scope.groups[i].groupNotificationsCount = $scope.groups[i].groupNotificationsCount + 1;
               $scope.groups[i].groupNotifications.push({groupid: data.groupid, channelid:data.channelid, message:'Edited group'});
             }
           }
@@ -1872,7 +1872,7 @@ angular.module('myAppAngularMinApp')
         $scope.groupsNotifications.push({groupid: data.groupid,channelid:data.channelid, message:data.groupName + ': New Channel: ' + data.channelName});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
-            $scope.groups[k].groupNotificationsCount ++;
+            $scope.groups[k].groupNotificationsCount = $scope.groups[k].groupNotificationsCount + 1;
             $scope.groups[k].groupNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'New Channel: ' + data.channelName});
           }
         }
@@ -1880,7 +1880,7 @@ angular.module('myAppAngularMinApp')
         if (data.channelType == "PUBLIC"){
           for (var i=0;i<$scope.publicChannels.length;i++){
             if ($scope.publicChannels[i].id == data.channelid){
-              $scope.publicChannels[i].channelNotificationsCount ++;
+              $scope.publicChannels[i].channelNotificationsCount = $scope.publicChannels[i].channelNotificationsCount;
               $scope.publicChannels[i].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName+ ': New Channel'});
             }
           }
@@ -1888,7 +1888,7 @@ angular.module('myAppAngularMinApp')
         if (data.channelType == "PRIVATE"){
           for (var j=0;j<$scope.privateChannels.length;j++){
             if ($scope.privateChannels[j].id == data.channelid){
-              $scope.privateChannels[j].channelNotificationsCount ++;
+              $scope.privateChannels[j].channelNotificationsCount = $scope.publicChannels[j].channelNotificationsCount;
               $scope.privateChannels[j].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName+ ': New Channel'});
             }
           }
@@ -1919,14 +1919,14 @@ angular.module('myAppAngularMinApp')
         $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' + data.channelName +  ': Channel Edited'});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
-            $scope.groups[k].groupNotificationsCount ++;
+            $scope.groups[k].groupNotificationsCount = $scope.groups[k].groupNotificationsCount + 1;
             $scope.groups[k].groupNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': Channel edited'});
           }
         }
         if (data.channelType == "PUBLIC"){
           for (var i=0;i<$scope.publicChannels.length;i++){
             if ($scope.publicChannels[i].id == data.channelid){
-              $scope.publicChannels[i].channelNotificationsCount ++;
+              $scope.publicChannels[i].channelNotificationsCount = $scope.publicChannels[i].channelNotificationsCount + 1;
               $scope.publicChannels[i].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'Channel edited'});
             }
           }
@@ -1934,7 +1934,7 @@ angular.module('myAppAngularMinApp')
         if (data.channelType == "PRIVATE"){
           for (var j=0;j<$scope.privateChannels.length;j++){
             if ($scope.privateChannels[j].id == data.channelid){
-              $scope.privateChannels[j].channelNotificationsCount ++;
+              $scope.privateChannels[j].channelNotificationsCount = $scope.publicChannels[j].channelNotificationsCount +1;
               $scope.privateChannels[j].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'Channel edited'});
             }
           }
@@ -1957,7 +1957,7 @@ angular.module('myAppAngularMinApp')
           $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' + data.channelName + ': New Message'});
           for (var k=0;k<$scope.groups.length;k++){
             if ($scope.groups[k].id == data.groupid){
-              $scope.groups[k].groupNotificationsCount ++;
+              $scope.groups[k].groupNotificationsCount = $scope.groups[k].groupNotificationsCount + 1;
               $scope.groups[k].groupNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': New Message'});
             }
           }
@@ -1995,14 +1995,14 @@ angular.module('myAppAngularMinApp')
         $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' +  data.channelName + ': New member: ' + data.username});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
-            $scope.groups[k].groupNotificationsCount ++;
+            $scope.groups[k].groupNotificationsCount = $scope.groups[k].groupNotificationsCount +1;
             $scope.groups[k].groupNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': New member: ' + data.username});
           }
         }
         if (data.channelType == "PUBLIC"){
           for (var i=0;i<$scope.publicChannels.length;i++){
             if ($scope.publicChannels[i].id == data.channelid){
-              $scope.publicChannels[i].channelNotificationsCount ++;
+              $scope.publicChannels[i].channelNotificationsCount = $scope.publicChannels[i].channelNotificationsCount + 1;
               $scope.publicChannels[i].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'New member: ' + data.username});
             }
           }
@@ -2010,7 +2010,7 @@ angular.module('myAppAngularMinApp')
         if (data.channelType == "PRIVATE"){
           for (var j=0;j<$scope.privateChannels.length;j++){
             if ($scope.privateChannels[j].id == data.channelid){
-              $scope.privateChannels[j].channelNotificationsCount ++;
+              $scope.privateChannels[j].channelNotificationsCount = $scope.publicChannels[j].channelNotificationsCount + 1;
               $scope.privateChannels[j].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'New member: ' + data.username});
             }
           }
@@ -2032,14 +2032,14 @@ angular.module('myAppAngularMinApp')
         $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' +  data.channelName + ': Deleted member: ' + data.username});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
-            $scope.groups[k].groupNotificationsCount ++;
+            $scope.groups[k].groupNotificationsCount = $scope.groups[k].groupNotificationsCount + 1;
             $scope.groups[k].groupNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': Deleted Member: ' + data.username});
           }
         }
         if (data.channelType == "PUBLIC"){
           for (var i=0;i<$scope.publicChannels.length;i++){
             if ($scope.publicChannels[i].id == data.channelid){
-              $scope.publicChannels[i].channelNotificationsCount ++;
+              $scope.publicChannels[i].channelNotificationsCount = $scope.publicChannels[i].channelNotificationsCount +1;
               $scope.publicChannels[i].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'Deleted member: ' + data.username});
             }
           }
@@ -2047,7 +2047,7 @@ angular.module('myAppAngularMinApp')
         if (data.channelType == "PRIVATE"){
           for (var j=0;j<$scope.privateChannels.length;j++){
             if ($scope.privateChannels[j].id == data.channelid){
-              $scope.privateChannels[j].channelNotificationsCount ++;
+              $scope.privateChannels[j].channelNotificationsCount  = $scope.privateChannels[j].channelNotificationsCount;
               $scope.privateChannels[j].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'Deleted member: ' + data.username});
             }
           }
