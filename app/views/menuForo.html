@@ -7,8 +7,8 @@
         <img src="images/logos/full-white-mini.png" alt="Logo" class="logo"/>
       </div>
       <div class="zone-buttons">
-        <a class="btn-zone left" href="" ng-click="goTo('/chat2')" >Chat</a>
-        <a class="btn-zone right active" href="" ng-click="goTo('/foro')">Forum</a>
+        <a class="btn-zone left" href="" ng-click="goTo('/chat2','chat')" >Chat</a>
+        <a class="btn-zone right active" href="" >Forum</a>
       </div>
       <div class="logged-user" ng-if="isLogged()">
         <div class="dropdown">
@@ -43,12 +43,12 @@
         </li>
 
         <!----  add group ------>
-        <li class="menu-option">
-          <a href="" ng-click="gotoNewQuestion()"><span class="fa fa-plus"></span> Ask question</a>
-        </li>
+
       </ul>
     </li>
-
+    <li class="menu-option addlink">
+      <a href="" ng-click="gotoNewQuestion()"><span class="fa fa-plus"></span> Ask question</a>
+    </li>
 
     <!----separator------>
     <li class="" >
