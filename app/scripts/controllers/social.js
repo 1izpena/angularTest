@@ -21,7 +21,7 @@ hello.init({
     linkedin : '77vl3ewozemhas',
     github: '7293fa073d2243c582dc',
     google:  '339950630008-blnat1i0offoljor7i0oahbq1s4mduu0.apps.googleusercontent.com'
-},{redirect_uri:'http://Meanstack.tk/'});
+},{redirect_uri:'http://Meanstack.tk'});
 
 $scope.social = function(social) {
       $scope.message = '';
