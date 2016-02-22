@@ -970,6 +970,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.selectGroup= function (group, ind) {
         $scope.classResalt= "textitalic";
+        var groupidAntiguo = $scope.groupid;
         $scope.groupid=group.id;
         $scope.groupindex = ind;
         $scope.option="";
@@ -1006,7 +1007,9 @@ angular.module('myAppAngularMinApp')
         }
 
         // Emitimos evento de selecion de grupo para notificaciones de usuarios coenctados al grupo
+        Socket.emit('disconnectGroup', { 'groupid': groupidAntiguo, 'userid': $localStorage.id } );
         Socket.emit('selectGroup', { 'groupid': group.id, 'userid': $localStorage.id } );
+
 
       };
 
@@ -1040,6 +1043,7 @@ angular.module('myAppAngularMinApp')
           $scope.classResaltDirect = "textitalic";
         }
 
+        var channelidAntiguo = $scope.channelid;
         $scope.channelid=channel.id;
         $scope.tagChannel=channel;
         $scope.tagChannel.type = type;
@@ -1051,6 +1055,7 @@ angular.module('myAppAngularMinApp')
         $scope.getMessages(channel);
 
         // Emitimos evento de selecion de canal para recibir nuevos mensajes
+        Socket.emit('disconnectChannel', { 'channelid': channelidAntiguo, 'userid': $localStorage.id } );
         Socket.emit('selectChannel', { 'channelid': channel.id , 'userid': $localStorage.id} );
 
         // Actualizamos notificaciones
@@ -1822,12 +1827,12 @@ angular.module('myAppAngularMinApp')
       Socket.on('deletedMemberInGroupEvent', function (data) {
         console.log ("deletedMemberInGroupEvent received from server");
         if ($scope.tagGroup.id!=data.groupid){
-          $scope.groupsNotificationsCount ++;
+          $scope.groupsNotificationsCount = $scope.groupsNotificationsCount + 1;
           $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': Deleted user: ' + data.username });
           //añadimos notificacion al grupo en si
           for (var i=0;i<$scope.groups.length;i++){
             if ($scope.groups[i].id == data.groupid){
-              $scope.groups[i].groupNotificationsCount ++;
+              $scope.groups[i].groupNotificationsCount = $scope.groups[i].groupNotificationsCount + 1;
               $scope.groups[i].groupNotifications.push({groupid: data.groupid, channelid:data.channelid, message:'Deleted user: ' + data.username });
             }
           }
@@ -1838,13 +1843,15 @@ angular.module('myAppAngularMinApp')
 
       Socket.on('newMemberInGroupEvent', function (data) {
         console.log ("newMemberInGroupEvent received from server");
+        console.log("$scope.tagGroup.id: " + $scope.tagGroup.id);
+        console.log("data.groupid: " + data.groupid);
         if ($scope.tagGroup.id!=data.groupid){
-          $scope.groupsNotificationsCount ++;
+          $scope.groupsNotificationsCount = $scope.groupsNotificationsCount + 1;
           $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': New user: ' + data.username });
           //añadimos notificacion al grupo en si
           for (var i=0;i<$scope.groups.length;i++){
             if ($scope.groups[i].id == data.groupid){
-              $scope.groups[i].groupNotificationsCount ++;
+              $scope.groups[i].groupNotificationsCount = $scope.groups[i].groupNotificationsCount + 1;
               $scope.groups[i].groupNotifications.push({groupid: data.groupid, channelid:data.channelid, message:'New user: ' + data.username });
             }
           }
