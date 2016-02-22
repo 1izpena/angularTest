@@ -440,7 +440,7 @@
 
 .content {
 
-  min-width: 900px;
+  min-width: 720px;
   min-height: 570px;
   height: 100%
 }
@@ -594,7 +594,7 @@ ul {   list-style-type: none; }
 }
 
 #page-content-wrapper {
-    min-width: 900px;
+    min-width: 720px;
     width: 100%;
     /*position: absolute;*/
     height: 100%;

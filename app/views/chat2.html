@@ -372,11 +372,11 @@
 
                                             <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(1)" class="input-group-addon" title="Add user to group" id="btnadduser">
-                                                <i class="fa fa-user-plus"></i><span class="white-label"> Invite</span>
+                                                <i class="fa fa-user-plus"></i><span class="white-label"> </span>
                                             </span>
 
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(2)" class="input-group-addon" title="Delete user from group" id="btnremoveuser" >
-                                                <i class="fa fa-user-times"></i><span class="white-label"> Unsubscribe</span>
+                                                <i class="fa fa-user-times"></i><span class="white-label"> </span>
                                             </span>
 
                                         </div>
@@ -808,7 +808,7 @@
 
 <!-- contenedor de busquedas:: actualmente comentado -->
 
-<div ng-show="navsearch" class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="col4">
+<div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-4 col-lg-4" id="col4">
 
           <div class="panel panel-info" id="panel-info2">
 

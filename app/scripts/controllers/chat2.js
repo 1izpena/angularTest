@@ -51,17 +51,17 @@ angular.module('myAppAngularMinApp')
 
 
       $scope.user = '';
-	  $scope.membersSettings = '';
-	  $scope.membersSettingschannel = '';
+	    $scope.membersSettings = '';
+	    $scope.membersSettingschannel = '';
 
-	  $scope.members = '';
-	  $scope.channelMembers = '';
+	    $scope.members = '';
+	    $scope.channelMembers = '';
 
-	  $scope.tagChannel = '';
-    $scope.tagGroup = '';
-    $scope.tagMember = '';
-	  $scope.adminGroup = '';
-	  $scope.adminChannel = '';
+      $scope.tagChannel = '';
+      $scope.tagGroup = '';
+      $scope.tagMember = '';
+      $scope.adminGroup = '';
+      $scope.adminChannel = '';
 
       /* modal de errores para los settings del grupo */
       $scope.errorG= '';
@@ -255,7 +255,7 @@ angular.module('myAppAngularMinApp')
           console.log("estoy en id cambiando a 1");
 
           $scope.navsearch = 1;
-          $scope.class1 = "col-xs-8 col-sm-8 col-md-8 col-lg-8";
+          $scope.class1 = "col-xs-7 col-sm-7 col-md-8 col-lg-8";
       }
       else {
           console.log("estoy en id cambiando a 0");
