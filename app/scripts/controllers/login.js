@@ -11,9 +11,9 @@ angular.module('myAppAngularMinApp')
       'Karma'
     ];
 
-    
+
         // Emitimos evento de conexion a chat para recibir nuevas invitaciones a grupos
-      
+
     if(sharedProperties.getMessage()!= ''){
          $scope.error = 1;
          $scope.message  = sharedProperties.getMessage();
@@ -22,9 +22,9 @@ angular.module('myAppAngularMinApp')
          $scope.error = 0;
     }
 
-         
-    
-   
+
+
+
 
    // $scope.error = 0;
 
@@ -38,12 +38,19 @@ angular.module('myAppAngularMinApp')
       if (user.mail && user.password) {
         LoginService.login(user).then(function(res) {
 
-          $localStorage.token = res.data.token;
-          $localStorage.id = res.data.id;
-          $localStorage.username = res.data.username;
+            $localStorage.token = res.data.token;
+            $localStorage.id = res.data.id;
+            $localStorage.username = res.data.username;
 
-          sharedProperties.setMessage('');
-          $scope.goTo(sharedProperties.getProperty());
+            sharedProperties.setMessage('');
+
+            var url = sharedProperties.getProperty();
+            // Del login, por defecto, si no hay url en sharedproperties se va al chat
+            if (url == "/") {
+              sharedProperties.setProperty('/chat2');
+              url = '/chat2';
+            }
+            $scope.goTo(url);
 
         }, function(res) {
           $scope.error = 1;

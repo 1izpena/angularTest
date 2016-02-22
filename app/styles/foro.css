@@ -20,7 +20,7 @@ h2 a, h1 a
 }
 
 
-.navbar {
+.navbar, .footer {
   display: none;
 }
 
@@ -230,6 +230,10 @@ a.loginButton
 
 .sidebar-nav .menu-option {
   padding: 10px 12px;
+}
+
+.sidebar-nav .menu-option.addlink {
+  border:1px dotted #B3A9A9;
 }
 
 .sidebar-nav .fa {

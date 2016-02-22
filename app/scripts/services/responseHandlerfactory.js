@@ -16,9 +16,14 @@ angular.module('myAppAngularMinApp')
           window.localStorage.removeItem('token');
           location.path('/login');
 
+
+          return response;
+
         }
-        //return $q.reject(response);
-        return response;
+        else {
+          // To execute errorCallback
+          return $q.reject(response);
+        }
       }
     };
     return responseHandler;

@@ -308,8 +308,15 @@ angular.module('myAppAngularMinApp')
 	    return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
 	};
 
-    $scope.goTo = function(url)
+    $scope.goTo = function(url, from)
     {
+      if (from === 'chat'){
+        sharedProperties.setProperty('/chat2');
+      }
+      else if (from === 'foro'){
+        sharedProperties.setProperty('/foro');
+      }
+
       $location.path(url);
     };
 
@@ -735,7 +742,10 @@ angular.module('myAppAngularMinApp')
 
 
     $scope.getHash = function (str) {
+      if (str)
         return md5.createHash(str);
+      else
+        return "";
       };
 
 

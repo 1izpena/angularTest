@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, searchservice, LoginService, AnswerService, TagService, $localStorage, $uibModal, md5, ProfileService) {
+  .controller('ForoCtrl', function ($scope,  $location,$routeParams, ForoService, QuestionService, searchservice, LoginService, AnswerService, TagService, $localStorage, $uibModal, md5, ProfileService, sharedProperties) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -21,14 +21,7 @@ angular.module('myAppAngularMinApp')
   $scope.username = "";
 
 
-    $scope.location_hash = $location.hash();
 
-
-    $scope.order_criteria = '-created';
-    if ($scope.location_hash == 2)
-      $scope.order_criteria = '-views';
-    else if ($scope.location_hash == 3)
-      $scope.order_criteria = '-votes';
 
 $scope.isLogged = function()
 {
@@ -63,9 +56,12 @@ $scope.userProfile = function()
 
 };
 
-$scope.getHash = function (str) {
-  return md5.createHash(str);
-};
+    $scope.getHash = function (str) {
+      if (str)
+        return md5.createHash(str);
+      else
+        return "";
+    };
 
 
 
@@ -81,12 +77,18 @@ $scope.answerLinks = function(answer){
 };
 
 
-$scope.goTo = function(url, hash)
+$scope.goTo = function(url, from)
 {
-  $location.path(url);
-  if (hash) {
-    $location.hash(hash);
+
+  if (from === 'chat'){
+    sharedProperties.setProperty('/chat2');
   }
+  else if (from === 'foro'){
+    sharedProperties.setProperty('/foro');
+  }
+
+  $location.path(url);
+
 };
 /*Redirecciones*/
 $scope.gotoNewQuestion = function()
@@ -97,18 +99,21 @@ $scope.gotoNewQuestion = function()
   }
   else
   {
-    $scope.goTo('/login');
+    $scope.goTo('/login','/foro/newquestion');
   }
-  
+
 };
 $scope.goToForo = function(pos)
 {
-  if (!pos) {
-    $scope.goTo('/foro');
-  }
-  else {
-    $scope.goTo('/foro',pos);
-  }
+  if (pos == 1)
+    $scope.order_criteria = '-created';
+  else if (pos == 2)
+    $scope.order_criteria = '-views';
+  else if (pos == 3)
+    $scope.order_criteria = '-votes';
+
+  $scope.goTo('/foro');
+
 };
 
 $scope.goToTags = function()
