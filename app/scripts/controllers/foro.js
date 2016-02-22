@@ -91,7 +91,15 @@ $scope.goTo = function(url, hash)
 /*Redirecciones*/
 $scope.gotoNewQuestion = function()
 {
-  $scope.goTo('/foro/newquestion');
+  if(LoginService.isLogged())
+  {
+    $scope.goTo('/foro/newquestion');
+  }
+  else
+  {
+    $scope.goTo('/login');
+  }
+  
 };
 $scope.goToForo = function(pos)
 {
