@@ -100,7 +100,7 @@
                         <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
                           <a ng-click="selectChannel(channel, 'public')" ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
                             {{channel.channelName}}
-                            <span popover-channel class="badge badge-info pull-right" id="publicChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Notifications:" ng-mouseover="getPublicChannelNotificationList(channel)" data-container="body" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
+                            <span popover-public-channel class="badge badge-info pull-right" id="publicChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Notifications:" ng-mouseover="getPublicChannelNotificationList(channel)" data-container="body" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
                           </a>
                         </li>
                       </ul>
@@ -113,7 +113,7 @@
                         <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
                           <a ng-click="selectChannel(channel, 'private')" ng-class="channel.id == tagChannel.id ?classResaltChannelPrivate : ''">
                             {{channel.channelName}}
-                            <span class="badge badge-info pull-right" popover-channel id="privateChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Notifications:" data-container="body" ng-mouseover="getPrivateChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
+                            <span class="badge badge-info pull-right" popover-private-channel id="privateChannelNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Notifications:" data-container="body" ng-mouseover="getPrivateChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
                           </a>
                         </li>
                       </ul>
@@ -138,7 +138,7 @@
                 <li class="activeMembers" ng-show= "tagGroup !== ''">
                   <a ng-click="changeVarMenu('activeDirects')" class="btn btn-primary" aria-expanded="false">
                     <i class="fa fa-user fa-fw"></i>Direct Messages
-                    <span class="badge pull-right">{{}}</span>
+                    <span class="badge badge-info pull-right" id="directChannelsNotificationBadge" data-toggle="popover" data-html="true" data-placement="top" data-trigger="hover" data-title="Notifications:" data-container="body" ng-show="directChannelsNotificationsCount > 0">{{directChannelsNotificationsCount}}</span>
                   </a>
 
                   <ul ng-show="activeDirects" class="emphasis">
@@ -150,7 +150,6 @@
 <!--    <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o' ; member.id == tagMember.id ?classResaltDirect : ''" ></span>    -->
 
                         {{member.username}}
-                        <span class="badge pull-right">{{}}</span>
                       </a>
                     </li>
 
@@ -1192,9 +1191,9 @@
     </ul>
   </div>
 
-  <div ng-if="directMessagesNotifications.length > 0" id="directMessagesNotificationList" class="popover-content">
+  <div ng-if="directChannelsNotifications.length > 0" id="directChannelsNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
-      <li ng-repeat="notification in directMessagesNotifications" >
+      <li ng-repeat="notification in directChannelsNotifications" >
         {{notification.message}}
       </li>
     </ul>
@@ -1209,9 +1208,17 @@
   </div>
 
 
-  <div ng-if="channelNotifications.length > 0" id="channelNotificationList" class="popover-content">
+  <div ng-if="publicChannelNotifications.length > 0" id="publicChannelNotificationList" class="popover-content">
     <ul aria-expanded="true" class="emphasis">
-      <li ng-repeat="notification in channelNotifications">
+      <li ng-repeat="notification in publicChannelNotifications">
+        {{notification.message}}
+      </li>
+    </ul>
+  </div>
+
+  <div ng-if="privateChannelNotifications.length > 0" id="privateChannelNotificationList" class="popover-content">
+    <ul aria-expanded="true" class="emphasis">
+      <li ng-repeat="notification in privateChannelNotifications">
         {{notification.message}}
       </li>
     </ul>
