@@ -23,16 +23,9 @@ angular.module('myAppAngularMinApp')
         $scope.groupNotifications = [];
         $scope.publicChannelNotifications = [];
         $scope.privateChannelNotifications = [];
+        //
+        $scope.notifications = [];
 
-
-        //popover contents
-        $('#groupsNotificationBadge').popover({html: true,content: function() {return $('#groupsNotificationList').html();}});
-        $('#channelsNotificationBadge').popover({html: true,content: function() {return $('#channelsNotificationList').html();}});
-        $('#directChannelsNotificationBadge').popover({html: true,content: function() {return $('#directChannelNotificationList').html();}});
-        $('#groupNotificationBadge').popover({html: true,content: function() {return $('#groupNotificationList').html();}});
-        $('#publicChannelNotificationBadge').popover({html: true,content: function() {return $('#publicChannelNotificationList').html();}});
-        $('#privateChannelNotificationBadge').popover({html: true,content: function() {return $('#privateChannelNotificationList').html();}});
-        $('#directChannelNotificationBadge').popover({html: true,content: function() {return $('#directChannelsNotificationList').html();}});
       };
 
 /*
@@ -43,9 +36,7 @@ angular.module('myAppAngularMinApp')
     };
 */
 
-      $('#groupsNotificationList').on('hide.bs.popover', function () {
-         $('.popover-hide').popover('destroy');
-      });
+
     /* variables para el menu sidebar-nav */
       $scope.activeInvitations = 0;
       $scope.activeGroups = 1;
@@ -989,15 +980,23 @@ angular.module('myAppAngularMinApp')
       $scope.getGroupNotificationList= function (group) {
         for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == group.id){
-            $scope.groupNotifications = $scope.groups[i].groupNotifications;
+            $scope.notifications = $scope.groups[i].groupNotifications;
           }
         }
+      };
+
+      $scope.getGroupsNotificationList= function () {
+        $scope.notifications = $scope.groupsNotifications;
+      };
+
+      $scope.getChannelsNotificationList= function () {
+        $scope.notifications = $scope.channelsNotifications;
       };
 
       $scope.getPrivateChannelNotificationList= function (channel) {
         for (var i=0;i<$scope.privateChannels.length;i++){
           if ($scope.privateChannels[i].id == channel.id){
-            $scope.privateChannelNotifications = $scope.privateChannels[i].channelNotifications;
+            $scope.notifications = $scope.privateChannels[i].channelNotifications;
           }
         }
       };
@@ -1005,9 +1004,13 @@ angular.module('myAppAngularMinApp')
       $scope.getPublicChannelNotificationList= function (channel) {
         for (var i=0;i<$scope.publicChannels.length;i++){
           if ($scope.publicChannels[i].id == channel.id){
-            $scope.publicChannelNotifications = $scope.publicChannels[i].channelNotifications;
+            $scope.notifications = $scope.publicChannels[i].channelNotifications;
           }
         }
+      };
+
+      $scope.getDirectChannelsNotificationList= function () {
+        $scope.notifications = $scope.directChannelsNotifications;
       };
 
       $scope.selectGroup= function (group, ind) {
