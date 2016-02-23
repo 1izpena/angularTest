@@ -635,7 +635,7 @@ ul {   list-style-type: none; }
 */
 
 .sidebar-nav li.channel-type ul {
-  /*padding-left: 0px;*/
+  padding-left: 0px;
 }
 
 
@@ -691,7 +691,7 @@ ul {   list-style-type: none; }
 }
 
 .sidebar-nav .menu-option.addlink {
-  
+
   border:1px dotted #B3A9A9;
 
 }
@@ -899,7 +899,7 @@ ul {   list-style-type: none; }
         margin-right: 0;
     }
 
-    
+
 }
 
 
@@ -1435,4 +1435,9 @@ a.question-link:hover {
   background-image: url('../images/patern.png');
   min-width: 120px;
   padding-left: 10px;
+}
+
+.modal-content,
+.modal-header {
+  font-family: Oswald;
 }
