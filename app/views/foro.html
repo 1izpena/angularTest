@@ -3,8 +3,8 @@
   <div id="page-content-wrapper">
     <div class="container-fluid" ng-controller="ForoCtrl" data-ng-init="init()">
       <div class="container-fluid boton-menu">
-        <a ng-href="#menu-toggle"
-           class="glyphicon glyphicon-th-list" id="menu-toggle">
+        <a ng-href=""
+           class="glyphicon glyphicon-th-list classtoggle">
         </a>
       </div>
 	    <div class="row container-fluid">
@@ -56,9 +56,12 @@
 </div>
 
 <link rel="stylesheet" ng-href="styles/foro.css">
+
 <script>
-  $("#menu-toggle").click(function (e) {
+
+  $(".classtoggle").click(function (e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
   });
+
 </script>

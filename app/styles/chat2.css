@@ -765,9 +765,10 @@ ul {   list-style-type: none; }
 
 
 
-#menu-toggle:hover,
-#menu-toggle:focus {
+.classtoggle:hover,
+.classtoggle:focus {
     text-decoration: none;
+    cursor: pointer;
 
 
 }
@@ -865,9 +866,6 @@ ul {   list-style-type: none; }
 }*/
 
 
-
-
-
 @media(min-width:768px) {
 
 
@@ -900,7 +898,10 @@ ul {   list-style-type: none; }
         position: relative;
         margin-right: 0;
     }
+
+    
 }
+
 
 /* Chat Styles */
 

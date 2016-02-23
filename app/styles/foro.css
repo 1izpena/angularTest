@@ -20,6 +20,16 @@ h2 a, h1 a
 }
 
 
+
+.classtoggle:hover,
+.classtoggle:focus {
+    text-decoration: none;
+    cursor: pointer;
+
+
+}
+
+
 .navbar, .footer {
   display: none;
 }

@@ -191,8 +191,9 @@
 
 
                 <div class="col-xs-2">
-                      <a ng-href="#menu-toggle"
-                      class="glyphicon glyphicon-th-list" id="menu-toggle">
+                <!-- #menu-toggle -->
+                      <a ng-href=""
+                      class="glyphicon glyphicon-th-list classtoggle" >
                       </a>
                 </div>
 
@@ -1219,10 +1220,20 @@
 <!--<script src="scripts/myscripts.js"></script>-->
 <!-- Menu Toggle Script -->
 <script>
-  $("#menu-toggle").click(function (e) {
+  /*$("#menu-toggle").click(function (e) {
+  	console.log("ENTRO EN TOGLLE");
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });*/
+
+
+  $(".classtoggle").click(function (e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
   });
+
+
+
 
 /*
   $("#menu").metisMenu2({
