@@ -1,10 +1,10 @@
 <div id="wrapper">
   <div ng-include="'views/menuForo.html'"></div>
   <div id="page-content-wrapper">
-	<div class="container-fluid" ng-controller="ForoCtrl" data-ng-init="getQuestion()">
+	<div class="container-fluid" id="containerfluidnewquestion" ng-controller="ForoCtrl" data-ng-init="getQuestion()">
     <div class="container-fluid boton-menu">
-      <a ng-href="#menu-toggle"
-         class="glyphicon glyphicon-th-list" id="menu-toggle">
+      <a ng-href=""
+         class="glyphicon glyphicon-th-list classtoggle">
       </a>
     </div>
 		<div class="row container-fluid">
@@ -169,9 +169,11 @@
 <link rel="stylesheet" ng-href="styles/foro.css" >
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
 <script>
-  $("#menu-toggle").click(function (e) {
+  
+  $(".classtoggle").click(function (e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
   });
+
 </script>
 

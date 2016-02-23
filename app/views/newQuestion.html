@@ -2,11 +2,11 @@
   <div ng-include="'views/menuForo.html'"></div>
   <div id="page-content-wrapper">
     <div class="container-fluid boton-menu">
-      <a ng-href="#menu-toggle"
-         class="glyphicon glyphicon-th-list" id="menu-toggle">
+      <a ng-href=""
+         class="glyphicon glyphicon-th-list classtoggle">
       </a>
     </div>
-    <div class="container-fluid" ng-controller="ForoCtrl">
+    <div class="container-fluid" ng-controller="ForoCtrl" id="containerfluidnewquestion">
       <div class="row container-fluid">
         <div class="col-md-8 headLeft">
           <h1>New question</h1>
@@ -55,8 +55,10 @@
 </div>
 <link rel="stylesheet" ng-href="styles/foro.css">
 <script>
-  $("#menu-toggle").click(function (e) {
+
+  $(".classtoggle").click(function (e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
   });
+  
 </script>
