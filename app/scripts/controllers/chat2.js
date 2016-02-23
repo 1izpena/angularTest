@@ -43,6 +43,9 @@ angular.module('myAppAngularMinApp')
     };
 */
 
+      $('#groupsNotificationList').on('hide.bs.popover', function () {
+         $('.popover-hide').popover('destroy');
+      });
     /* variables para el menu sidebar-nav */
       $scope.activeInvitations = 0;
       $scope.activeGroups = 1;
@@ -148,13 +151,15 @@ angular.module('myAppAngularMinApp')
             se quita el marcado y aparecen todos otra vez
           */
           if ($scope.groupindex !== -1){
+            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
+            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
 
-             $scope.classResalt= "textnormal";
-             $scope.activeGroups = 1;
-             $scope.groupindex = -1;
-             $scope.tagGroup = '';
-             $scope.tagChannel = '';
-             $scope.tagMember = '';
+            $scope.classResalt= "textnormal";
+            $scope.activeGroups = 1;
+            $scope.groupindex = -1;
+            $scope.tagGroup = '';
+            $scope.tagChannel = '';
+            $scope.tagMember = '';
           }
           else {
 
@@ -165,7 +170,8 @@ angular.module('myAppAngularMinApp')
 
         }
         else {
-
+          Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
+          Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
           $scope.classResalt= "textnormal";
           $scope.groupindex = -1;
           $scope.activeGroups = 1;
@@ -190,8 +196,11 @@ angular.module('myAppAngularMinApp')
           $scope.activeChannels = 0;
           /*$scope.classResaltChannelPublic= "textnormal";
           $scope.classResaltChannelPrivate = "textnormal";*/
+          Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
           $scope.tagChannel = '';
           /*$scope.tagMember = '';*/
+
+
         }
         else {
           $scope.activeChannels = 1;
@@ -231,6 +240,7 @@ angular.module('myAppAngularMinApp')
           $scope.classResaltDirect = "textnormal";
 
           if($scope.tagChannel.type == "DIRECT"){
+            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
             $scope.tagChannel = '';
             $scope.tagMember = '';
           }
@@ -339,6 +349,8 @@ angular.module('myAppAngularMinApp')
           function(data) {
             $("#newGroupModal").modal("hide");
             $scope.removeInput();
+            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
+            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
             $scope.messageNewGroupModal = '';
             $scope.tagGroup = '';
             $scope.groupindex = -1;
@@ -1008,21 +1020,17 @@ angular.module('myAppAngularMinApp')
         $scope.getChannels(group);
         $scope.getGroupMembers(group);
 
-
-
-
         $scope.tagGroup=group;
         $scope.channelSelected = false;
-        // Emitimos evento de desconexión a canales
         Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
         $scope.tagChannel='';
-        //restar notificaciones generales de grupo
-        for (var i=0;i<$scope.groupsNotifications.length;i++){
+        var i;
+        for (i=0;i<$scope.groupsNotifications.length;i++){
           if ($scope.groupsNotifications[i].groupid == group.id){
             $scope.groupsNotifications.splice(i,1);
           }
-          $scope.groupsNotificationsCount = $scope.groupsNotificationsCount - 1;
         }
+        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount - i;
         $scope.channelsNotifications = [];
         $scope.channelsNotificationsCount = 0;
         $scope.directChannelsNotifications = [];
@@ -1097,19 +1105,21 @@ angular.module('myAppAngularMinApp')
         // Actualizamos notificaciones
         //$scope.updateNotifications($scope.tagGroup.id, channel.id, type.toUpperCase());
 
-        for (var i=0;i<$scope.channelsNotifications.length;i++){
+        var i;
+        for (i=0;i<$scope.channelsNotifications.length;i++){
           if ($scope.channelsNotifications[i].channelid == channel.id){
             $scope.channelsNotifications.splice(i,1);
           }
-          $scope.channelsNotificationsCount = $scope.channelsNotificationsCount - 1;
         }
-
-        for (var m=0;m<$scope.groupsNotifications.length;m++){
+        $scope.channelsNotificationsCount = $scope.channelsNotificationsCount - i;
+        var m;
+        for (m=0;m<$scope.groupsNotifications.length;m++){
           if ($scope.groupsNotifications[m].channelid == channel.id){
             $scope.groupsNotifications.splice(m,1);
           }
-          $scope.groupsNotificationsCount = $scope.groupsNotificationsCount - 1;
+
         }
+        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount - m;
 
         for (var j=0;j<$scope.privateChannels.length;j++){
           if ($scope.privateChannels[j].id == channel.id){
@@ -1125,33 +1135,6 @@ angular.module('myAppAngularMinApp')
         }
 
       };
-
-      // Actualizamos notificaciones para el canal, y para el grupo correspondiente
-     /* $scope.updateNotifications = function (groupid, channelid, channelType) {
-        var num;
-        if (!$scope.notifications)
-          return;
-
-        // Comprobamos si notificaciones del canal
-        if ($scope.notifications.group &&
-            $scope.notifications.group[groupid] &&
-            $scope.notifications.group[groupid].channel[channelType] &&
-            $scope.notifications.group[groupid].channel[channelType][channelid]) {
-
-          num = $scope.notifications.group[groupid].channel[channelType][channelid];
-
-          // Actualizamos notificacioens de canales
-          $scope.notifications.group[groupid].channel[channelType][channelid] = 0;
-          $scope.notifications.group[groupid].channel[channelType].total -= num;
-          if (channelType != 'DIRECT')
-            $scope.notifications.group[groupid].channel.total -= num;
-
-          // Actualizamos notificacioens de grupo
-          $scope.notifications.group[groupid].total -= num;
-          $scope.notifications.group.total -= num;
-        }
-      };*/
-
 
     $scope.getDownloadLink = function (filename, ev) {
 
@@ -1215,8 +1198,11 @@ angular.module('myAppAngularMinApp')
             $scope.directChannels.push({
               id: channel.id,
               channelName: channel.channelName,
+              channelNotificationsCount: 0,
+              channelNotifications: [],
               users: [channel.users[0].id, channel.users[1].id ]
             });
+
             $scope.selectChannel (channel, 'DIRECT');
         },
         function (err) {
@@ -1288,7 +1274,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.gotoAnchor = function (anchor) {
         $anchorScroll(anchor);
-      }
+      };
 
     $scope.showUserInfo = function ($index) {
       if ($index < 1) {
@@ -1667,19 +1653,13 @@ angular.module('myAppAngularMinApp')
       /* actualizar siempre xaqui, xq se usa el mismo socket cuando un usuario sale */
 
       Socket.on('deletedMemberInGroup', function (data) {
-        console.log ("deletedMemberInGroup receive from server");
-        console.log(data);
-
-
+        console.log ("deletedMemberInGroup receive from server: " + data);
         for (var i = 0; i < $scope.members.length; i++){
           if ($scope.members[i].id == data.user.id){
           		$scope.members.splice(i,1);
           		i = $scope.members.length;
           }
         }
-
-
-
         /* si es el administrador, cambiarle los membersettings */
         if ($scope.adminGroup.id == $scope.userid){
         	/* añadimos al usuario borrado del grupo en membersettings (usuarios de sistema) */
@@ -1689,16 +1669,10 @@ angular.module('myAppAngularMinApp')
         		$scope.membersSettings.push(data.user);
 
         	}
-
         }
-
-
         $scope.$apply();
 
       });
-
-
-
 
       //recibir evento de nuevo usuario en canal
       Socket.on('newMemberInChannel', function (data) {
@@ -1710,17 +1684,12 @@ angular.module('myAppAngularMinApp')
         	sino, si esta en settings con la opcion 0
         	hay que actualizar los miembros y los miembros de settings que son los mismos*/
         if ($scope.adminChannel.id !== $scope.userid){
-
-	    	if ($scope.tagChannel.id == data.channelid ){
+          if ($scope.tagChannel.id == data.channelid ){
 	        	data.user.hash = $scope.getHash(data.user.mail);
 	        	$scope.channelMembers.push(data.user);
 	        	$scope.tagChannel.users.push(data.user);
-
         	}
-
-
-	    }
-
+        }
         console.log("esto vale tagchannel");
         console.log($scope.tagChannel);
         $scope.$apply();
@@ -1731,17 +1700,13 @@ angular.module('myAppAngularMinApp')
         console.log ("deletedUserFromChannel received from server");
         console.log(data);
 
-
-
         if (data.user.id == $localStorage.id){
         	if($scope.tagChannel.id == data.channelid){
         		$scope.tagChannel = ''
         	}
-
         	for (var i = 0; i < $scope.privateChannels.length; i++){
 	            if ($scope.privateChannels[i].id == data.channelid){
 	              $scope.privateChannels.splice(i,1);
-
 	          }
 	        }
         	$scope.privateChannels.splice(i,1);
@@ -1750,16 +1715,16 @@ angular.module('myAppAngularMinApp')
         else {
         	if($scope.tagChannel.id == data.channelid){
 
-        		for (var i = 0; i < $scope.channelMembers.length; i++){
-	            	if ($scope.channelMembers[i].id == data.user.id){
-	              		$scope.channelMembers.splice(i,1);
+        		for (var j = 0; j < $scope.channelMembers.length; j++){
+	            	if ($scope.channelMembers[j].id == data.user.id){
+	              		$scope.channelMembers.splice(j,1);
 	              	}
 
 	          	}
 
-		        for (var i = 0; i < $scope.tagChannel.users.length; i++){
-		            if ($scope.tagChannel.users[i].id == data.user.id){
-		              $scope.tagChannel.users.splice(i,1);
+		        for (var k = 0; k < $scope.tagChannel.users.length; k++){
+		            if ($scope.tagChannel.users[k].id == data.user.id){
+		              $scope.tagChannel.users.splice(k,1);
 
 		          }
 		        }
@@ -1853,7 +1818,7 @@ angular.module('myAppAngularMinApp')
       //Eventos de grupos listados y no conectado
       Socket.on('newGroupEvent', function (data) {
         console.log ("newGroupEvent received from server");
-        $scope.groupsNotificationsCount ++;
+        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
         $scope.groupsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.groupName + ': New group '});
         for (var i=0;i<$scope.groups.length;i++){
           if ($scope.groups[i].id == data.groupid){
@@ -1868,7 +1833,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('editedGroupEvent', function (data) {
         console.log ("editedGroupEvent received from server");
         if ($scope.tagGroup.id!=data.groupid){
-          $scope.groupsNotificationsCount ++;
+          $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
           $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': Edited group '});
           for (var i=0;i<$scope.groups.length;i++){
             if ($scope.groups[i].id == data.groupid){
@@ -1899,8 +1864,6 @@ angular.module('myAppAngularMinApp')
 
       Socket.on('newMemberInGroupEvent', function (data) {
         console.log ("newMemberInGroupEvent received from server");
-        console.log("$scope.tagGroup.id: " + $scope.tagGroup.id);
-        console.log("data.groupid: " + data.groupid);
         if ($scope.tagGroup.id!=data.groupid){
           $scope.groupsNotificationsCount = $scope.groupsNotificationsCount + 1;
           $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': New user: ' + data.username });
@@ -1924,7 +1887,7 @@ angular.module('myAppAngularMinApp')
           }
         }
 
-        $scope.groupsNotificationsCount ++;
+        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
         $scope.groupsNotifications.push({groupid: data.groupid,channelid:data.channelid, message:data.groupName + ': New Channel: ' + data.channelName});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
@@ -1936,7 +1899,7 @@ angular.module('myAppAngularMinApp')
         if (data.channelType == "PUBLIC"){
           for (var i=0;i<$scope.publicChannels.length;i++){
             if ($scope.publicChannels[i].id == data.channelid){
-              $scope.publicChannels[i].channelNotificationsCount = $scope.publicChannels[i].channelNotificationsCount;
+              $scope.publicChannels[i].channelNotificationsCount = $scope.publicChannels[i].channelNotificationsCount + 1;
               $scope.publicChannels[i].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName+ ': New Channel'});
             }
           }
@@ -1955,7 +1918,37 @@ angular.module('myAppAngularMinApp')
 
       Socket.on('deletedChannelEvent', function (data) {
         console.log ("deletedChannelEvent received from server: " + data);
-
+        if (data.groupid == $scope.tagGroup.id){
+          if (data.channelType == "PUBLIC" || data.channelType == "PRIVATE"){
+            $scope.channelsNotificationsCount = $scope.channelsNotificationsCount + 1;
+            $scope.channelsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': Channel deleted'});
+          }
+        }
+        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
+        $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' + data.channelName +  ': Channel deleted'});
+        for (var k=0;k<$scope.groups.length;k++){
+          if ($scope.groups[k].id == data.groupid){
+            $scope.groups[k].groupNotificationsCount = $scope.groups[k].groupNotificationsCount + 1;
+            $scope.groups[k].groupNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': Channel deleted'});
+          }
+        }
+        if (data.channelType == "PUBLIC"){
+          for (var i=0;i<$scope.publicChannels.length;i++){
+            if ($scope.publicChannels[i].id == data.channelid){
+              $scope.publicChannels[i].channelNotificationsCount = $scope.publicChannels[i].channelNotificationsCount + 1;
+              $scope.publicChannels[i].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'Channel deleted'});
+            }
+          }
+        }
+        if (data.channelType == "PRIVATE"){
+          for (var j=0;j<$scope.privateChannels.length;j++){
+            if ($scope.privateChannels[j].id == data.channelid){
+              $scope.privateChannels[j].channelNotificationsCount = $scope.publicChannels[j].channelNotificationsCount +1;
+              $scope.privateChannels[j].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'Channel deleted'});
+            }
+          }
+        }
+        $scope.$apply();
       });
 
       Socket.on('editedChannelEvent', function (data) {
@@ -1966,7 +1959,7 @@ angular.module('myAppAngularMinApp')
             $scope.channelsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': Channel edited'});
           }
         }
-        $scope.groupsNotificationsCount ++;
+        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
         $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' + data.channelName +  ': Channel Edited'});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
@@ -2006,7 +1999,7 @@ angular.module('myAppAngularMinApp')
               $scope.directChannelsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': New Message'});
             }
           }
-          $scope.groupsNotificationsCount ++;
+          $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
           $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' + data.channelName + ': New Message'});
           for (var k=0;k<$scope.groups.length;k++){
             if ($scope.groups[k].id == data.groupid){
@@ -2036,7 +2029,7 @@ angular.module('myAppAngularMinApp')
 
       Socket.on('newMemberInChannelEvent', function (data) {
         console.log ("newMemberInChannelEvent received from server");
-        $scope.channelsNotificationsCount ++;
+        $scope.channelsNotificationsCount = $scope.channelsNotificationsCount + 1;
         if (data.groupid == $scope.tagGroup.id){
           if (data.channelType == "PUBLIC" || data.channelType == "PRIVATE"){
             $scope.channelsNotificationsCount = $scope.channelsNotificationsCount + 1;
@@ -2066,10 +2059,6 @@ angular.module('myAppAngularMinApp')
             }
           }
         }
-        if (data.channelType == "DIRECT"){
-          //$scope.directMessagesNotificationsCount ++;
-          //$scope.directMessagesNotifications.push(data);
-        }
         $scope.$apply();
       });
 
@@ -2081,7 +2070,7 @@ angular.module('myAppAngularMinApp')
             $scope.channelsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.channelName + ': Deleted Member: ' + data.username});
           }
         }
-        $scope.groupsNotificationsCount ++;
+        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
         $scope.groupsNotifications.push({groupid: data.groupid, channelid:data.channelid, message:data.groupName + ': ' +  data.channelName + ': Deleted member: ' + data.username});
         for (var k=0;k<$scope.groups.length;k++){
           if ($scope.groups[k].id == data.groupid){
@@ -2100,15 +2089,12 @@ angular.module('myAppAngularMinApp')
         if (data.channelType == "PRIVATE"){
           for (var j=0;j<$scope.privateChannels.length;j++){
             if ($scope.privateChannels[j].id == data.channelid){
-              $scope.privateChannels[j].channelNotificationsCount  = $scope.privateChannels[j].channelNotificationsCount;
+              $scope.privateChannels[j].channelNotificationsCount  = $scope.privateChannels[j].channelNotificationsCount + 1;
               $scope.privateChannels[j].channelNotifications.push({groupid: data.groupid,channelid: data.channelid, message:'Deleted member: ' + data.username});
             }
           }
         }
-        if (data.channelType == "DIRECT"){
-          //$scope.directMessagesNotificationsCount ++;
-          //$scope.directMessagesNotifications.push(data);
-        }
+
         $scope.$apply();
       });
 
