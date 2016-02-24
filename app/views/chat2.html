@@ -100,7 +100,7 @@
                         <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
                           <a ng-click="selectChannel(channel, 'public')" ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
                             {{channel.channelName}}
-                            <span class="badge badge-info pull-right" id="publicChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPublicChannelNotificationList(channel)" ng-show="channel.channelNotifications.length > 0">{{channelNotificationsCount.length}}</span>
+                            <span class="badge badge-info pull-right" id="publicChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPublicChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
                           </a>
                         </li>
                       </ul>
@@ -113,7 +113,7 @@
                         <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
                           <a ng-click="selectChannel(channel, 'private')" ng-class="channel.id == tagChannel.id ?classResaltChannelPrivate : ''">
                             {{channel.channelName}}
-                            <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPrivateChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount.length > 0">{{channelNotificationsCount.length}}</span>
+                            <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPrivateChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount.length() > 0">{{channel.channelNotificationsCount}}</span>
                           </a>
                         </li>
                       </ul>
