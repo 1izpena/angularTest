@@ -1735,7 +1735,6 @@ angular.module('myAppAngularMinApp')
 	              $scope.privateChannels.splice(i,1);
 	          }
 	        }
-        	$scope.privateChannels.splice(i,1);
         }
 
         else {
@@ -1835,6 +1834,7 @@ angular.module('myAppAngularMinApp')
           }
         }
         if($scope.tagChannel.id == data.id){
+          Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
           $scope.channelMembers = '';
           $scope.channelSelected = false;
           $scope.tagChannel = '';
