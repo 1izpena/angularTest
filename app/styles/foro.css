@@ -550,11 +550,21 @@ a
     margin-bottom: 2%;
 
 }
-/*.tagbutton button
+.tagbutton button
 {
-    width: 120px;
+  min-width: 120px;
+  background-color: rgba(40, 96, 144, 0.82);
+  color: white;
+  font-weight: 600;
+  font-family: Lora;
 }
-*/
+.tagbutton button:hover
+{
+  color: white;
+  background-color: #337AB7;;
+
+}
+
 
 
 /***********RESPONSIVE*********/
