@@ -89,14 +89,19 @@ angular.module('myAppAngularMinApp')
     };
 
       $scope.addGroupNotification = function (data, message) {
-        $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
-        $scope.groupsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.groupName + ' ' + message});
-        for (var i=0;i<$scope.groups.length;i++){
-          if ($scope.groups[i].id == data.groupid){
-            $scope.groups[i].groupNotificationsCount = $scope.groups[i].groupNotificationsCount +1;
-            $scope.groups[i].groupNotifications.push({groupid: data.groupid, channelid: data.channelid, message:message});
+        if (data.groupid == $scope.tagGroup.id){
+
+        }else {
+          $scope.groupsNotificationsCount = $scope.groupsNotificationsCount +1;
+          $scope.groupsNotifications.push({groupid: data.groupid,channelid: data.channelid, message:data.groupName + ' ' + message});
+          for (var i=0;i<$scope.groups.length;i++){
+            if ($scope.groups[i].id == data.groupid){
+              $scope.groups[i].groupNotificationsCount = $scope.groups[i].groupNotificationsCount +1;
+              $scope.groups[i].groupNotifications.push({groupid: data.groupid, channelid: data.channelid, message:message});
+            }
           }
         }
+
       };
 
       $scope.addChannelNotification = function (data,message) {
@@ -1946,36 +1951,42 @@ angular.module('myAppAngularMinApp')
 
       Socket.on('newMemberInChannelEvent', function (data) {
         console.log ("newMemberInChannelEvent received from server");
-        var message = '';
-        if (data.channelType == "PUBLIC") {
-          message = 'New member in public Channel';
+        if (data.channelid != $scope.tagChannel.id){
+          var message = '';
+          if (data.channelType == "PUBLIC") {
+            message = 'New member in public Channel';
+          }
+          if (data.channelType == "PRIVATE") {
+            message = 'New member in private Channel';
+          }
+          if (data.channelType == "DIRECT") {
+            message = 'New Member in Direct Channel';
+          }
+          $scope.addGroupNotification(data,message);
+          $scope.addChannelNotification(data,message);
+          $scope.$apply();
         }
-        if (data.channelType == "PRIVATE") {
-          message = 'New member in private Channel';
-        }
-        if (data.channelType == "DIRECT") {
-         message = 'New Member in Direct Channel';
-        }
-        $scope.addGroupNotification(data,message);
-        $scope.addChannelNotification(data,message);
-        $scope.$apply();
+
       });
 
       Socket.on('deletedMemberInChannelEvent', function (data) {
         console.log ("deletedMemberInChannelEvent received from server");
-        var message = '';
-        if (data.channelType == "PUBLIC") {
-          message = 'Deleted Member in public Channel';
+        if (data.channelid != $scope.tagChannel.id){
+          var message = '';
+          if (data.channelType == "PUBLIC") {
+            message = 'Deleted Member in public Channel';
+          }
+          if (data.channelType == "PRIVATE") {
+            message = 'Deleted Member in private Channel';
+          }
+          if (data.channelType == "DIRECT") {
+            message = 'Deleted Member Channel';
+          }
+          $scope.addGroupNotification(data,message);
+          $scope.addChannelNotification(data,message);
+          $scope.$apply();
         }
-        if (data.channelType == "PRIVATE") {
-          message = 'Deleted Member in private Channel';
-        }
-        if (data.channelType == "DIRECT") {
-         message = 'Deleted Member Channel';
-        }
-        $scope.addGroupNotification(data,message);
-        $scope.addChannelNotification(data,message);
-        $scope.$apply();
+
       });
 
 
