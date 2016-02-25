@@ -323,7 +323,7 @@ angular.module('myAppAngularMinApp')
           console.log("estoy en id cambiando a 1");
 
           $scope.navsearch = 1;
-          $scope.class1 = "col-xs-7 col-sm-7 col-md-8 col-lg-8";
+          $scope.class1 = "col-xs-7 col-sm-7 col-md-7 col-lg-8";
       }
       else {
           console.log("estoy en id cambiando a 0");
@@ -334,11 +334,20 @@ angular.module('myAppAngularMinApp')
     };
 
 
+    $scope.putBlanktextsearchbox = function(textsearchbox)
+    {
+     
+      $scope.textsearchbox = '';
+      
+    };
+
+
 /******************nuevo**************************/
 
      $scope.searchtextinchannel = function (textsearchbox, channel) {
       console.log("esto vale searchboz");
       console.log(textsearchbox);
+
       if ( textsearchbox !== 'undefined' && textsearchbox !== '' ){
         searchservice.chatsearch(textsearchbox, $scope.tagGroup.id, $scope.tagChannel.id).then(function (res){
            if(res.error == undefined){
