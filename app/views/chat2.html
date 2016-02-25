@@ -613,7 +613,7 @@
                                                   ((option == 2 && (adminChannel.id != member.id)) ? deleteUserFromChannel(member, $index) :  null)">
                                       <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
 
-                                      <span ng-if="adminGroup.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
+                                      <span ng-if="adminChannel.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
 
                                       <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
                                       <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
@@ -699,7 +699,7 @@
                     <p ng-if="msg.messageType=='FILE'" class="text-left">
                       {{msg.text}}
                       <br ng-if="msg.text">
-                      <a ng-href="#" ng-click="getDownloadLink(msg.filename, $event)">
+                      <a ng-href="#" ng-click="getDownloadLink(msg, $event)">
                         <span class="glyphicon glyphicon-file" style="font-size: 30px;"></span>{{msg.filename}}
                       </a>
                       <br>

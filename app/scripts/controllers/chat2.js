@@ -1217,15 +1217,16 @@ angular.module('myAppAngularMinApp')
 
       };
 
-    $scope.getDownloadLink = function (filename, ev) {
+    $scope.getDownloadLink = function (msg, ev) {
 
       ev.preventDefault();
 
+      // Datos del fichero que queremos descargar
       var data = {
-        userid: $localStorage.id,
+        userid: msg.user.id,
         groupid: $scope.groupid,
         channelid: $scope.channelid,
-        filename: filename
+        filename: msg.filename
       };
 
       ChatService.getDownloadUrl(data).then(
