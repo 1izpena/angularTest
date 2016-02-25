@@ -1175,8 +1175,7 @@ angular.module('myAppAngularMinApp')
 
         // Emitimos evento de selecion de canal para recibir nuevos mensajes
         console.log("ha llamado disconnect de channel");
-        Socket.emit('disconnectChannel');
-        Socket.emit('selectChannel');
+        Socket.emit('selectChannel', { 'channelid': channel.id , 'userid': $localStorage.id} );
         for (var j=0;j<$scope.groups.length;j++){
           var count = 0;
           if ($scope.groups[j].id == $scope.tagGroup.id){
