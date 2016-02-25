@@ -170,6 +170,8 @@ angular.module('myAppAngularMinApp')
               console.log($scope.tagChannel.type);
             }
             else{
+              console.log("ha llamado disconnect de channel");
+              Socket.emit('disconnectChannel');
               $scope.activeChannels = 0;
               $scope.activeDirects = 0;
 
@@ -178,6 +180,10 @@ angular.module('myAppAngularMinApp')
 
           }
           else {
+            console.log("ha llamado disconnect de grupo");
+            Socket.emit('disconnect');
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
             $scope.activeGroups = 0;
             $scope.activeChannels = 0;
             $scope.activeDirects = 0;
@@ -194,8 +200,10 @@ angular.module('myAppAngularMinApp')
             se quita el marcado y aparecen todos otra vez
           */
           if ($scope.groupindex !== -1){
-            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de grupo");
+            Socket.emit('disconnect');
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
 
             $scope.classResalt= "textnormal";
             $scope.activeGroups = 1;
@@ -213,8 +221,10 @@ angular.module('myAppAngularMinApp')
 
         }
         else {
-          Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
-          Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+          console.log("ha llamado disconnect de grupo");
+          Socket.emit('disconnect');
+          console.log("ha llamado disconnect de channel");
+          Socket.emit('disconnectChannel');
           $scope.classResalt= "textnormal";
           $scope.groupindex = -1;
           $scope.activeGroups = 1;
@@ -236,7 +246,8 @@ angular.module('myAppAngularMinApp')
       /* var de canales publicos y privados */
       else if(varmenu == 'activeChannels'){
         if ($scope.activeChannels){
-          Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+          console.log("ha llamado disconnect de channel");
+          Socket.emit('disconnectChannel');
           $scope.activeChannels = 0;
           /*$scope.classResaltChannelPublic= "textnormal";
           $scope.classResaltChannelPrivate = "textnormal";*/
@@ -284,7 +295,8 @@ angular.module('myAppAngularMinApp')
           $scope.classResaltDirect = "textnormal";
 
           if($scope.tagChannel.type == "DIRECT"){
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
             $scope.tagChannel = '';
             $scope.tagMember = '';
           }
@@ -393,8 +405,10 @@ angular.module('myAppAngularMinApp')
           function(data) {
             $("#newGroupModal").modal("hide");
             $scope.removeInput();
-            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de grupo");
+            Socket.emit('disconnect');
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
             $scope.messageNewGroupModal = '';
             $scope.tagGroup = '';
             $scope.groupindex = -1;
@@ -420,10 +434,12 @@ angular.module('myAppAngularMinApp')
             console.log(data);
             $("#deleteGroupModal").modal("hide");
             // Emitimos evento de desconexión al grupo
-            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de grupo");
+            Socket.emit('disconnect');
             $scope.tagGroup='';
             // Emitimos evento de desconexión a canales
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
             $scope.tagChannel='';
           },function(err){
             // Tratar el error
@@ -432,7 +448,8 @@ angular.module('myAppAngularMinApp')
             $scope.errorG = err.data.message;
             $("#deleteGroupModal").modal("hide");
             // Emitimos evento de desconexión al grupo
-            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de grupo");
+            Socket.emit('disconnect');
             $scope.tagGroup='';
             $("#errorGroupModal").modal("show");
           }
@@ -478,9 +495,11 @@ angular.module('myAppAngularMinApp')
              var ind = $scope.groups.indexOf($scope.tagGroup);
              $scope.groups.splice(ind,1);
             // Emitimos evento de desconexión al grupo
-            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de grupo");
+            Socket.emit('disconnect');
             // Emitimos evento de desconexión a canales
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
              $scope.tagGroup='';
              $scope.tagChannel='';
           },function(err){
@@ -623,7 +642,8 @@ angular.module('myAppAngularMinApp')
             console.log("Delete channel OK");
             $("#deleteChannelModal").modal("hide");
             // Emitimos evento de desconexión a canales
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
             $scope.tagChannel='';
 
           },function(err){
@@ -634,7 +654,8 @@ angular.module('myAppAngularMinApp')
             $scope.errorG = err.data.message;
             $("#deleteChannelModal").modal("hide");
             // Emitimos evento de desconexión al grupo
-            Socket.emit('disconnectGroup', { 'groupid': $scope.tagGroup.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de grupo");
+            Socket.emit('disconnect');
             $scope.tagGroup='';
 
             $("#errorGroupModal").modal("show");
@@ -717,7 +738,8 @@ angular.module('myAppAngularMinApp')
           	}
 
             // Emitimos evento de desconexión a canales
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
             $scope.tagChannel='';
             $scope.channelSelected = false;
 
@@ -727,7 +749,8 @@ angular.module('myAppAngularMinApp')
             /*$scope.messageUnsuscribeFromChannelModal = err.data.message;*/
             /**/
             // Emitimos evento de desconexión a canales
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
             $scope.tagChannel='';
             $scope.errorG = err.data.message;
             $("#unsuscribeFromChannelModal").modal("hide");
@@ -1078,7 +1101,8 @@ angular.module('myAppAngularMinApp')
 
         $scope.tagGroup=group;
         $scope.channelSelected = false;
-        Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+        console.log("ha llamado disconnect de channel");
+        Socket.emit('disconnectChannel');
         $scope.tagChannel='';
         var updatedGroupsNotifications = [];
         for (var i=0;i<$scope.groupsNotifications.length;i++){
@@ -1150,8 +1174,9 @@ angular.module('myAppAngularMinApp')
         $scope.getMessages(channel);
 
         // Emitimos evento de selecion de canal para recibir nuevos mensajes
-        Socket.emit('disconnectChannel', { 'channelid': channelidAntiguo, 'userid': $localStorage.id } );
-        Socket.emit('selectChannel', { 'channelid': channel.id , 'userid': $localStorage.id} );
+        console.log("ha llamado disconnect de channel");
+        Socket.emit('disconnectChannel');
+        Socket.emit('selectChannel');
         for (var j=0;j<$scope.groups.length;j++){
           var count = 0;
           if ($scope.groups[j].id == $scope.tagGroup.id){
@@ -1549,6 +1574,10 @@ angular.module('myAppAngularMinApp')
         /* mostrar advertencia de que se ha borrado un grupo */
         /* solo hay que hacerlo si estas dentro del grupo */
         if($scope.tagGroup.id == data.id){
+          console.log("ha llamado disconnect de grupo");
+          Socket.emit('disconnect');
+          console.log("ha llamado disconnect de channel");
+          Socket.emit('disconnectChannel');
 	        $scope.tagGroup = '';
 	        $scope.tagChannel = '';
         }
@@ -1619,9 +1648,7 @@ angular.module('myAppAngularMinApp')
       Socket.on('newMemberInGroup', function (data) {
         console.log ("newMemberInGroup receive from server");
         console.log(data);
-
         data.user.hash = $scope.getHash(data.user.mail);
-        //data.user.color = getRandomColor();
         $scope.members.push(data.user);
 
 
@@ -1661,7 +1688,7 @@ angular.module('myAppAngularMinApp')
         if($scope.tagGroup.id == data.group.groupId){
           console.log ("newPrivateChannel received from server");
           console.log(data);
-          data.channelNotifications = [{groupid: data.groupid,channelid: data.channelid, message:data.channelName + ' New public channel'}];data.channelNotificationsCount = 1;
+          data.channelNotifications = [{groupid: data.groupid,channelid: data.channelid, message:data.channelName + ' New private channel'}];data.channelNotificationsCount = 1;
           data.channelNotificationsCount = 1;
           $scope.privateChannels.push(data);
           $scope.$apply();
@@ -1727,7 +1754,8 @@ angular.module('myAppAngularMinApp')
 
         if (data.user.id == $localStorage.id){
         	if($scope.tagChannel.id == data.channelid){
-            Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+            console.log("ha llamado disconnect de channel");
+            Socket.emit('disconnectChannel');
         		$scope.tagChannel = ''
         	}
         	for (var i = 0; i < $scope.privateChannels.length; i++){
@@ -1816,7 +1844,8 @@ angular.module('myAppAngularMinApp')
           }
         }
         if($scope.tagChannel.id == data.id){
-          Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+          console.log("ha llamado disconnect de channel");
+          Socket.emit('disconnectChannel');
           $scope.channelMembers = '';
           $scope.channelSelected = false;
           $scope.tagChannel = '';
@@ -1834,7 +1863,8 @@ angular.module('myAppAngularMinApp')
           }
         }
         if($scope.tagChannel.id == data.id){
-          Socket.emit('disconnectChannel', { 'channelid': $scope.tagChannel.id, 'userid': $localStorage.id } );
+          console.log("ha llamado disconnect de channel");
+          Socket.emit('disconnectChannel');
           $scope.channelMembers = '';
           $scope.channelSelected = false;
           $scope.tagChannel = '';
@@ -1872,11 +1902,9 @@ angular.module('myAppAngularMinApp')
 
       Socket.on('newMemberInGroupEvent', function (data) {
         console.log ("newMemberInGroupEvent received from server");
-        if ($scope.tagGroup.id!=data.groupid){
           var message = 'New User';
           $scope.addGroupNotification(data,message);
           $scope.$apply();
-        }
       });
 
       Socket.on('newChannelEvent', function (data) {
