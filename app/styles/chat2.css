@@ -1441,3 +1441,6 @@ a.question-link:hover {
 .modal-header {
   font-family: Oswald;
 }
+.modal-body {
+  font-family: lora;
+}
