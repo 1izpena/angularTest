@@ -21,6 +21,8 @@ angular.module('myAppAngularMinApp')
         $scope.publicChannels = [];
         $scope.privateChannels = [];
 
+
+
       };
 
 /*
@@ -39,7 +41,9 @@ angular.module('myAppAngularMinApp')
       $scope.groupindex = -1;
       $scope.activeDirects = 0;
 
-
+      $scope.status_box='';
+      /*
+      $scope.isready = true;*/
 
       $scope.user = '';
 	    $scope.membersSettings = '';
@@ -87,6 +91,11 @@ angular.module('myAppAngularMinApp')
     $scope.logout = function () {
       LoginService.logout();
     };
+
+
+
+
+
 
       $scope.addGroupNotification = function (data, message) {
         if (data.groupid == $scope.tagGroup.id){
@@ -336,9 +345,9 @@ angular.module('myAppAngularMinApp')
 
     $scope.putBlanktextsearchbox = function(textsearchbox)
     {
-     
+
       $scope.textsearchbox = '';
-      
+
     };
 
 
@@ -351,15 +360,18 @@ angular.module('myAppAngularMinApp')
       if ( textsearchbox !== 'undefined' && textsearchbox !== '' ){
         searchservice.chatsearch(textsearchbox, $scope.tagGroup.id, $scope.tagChannel.id).then(function (res){
            if(res.error == undefined){
-             $scope.searchresults = res.slice();
-             for (var i = 0; i < $scope.searchresults.length; i++) {
+             var tempserachresults = res.slice();
+             //$scope.searchresults = res.slice();
+             for (var i = 0; i < tempserachresults.length; i++) {
                for ( var j = 0; j < $scope.channelMembers.length; j++){
-                 if ($scope.searchresults[i].source._user == $scope.channelMembers[j].id){
-                   $scope.searchresults[i].source._user =  $scope.channelMembers[j];
+                 if (tempserachresults[i].source._user == $scope.channelMembers[j].id){
+                   tempserachresults[i].source._user =  $scope.channelMembers[j];
+
                  }
                }
 
              }
+             $scope.searchresults = tempserachresults.slice();
            }
            else {
              $scope.searchresults = '';
@@ -987,7 +999,15 @@ angular.module('myAppAngularMinApp')
       };
       ChatService.getMessages(data).then(
         function(result) {
+
+          for(var i = 0; i < result.data.length; i++){
+            if(result.data[i].messageType == 'URL'){
+              result.data[i].visible = 0;
+            }
+          }
           $scope.listaMensajes = result.data;
+
+
         },
         function(error) {
           // TODO: mostrar error
@@ -1039,28 +1059,351 @@ angular.module('myAppAngularMinApp')
       };
 
 
-    $scope.sendText = function () {
-      if ($scope.text) {
+
+      $scope.changeVisible = function (msg, $index) {
+        console.log("cambio visible aaa ");
+
+
+        if($scope.listaMensajes[$index].visible == 0){
+          $scope.listaMensajes[$index].visible = 1;
+          $scope.getMetaTags(msg, $index);
+
+
+        }
+        else{
+          $scope.listaMensajes[$index].visible = 0;
+
+        }
+        console.log($scope.listaMensajes[$index].visible );
+
+      };
+
+
+
+
+      $scope.getMetaTags = function (msg, $index) {
+        var url = msg.text;
+        console.log("entro en metatags");
+
         var data = {
           userid: $localStorage.id,
-          groupid: $scope.groupid,
-          channelid: $scope.channelid,
-          text: $scope.text,
-          messageType: 'TEXT'
+          url: url
         };
 
-        ChatService.postMessage(data).then(
-          function (result) {
-            $scope.text = null;
+
+        ChatService.getMetaTags(data).then(
+          function(result) {
+
+
+            console.log("esto vale data");
+            console.log(result);
+
+            if(result == null){
+              /* si la url no esta soportada */
+              console.log("hay error al coger los metadatos");
+              $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml( "<h3> No information available </h3>");
+            }
+            else{
+              /* sino tiene tipo es 1 link */
+              if(typeof (result.type) == 'undefined'){
+                /* 1 link puede tener imagen o no */
+
+                var image = '';
+                var tittle = '';
+                var descrip = '';
+                var author_link = '';
+                var keywords = '';
+
+                if(typeof (result.title) !== 'undefined') {
+                  tittle = "<h3>"+result.title+"</h3>";
+
+                }
+
+                if(typeof (result.description) !== 'undefined') {
+                  descrip = "<p>"+result.description+"</p>";
+
+                }
+
+                if(typeof (result.author) !== 'undefined') {
+                  author_link = "<p>From "+result.author+"</p>";
+
+                }
+
+                if(result.keywords.length > 0) {
+                  for(var i = 0; i<  result.keywords.length; i++){
+                    keywords = keywords + "<p><span class='label label-info'>"+result.keywords[i]+"</span></p>";
+
+                  }
+
+                }
+
+
+                if(typeof (result.image) !== 'undefined') {
+                  image = "<img src=" + result.image + ">";
+
+                }
+
+                $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml( tittle +
+                  descrip +
+                  author_link +
+                  keywords +
+                  image);
+
+
+              }/* end if typeof (result.type) == 'undefined' */
+              /* es 1 video, audio, etc. */
+              else{
+                /* si es video = html
+                 * si es foto url para src de img
+                 * si es rich = html */
+
+                var author = '';
+                var html_img = '';
+                var title2 = '';
+                var provider = '';
+
+                if(typeof (result.title) !== 'undefined'){
+                  title2 = "<h3>"+result.title+"</h3>";
+                }
+
+
+                if(typeof (result.provider_name) !== 'undefined'){
+                  provider = "<p>"+result.provider_name+"</p>";
+                }
+
+
+                if(typeof (result.author_name) !== 'undefined'){
+                  author = "<p> From "+result.author_name+"</p>";
+                }
+
+
+                if(result.type == 'video' || result.type == 'rich'){
+                  html_img = result.html;
+                }
+
+                else if(result.type == 'photo'){
+                  html_img = "<img src="+result.url+">";
+                }
+
+                $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml(title2 +
+                  provider +
+                  author +
+                  html_img);
+
+
+              }/* end else typeof (data.type) == 'undefined' */
+
+            }
+
+
+
+             $scope.gotoAnchor(msg.id);
+
+
           },
-          function (error) {
-            // TODO: Mostrar error
-            console.log("Error en postMessage");
+          function(error) {
+            // TODO: mostrar error
+            console.log("error getMetaTags");
             console.log(error);
           }
         );
+
+      };
+
+
+
+
+
+      function findUrls( text )
+      {
+        var source = (text || '').toString();
+        var urlArray = [];
+        var url;
+        var matchArray;
+
+        // Regular expression to find FTP, HTTP(S) and email URLs.
+        var regexToken = /(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)|((mailto:)?[_.\w-]+@([\w][\w\-]+\.)+[a-zA-Z]{2,3})/g;
+
+        // Iterate through any URLs in the text.
+        while( (matchArray = regexToken.exec( source )) !== null )
+        {
+          var token = matchArray[0];
+          urlArray.push( token );
+        }
+
+        return urlArray;
       }
-    };
+
+
+
+
+/********* nuevo *************/
+
+
+      $scope.sendText = function () {
+        console.log("enviamos texto");
+        console.log($scope.textchat);
+        if ($scope.textchat) {
+          var data = {
+            userid: $localStorage.id,
+            groupid: $scope.groupid,
+            channelid: $scope.channelid,
+            text: $scope.textchat,
+            messageType: 'TEXT'
+          };
+
+
+          var tempdata = $scope.textchat.slice();
+          var arrayurls = findUrls(tempdata);
+          var atempdata = tempdata.split(" ");
+
+
+          /* si no hay urls se manda el mensaje */
+          if (arrayurls.length == 0) {
+            ChatService.postMessage(data).then(
+              function (result) {
+                $scope.textchat = null;
+              },
+              function (error) {
+                // TODO: Mostrar error
+                console.log("Error en postMessage");
+                console.log(error);
+              }
+            );
+
+          }
+          /* si hay urls pero es lo uniko */
+          else {
+            if (atempdata.length == 1) {
+              //console.log("solo 1 url");
+              data.messageType = 'URL';
+              ChatService.postMessage(data).then(
+                function (result) {
+                  $scope.textchat = null;
+                },
+                function (error) {
+                  // TODO: Mostrar error
+                  console.log("Error en postMessage");
+                  console.log(error);
+                }
+              );
+
+
+            }
+            /* si hay de tod0: texto y urls  */
+            else {
+
+              var sortarrayall = [];
+              var texttemp = '';
+              var indexsortarrayall = 0;
+              var indexurls = 0;
+
+              /* para cada obj mirar si es o no url
+               * sino lo es: lo vamos metiendo tod0 en 1 var temporal
+               * si lo es, hacemos push de la temporal y luego de la url */
+
+
+              for (var i = 0; i < atempdata.length; i++) {
+
+                if (atempdata[i] == arrayurls[indexurls]) {
+                  /* metemos lo anterior si hay, y sino la url */
+
+                  if (texttemp !== '') {
+                    var objdata = {};
+                    objdata.text = texttemp;
+                    objdata.messageType = 'TEXT';
+                    sortarrayall[indexsortarrayall] = objdata;
+                    texttemp = '';
+                    indexsortarrayall++;
+
+                  }
+                  var objdata = {};
+                  objdata.text = atempdata[i];
+                  objdata.messageType = 'URL';
+                  sortarrayall[indexsortarrayall]= objdata;
+                  indexsortarrayall++;
+                  indexurls++;
+
+
+                }
+                else {
+                  //si es la ultima posicion en el for y no es url, meterlo en el array
+
+                  if(i == atempdata.length-1 && atempdata[i] !== ''){
+                    var objdata = {};
+
+                    texttemp = texttemp + atempdata[i] + " ";
+                    objdata.text = texttemp;
+                    objdata.messageType = 'TEXT';
+                    sortarrayall[indexsortarrayall] = objdata;
+                    texttemp = '';
+
+                    indexsortarrayall++;
+
+
+                  }
+                  texttemp = texttemp + atempdata[i] + " ";
+
+                }
+
+              }
+              /* ahora que tenemos los campos a modificar y enteros
+               los mandamos*/
+
+
+              for (var j = 0; j < sortarrayall.length; j++) {
+                var data = {
+                  userid: $localStorage.id,
+                  groupid: $scope.groupid,
+                  channelid: $scope.channelid,
+                  text: sortarrayall[j].text,
+                  messageType: sortarrayall[j].messageType
+                };
+
+                console.log("esto envio desde el controlador");
+                console.log("con index " + j);
+                console.log(data.text);
+                console.log(data.messageType);
+                console.log("********************");
+
+                ChatService.postMessage(data).then(
+                  function (result) {
+                    $scope.textchat = null;
+                  },
+                  function (error) {
+                    // TODO: Mostrar error
+                    console.log("Error en postMessage");
+                    console.log(error);
+                  }
+                );
+                sleep(1000);
+
+
+              }
+              /*  end of for */
+
+            }
+
+          }
+        }
+
+      };
+
+
+
+
+      function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+          if ((new Date().getTime() - start) > milliseconds){
+            break;
+          }
+        }
+      };
+
+
+
+
 
       $scope.getGroupNotificationList= function (group) {
         for (var i=0;i<$scope.groups.length;i++){
@@ -1309,9 +1652,13 @@ angular.module('myAppAngularMinApp')
     };
 
     $scope.isInternalMessage = function ($index) {
-      if ($scope.listaMensajes[$index].text.indexOf('internalMessage#') == 0) {
-        return true;
+      if(typeof ($scope.listaMensajes[$index].text) !== "undefined"){
+        //console.log($scope.listaMensajes[$index].text);
+        if ($scope.listaMensajes[$index].text.indexOf('internalMessage#') == 0) {
+          return true;
+        }
       }
+
       return false;
     };
 
@@ -1332,6 +1679,9 @@ angular.module('myAppAngularMinApp')
       return messageText;
 
     };
+
+
+
 
       // Get answer data for a NEW_ANSWER internal message
       function getAnswerData (internalMessage) {
@@ -1504,8 +1854,18 @@ angular.module('myAppAngularMinApp')
      console.log(data.message.channel);
 
      // Si es el canal actual, añadimos mensaje a la listaMensaje
+
      if (data.message.channel.id == $scope.tagChannel.id) {
-     $scope.listaMensajes.push(data.message);
+       /* mirar si es 1 url y hasta que no este ready no pintar */
+        console.log("esto vale data.message");
+        console.log(data.message.text);
+       if(data.message.messageType == 'URL'){
+
+           data.message.visible = 0;
+
+
+       }
+        $scope.listaMensajes.push(data.message);
      }
      $scope.$apply();
      });

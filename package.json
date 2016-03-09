@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "imagemin": "^4.0.0",
-    "moment": "^2.10.6"
+    "moment": "^2.10.6",
+    "oembed-auto": "0.0.3"
   }
 }

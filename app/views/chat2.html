@@ -1,203 +1,201 @@
-
 <div class="chatContainer" ng-init="init()">
 
 
- <div id="wrapper">
+  <div id="wrapper">
 
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper" >
-           <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
-              <ul class="sidebar-nav" id="menu" >
-                <li class="sidebar-brand">
-                  <div class="text-center">
-                    <img src="images/logos/full-white-mini.png" alt="Logo" class="logo"/>
-                  </div>
-                  <div class="zone-buttons">
-                    <a class="btn-zone left active" href="">Chat</a>
-                    <a class="btn-zone right" ng-click="goTo('/foro','foro')">Forum</a>
-                  </div>
-                  <div class="logged-user">
-                    <div class="dropdown">
-                      <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=30&d=identicon"
-                           class="img-circle avatar" id="avatar"/>
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper" >
+      <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
+      <ul class="sidebar-nav" id="menu" >
+        <li class="sidebar-brand">
+          <div class="text-center">
+            <img src="images/logos/full-white-mini.png" alt="Logo" class="logo"/>
+          </div>
+          <div class="zone-buttons">
+            <a class="btn-zone left active" href="">Chat</a>
+            <a class="btn-zone right" ng-click="goTo('/foro','foro')">Forum</a>
+          </div>
+          <div class="logged-user">
+            <div class="dropdown">
+              <img ng-src="http://www.gravatar.com/avatar/{{user.hash}}?s=30&d=identicon"
+                   class="img-circle avatar" id="avatar"/>
                       <span class="dropdown-toggle" data-toggle="dropdown">
                         {{username}} <span class="caret"></span>
                       </span>
 
-                      <ul class="dropdown-menu menu-logout" role="menu">
-                        <li><a ng-click="logout()">Logout</a></li>
-                      </ul>
-                    </div>
-                  </div>
+              <ul class="dropdown-menu menu-logout" role="menu">
+                <li><a ng-click="logout()">Logout</a></li>
+              </ul>
+            </div>
+          </div>
 
-                </li>
-
-
-                <!--  invitaciones  -->
-                <li class="activeInvitations" ng-show="invitations.length > 0">
-                  <a class="btn btn-warning" ng-click="changeVarMenu('activeInvitations')" ><i class="fa fa-bell fa-fw"></i>Invitations</a>
-                  <ul ng-show="activeInvitations" class="emphasis">
-                    <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0" class="menu-option">
-                      {{invitation.groupName}}
+        </li>
 
 
-                      <div class="btn-group btn-group-xs">
-                        <a ng-click="acceptGroup(invitation, $index)" class="btn btn-success fa fa-thumbs-o-up"></a>
-                        <a ng-click="refuseGroup(invitation, $index)" class="btn btn-danger fa fa-thumbs-o-down"></a>
-                      </div>
-
-                    </li>
-
-
-                  </ul>
-                </li>
+        <!--  invitaciones  -->
+        <li class="activeInvitations" ng-show="invitations.length > 0">
+          <a class="btn btn-warning" ng-click="changeVarMenu('activeInvitations')" ><i class="fa fa-bell fa-fw"></i>Invitations</a>
+          <ul ng-show="activeInvitations" class="emphasis">
+            <li ng-repeat="invitation in invitations" ng-if="invitations.length > 0" class="menu-option">
+              {{invitation.groupName}}
 
 
-                <!-- grupos -->
-                <li class="active">
-                  <a class="btn btn-primary" ng-click="changeVarMenu('activeGroups')"><i class="fa fa-group fa-fw"></i>Groups
-                    <span class="badge badge-info pull-right" id="groupsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getGroupsNotificationList()" ng-show="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</span>
+              <div class="btn-group btn-group-xs">
+                <a ng-click="acceptGroup(invitation, $index)" class="btn btn-success fa fa-thumbs-o-up"></a>
+                <a ng-click="refuseGroup(invitation, $index)" class="btn btn-danger fa fa-thumbs-o-down"></a>
+              </div>
+
+            </li>
+
+
+          </ul>
+        </li>
+
+
+        <!-- grupos -->
+        <li class="active">
+          <a class="btn btn-primary" ng-click="changeVarMenu('activeGroups')"><i class="fa fa-group fa-fw"></i>Groups
+            <span class="badge badge-info pull-right" id="groupsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getGroupsNotificationList()" ng-show="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</span>
+          </a>
+
+          <ul ng-show="activeGroups" class="emphasis cgroups" id="grouplist">
+            <li ng-if="groupindex == $index || groupindex == -1" ng-repeat="group in groups" ng-show="groups.length > 0" class="menu-option">
+
+              <a ng-click="selectGroup(group, $index); changeVarMenu('activeGroupChannels')" ng-class="classResalt">
+                {{group.groupName}}
+                <span class="badge badge-info pull-right" id="groupNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getGroupNotificationList(group)" ng-show="group.groupNotificationsCount > 0">{{group.groupNotificationsCount}}</span>
+
+              </a>
+            </li>
+
+          </ul>
+
+          <!----  add group -->
+
+        <li ng-if="groupindex == -1 && activeGroups" class="menu-option addlink">
+          <a class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new group</a>
+        </li>
+
+
+
+        </li>
+
+
+        <!-- canales -->
+        <!--separator-->
+        <li class="activeChannels" ng-show= "tagGroup !== ''">
+          <a class="btn btn-primary" ng-click="changeVarMenu('activeChannels')">
+            <i class="fa fa-comment fa-fw"></i>Channels
+            <span class="badge badge-info pull-right" id="channelsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getChannelsNotificationList()" ng-show="channelsNotificationsCount > 0">{{channelsNotificationsCount}}</span>
+          </a>
+          <ul ng-show= "activeChannels">
+            <li class="activeChannelsPublic channel-type active">
+              <a ng-show= "publicChannels.length > 0" class="type-name">
+                Public
+
+              </a>
+
+              <ul class="emphasis">
+                <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
+                  <a ng-click="selectChannel(channel, 'public')" ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
+                    {{channel.channelName}}
+                    <span class="badge badge-info pull-right" id="publicChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPublicChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
                   </a>
-
-                  <ul ng-show="activeGroups" class="emphasis cgroups" id="grouplist">
-                    <li ng-if="groupindex == $index || groupindex == -1" ng-repeat="group in groups" ng-show="groups.length > 0" class="menu-option">
-
-                      <a ng-click="selectGroup(group, $index); changeVarMenu('activeGroupChannels')" ng-class="classResalt">
-                        {{group.groupName}}
-                        <span class="badge badge-info pull-right" id="groupNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getGroupNotificationList(group)" ng-show="group.groupNotificationsCount > 0">{{group.groupNotificationsCount}}</span>
-
-                      </a>
-                    </li>
-
-                  </ul>
-
-                  <!----  add group -->
-
-                    <li ng-if="groupindex == -1 && activeGroups" class="menu-option addlink">
-                      <a class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new group</a>
-                    </li>
-
-
-
                 </li>
-
-
-                <!-- canales -->
-                <!--separator-->
-                <li class="activeChannels" ng-show= "tagGroup !== ''">
-                  <a class="btn btn-primary" ng-click="changeVarMenu('activeChannels')">
-                    <i class="fa fa-comment fa-fw"></i>Channels
-                    <span class="badge badge-info pull-right" id="channelsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getChannelsNotificationList()" ng-show="channelsNotificationsCount > 0">{{channelsNotificationsCount}}</span>
+              </ul>
+            </li>
+            <li class="channel-type">
+              <a ng-show= "privateChannels.length > 0" class="type-name" id="headerpublic">
+                Private
+              </a>
+              <ul class="emphasis">
+                <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
+                  <a ng-click="selectChannel(channel, 'private')" ng-class="channel.id == tagChannel.id ?classResaltChannelPrivate : ''">
+                    {{channel.channelName}}
+                    <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPrivateChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount.length() > 0">{{channel.channelNotificationsCount}}</span>
                   </a>
-                  <ul ng-show= "activeChannels">
-                    <li class="activeChannelsPublic channel-type active">
-                      <a ng-show= "publicChannels.length > 0" class="type-name">
-                        Public
-
-                      </a>
-
-                      <ul class="emphasis">
-                        <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
-                          <a ng-click="selectChannel(channel, 'public')" ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
-                            {{channel.channelName}}
-                            <span class="badge badge-info pull-right" id="publicChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPublicChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li class="channel-type">
-                      <a ng-show= "privateChannels.length > 0" class="type-name" id="headerpublic">
-                        Private
-                      </a>
-                      <ul class="emphasis">
-                        <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
-                          <a ng-click="selectChannel(channel, 'private')" ng-class="channel.id == tagChannel.id ?classResaltChannelPrivate : ''">
-                            {{channel.channelName}}
-                            <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPrivateChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount.length() > 0">{{channel.channelNotificationsCount}}</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-
-                  </ul>
-
-                  <!----  add channel -->
-                  <li ng-show= "activeChannels && activeGroups && tagGroup !== ''" class="menu-option addlink">
-                      <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
-                  </li>
-
-
-
-
                 </li>
+              </ul>
+            </li>
+
+          </ul>
+
+          <!----  add channel -->
+        <li ng-show= "activeChannels && activeGroups && tagGroup !== ''" class="menu-option addlink">
+          <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
+        </li>
 
 
-                <!--separator-->
-                <!-- mensajes directos -->
 
-                <li class="activeMembers" ng-show= "tagGroup !== ''">
-                  <a ng-click="changeVarMenu('activeDirects')" class="btn btn-primary" aria-expanded="false">
-                    <i class="fa fa-user fa-fw"></i>Direct Messages
-                    <span class="badge badge-info pull-right" id="directChannelsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getDirectChannelsNotificationList()" ng-show="directChannelsNotificationsCount > 0">{{directChannelsNotificationsCount}}</span>
-                  </a>
 
-                  <ul ng-show="activeDirects" class="emphasis">
-                    <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
+        </li>
 
-                    <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid" class="menu-option">
-                      <a ng-click="searchDirectChannel(member)" ng-class="member.id == tagMember.id ?classResaltDirect : ''">
-                        <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'" ></span>
-<!--    <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o' ; member.id == tagMember.id ?classResaltDirect : ''" ></span>    -->
 
-                        {{member.username}}
-                      </a>
-                    </li>
+        <!--separator-->
+        <!-- mensajes directos -->
 
-                  </ul>
-                </li>
+        <li class="activeMembers" ng-show= "tagGroup !== ''">
+          <a ng-click="changeVarMenu('activeDirects')" class="btn btn-primary" aria-expanded="false">
+            <i class="fa fa-user fa-fw"></i>Direct Messages
+            <span class="badge badge-info pull-right" id="directChannelsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getDirectChannelsNotificationList()" ng-show="directChannelsNotificationsCount > 0">{{directChannelsNotificationsCount}}</span>
+          </a>
+
+          <ul ng-show="activeDirects" class="emphasis">
+            <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
+
+            <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid" class="menu-option">
+              <a ng-click="searchDirectChannel(member)" ng-class="member.id == tagMember.id ?classResaltDirect : ''">
+                <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'" ></span>
+                <!--    <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o' ; member.id == tagMember.id ?classResaltDirect : ''" ></span>    -->
+
+                {{member.username}}
+              </a>
+            </li>
+
+          </ul>
+        </li>
 
 
       </ul>
     </div>
 
-<!--
-    <a href="#menu-toggle" class="btn btn-default glyphicon glyphicon-th-list" id="menu-toggle"></a>
-
-    <!--	 <a href="" class="btn btn-default glyphicon glyphicon-cog" id="menu-toggle2"></a>  -->
+    <!--
+        <a href="#menu-toggle" class="btn btn-default glyphicon glyphicon-th-list" id="menu-toggle"></a>
+        <!--	 <a href="" class="btn btn-default glyphicon glyphicon-cog" id="menu-toggle2"></a>  -->
 
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
       <div class="container-fluid">
-       <!-- <div class="row"> -->
+        <!-- <div class="row"> -->
 
         <div class="row">
 
 
 
 
-		<!-- si no hay error -->
-		<!--<div ng-show="!error" ng-class="class1" id="col8"> -->
-        <div ng-class="class1" id="col8">
+          <!-- si no hay error -->
+          <!--<div ng-show="!error" ng-class="class1" id="col8"> -->
+          <div ng-class="class1" id="col8">
 
-      		<!--Sidebar content-->
+            <!--Sidebar content-->
 
-          <div class="panel panel-info" id="panel-info">
+            <div class="panel panel-info" id="panel-info">
 
-            <div  class="panel-heading" id="panel-heading">
+              <div  class="panel-heading" id="panel-heading">
 
-             <div class="container-fluid panel-container">
-
-
-                <div class="col-xs-2">
-                <!-- #menu-toggle -->
-                      <a ng-href=""
-                      class="glyphicon glyphicon-th-list classtoggle" >
-                      </a>
-                </div>
+                <div class="container-fluid panel-container">
 
 
-                <div class="col-xs-7 text-center ">
+                  <div class="col-xs-2">
+                    <!-- #menu-toggle -->
+                    <a ng-href=""
+                       class="glyphicon glyphicon-th-list classtoggle" >
+                    </a>
+                  </div>
+
+
+                  <div class="col-xs-7 text-center ">
                     <a id="tagGroup" ng-click="showGrouptoEdit(tagGroup)">
 
                       {{tagGroup.groupName}}
@@ -205,170 +203,165 @@
                     <a ng-click="changeSettingsChannelVisible()" class="" id="menu-tag" ng-if= "tagChannel !== '' ">
                       #{{tagChannel.channelName}}
                     </a>
-                </div>
+                  </div>
 
-                <div class="col-xs-3" id="btnviewright">
+                  <div class="col-xs-3" id="btnviewright">
 
-                <!-- ******************** -->
+                    <!-- ******************** -->
 
-                <div ng-show="tagGroup !== '' && tagChannel !== ''" class="input-group input-group-unstyled" id="inline-group">
+                    <div ng-show="tagGroup !== '' && tagChannel !== ''" class="input-group input-group-unstyled" id="inline-group">
 
 
 
-                    <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
+                      <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
 
                     <span class="input-group-btn">
                         <button ng-click="changeSearchNav(1); searchtextinchannel(textsearchbox)" class="btn btn-info" type="button">
-                            <span class=" glyphicon glyphicon-search"></span>
+                          <span class=" glyphicon glyphicon-search"></span>
                         </button>
                     </span>
 
 
-                <!--                             <span ng-click="setSettingsOptions(0)" class="input-group-addon">
-                                                <i class="fa fa-search"></i>
-                                            </span>
-
-
-                                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
-
-
--->
-                 </div>
-
-
-                <!--
-                <input id="searchbox" type="text" class="search-query form-control" placeholder="Search" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-danger" type="button">
-                                        <span class=" glyphicon glyphicon-search"></span>
-                                    </button>
-                                </span>
-
--->
-
-                <!-- ************************* -->
-
-                <!-- de momento no se usa, es el que abre el contenedor de busqueda -->
-
-                <!--  <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
-                   </a> -->
-
-                </div>
-
-            </div>  <!-- container-fluid panel-container -->
-
-            </div> <!-- panel-heading -->
-
-
-
-            <!-- si no hemos seleccionado canal se muestra otro panel (settings grupo) -->
-            <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
-
-                <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
-                    <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set">
-
-
-                          <div class="panel-heading" id="panel-heading-settings">
-
-                               <div class="container-fluid panel-container">
-
-                                      <div class="col-xs-12">
-                                         <h3 class="panel-title">Group Settings </h3>
-                                           <!-- <h3 ng-click="#menu-toggle" class="glyphicon glyphicon-th-list" id="menu-toggle"></a>    -->
-                                      </div>
-
-
-                              </div>  <!-- container-fluid panel-container -->
-
-
-                         </div> <!-- end panel-heading-settings  -->
-
-
-                        <div class="panel-body" id="panel-settings">
-                            <div class="container-fluid panel-container">
-
-                                <div class="col-xs-5 col-sm-3 col-md-3">
-                                  <p>
-                                     <span class="group-name" editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
-                                  {{ tagGroup.groupName || 'empty' }}
-                                     </span>
-                                    </p>
-                                </div>
-
-
-
-                                 <div class="col-xs-7 col-sm-9 col-md-9 " id="btneditgroup">
-
-                                      <div class="btn-group" role="group" aria-label="">
-                                        <button type="button" title="Edit group name" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminGroup.id != userid">
-                                                  <span class="fa fa-pencil fa-fw"></span>
-                                        </button>
-
-                                        <!--  de momento si el usuario es el admin,
-                                              no se puede salir hasta que no gestionemos eso
-                                        -->
-                                        <button type="button" title="unsuscribe from group" class="btn btn-warning"
-                                        data-toggle="modal" data-target="#unsuscribeFromGroupModal"
-                                         ng-hide="textBtnForm.$visible || adminGroup.id == userid">
-                                                  <span class="fa fa-chain-broken fa-fw"> </span> <span class="white-label"><strong></strong> </span>
-
-                                        </button>
-
-
-                                        <!-- falta implementar, tambien modal -->
-                                        <button type="button" title="delete group" class="btn btn-danger"
-                                        data-toggle="modal" data-target="#deleteGroupModal"
-                                        ng-hide="textBtnForm.$visible || adminGroup.id != userid">
-                                                  <span class="fa fa-trash fa-fw"></span>
-                                        </button>
-
-                              </div>
-
+                      <!--                             <span ng-click="setSettingsOptions(0)" class="input-group-addon">
+                                                      <i class="fa fa-search"></i>
+                                                  </span>
+                                                  <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
+      -->
                     </div>
 
 
-                            </div>  <!-- container-fluid panel-container -->
+                    <!--
+                    <input id="searchbox" type="text" class="search-query form-control" placeholder="Search" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-danger" type="button">
+                                            <span class=" glyphicon glyphicon-search"></span>
+                                        </button>
+                                    </span>
+    -->
 
-                        </div> <!-- end panel-body -->
+                    <!-- ************************* -->
 
-                    </div>   <!-- end panel-info -->
-                 </div>     <!-- end row -->
+                    <!-- de momento no se usa, es el que abre el contenedor de busqueda -->
 
+                    <!--  <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
+                       </a> -->
 
-                 <div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
-                    <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set1">
+                  </div>
 
-                      <div class="panel-heading" id="panel-heading-settings">
+                </div>  <!-- container-fluid panel-container -->
 
-                               <div class="container-fluid panel-container">
-
-                                      <div class="col-xs-11">
-                                          <h3 class="panel-title">Group Team Directory
-                                        <span class="badge">{{membersSettings.length}}</span>
-                                        </h3>
-                                      </div>
-
-
-
-                              </div>  <!-- container-fluid panel-container -->
-
-                         </div> <!-- end panel-heading-settings  1-->
+              </div> <!-- panel-heading -->
 
 
-                              <div class="panel-body" id="panel-settings">
 
-                                  <div class="container-fluid panel-container">
+              <!-- si no hemos seleccionado canal se muestra otro panel (settings grupo) -->
+              <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
 
-                                      <div class="col-xs-8 col-xs-offset-2 text-center">
+                <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
+                  <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set">
 
 
-                                        <div class="input-group input-group-unstyled">
+                    <div class="panel-heading" id="panel-heading-settings">
+
+                      <div class="container-fluid panel-container">
+
+                        <div class="col-xs-12">
+                          <h3 class="panel-title">Group Settings </h3>
+                          <!-- <h3 ng-click="#menu-toggle" class="glyphicon glyphicon-th-list" id="menu-toggle"></a>    -->
+                        </div>
+
+
+                      </div>  <!-- container-fluid panel-container -->
+
+
+                    </div> <!-- end panel-heading-settings  -->
+
+
+                    <div class="panel-body" id="panel-settings">
+                      <div class="container-fluid panel-container">
+
+                        <div class="col-xs-5 col-sm-3 col-md-3">
+                          <p>
+                                     <span class="group-name" editable-text="tagGroup.groupName" e-form="textBtnForm" e-required onbeforesave="checkGroupName($data, tagGroup)">
+                                  {{ tagGroup.groupName || 'empty' }}
+                                     </span>
+                          </p>
+                        </div>
+
+
+
+                        <div class="col-xs-7 col-sm-9 col-md-9 " id="btneditgroup">
+
+                          <div class="btn-group" role="group" aria-label="">
+                            <button type="button" title="Edit group name" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminGroup.id != userid">
+                              <span class="fa fa-pencil fa-fw"></span>
+                            </button>
+
+                            <!--  de momento si el usuario es el admin,
+                                  no se puede salir hasta que no gestionemos eso
+                            -->
+                            <button type="button" title="unsuscribe from group" class="btn btn-warning"
+                                    data-toggle="modal" data-target="#unsuscribeFromGroupModal"
+                                    ng-hide="textBtnForm.$visible || adminGroup.id == userid">
+                              <span class="fa fa-chain-broken fa-fw"> </span> <span class="white-label"><strong></strong> </span>
+
+                            </button>
+
+
+                            <!-- falta implementar, tambien modal -->
+                            <button type="button" title="delete group" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#deleteGroupModal"
+                                    ng-hide="textBtnForm.$visible || adminGroup.id != userid">
+                              <span class="fa fa-trash fa-fw"></span>
+                            </button>
+
+                          </div>
+
+                        </div>
+
+
+                      </div>  <!-- container-fluid panel-container -->
+
+                    </div> <!-- end panel-body -->
+
+                  </div>   <!-- end panel-info -->
+                </div>     <!-- end row -->
+
+
+                <div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
+                  <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set1">
+
+                    <div class="panel-heading" id="panel-heading-settings">
+
+                      <div class="container-fluid panel-container">
+
+                        <div class="col-xs-11">
+                          <h3 class="panel-title">Group Team Directory
+                            <span class="badge">{{membersSettings.length}}</span>
+                          </h3>
+                        </div>
+
+
+
+                      </div>  <!-- container-fluid panel-container -->
+
+                    </div> <!-- end panel-heading-settings  1-->
+
+
+                    <div class="panel-body" id="panel-settings">
+
+                      <div class="container-fluid panel-container">
+
+                        <div class="col-xs-8 col-xs-offset-2 text-center">
+
+
+                          <div class="input-group input-group-unstyled">
                                              <span ng-click="setSettingsOptions(0)" class="input-group-addon">
                                                 <i class="fa fa-search"></i>
                                             </span>
 
 
-                                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
+                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
                                             <span ng-if="adminGroup.id == userid" ng-click="setSettingsOptions(1)" class="input-group-addon" title="Add user to group" id="btnadduser">
                                                 <i class="fa fa-user-plus"></i><span class="white-label"> </span>
                                             </span>
@@ -377,194 +370,189 @@
                                                 <i class="fa fa-user-times"></i><span class="white-label"> </span>
                                             </span>
 
-                                        </div>
+                          </div>
 
-                                      </div>
-
-
-                                      <div class="col-xs-2" id="btnviewright">
-                                      </div>
-
-                                  </div>  <!-- container-fluid panel-container -->
+                        </div>
 
 
-                              </div> <!-- panel-settings(panel-body) -->
+                        <div class="col-xs-2" id="btnviewright">
+                        </div>
+
+                      </div>  <!-- container-fluid panel-container -->
+
+
+                    </div> <!-- panel-settings(panel-body) -->
 
 
 
-                               <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettings.length == 0">
-                                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettings.length == 0">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="">
-                                                      <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h3>There are not users to add</h3>
-                                      </div>
-                                </div>
+                    <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettings.length == 0">
+                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettings.length == 0">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3>There are not users to add</h3>
+                      </div>
+                    </div>
 
 
-                              <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettings.length > 0">
+                    <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettings.length > 0">
 
-                                <div id="list-group">
-                                  <div class="clearfix" ng-if="$index % 3 == 0"></div>
-                                  <div class="col-md-4 col-xs-6 member-item"
-                                         ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
+                      <div id="list-group">
+                        <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                        <div class="col-md-4 col-xs-6 member-item"
+                             ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
 
-                                      <div class="member-container"
-                                           ng-class="(option == 1 && !member.isinvited) ? 'list-group-add' :
+                          <div class="member-container"
+                               ng-class="(option == 1 && !member.isinvited) ? 'list-group-add' :
                                                      ((option == 2 && (member.id != adminGroup.id)) ? 'list-group-remove' :  'list-group-default')"
-                                           ng-click="(option == 1 && !member.isinvited) ? inviteUserToGroup(member) :
+                               ng-click="(option == 1 && !member.isinvited) ? inviteUserToGroup(member) :
                                                      ((option == 2 && (member.id != adminGroup.id)) ? removeUserFromGroup(member) :  null)">
-                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
+                            <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
 
-                                        <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
-                                        <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
+                            <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
+                            <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
 
-                                        <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
-                                        <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
-                                      </div>
-                                    </div>
-                                </div>
+                            <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
+                            <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
+                          </div>
+                        </div>
+                      </div>
 
 
-                                     <!-- <ul ng-class="(option == 1) ? 'list-group-add' : ((option == 2) ? 'list-group-remove' :  'list-group')" id="list-group">
-
-                                      <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}"
-                                           ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
-                                           class="list-group-item"
-                                           ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
-                                           ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
-                                      &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
-                                               <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
-
-                                                        <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
-
-                                                        <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
-
-                                                        <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
-                                                        </p>
-
-                                                        <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
-                                      </li>
-                                    </ul>-->
+                      <!-- <ul ng-class="(option == 1) ? 'list-group-add' : ((option == 2) ? 'list-group-remove' :  'list-group')" id="list-group">
+                       <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}"
+                            ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
+                            class="list-group-item"
+                            ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
+                            ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
+                       &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
+                                <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
+                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
+                                         <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
+                                         <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
+                                         </p>
+                                         <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
+                       </li>
+                     </ul>-->
 
 
 
-                                  </div>  <!-- container-fluid panel-container -->
+                    </div>  <!-- container-fluid panel-container -->
 
 
 
-                    </div> <!-- panel-set1 (team directory)-->
+                  </div> <!-- panel-set1 (team directory)-->
 
-                 </div> <!-- row-settings -->
-
-
-
-            </div> <!--  panel-body1 -->
+                </div> <!-- row-settings -->
 
 
-<!--***********************************************-->
 
-            <!-- si hemos seleccionado canal y le hemos dado al nombre del canal en la cabecera (seetings) se muestra otro panel (settings canal) -->
-            <div ng-if= "tagChannel !== '' && tagGroup !== '' &&activeChannelSettings" class="panel-body" id="panel-body1channels">
+              </div> <!--  panel-body1 -->
+
+
+              <!--***********************************************-->
+
+              <!-- si hemos seleccionado canal y le hemos dado al nombre del canal en la cabecera (seetings) se muestra otro panel (settings canal) -->
+              <div ng-if= "tagChannel !== '' && tagGroup !== '' &&activeChannelSettings" class="panel-body" id="panel-body1channels">
 
                 <div class="row" id="row-settingschannels">
-                    <div class="panel panel-info" id="panel-setchannels">
+                  <div class="panel panel-info" id="panel-setchannels">
 
 
-                          <div class="panel-heading" id="panel-heading-settingschannels">
+                    <div class="panel-heading" id="panel-heading-settingschannels">
 
-                               <div class="container-fluid panel-container">
+                      <div class="container-fluid panel-container">
 
-                                      <div class="col-xs-12">
-                                         <h3 class="panel-title">Channel Settings </h3>
+                        <div class="col-xs-12">
+                          <h3 class="panel-title">Channel Settings </h3>
 
-                                      </div>
+                        </div>
 
-                              </div>  <!-- container-fluid panel-container -->
+                      </div>  <!-- container-fluid panel-container -->
 
-                         </div> <!-- end panel-heading-settings  -->
-<!--  aqui me he quedado -->
+                    </div> <!-- end panel-heading-settings  -->
+                    <!--  aqui me he quedado -->
 
-                        <div class="panel-body" id="panel-settingschannels">
-                            <div class="container-fluid panel-container">
+                    <div class="panel-body" id="panel-settingschannels">
+                      <div class="container-fluid panel-container">
 
-                                <div class="col-xs-5 col-sm-3 col-md-3">
-                                  <p>
+                        <div class="col-xs-5 col-sm-3 col-md-3">
+                          <p>
                                      <span class="channel-name" editable-text="tagChannel.channelName" e-form="textBtnForm" e-required onbeforesave="checkChannelName($data, tagChannel)">
                                   {{ tagChannel.channelName || 'empty' }}
                                      </span>
-                                    </p>
-                                </div>
+                          </p>
+                        </div>
 
 
-                                 <div class="col-xs-7 col-sm-9 col-md-9 " id="btneditchannel">
+                        <div class="col-xs-7 col-sm-9 col-md-9 " id="btneditchannel">
 
-                                      <div class="btn-group" role="group" aria-label="">
-                                        <button type="button" title="Edit channel name" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminChannel.id != userid">
-                                                  <span class="fa fa-pencil fa-fw"></span>
-                                        </button>
+                          <div class="btn-group" role="group" aria-label="">
+                            <button type="button" title="Edit channel name" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminChannel.id != userid">
+                              <span class="fa fa-pencil fa-fw"></span>
+                            </button>
 
-                                        <button type="button" title="Unsuscribe from group" class="btn btn-warning"
-                                        data-toggle="modal" data-target="#unsuscribeFromChannelModal"
-                                         ng-hide="textBtnForm.$visible ||
+                            <button type="button" title="Unsuscribe from group" class="btn btn-warning"
+                                    data-toggle="modal" data-target="#unsuscribeFromChannelModal"
+                                    ng-hide="textBtnForm.$visible ||
                                          adminChannel.id == userid ||
                                          tagChannel.type == 'public'">
-                                                  <span class="fa fa-chain-broken fa-fw"></span>
-                                        </button>
+                              <span class="fa fa-chain-broken fa-fw"></span>
+                            </button>
 
-                                        <button type="button" title="delete group" class="btn btn-danger"
-                                        data-toggle="modal" data-target="#deleteChannelModal"
-                                        ng-hide="textBtnForm.$visible || adminChannel.id != userid">
-                                                  <span class="fa fa-trash fa-fw"></span>
-                                        </button>
+                            <button type="button" title="delete group" class="btn btn-danger"
+                                    data-toggle="modal" data-target="#deleteChannelModal"
+                                    ng-hide="textBtnForm.$visible || adminChannel.id != userid">
+                              <span class="fa fa-trash fa-fw"></span>
+                            </button>
 
-                                      </div>
+                          </div>
 
-                                </div>
-
-
-                            </div>  <!-- container-fluid panel-container -->
-
-                        </div> <!-- end panel-body -->
-
-                    </div>   <!-- end panel-info -->
-                 </div>     <!-- end row -->
+                        </div>
 
 
-                 <div class="row" id="row-settings1channels">
-                    <div class="panel panel-info" id="panel-set1channels" ng-show="tagChannel.type == 'private'">
+                      </div>  <!-- container-fluid panel-container -->
 
-                      <div class="panel-heading" id="panel-heading-settingschannels">
+                    </div> <!-- end panel-body -->
 
-                               <div class="container-fluid panel-container">
-
-                                      <div class="col-xs-11">
-                                          <h3 class="panel-title">Channel Team Directory
-                                        <span class="badge">{{membersSettingschannel.length}}</span>
-                                        </h3>
-                                      </div>
+                  </div>   <!-- end panel-info -->
+                </div>     <!-- end row -->
 
 
+                <div class="row" id="row-settings1channels">
+                  <div class="panel panel-info" id="panel-set1channels" ng-show="tagChannel.type == 'private'">
 
-                              </div>  <!-- container-fluid panel-container -->
+                    <div class="panel-heading" id="panel-heading-settingschannels">
 
-                         </div> <!-- end panel-heading-settings  1-->
+                      <div class="container-fluid panel-container">
+
+                        <div class="col-xs-11">
+                          <h3 class="panel-title">Channel Team Directory
+                            <span class="badge">{{membersSettingschannel.length}}</span>
+                          </h3>
+                        </div>
 
 
-                              <div class="panel-body" id="panel-settingschannels">
 
-                                  <div class="container-fluid panel-container">
+                      </div>  <!-- container-fluid panel-container -->
 
-                                      <div class="col-xs-8 col-xs-offset-2 text-center">
+                    </div> <!-- end panel-heading-settings  1-->
 
 
-                                        <div class="input-group input-group-unstyled">
+                    <div class="panel-body" id="panel-settingschannels">
+
+                      <div class="container-fluid panel-container">
+
+                        <div class="col-xs-8 col-xs-offset-2 text-center">
+
+
+                          <div class="input-group input-group-unstyled">
                                              <span ng-click="setSettingsOptionschannel(0)" class="input-group-addon">
                                                 <i class="fa fa-search"></i>
                                             </span>
 
 
-                                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
+                            <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
 
                                             <span ng-if="adminChannel.id == userid" ng-click="setSettingsOptionschannel(1)" class="input-group-addon" title="Add user to channel" id="btnadduser">
                                                 <i class="fa fa-user-plus"></i><span class="white-label"></span>
@@ -574,190 +562,200 @@
                                                 <i class="fa fa-user-times"></i><span class="white-label"></span>
                                             </span>
 
-                                        </div>
+                          </div>
 
-                                      </div>
-
-
-                                      <div class="col-xs-2" id="btnviewright">
-                                      </div>
-
-                                  </div>  <!-- container-fluid panel-container -->
+                        </div>
 
 
-                              </div> <!-- panel-settings(panel-body) -->
+                        <div class="col-xs-2" id="btnviewright">
+                        </div>
+
+                      </div>  <!-- container-fluid panel-container -->
+
+
+                    </div> <!-- panel-settings(panel-body) -->
 
 
 
-                               <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettingschannel.length == 0">
-                                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettingschannel.length == 0">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="">
-                                                      <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            <h3>There are not users to add</h3>
-                                      </div>
-                                </div>
+                    <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettingschannel.length == 0">
+                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettingschannel.length == 0">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3>There are not users to add</h3>
+                      </div>
+                    </div>
 
 
-                              <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettingschannel.length > 0">
+                    <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettingschannel.length > 0">
 
-                                <div id="list-group">
-                                  <div class="clearfix" ng-if="$index % 3 == 0"></div>
-                                  <div class="col-md-4 col-xs-6 member-item"
-                                       ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
+                      <div id="list-group">
+                        <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                        <div class="col-md-4 col-xs-6 member-item"
+                             ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
 
-                                    <div class="member-container"
-                                         ng-class="(option == 1) ? 'list-group-add' :
+                          <div class="member-container"
+                               ng-class="(option == 1) ? 'list-group-add' :
                                                   ((option == 2 && (adminChannel.id != member.id)) ? 'list-group-remove' :  'list-group-default')"
-                                         ng-click="(option == 1) ? addUserToChannel(member, $index) :
+                               ng-click="(option == 1) ? addUserToChannel(member, $index) :
                                                   ((option == 2 && (adminChannel.id != member.id)) ? deleteUserFromChannel(member, $index) :  null)">
-                                      <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
+                            <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
 
-                                      <span ng-if="adminChannel.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
+                            <span ng-if="adminChannel.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
 
-                                      <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
-                                      <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
-                                    </div>
-                                  </div>
-                                </div>
+                            <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
+                            <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
+                          </div>
+                        </div>
+                      </div>
 
-                                      <!--<ul class="list-group" id="list-group">
+                      <!--<ul class="list-group" id="list-group">
 &lt;!&ndash; cambiar remove, add y search&ndash;&gt;
-                                      <li  ng-class="{'disabled': adminChannel.id == member.id}"
-                                           ng-click="(option == 1) ? addUserToChannel(member, $index) : ((option == 2) ? deleteUserFromChannel(member, $index) :  null)"
-                                      class="list-group-item"
-                                      ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
-                                      ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
-
-                                      &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
-
-                                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
-
-                                                        <span ng-if="adminGroup.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
-
-                                                      &lt;!&ndash;  <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span> &ndash;&gt;
-
-                                                        <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
-                                                        </p>
-
-                                                        <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
-
-
-                                      </li>
-
-
-                                    </ul>-->
-                                     <!--  <div class="col-md-4">
-                                      </div>
-                                      -->
+                      <li  ng-class="{'disabled': adminChannel.id == member.id}"
+                           ng-click="(option == 1) ? addUserToChannel(member, $index) : ((option == 2) ? deleteUserFromChannel(member, $index) :  null)"
+                      class="list-group-item"
+                      ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
+                      ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
+                      &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
+                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
+                                        <span ng-if="adminGroup.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
+                                      &lt;!&ndash;  <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span> &ndash;&gt;
+                                        <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
+                                        </p>
+                                        <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
+                      </li>
+                    </ul>-->
+                      <!--  <div class="col-md-4">
+                       </div>
+                       -->
 
 
 
-                              </div>  <!-- container-fluid panel-container -->
+                    </div>  <!-- container-fluid panel-container -->
 
 
 
-                    </div> <!-- panel-set1 (team directory)-->
+                  </div> <!-- panel-set1 (team directory)-->
 
-                 </div> <!-- row-settings -->
+                </div> <!-- row-settings -->
 
 
-            </div> <!--  panel-body1 -->
+              </div> <!--  panel-body1 -->
 
-<!--  end panel channel settings -->
-<!-- ********************************************** -->
+              <!--  end panel channel settings -->
+              <!-- ********************************************** -->
 
-            <div ng-if= "tagChannel !== '' && !activeChannelSettings" class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
-              <ul class="chat">
-                <li ng-repeat="msg in listaMensajes" send-last
-                    ng-class="{'internal-message':isInternalMessage($index)}"
-                    name="{{msg.id}}" id="{{msg.id}}"
-                    class="left clearfix">
-                  <hr ng-if="showUserInfo($index)">
+              <div ng-if= "tagChannel !== '' && !activeChannelSettings" class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
+                <ul class="chat">
+                  <li ng-repeat="msg in listaMensajes" send-last
+                      ng-class="{'internal-message':isInternalMessage($index)}"
+                      name="{{msg.id}}" id="{{msg.id}}"
+                      class="left clearfix">
+
+                    <hr ng-if="showUserInfo($index) && !$first">
                   <span class="chat-img pull-left"
                         ng-if="showUserInfo($index)">
                     <img ng-src="http://www.gravatar.com/avatar/{{getHash(msg.user.mail)}}?s=30&d=identicon"
                          alt="User Avatar" />
                   </span>
 
-                  <div class="chat-body clearfix">
-                    <div class="header text-left" ng-if="showUserInfo($index)">
-                      <strong class="username">{{msg.user.username}}</strong>
-                      <small class="date" >
-                        <span class="glyphicon glyphicon-time"></span>
-                        <span am-time-ago="msg.date"></span>
-                      </small>
-                    </div>
+                    <div class="chat-body clearfix">
+                      <div class="header text-left" ng-if="showUserInfo($index)">
+                        <strong class="username">{{msg.user.username}}</strong>
+                        <small class="date" >
+                          <span class="glyphicon glyphicon-time"></span>
+                          <span am-time-ago="msg.date"></span>
+                        </small>
+                      </div>
 
-                    <p ng-if="isInternalMessage($index)" class="text-left">
+                      <p ng-if="isInternalMessage($index)" class="text-left">
 
-                      <span bind-html-compile="getInternalMessage($index)"></span>
-                    </p>
-                    <p ng-if="msg.messageType=='TEXT' && !isInternalMessage($index)" class="text-left">
-                      {{msg.text}}
-                    </p>
-                    <p ng-if="msg.messageType=='FILE'" class="text-left">
-                      {{msg.text}}
-                      <br ng-if="msg.text">
-                      <a ng-href="#" ng-click="getDownloadLink(msg, $event)">
-                        <span class="glyphicon glyphicon-file" style="font-size: 30px;"></span>{{msg.filename}}
-                      </a>
-                      <br>
-                    </p>
-                    <uib-accordion ng-if="msg.messageType=='QUESTION'"
-                      class="question-panels text-left" close-others="false" >
-                      <div class="panel panel-default">
-                        <div class="panel-heading">
-                          <h4 class="panel-title">
-                            <span class="question-title"> QUESTION:</span> {{msg.title}}
+                        <span bind-html-compile="getInternalMessage($index)"></span>
+                      </p>
+
+                      <p ng-if="msg.messageType=='TEXT' && !isInternalMessage($index)" class="text-left">
+                        {{msg.text}}
+                      </p>
+
+                      <p ng-if="msg.messageType=='URL'" class="text-left"/>
+
+                        <a ng-if="msg.messageType=='URL'" ng-init="msg.visible ? getMetaTags(msg, $index) : []" ng-href="{{msg.text}}">
+                          {{msg.text}}
+                        </a>
+
+
+                          <i ng-if="msg.messageType=='URL'" ng-click="changeVisible(msg, $index)" class="fa fa-caret-square-o-down fa-lg"></i>
+
+                          <div class="metadatalinks" ng-if="msg.messageType=='URL' && msg.visible" ng-bind-html="listaMensajes[$index].response_data_url">
+                          </div>
+
+                      </p>
+
+
+
+                      <p ng-if="msg.messageType=='FILE'" class="text-left">
+                        {{msg.text}}
+                        <br ng-if="msg.text">
+                        <a ng-href="#" ng-click="getDownloadLink(msg, $event)">
+                          <span class="glyphicon glyphicon-file" style="font-size: 30px;"></span>{{msg.filename}}
+                        </a>
+                        <br>
+                      </p>
+                      <uib-accordion ng-if="msg.messageType=='QUESTION'"
+                                     class="question-panels text-left" close-others="false" >
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <span class="question-title"> QUESTION:</span> {{msg.title}}
                             <span class="pull-right">
                               <a ng-if="!msg.publish" class="question-link" ng-click="shareInForum($index)">Share in forum</a>
                               <span ng-if="msg.publish" >shared</span>
                             </span>
-                          </h4>
-                        </div>
-                        <div class="panel-collapse">
-                          <div class="panel-body">
-                            <p>
-                              <span ng-bind-html="msg.text"></span>
-                            </p>
+                            </h4>
+                          </div>
+                          <div class="panel-collapse">
+                            <div class="panel-body">
+                              <p>
+                                <span ng-bind-html="msg.text"></span>
+                              </p>
 
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <uib-accordion-group ng-repeat="answer in msg.answers" is-open="status.open">
-                        <uib-accordion-heading>
-                          <i class="glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                          <span class="question-title"> ANSWER {{$index+1}}:</span>
-                          <strong class="username">{{answer.user.username}}</strong>
-                          <small class="date">
-                            <span class="glyphicon glyphicon-time"></span>
-                            <span am-time-ago="answer.date"></span>
-                          </small>
-                        </uib-accordion-heading>
-                        <p ng-bind-html="answer.text"></p>
-                      </uib-accordion-group>
-                      <div class="panel panel-default">
-                        <div class="panel-heading">
-                          <h4 class="panel-title">
-                            <a href="" ng-click="newAnswer(msg.id)">
-                              <span class="fa fa-plus-square-o"></span>
-                              <span class="question-new-answer"> Add new answer </span>
-                            </a>
-                          </h4>
+                        <uib-accordion-group ng-repeat="answer in msg.answers" is-open="status.open">
+                          <uib-accordion-heading>
+                            <i class="glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                            <span class="question-title"> ANSWER {{$index+1}}:</span>
+                            <strong class="username">{{answer.user.username}}</strong>
+                            <small class="date">
+                              <span class="glyphicon glyphicon-time"></span>
+                              <span am-time-ago="answer.date"></span>
+                            </small>
+                          </uib-accordion-heading>
+                          <p ng-bind-html="answer.text"></p>
+                        </uib-accordion-group>
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a href="" ng-click="newAnswer(msg.id)">
+                                <span class="fa fa-plus-square-o"></span>
+                                <span class="question-new-answer"> Add new answer </span>
+                              </a>
+                            </h4>
+                          </div>
                         </div>
-                      </div>
 
-                    </uib-accordion>
+                      </uib-accordion>
 
-                  </div>
-                </li>
-                <hr ng-if="listaMensajes.length > 0">
-              </ul>
-            </div>
-            <div ng-show= "tagChannel !== '' && !activeChannelSettings" class="panel-footer" id="panel-footer">
-              <form name="sendMessageForm">
-                <div class="input-group">
+                    </div>
+                  </li>
+                  <hr ng-if="listaMensajes.length > 0 && $last">
+
+                </ul>
+              </div>
+              <div ng-show= "tagChannel !== '' && !activeChannelSettings" class="panel-footer" id="panel-footer">
+                <form name="sendMessageForm">
+                  <div class="input-group">
                 <span class="input-group-btn">
                    <div class="dropup">
                      <button type="button" class="btn btn-success glyphicon glyphicon-plus btn-sm" id="btn-chat-choose"
@@ -775,170 +773,170 @@
                        <li class="divider"></li>
                        <li>
                          <a ng-click="createQuestion()">
-                          <span class="glyphicon glyphicon-question-sign"></span>Create a question
+                           <span class="glyphicon glyphicon-question-sign"></span>Create a question
                          </a>
                        </li>
                      </ul>
                    </div>
                 </span>
-                <input id="btn-input" type="text" class="form-control input-sm"
-                       placeholder="{{(channelSelected)?'Type your message here...':'Select a channel ...'}}"
-                       ng-model="text"/>
+                    <input id="btn-input" type="text" class="form-control input-sm"
+                           placeholder="{{(channelSelected)?'Type your message here...':'Select a channel ...'}}"
+                           ng-model="textchat"/>
                 <span class="input-group-btn">
                     <button type="submit" class="btn btn-warning btn-sm" id="btn-chat"
                             ng-disabled="!channelSelected" ng-click="sendText()">
-                              Send
+                      Send
                     </button>
                 </span>
+                  </div>
+                </form>
               </div>
-              </form>
+
+
             </div>
+            <!-- /#panel panel-info -->
 
 
           </div>
-          <!-- /#panel panel-info -->
-
-
-          </div>
-        <!-- /#col-md-8 -->
+          <!-- /#col-md-8 -->
 
 
 
-<!-- contenedor de busquedas:: actualmente comentado -->
+          <!-- contenedor de busquedas:: actualmente comentado -->
 
-<div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-5 col-lg-4" id="col4">
+          <div ng-show="navsearch" class="col-xs-5 col-sm-5 col-md-5 col-lg-4" id="col4">
 
-          <div class="panel panel-info" id="panel-info2">
+            <div class="panel panel-info" id="panel-info2">
 
-            <div  class="panel-heading" id="panel-heading2">
+              <div  class="panel-heading" id="panel-heading2">
 
 
-              <!-- ******************* -->
+                <!-- ******************* -->
 
-              <div class="container-fluid panel-container">
+                <div class="container-fluid panel-container">
                   <div class="col-xs-2">
 
 
-                       <a ng-click="changeSearchNav(0); putBlanktextsearchbox(textsearchbox)"
+                    <a ng-click="changeSearchNav(0); putBlanktextsearchbox(textsearchbox)"
                        class="glyphicon glyphicon-chevron-left" id="menusearch-toggle">
-                       </a>
+                    </a>
 
                   </div>
 
 
                   <div class="col-xs-10 text-center" id="searchresult">
-                      <h3>Search Results</h3>
-                 </div>
+                    <h3>Search Results</h3>
+                  </div>
+                </div>
+
+
               </div>
 
 
-            </div>
+              <div class="panel-body" id="panel-body2">
 
+                <!-- ******************************** -->
 
-            <div class="panel-body" id="panel-body2">
-
-<!-- ******************************** -->
-
-                   <ul class="searchcontent" ng-if="searchresults.length > 0">
-                        <li class="left clearfix" ng-repeat="result in searchresults">
+                <ul class="searchcontent" ng-if="searchresults.length > 0">
+                  <li class="left clearfix" ng-repeat="result in searchresults">
                           <span class="searchcontent-img pull-left">
 
 
                             <img ng-src="http://www.gravatar.com/avatar/{{result.source._user.hash}}?s=50&d=identicon" alt="User Avatar" class="img-circle" />
 
                           </span>
-                          <div class="searchcontent-body clearfix">
-                              <div class="header">
+                    <div class="searchcontent-body clearfix">
+                      <div class="header">
 
-                                  <strong class="primary-font">{{result.source._user.username}}</strong>
+                        <strong class="primary-font">{{result.source._user.username}}</strong>
 
-                                  <small class="date2" >
-                                        <span class="glyphicon glyphicon-time"></span>
-                                        <span am-time-ago="result.source.datetime"></span>
-                                  </small>
+                        <small class="date2" >
+                          <span class="glyphicon glyphicon-time"></span>
+                          <span am-time-ago="result.source.datetime"></span>
+                        </small>
 
-                              </div>
+                      </div>
 
-                              <p ng-if="result.source.messageType == 'QUESTION'">
+                      <p ng-if="result.source.messageType == 'QUESTION'">
 
-                                  <span ng-bind-html="highlight(result.source.content.text, textsearchbox)" class="ng-binding"></span>
-
-
-                              </p>
+                        <span ng-bind-html="highlight(result.source.content.text, textsearchbox)" class="ng-binding"></span>
 
 
-
-                              <p ng-bind-html="highlight(result.source.content.text, textsearchbox)" ng-if="result.source.messageType == 'TEXT'">
-
-                              </p>
-
-                              <medium class="detail" >
-                                        <span class="glyphicon glyphicon-eye-open" ng-click="gotoAnchor(result.id)"></span>
-
-                              </medium>
-
-                          </div>
-                        </li>
-
-                    </ul>
+                      </p>
 
 
-                    <h3 ng-if="searchresults.length == 0">
-                              No matches found
-                    </h3>
 
-<!-- ******************************** -->
+                      <p ng-bind-html="highlight(result.source.content.text, textsearchbox)" ng-if="result.source.messageType == 'TEXT'">
+
+                      </p>
+
+                      <medium class="detail" >
+                        <span class="glyphicon glyphicon-eye-open" ng-click="gotoAnchor(result.id)"></span>
+
+                      </medium>
+
+                    </div>
+                  </li>
+
+                </ul>
 
 
+                <h3 ng-if="searchresults.length == 0">
+                  No matches found
+                </h3>
+
+                <!-- ******************************** -->
+
+
+
+              </div>
 
             </div>
+            <!-- /#col-md-4 -->
 
+
+
+
+
+
+          </div>
+          <!-- /#fluid row -->
         </div>
-        <!-- /#col-md-4 -->
-
-
-
-
-
-
-        </div>
-        <!-- /#fluid row -->
+        <!-- /#container-fluid -->
       </div>
-      <!-- /#container-fluid -->
+      <!-- /#page-content-wrapper -->
+
     </div>
-    <!-- /#page-content-wrapper -->
+    <!-- /#wrapper -->
+
 
   </div>
-  <!-- /#wrapper -->
-
-
-</div>
 
   <!-- MODALS -->
 
   <!--********** Notification deleting ********* -->
 
 
-<!--    errorGroupModal  -->
-<div id="errorGroupModal" class="modal fade" role="dialog">
+  <!--    errorGroupModal  -->
+  <div id="errorGroupModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="deleteLabel">Error Notification</h4>
+          <h4 class="modal-title" id="deleteLabel">Error Notification</h4>
 
         </div>
 
 
         <div class="modal-body">
           <div class="alert alert-danger" role="alert">
-                {{errorG}}
+            {{errorG}}
           </div>
         </div>
 
 
         <div class="modal-footer">
-         <button type="button" class="btn btn-success" id="btn-ok" data-dismiss="modal" ng-click="errorG=''"><span class="fa fa-check"> Close</span></button>
+          <button type="button" class="btn btn-success" id="btn-ok" data-dismiss="modal" ng-click="errorG=''"><span class="fa fa-check"> Close</span></button>
 
         </div>
 
@@ -948,62 +946,62 @@
 
 
 
-<!--    deleteGroupModal  -->
-<div id="deleteGroupModal" class="modal fade" role="dialog">
+  <!--    deleteGroupModal  -->
+  <div id="deleteGroupModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Delete Group Notification</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Delete Group Notification</h4>
 
         </div>
 
 
         <div class="modal-body">
-            <p>Do you really want to remove this group?</p>
+          <p>Do you really want to remove this group?</p>
         </div>
 
 
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success" ng-click="removeGroup()"><span class="fa fa-trash-o"> Remove</span></button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
+          <button type="submit" class="btn btn-success" ng-click="removeGroup()"><span class="fa fa-trash-o"> Remove</span></button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
         </div>
 
       </div>
 
     </div>
-</div>
+  </div>
 
 
 
 
- <!-- Unsuscribe from group Modal -->
+  <!-- Unsuscribe from group Modal -->
   <div id="unsuscribeFromGroupModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Unsuscribe Notification</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Unsuscribe Notification</h4>
 
         </div>
 
 
         <div class="modal-body">
 
-            <p>Do you really want to unsuscribe from this group?</p>
+          <p>Do you really want to unsuscribe from this group?</p>
 
         </div>
 
         <div class="modal-footer">
 
-         <button type="submit" class="btn btn-success" ng-click="unsuscribeFromGroup()"><span class="fa fa-chain-broken"> Unsuscribe</span></button>
-         <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
+          <button type="submit" class="btn btn-success" ng-click="unsuscribeFromGroup()"><span class="fa fa-chain-broken"> Unsuscribe</span></button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
 
         </div>
 
@@ -1021,11 +1019,11 @@
 
       <div class="modal-content">
         <div class="modal-header" >
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-            ng-click="messageNewGroupModal=''; removeInput()">
-                    <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Add New Group</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  ng-click="messageNewGroupModal=''; removeInput()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Add New Group</h4>
         </div>
 
         <div class="modal-body">
@@ -1034,11 +1032,11 @@
             <input type="text" class="form-control" name="groupNameTxt" id="groupNameTxt" placeholder="Enter Group Name..." ng-model="group.groupName">
 
             <div class="alert alert-danger" role="alert" ng-if="messageNewGroupModal !== ''">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
-                        <span aria-hidden="true">&times;</span>
-                </button>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
+                <span aria-hidden="true">&times;</span>
+              </button>
 
-             {{messageNewGroupModal}}
+              {{messageNewGroupModal}}
 
             </div>
           </div>
@@ -1047,26 +1045,26 @@
 
         <div class="modal-footer">
 
-            <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewGroup(group)"><span class="fa fa-floppy-o"></span> Create</button>
+          <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewGroup(group)"><span class="fa fa-floppy-o"></span> Create</button>
 
-            <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="messageNewGroupModal=''; removeInput()"><span class="fa fa-remove"></span> Close</button>
+          <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="messageNewGroupModal=''; removeInput()"><span class="fa fa-remove"></span> Close</button>
 
         </div>
       </div>
     </div>
   </div>
 
-<!--  *************************** -->
+  <!--  *************************** -->
 
- <!-- New Channel Modal -->
+  <!-- New Channel Modal -->
   <div id="newChannelModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-            ng-click="messageNewChannelModal=''; removeInputChannelName()">
-                    <span aria-hidden="true">&times;</span>
+                  ng-click="messageNewChannelModal=''; removeInputChannelName()">
+            <span aria-hidden="true">&times;</span>
           </button>
           <h4 class="modal-title">Add New Channel</h4>
         </div>
@@ -1082,9 +1080,9 @@
           <div class="form-group">
             <label>Select Channel Type: </label>
             <br><select class="btn btn-default" data-container="body" ng-model="channel.channelType">
-              <option value="PRIVATE"> PRIVATE </option>
-              <option value="PUBLIC"> PUBLIC </option>
-            </select>
+            <option value="PRIVATE"> PRIVATE </option>
+            <option value="PUBLIC"> PUBLIC </option>
+          </select>
           </div>
 
           <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
@@ -1111,7 +1109,7 @@
 
 
 
-<!-- *******unsuscribeFromChannelModal****************** -->
+  <!-- *******unsuscribeFromChannelModal****************** -->
 
   <!-- Unsuscribe from channel Modal -->
   <div id="unsuscribeFromChannelModal" class="modal fade" role="dialog">
@@ -1119,24 +1117,24 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Unsuscribe Notification</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Unsuscribe Notification</h4>
 
         </div>
 
 
         <div class="modal-body">
 
-            <p>Do you really want to unsuscribe from this channel?</p>
+          <p>Do you really want to unsuscribe from this channel?</p>
 
         </div>
 
         <div class="modal-footer">
 
-         <button type="submit" class="btn btn-success" ng-click="unsuscribeFromChannel()"><span class="fa fa-chain-broken"> Unsuscribe</span></button>
-         <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
+          <button type="submit" class="btn btn-success" ng-click="unsuscribeFromChannel()"><span class="fa fa-chain-broken"> Unsuscribe</span></button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
 
         </div>
 
@@ -1148,31 +1146,31 @@
 
   <!--    deleteChannelModal  -->
   <div id="deleteChannelModal" class="modal fade" role="dialog">
-      <div class="modal-dialog modal-md">
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 class="modal-title">Delete Channel Notification</h4>
-
-          </div>
-
-
-          <div class="modal-body">
-              <p>Do you really want to remove this channel?</p>
-          </div>
-
-
-          <div class="modal-footer">
-              <button type="submit" class="btn btn-success" ng-click="deleteChannel()"><span class="fa fa-trash-o"> Remove</span></button>
-              <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
-          </div>
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Delete Channel Notification</h4>
 
         </div>
 
+
+        <div class="modal-body">
+          <p>Do you really want to remove this channel?</p>
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" ng-click="deleteChannel()"><span class="fa fa-trash-o"> Remove</span></button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-remove"> Close</span></button>
+        </div>
+
       </div>
+
+    </div>
   </div>
 
   <div id="notificationListModal" class="modal fade" role="dialog">
@@ -1196,55 +1194,39 @@
     </div>
   </div>
 
-<!--<script src="scripts/myscripts.js"></script>-->
-<!-- Menu Toggle Script -->
-<script>
-  /*$("#menu-toggle").click(function (e) {
-  	console.log("ENTRO EN TOGLLE");
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-  });*/
+  <!--<script src="scripts/myscripts.js"></script>-->
+  <!-- Menu Toggle Script -->
+  <script>
+    /*$("#menu-toggle").click(function (e) {
+     console.log("ENTRO EN TOGLLE");
+     e.preventDefault();
+     $("#wrapper").toggleClass("toggled");
+     });*/
+    $(".classtoggle").click(function (e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+    /*
+     $("#menu").metisMenu2({
+     });
+     */
+    // Upload file using href
+    $("#uploadHref").click(function () {
+      $("#uploadFile").trigger('click');
+    });
+    $("#changesearch").click(function (e) {
+      e.preventDefault();
+      console.log("entro en jquery");
+      /*class="col-xs-7 col-sm-7 col-md-8 col-lg-8"*/
+    });
+  </script>
 
 
-  $(".classtoggle").click(function (e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-  });
+  <link rel="stylesheet" ng-href="styles/chat2.css">
 
 
-
-
-/*
-  $("#menu").metisMenu2({
-
-  });
-
-*/
-
-  // Upload file using href
-  $("#uploadHref").click(function () {
-    $("#uploadFile").trigger('click');
-  });
-
-
-  $("#changesearch").click(function (e) {
-    e.preventDefault();
-    console.log("entro en jquery");
-
-
-
-    /*class="col-xs-7 col-sm-7 col-md-8 col-lg-8"*/
-  });
-
-</script>
-
-
-<link rel="stylesheet" ng-href="styles/chat2.css">
-
-
-<!---------- este es necesario -------------------------->
-<!---------- formato -------------------------->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
-<!---------- iconos -------------------------->
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-
+  <!---------- este es necesario -------------------------->
+  <!---------- formato -------------------------->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+  <!---------- iconos -------------------------->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">

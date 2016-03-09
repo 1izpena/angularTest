@@ -10,8 +10,10 @@ angular.module('myAppAngularMinApp')
         postMessage: postMessage,
         getMessages: getMessages,
         postAnswer: postAnswer,
-        publishMessage: publishMessage
+        publishMessage: publishMessage,
+        getMetaTags: getMetaTags
       };
+
 
       function publishMessage (data) {
         var defered = $q.defer();
@@ -115,13 +117,22 @@ angular.module('myAppAngularMinApp')
         return promise;
       }
 
+
+
+
       function postMessage (data) {
+
         var defered = $q.defer();
         var promise = defered.promise;
 
         var userid=data.userid;
         var groupid=data.groupid;
         var channelid=data.channelid;
+
+
+        console.log("envia el mensaje********");
+        console.log(data);
+        console.log("fin mensaje");
 
         $http({
           method: 'post',
@@ -130,6 +141,8 @@ angular.module('myAppAngularMinApp')
           data: data
         }).then(
           function(response) {
+            console.log("quepasaenvia bien");
+            console.log(response);
             defered.resolve(response);
           },
           function(error){
@@ -139,6 +152,7 @@ angular.module('myAppAngularMinApp')
 
         return promise;
       }
+
 
       function getMessages (data) {
         var defered = $q.defer();
@@ -160,6 +174,7 @@ angular.module('myAppAngularMinApp')
           });
         return promise;
       }
+
 
       function postAnswer (data) {
         var defered = $q.defer();
@@ -186,5 +201,65 @@ angular.module('myAppAngularMinApp')
 
         return promise;
       }
+
+
+
+      /****** nuevo *******/
+      function getMetaTags (data) {
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        /* de momento esto no lo usamos */
+        /*
+        var userid=data.userid;
+        var groupid=data.groupid;
+        var channelid=data.channelid;
+
+        */
+        console.log("getMetaTags********");
+        console.log(data);
+        console.log("fin de metatags");
+
+
+
+        var request = $http({
+          method: "post",
+          url: API_BASE +'/api/v1/users/'+data.userid+'/get_meta',
+          data: {
+            data: data.url
+          },
+          headers: { 'Content-Type': 'application/json','x-access-token': $localStorage.token }
+        }).then(
+          function(response) {
+            console.log("esto vale error en response de servivo");
+            console.log(response);
+            defered.resolve(response.data);
+          },
+          function(error){
+            console.log("esto vale error en error de servivo");
+            console.log(error);
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+
+
+        /*
+
+        $http({
+          method: 'post',
+          headers: {'x-access-token': $localStorage.token},
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
+          data: data
+        })
+        */
+      }
+
+
+
+
   }]);
 
