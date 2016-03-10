@@ -679,12 +679,13 @@
 
                       <p ng-if="msg.messageType=='URL'" class="text-left"/>
 
-                        <a ng-if="msg.messageType=='URL'" ng-init="msg.visible ? getMetaTags(msg, $index) : []" ng-href="{{msg.text}}">
-                          {{msg.text}}
-                        </a>
+
+                      <a ng-if="msg.messageType=='URL'" ng-init="getMetaTags(msg, $index)" ng-href="{{msg.text}}">
+                        {{msg.text}}
+                      </a>
 
 
-                          <i ng-if="msg.messageType=='URL'" ng-click="changeVisible(msg, $index)" class="fa fa-caret-square-o-down fa-lg"></i>
+                          <i ng-if="msg.messageType=='URL'" ng-click="changeVisible($index)" class="fa fa-caret-square-o-down fa-lg"></i>
 
                           <div class="metadatalinks" ng-if="msg.messageType=='URL' && msg.visible" ng-bind-html="listaMensajes[$index].response_data_url">
                           </div>

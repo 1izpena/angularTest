@@ -245,17 +245,6 @@ angular.module('myAppAngularMinApp')
 
         return promise;
 
-
-
-        /*
-
-        $http({
-          method: 'post',
-          headers: {'x-access-token': $localStorage.token},
-          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels/'+channelid+'/messages',
-          data: data
-        })
-        */
       }
 
 

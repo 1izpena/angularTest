@@ -41,9 +41,6 @@ angular.module('myAppAngularMinApp')
       $scope.groupindex = -1;
       $scope.activeDirects = 0;
 
-      $scope.status_box='';
-      /*
-      $scope.isready = true;*/
 
       $scope.user = '';
 	    $scope.membersSettings = '';
@@ -1060,13 +1057,13 @@ angular.module('myAppAngularMinApp')
 
 
 
-      $scope.changeVisible = function (msg, $index) {
+      $scope.changeVisible = function ($index) {
         console.log("cambio visible aaa ");
 
 
         if($scope.listaMensajes[$index].visible == 0){
           $scope.listaMensajes[$index].visible = 1;
-          $scope.getMetaTags(msg, $index);
+
 
 
         }
@@ -1347,21 +1344,23 @@ angular.module('myAppAngularMinApp')
                 }
 
               }
+
               /* ahora que tenemos los campos a modificar y enteros
                los mandamos*/
 
+              angular.forEach(sortarrayall, function(value, key) {
 
-              for (var j = 0; j < sortarrayall.length; j++) {
+
                 var data = {
                   userid: $localStorage.id,
                   groupid: $scope.groupid,
                   channelid: $scope.channelid,
-                  text: sortarrayall[j].text,
-                  messageType: sortarrayall[j].messageType
+                  text: value.text,
+                  messageType: value.messageType
                 };
 
                 console.log("esto envio desde el controlador");
-                console.log("con index " + j);
+                console.log("con index " + key);
                 console.log(data.text);
                 console.log(data.messageType);
                 console.log("********************");
@@ -1376,31 +1375,17 @@ angular.module('myAppAngularMinApp')
                     console.log(error);
                   }
                 );
-                sleep(1000);
 
 
-              }
-              /*  end of for */
+              });
 
-            }
 
-          }
+            } /* end else:hay urls y texto normal */
+
+          } /*end else arrayurls.length == 0 */
         }
 
       };
-
-
-
-
-      function sleep(milliseconds) {
-        var start = new Date().getTime();
-        for (var i = 0; i < 1e7; i++) {
-          if ((new Date().getTime() - start) > milliseconds){
-            break;
-          }
-        }
-      };
-
 
 
 
