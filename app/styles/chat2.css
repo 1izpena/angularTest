@@ -1361,6 +1361,7 @@ ul {   list-style-type: none; }
 {
   max-width: 480px;
   max-height: 270px;
+  /*ponerlo con %*/
 }
 
 
