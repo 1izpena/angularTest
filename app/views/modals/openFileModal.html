@@ -1,0 +1,130 @@
+
+
+  <div class="modal-header">
+    <h3 ng-show="!errorsFolder" class="modal-title">Upload File</h3>
+    <h3 ng-show="errorsFolder" class="modal-title">File unsupported</h3>
+  </div>
+
+
+
+
+  <div class="modal-body">
+
+
+<!--
+  <input type="file" id="uploadFile" name="uploadFile"
+         file="file" upload-fn="confirmUploadFile()" style="display: none"/>
+         -->
+
+
+  <!-- error: es 1 carpeta -->
+
+  <div ng-if="files.length > 1 && errorsFolder  && !errors" class="js-upload-finished">
+
+    Sorry, <b>{{filepath}}</b> is a folder and is not supported by MeanStack.
+    <p> Try uploading a compressed version of this file instead.</p>
+
+
+
+    <!--
+        Image thumbnail: <img ngf-thumbnail="file || '/thumb.jpg'">
+        Audio preview: <audio controls ngf-src="file"></audio>
+        Video preview: <video controls ngf-src="file"></video>
+
+
+        Image file normal :
+        <div ngf-thumbnail="file"
+             ngf-size="{width: 20, height: 20, quality: 0.9}"
+             ngf-as-background="true"></div>
+
+
+
+          Image file normal 2:
+          <div ngf-thumbnail="file"
+               ngf-size="{width: 20, height: 20, quality: 0.9}"
+               ngf-as-background="false"></div>
+
+            Image file normal 3:
+            <div ngf-thumbnail="file"
+                 ngf-as-background="false"></div>
+
+
+    -->
+  </div>
+
+
+
+  <!-- Upload Finished -->
+  <div ng-if="files.length == 1 && !errors" class="js-upload-finished">
+
+      <form>
+        <fieldset class="form-group">
+          <label for="filename">File</label>
+          <input type="text" class="form-control" id="filename" ng-model="filename" ng-disabled="true" />
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="text">Comment (Optional)</label>
+          <textarea class="form-control" id="text" rows="2" ng-model="comment"></textarea>
+        </fieldset>
+      </form>
+      <div ng-show="uploading">
+        <uib-progressbar animate="false" value="progress" type="success"><b>{{progress}}%</b></uib-progressbar>
+      </div>
+      <div class="text-danger" ng-show="errors">
+        <strong>{{errorMessage}}</strong>
+      </div>
+
+
+  </div>
+
+
+  <!-- ng-if="files == undefined" -->
+  <div ng-show="files == undefined || files == '' && !errors">
+
+    <div class="upload-drop-zone drop-box" id="drop-zone" ngf-drop ngf-select ng-model="files"
+         ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+         accept="*/*"
+         ngf-pattern="'*/*'">Just drag and drop files here or click to upload</div>
+
+    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+
+  </div>
+
+
+  <!--
+  <ul>
+    <li ng-repeat="f in files" >{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+  </ul>
+  -->
+
+<!--
+  <h4 ng-if="files.length > 0">Upload Log:</h4>
+
+  <pre ng-if="files.length > 0">{{log}}</pre>
+
+-->
+
+
+
+
+  </div>
+
+  <div class="modal-footer" ng-show="!errors && !uploading && files !== undefined && files.length < 2">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" type="button" ng-click="ok()">Upload</button>
+  </div>
+
+  <div class="modal-footer" ng-show="!errors && !uploading && (files == undefined || files == '')">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+  </div>
+
+
+  <div class="modal-footer" ng-show="errors">
+    <button class="btn btn-primary" type="button" ng-click="close()">Close</button>
+  </div>
+
+
+  <div class="modal-footer" ng-show="!errors && files.length > 1 && errorsFolder">
+    <button class="btn btn-success" type="button" ng-click="cancelError()">Accept</button>
+  </div>
+

@@ -645,7 +645,34 @@
               <!--  end panel channel settings -->
               <!-- ********************************************** -->
 
+
+
+
+              <!-- nueno ****************** -->
+              <!-- antes estaba asi ::
+
               <div ng-if= "tagChannel !== '' && !activeChannelSettings" class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
+
+
+              -->
+              <div ng-if= "tagChannel !== '' && !activeChannelSettings"
+                   class="panel-body" id="panel-body"
+                   scroll-bottom-on-last="listaMensajes"
+                   ngf-drop ng-model="$parent.file"
+                   ngf-drag-over-class="'dragover'"
+                   ngf-multiple="true"
+                   ngf-allow-dir="true"
+                   accept="*/*"
+                   ngf-pattern="'*/*'">
+
+               <!-- <div class="upload-drop-zone drop-box" id="drop-zone" ngf-drop ngf-select ng-model="files"
+                     ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+                     accept="*/*"
+                     ngf-pattern="'*/*'">Just drag and drop files here or click to upload</div>
+
+-->
+
+
                 <ul class="chat">
                   <li ng-repeat="msg in listaMensajes" send-last
                       ng-class="{'internal-message':isInternalMessage($index)}"
@@ -764,6 +791,27 @@
                      </button>
 
                      <ul class="dropdown-menu slidedown">
+                       <!----------------- new ------------------->
+
+                       <li>
+                         <!--
+                         <input type="file" id="uploadFile" name="uploadFile"
+                                file="file" upload-fn="confirmUploadFile()" style="display: none"/>
+                         <a id="uploadHref" >
+                           <span class="glyphicon glyphicon-file"></span>Upload a file
+                         </a>
+                         -->
+
+                         <a ng-click="openFileModal()">
+                           <span class="glyphicon glyphicon-file"></span>UploadFile
+                         </a>
+
+
+                       </li>
+                       <!--
+                       <li class="divider"></li>
+
+                       <!------------ end new -----------------
                        <li>
                          <input type="file" id="uploadFile" name="uploadFile"
                                 file="file" upload-fn="confirmUploadFile()" style="display: none"/>
@@ -771,6 +819,8 @@
                            <span class="glyphicon glyphicon-file"></span>Upload a file
                          </a>
                        </li>
+                       -->
+
                        <li class="divider"></li>
                        <li>
                          <a ng-click="createQuestion()">
@@ -916,6 +966,46 @@
   <!-- MODALS -->
 
   <!--********** Notification deleting ********* -->
+
+
+
+  <!--errorFileIsFolder-->
+
+
+
+  <div id="errorFileIsFolder" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">File unsupported</h4>
+
+        </div>
+
+
+        <div class="modal-body">
+          <div >
+          Sorry, <b>{{filepath}}</b> is a folder and is not supported by MeanStack.
+            <p> Try uploading a compressed version of this file instead.</p>
+          </div>
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="filepath=''"> Accept </button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
 
 
   <!--    errorGroupModal  -->

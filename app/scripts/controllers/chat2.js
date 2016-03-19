@@ -968,13 +968,13 @@ angular.module('myAppAngularMinApp')
                       }
                     }
                     $scope.membersSettings = temp;
-            },function (err) {
-              // Tratar el error
-              console.log("Hay error");
-              console.log(err.message);
-              $scope.errorG = err.message;
-          	  $("#errorGroupModal").modal("show");
-            });
+                },function (err) {
+                  // Tratar el error
+                  console.log("Hay error");
+                  console.log(err.message);
+                  $scope.errorG = err.message;
+                  $("#errorGroupModal").modal("show");
+                });
             }
             , function (err) {
               // Tratar el error
@@ -1031,30 +1031,154 @@ angular.module('myAppAngularMinApp')
 
       };
 
+
+
       $scope.confirmUploadFile = function () {
 
+        //entra desde aqui para el arrastre de ficheros en la pantalla
+        console.log("entro en confirmUploadFile");
+        console.log($scope.file);
+
+        if($scope.file == undefined || $scope.file ==''){
+          console.log("no existe");
+
+        }
+
+        else{
+
+            var modalInstance = $uibModal.open({
+            templateUrl: 'views/modals/uploadModal.html',
+            controller: 'uploadModalCtrl',
+            resolve: {
+              data: function () {
+                return {
+                  groupid: $scope.groupid,
+                  channelid: $scope.channelid,
+                  file: $scope.file
+                }
+              }
+            }
+          });
+
+          modalInstance.result.then(function () {
+              $scope.file="";
+            },function () {
+              $scope.file="";
+            }
+          );
+
+        }
+
+
+      };
+
+
+
+      /************ new 1********************/
+
+      $scope.openFileModal = function () {
+        console.log("entro en openFileModal");
+        console.log($scope.file);
+
         var modalInstance = $uibModal.open({
-          templateUrl: 'views/modals/uploadModal.html',
-          controller: 'uploadModalCtrl',
+          templateUrl: 'views/modals/openFileModal.html',
+          controller: 'openFileModalCtrl',
           resolve: {
             data: function () {
-              return {
-                groupid: $scope.groupid,
-                channelid: $scope.channelid,
-                file: $scope.file
-              }
+
+               return {
+
+               groupid: $scope.groupid,
+               channelid: $scope.channelid
+
+               }
             }
           }
         });
 
         modalInstance.result.then(function () {
-            $scope.file="";
-        },function () {
-            $scope.file="";
+            //$scope.file="";
+          console.log("salgo por .then de la modal");
+          },function () {
+          //$scope.file="";
+
           }
         );
       };
 
+
+/***************** new 2 ****************************/
+
+
+
+      $scope.$watch('file', function () {
+
+        /* esto es lo primero que hace */
+
+        if($scope.file !== undefined && $scope.file !== null && $scope.file !== ''){
+
+          if($scope.file.length){
+            if($scope.file.length > 1){
+
+              var temfilepath = $scope.file[0].path;
+              var temfilepath2 = temfilepath.split('/');
+              $scope.filepath = temfilepath2[0];
+
+              $("#errorFileIsFolder").modal("show");
+
+
+            }
+            else{
+              $scope.upload($scope.file);
+
+            }
+          }
+          else{
+            $scope.upload($scope.file);
+
+          }
+
+
+
+        }
+
+      });
+
+      /*
+
+      $scope.$watch('file', function () {
+        console.log("entra desde chat2 con file ********");
+        if ($scope.file != null) {
+          $scope.files = [$scope.file];
+        }
+      });
+*/
+
+
+
+      $scope.log = '';
+      $scope.upload = function (file) {
+
+
+        if (file) {
+            if (!file.$error) {
+
+
+              $scope.filename = file.name;
+              $scope.uploading = false;
+              $scope.errors = false;
+              $scope.confirmUploadFile();
+
+            }
+          }
+
+      };
+
+
+
+      /****************** end of new 1 y new 2 ***********************/
+
+        /************* end new ********************/
 
 
       $scope.changeVisible = function ($index) {
