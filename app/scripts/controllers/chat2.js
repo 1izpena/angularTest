@@ -1181,11 +1181,13 @@ angular.module('myAppAngularMinApp')
         /************* end new ********************/
 
 
-      $scope.changeVisible = function ($index) {
+      $scope.changeVisible = function (msg,$index) {
         console.log("cambio visible aaa ");
 
 
         if($scope.listaMensajes[$index].visible == 0){
+
+          $scope.getMetaTags(msg, $index);
           $scope.listaMensajes[$index].visible = 1;
 
 
@@ -1206,128 +1208,141 @@ angular.module('myAppAngularMinApp')
         var url = msg.text;
         console.log("entro en metatags");
 
-        var data = {
-          userid: $localStorage.id,
-          url: url
-        };
+        //si ya lo tiene no hacemos la peticion al servidor, solo el htmlbind
+        // de momento que no haga nada
+
+        if ($scope.listaMensajes[$index].response_data_url === undefined) {
 
 
-        ChatService.getMetaTags(data).then(
-          function(result) {
 
 
-            console.log("esto vale data");
-            console.log(result);
 
-            if(result == null){
-              /* si la url no esta soportada */
-              console.log("hay error al coger los metadatos");
-              $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml( "<h3> No information available </h3>");
-            }
-            else{
-              /* sino tiene tipo es 1 link */
-              if(typeof (result.type) == 'undefined'){
-                /* 1 link puede tener imagen o no */
+          var data = {
+            userid: $localStorage.id,
+            url: url
+          };
 
-                var image = '';
-                var tittle = '';
-                var descrip = '';
-                var author_link = '';
-                var keywords = '';
 
-                if(typeof (result.title) !== 'undefined') {
-                  tittle = "<h3>"+result.title+"</h3>";
+          ChatService.getMetaTags(data).then(
+            function (result) {
 
-                }
 
-                if(typeof (result.description) !== 'undefined') {
-                  descrip = "<p>"+result.description+"</p>";
+              console.log("esto vale data");
+              console.log(result);
 
-                }
+              if (result == null) {
+                /* si la url no esta soportada */
+                console.log("hay error al coger los metadatos");
+                $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml("<h3> No information available </h3>");
+              }
+              else {
+                /* sino tiene tipo es 1 link */
+                if (typeof (result.type) == 'undefined') {
+                  /* 1 link puede tener imagen o no */
 
-                if(typeof (result.author) !== 'undefined') {
-                  author_link = "<p>From "+result.author+"</p>";
+                  var image = '';
+                  var tittle = '';
+                  var descrip = '';
+                  var author_link = '';
+                  var keywords = '';
 
-                }
-
-                if(result.keywords.length > 0) {
-                  for(var i = 0; i<  result.keywords.length; i++){
-                    keywords = keywords + "<p><span class='label label-info'>"+result.keywords[i]+"</span></p>";
+                  if (typeof (result.title) !== 'undefined') {
+                    tittle = "<h3>" + result.title + "</h3>";
 
                   }
 
+                  if (typeof (result.description) !== 'undefined') {
+                    descrip = "<p>" + result.description + "</p>";
+
+                  }
+
+                  if (typeof (result.author) !== 'undefined') {
+                    author_link = "<p>From " + result.author + "</p>";
+
+                  }
+
+                  if (result.keywords.length > 0) {
+                    for (var i = 0; i < result.keywords.length; i++) {
+                      keywords = keywords + "<p><span class='label label-info'>" + result.keywords[i] + "</span></p>";
+
+                    }
+
+                  }
+
+
+                  if (typeof (result.image) !== 'undefined') {
+                    image = "<img src=" + result.image + ">";
+
+                  }
+
+                  $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml(tittle +
+                    descrip +
+                    author_link +
+                    keywords +
+                    image);
+
+
+                }/* end if typeof (result.type) == 'undefined' */
+                /* es 1 video, audio, etc. */
+                else {
+                  /* si es video = html
+                   * si es foto url para src de img
+                   * si es rich = html */
+
+                  var author = '';
+                  var html_img = '';
+                  var title2 = '';
+                  var provider = '';
+
+                  if (typeof (result.title) !== 'undefined') {
+                    title2 = "<h3>" + result.title + "</h3>";
+                  }
+
+
+                  if (typeof (result.provider_name) !== 'undefined') {
+                    provider = "<p>" + result.provider_name + "</p>";
+                  }
+
+
+                  if (typeof (result.author_name) !== 'undefined') {
+                    author = "<p> From " + result.author_name + "</p>";
+                  }
+
+
+                  if (result.type == 'video' || result.type == 'rich') {
+                    html_img = result.html;
+                  }
+
+                  else if (result.type == 'photo') {
+                    html_img = "<img src=" + result.url + ">";
+                  }
+
+                  $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml(title2 +
+                    provider +
+                    author +
+                    html_img);
+
+
                 }
+                /* end else typeof (data.type) == 'undefined' */
+
+              }
 
 
-                if(typeof (result.image) !== 'undefined') {
-                  image = "<img src=" + result.image + ">";
-
-                }
-
-                $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml( tittle +
-                  descrip +
-                  author_link +
-                  keywords +
-                  image);
+              $scope.gotoAnchor(msg.id);
 
 
-              }/* end if typeof (result.type) == 'undefined' */
-              /* es 1 video, audio, etc. */
-              else{
-                /* si es video = html
-                 * si es foto url para src de img
-                 * si es rich = html */
-
-                var author = '';
-                var html_img = '';
-                var title2 = '';
-                var provider = '';
-
-                if(typeof (result.title) !== 'undefined'){
-                  title2 = "<h3>"+result.title+"</h3>";
-                }
-
-
-                if(typeof (result.provider_name) !== 'undefined'){
-                  provider = "<p>"+result.provider_name+"</p>";
-                }
-
-
-                if(typeof (result.author_name) !== 'undefined'){
-                  author = "<p> From "+result.author_name+"</p>";
-                }
-
-
-                if(result.type == 'video' || result.type == 'rich'){
-                  html_img = result.html;
-                }
-
-                else if(result.type == 'photo'){
-                  html_img = "<img src="+result.url+">";
-                }
-
-                $scope.listaMensajes[$index].response_data_url = $sce.trustAsHtml(title2 +
-                  provider +
-                  author +
-                  html_img);
-
-
-              }/* end else typeof (data.type) == 'undefined' */
-
+            },
+            function (error) {
+              // TODO: mostrar error
+              console.log("error getMetaTags");
+              console.log(error);
             }
+          );
 
 
+        } /* end if of $scope.listaMensajes[$index].response_data_url === undefined */
 
-             $scope.gotoAnchor(msg.id);
-
-
-          },
-          function(error) {
-            // TODO: mostrar error
-            console.log("error getMetaTags");
-            console.log(error);
-          }
-        );
 
       };
 
