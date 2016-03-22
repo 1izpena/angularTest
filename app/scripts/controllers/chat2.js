@@ -21,8 +21,24 @@ angular.module('myAppAngularMinApp')
         $scope.publicChannels = [];
         $scope.privateChannels = [];
 
+        $scope.window_focus = true;
 
 
+
+
+      };
+
+
+
+
+
+      $window.onblur = function() {
+        console.log('blur');
+        $scope.window_focus = false;
+      };
+      $window.onfocus = function() {
+        console.log('focus');
+        $scope.window_focus = true;
       };
 
 /*
@@ -111,6 +127,11 @@ angular.module('myAppAngularMinApp')
       };
 
       $scope.addChannelNotification = function (data,message) {
+
+
+
+
+
         if (data.groupid == $scope.tagGroup.id){
           if (data.channelType == "PUBLIC" || data.channelType == "PRIVATE"){
             $scope.channelsNotificationsCount = $scope.channelsNotificationsCount + 1;
@@ -1709,6 +1730,7 @@ angular.module('myAppAngularMinApp')
         function (result) {
           $window.location.href=result.data.url;
 
+
         },
         function (error) {
           // TODO: Mostrar error
@@ -1972,8 +1994,24 @@ angular.module('myAppAngularMinApp')
       });
 
 
+
+      /* por canal, estoy dentro del canal */
+
      Socket.on('newMessage', function (data) {
 
+
+       /******************** new *****************************/
+
+      /* funciona solo si esta en el canal, no xgrupo, esto se puede cambiar */
+       /*if($scope.window_focus !== true) {
+
+         ChatService.openNotification(data);
+
+       }
+*/
+
+
+       /************ end new *************************/
      console.log("newMessage from server: " + data.groupid + ', ' + data.message.id);
      console.log(data.message.channel);
 
@@ -2001,6 +2039,8 @@ angular.module('myAppAngularMinApp')
         $scope.$apply();
       });*/
 
+
+      /* por grupo */
     Socket.on('newQuestionAnswer', function (data) {
       var message = data;
       for (var i=0; i < $scope.listaMensajes.length; i++) {
@@ -2451,18 +2491,39 @@ angular.module('myAppAngularMinApp')
         $scope.$apply();
       });
 
+
+
+      /* por usuario, notifica para cualquier evento en cualquier grupo o canal */
       Socket.on('newMessageEvent', function (data) {
+
+      /* esto lo cambiaria por el propio mensaje
+      * y lo pondria en el historial, y que te lleve a donde sea */
+
         console.log ("newMessageEvent received from server: " );
+        console.log("esto vale data");
+        console.log(data);
+
+        if(data.groupid === $scope.tagGroup.id && $scope.window_focus !== true){
+          console.log("esta en ese grupo y fuera dela window");
+
+          ChatService.openNotification(data);
+
+
+
+
+        }
+
+        /* miramos si en el grupo en el que esta es el mismo que el del mensaje */
         if (data.channelid != $scope.tagChannel.id){
           var message = '';
           if (data.channelType == "PUBLIC") {
             message = 'New message in public Channel';
           }
           if (data.channelType == "PRIVATE") {
-            message = 'New messge in private Channel';
+            message = 'New message in private Channel';
           }
           if (data.channelType == "DIRECT") {
-            message = 'New messge in direct Channel';
+            message = 'New message in direct Channel';
           }
           $scope.addGroupNotification(data,message);
           $scope.addChannelNotification(data,message);

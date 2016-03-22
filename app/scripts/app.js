@@ -26,7 +26,8 @@ angular
     'ui.bootstrap',
     'xeditable',
     'angular-md5',
-    'textAngular'
+    'textAngular',
+    'angular-web-notification'
   ])
   .run(function(editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'

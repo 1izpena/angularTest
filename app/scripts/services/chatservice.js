@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .service('ChatService', ['$http', '$localStorage', '$location', '$q', 'API_BASE', 'Upload',
-    function($http, $localStorage, $location, $q, API_BASE, Upload) {
+  .service('ChatService', ['$http', '$localStorage', '$location', '$q', 'API_BASE', 'Upload', 'webNotification',
+    function($http, $localStorage, $location, $q, API_BASE, Upload, webNotification) {
 
       return {
         uploadFileS3: uploadFileS3,
@@ -11,7 +11,8 @@ angular.module('myAppAngularMinApp')
         getMessages: getMessages,
         postAnswer: postAnswer,
         publishMessage: publishMessage,
-        getMetaTags: getMetaTags
+        getMetaTags: getMetaTags,
+        openNotification: openNotification
       };
 
 
@@ -246,6 +247,39 @@ angular.module('myAppAngularMinApp')
         return promise;
 
       }
+
+
+      function openNotification (data) {
+
+        console.log("en chat service con notificacion, esto vale data:");
+        console.log(data);
+        webNotification.showNotification('Meanstack notification', {
+
+
+          body: data.groupName + ' #'+ data.channelName + ' @' +data.message.user.username+' : '+data.message.text,
+          icon: 'images/logos/simple-black.png',
+          onClick: function onNotificationClicked() {
+            console.log('Notification clicked.');
+
+          },
+          autoClose: 4000 //auto close the notification after 4 seconds (you can manually close it via hide function)
+        }, function onShow(error, hide) {
+          if (error) {
+            window.alert('Unable to show notification: ' + error.message);
+          } else {
+            console.log('Notification Shown.');
+
+            setTimeout(function hideNotification() {
+              console.log('Hiding notification....');
+              hide(); //manually close the notification (you can skip this if you use the autoClose option)
+            }, 5000);
+          }
+        });
+
+
+
+      }
+
 
 
 

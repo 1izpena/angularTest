@@ -53,6 +53,8 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-xeditable/dist/js/xeditable.js',
       'bower_components/angular-md5/angular-md5.js',
+      'bower_components/HTML5-Desktop-Notifications2/desktop-notify.js',
+      'bower_components/angular-web-notification/angular-web-notification.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
