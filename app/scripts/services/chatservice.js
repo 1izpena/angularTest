@@ -252,11 +252,31 @@ angular.module('myAppAngularMinApp')
       function openNotification (data) {
 
         console.log("en chat service con notificacion, esto vale data:");
+
+        var notificationtext = '';
+        if(data.groupName !== undefined){
+          notificationtext = notificationtext + data.groupName;
+        }
+        if (data.channelName !== undefined) {
+          notificationtext = notificationtext + ' #'+ data.channelName;
+
+        }
+        if(data.message.user.username !== undefined){
+          notificationtext = notificationtext + ' @' +data.message.user.username;
+
+        }
+        if(data.message.text !== undefined){
+          notificationtext = notificationtext + ' : '+data.message.text;
+
+        }
+
         console.log(data);
+
         webNotification.showNotification('Meanstack notification', {
 
 
-          body: data.groupName + ' #'+ data.channelName + ' @' +data.message.user.username+' : '+data.message.text,
+         // body: data.groupName + ' #'+ data.channelName + ' @' +data.message.user.username+' : '+data.message.text,
+          body: notificationtext,
           icon: 'images/logos/simple-black.png',
           onClick: function onNotificationClicked() {
             console.log('Notification clicked.');

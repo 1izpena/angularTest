@@ -719,8 +719,7 @@ angular.module('myAppAngularMinApp')
             if($scope.optionchannel == 1){
             	$scope.membersSettingschannel.splice(ind, 1);
             }
-            //console.log("esto vale private channel");
-            //console.log($scope.privateChannels);
+
 
 
             $scope.channelMembers.push(member);
@@ -1024,6 +1023,9 @@ angular.module('myAppAngularMinApp')
             }
           }
           $scope.listaMensajes = result.data;
+          console.log("esto vale la lista de los mensajes");
+          console.log("***************************************************************");
+          console.log($scope.listaMensajes);
 
 
         },
@@ -1801,6 +1803,9 @@ angular.module('myAppAngularMinApp')
       if(typeof ($scope.listaMensajes[$index].text) !== "undefined"){
         //console.log($scope.listaMensajes[$index].text);
         if ($scope.listaMensajes[$index].text.indexOf('internalMessage#') == 0) {
+          //console.log("es interno el mensaje ");
+          //console.log($scope.listaMensajes[$index].text);
+
           return true;
         }
       }
@@ -1811,16 +1816,58 @@ angular.module('myAppAngularMinApp')
     $scope.getInternalMessage = function ($index) {
       var internalMessage = $scope.listaMensajes[$index].text;
       var re = /internalMessage#(\w+)\./i;
-      var matchArr, answerData;
+      var matchArr, answerData, temptext;
       var messageType, messageText = "";
 
-      var matchArr = internalMessage.match(re);
-      if (matchArr) (matchArr.length > 1) ? messageType=matchArr[1] : messageType="";
 
-      if (messageType == 'NEW_ANSWER') {
-        answerData = getAnswerData(internalMessage);
-        messageText = "<strong>"+answerData.answerUser + "</strong> add new answer for <a class=\"question-link\" ng-click=\"gotoAnchor('" + answerData.questionId + "')\">"+answerData.questionTitle+"</a>";
+      var matchArr = internalMessage.match(re);
+      /* vuelve a mirar que es interno */
+
+      //console.log("esto vale getInternalmessage");
+      //console.log(matchArr);
+      if (matchArr){
+        (matchArr.length > 1) ? messageType=matchArr[1] : messageType="";
+
+        if (messageType == 'NEW_ANSWER') {
+          answerData = getAnswerData(internalMessage);
+          messageText = "<strong>"+answerData.answerUser + "</strong> add new answer for <a class=\"question-link\" ng-click=\"gotoAnchor('" + answerData.questionId + "')\">"+answerData.questionTitle+"</a>";
+        }
+        else if (messageType == 'NEW_MEMBER_IN_CHANNEL'){
+
+          if(matchArr.input !== null){
+            temptext = matchArr.input.split(':');
+            if(temptext.length > 1){
+              messageText = "<p> New member in channel: <strong>"+temptext[1] + "</strong></p> ";
+
+            }
+          }
+
+        }
+        else if (messageType == 'DELETE_MEMBER_FROM_CHANNEL'){
+
+          if(matchArr.input !== null){
+            temptext = matchArr.input.split(':');
+            if(temptext.length > 1){
+              messageText = "<p> Delete member from channel: <strong>"+temptext[1] + "</strong></p> ";
+
+            }
+          }
+
+        }
+        else if (messageType == 'UNSUSCRIBE_MEMBER_FROM_CHANNEL'){
+
+          if(matchArr.input !== null){
+            temptext = matchArr.input.split(':');
+            if(temptext.length > 1){
+              messageText = "<p> Unlinked member from channel: <strong>"+temptext[1] + "</strong></p> ";
+
+            }
+          }
+
+        }
+
       }
+
 
       return messageText;
 
@@ -1994,6 +2041,73 @@ angular.module('myAppAngularMinApp')
       });
 
 
+      /******************* new ********************************/
+
+
+      /* lo que se muestra en las notificaciones */
+      $scope.getInternalMessageForNotification = function (text) {
+        var internalMessage = text;
+        var re = /internalMessage#(\w+)\./i;
+        var matchArr, answerData, temptext;
+        var messageType, messageText = "";
+
+
+        var matchArr = internalMessage.match(re);
+        /* vuelve a mirar que es interno */
+
+        console.log("esto vale getInternalmessage");
+        console.log(matchArr);
+        if (matchArr){
+          (matchArr.length > 1) ? messageType=matchArr[1] : messageType="";
+
+          if (messageType == 'NEW_ANSWER') {
+            answerData = getAnswerData(internalMessage);
+            messageText = answerData.answerUser + " add new answer for "+answerData.questionTitle;
+          }
+          else if (messageType == 'NEW_MEMBER_IN_CHANNEL'){
+
+            if(matchArr.input !== null){
+              temptext = matchArr.input.split(':');
+
+              if(temptext.length > 1){
+                messageText = "new member: "+temptext[1];
+              }
+
+            }
+
+          }
+          else if (messageType == 'DELETE_MEMBER_FROM_CHANNEL'){
+
+            if(matchArr.input !== null){
+              temptext = matchArr.input.split(':');
+
+              if(temptext.length > 1){
+                messageText = "delete member: "+temptext[1];
+              }
+
+            }
+
+          }
+          else if (messageType == 'UNSUSCRIBE_MEMBER_FROM_CHANNEL'){
+
+            if(matchArr.input !== null){
+              temptext = matchArr.input.split(':');
+
+              if(temptext.length > 1){
+                messageText = "unlinked member: "+temptext[1] ;
+              }
+
+            }
+
+          }
+
+        }
+
+
+        return messageText;
+
+      };
+
 
       /* por canal, estoy dentro del canal */
 
@@ -2002,32 +2116,62 @@ angular.module('myAppAngularMinApp')
 
        /******************** new *****************************/
 
-      /* funciona solo si esta en el canal, no xgrupo, esto se puede cambiar */
-       /*if($scope.window_focus !== true) {
 
-         ChatService.openNotification(data);
-
-       }
-*/
-
-
-       /************ end new *************************/
      console.log("newMessage from server: " + data.groupid + ', ' + data.message.id);
-     console.log(data.message.channel);
+     console.log(data);
 
-     // Si es el canal actual, añadimos mensaje a la listaMensaje
-
+     /* Si es el canal actual, añadimos mensaje a la listaMensaje
+     y sino esta en la ventana (window de la app, le sacamos 1 notificacion
+      */
      if (data.message.channel.id == $scope.tagChannel.id) {
        /* mirar si es 1 url y hasta que no este ready no pintar */
         console.log("esto vale data.message");
-        console.log(data.message.text);
+        //console.log(data.message.text);
        if(data.message.messageType == 'URL'){
 
            data.message.visible = 0;
 
 
        }
-        $scope.listaMensajes.push(data.message);
+       console.log("deberia meter el mensaje");
+       console.log(data.message);
+       $scope.listaMensajes.push(data.message);
+       console.log($scope.listaMensajes);
+
+
+       if($scope.window_focus !== true){
+
+         var datatemp = JSON.parse(JSON.stringify(data));
+
+         datatemp.groupName = $scope.tagGroup.groupName;
+         datatemp.channelName = datatemp.message.channel.channelName;
+
+
+
+         if(datatemp.message.messageType == 'QUESTION' && datatemp.message.title !== undefined){
+           datatemp.message.text = "add new question "+datatemp.message.title;
+         }
+         else if(datatemp.message.messageType == 'TEXT' || datatemp.message.messageType == 'URL'){
+           if(datatemp.message.text !== "undefined"){
+             console.log("tiene  que entrar en typetext y no undefined");
+
+             if(datatemp.message.text.indexOf('internalMessage#') == 0){
+               console.log("tiene  que entrar en typetext y no undefined 22");
+
+               datatemp.message.text = $scope.getInternalMessageForNotification(datatemp.message.text);
+             }
+           }
+         }
+         else if (datatemp.message.messageType == 'FILE' && datatemp.message.filename !== undefined){
+           datatemp.message.text = "attach new file "+datatemp.message.filename;
+         }
+
+
+
+         ChatService.openNotification(datatemp);
+       }
+
+
      }
      $scope.$apply();
      });
@@ -2265,7 +2409,7 @@ angular.module('myAppAngularMinApp')
         console.log(data);
 
         /* se supone que estoy dentro del canal */
-        /* si soy el administrador no hago nada
+        /* si soy el administrador no hago nada, xq ya esta modificado,
         	sino, si esta en settings con la opcion 0
         	hay que actualizar los miembros y los miembros de settings que son los mismos*/
         if ($scope.adminChannel.id !== $scope.userid){
