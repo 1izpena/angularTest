@@ -303,6 +303,12 @@ angular.module('myAppAngularMinApp')
 
 
 
+      /**************** new *********************/
+
+
+
+
+
 
   }]);
 

@@ -5,7 +5,7 @@
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper" >
-      <!-- <ul class="sidebar-nav" id="menu" ng-hide="error"> -->
+
       <ul class="sidebar-nav" id="menu" >
         <li class="sidebar-brand">
           <div class="text-center">
@@ -55,23 +55,30 @@
         <!-- grupos -->
         <li class="active">
           <a class="btn btn-primary" ng-click="changeVarMenu('activeGroups')"><i class="fa fa-group fa-fw"></i>Groups
-            <span class="badge badge-info pull-right" id="groupsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getGroupsNotificationList()" ng-show="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</span>
+
+            <!-- por grupo generico -->
+            <span class="badge badge-info pull-right" id="groupsNotificationBadge" ng-show="groupsNotificationsCount > 0">{{groupsNotificationsCount}}</span>
+
           </a>
 
-          <ul ng-show="activeGroups" class="emphasis cgroups" id="grouplist">
-            <li ng-if="groupindex == $index || groupindex == -1" ng-repeat="group in groups" ng-show="groups.length > 0" class="menu-option">
+        <ul ng-show="activeGroups" class="emphasis cgroups" id="grouplist">
+          <li ng-if="groupindex == $index || groupindex == -1" ng-repeat="group in groups" ng-show="groups.length > 0" class="menu-option">
 
-              <a ng-click="selectGroup(group, $index); changeVarMenu('activeGroupChannels')" ng-class="classResalt">
-                {{group.groupName}}
-                <span class="badge badge-info pull-right" id="groupNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getGroupNotificationList(group)" ng-show="group.groupNotificationsCount > 0">{{group.groupNotificationsCount}}</span>
+            <a ng-click="selectGroup(group, $index); changeVarMenu('activeGroupChannels')" ng-class="classResalt">
+              {{group.groupName}}
 
-              </a>
-            </li>
 
-          </ul>
+              <!-- por grupo concreto -->
+              <span class="badge badge-info pull-right" id="groupNotificationBadge" ng-show="group.notificationsCount > 0">{{group.notificationsCount}}</span>
 
-          <!----  add group -->
 
+            </a>
+          </li>
+
+        </ul>
+
+
+        <!----  add group -->
         <li ng-if="groupindex == -1 && activeGroups" class="menu-option addlink">
           <a class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new group</a>
         </li>
@@ -86,7 +93,13 @@
         <li class="activeChannels" ng-show= "tagGroup !== ''">
           <a class="btn btn-primary" ng-click="changeVarMenu('activeChannels')">
             <i class="fa fa-comment fa-fw"></i>Channels
-            <span class="badge badge-info pull-right" id="channelsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getChannelsNotificationList()" ng-show="channelsNotificationsCount > 0">{{channelsNotificationsCount}}</span>
+
+
+
+            <!-- generico de canales -->
+            <span class="badge badge-info pull-right" id="channelsNotificationBadge" ng-show="channelsNotificationsCount > 0">{{channelsNotificationsCount}}</span>
+
+
           </a>
           <ul ng-show= "activeChannels">
             <li class="activeChannelsPublic channel-type active">
@@ -99,7 +112,15 @@
                 <li ng-repeat="channel in publicChannels" ng-if="publicChannels.length > 0" class="menu-option">
                   <a ng-click="selectChannel(channel, 'public')" ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
                     {{channel.channelName}}
-                    <span class="badge badge-info pull-right" id="publicChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPublicChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount > 0">{{channel.channelNotificationsCount}}</span>
+
+
+
+                    <!-- por canal publico -->
+                    <span class="badge badge-info pull-right" id="publicChannelNotificationBadge" ng-show="channel.notificationsCount > 0">{{channel.notificationsCount}}</span>
+
+
+
+
                   </a>
                 </li>
               </ul>
@@ -112,7 +133,15 @@
                 <li ng-repeat="channel in privateChannels" ng-if="privateChannels.length > 0" class="menu-option">
                   <a ng-click="selectChannel(channel, 'private')" ng-class="channel.id == tagChannel.id ?classResaltChannelPrivate : ''">
                     {{channel.channelName}}
-                    <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getPrivateChannelNotificationList(channel)" ng-show="channel.channelNotificationsCount.length() > 0">{{channel.channelNotificationsCount}}</span>
+
+
+
+                    <!-- por canal privado -->
+                    <span class="badge badge-info pull-right" id="privateChannelNotificationBadge" ng-show="channel.notificationsCount > 0">{{channel.notificationsCount}}</span>
+
+
+
+
                   </a>
                 </li>
               </ul>
@@ -137,18 +166,29 @@
         <li class="activeMembers" ng-show= "tagGroup !== ''">
           <a ng-click="changeVarMenu('activeDirects')" class="btn btn-primary" aria-expanded="false">
             <i class="fa fa-user fa-fw"></i>Direct Messages
-            <span class="badge badge-info pull-right" id="directChannelsNotificationBadge" type="button" data-toggle="modal" data-target="#notificationListModal" ng-click="getDirectChannelsNotificationList()" ng-show="directChannelsNotificationsCount > 0">{{directChannelsNotificationsCount}}</span>
+
+
+            <!-- para mensajes directos -->
+            <span class="badge badge-info pull-right" id="directChannelsNotificationBadge" ng-show="directChannelsNotificationsCount > 0">{{directChannelsNotificationsCount}}</span>
+
+
           </a>
 
+
           <ul ng-show="activeDirects" class="emphasis">
-            <!-- dependiendo si esta en online un icono u otro::: fa fa-heart-o || fa fa-heart -->
 
             <li ng-repeat="member in members" ng-if="members.length > 1" ng-show= "member.id != userid" class="menu-option">
               <a ng-click="searchDirectChannel(member)" ng-class="member.id == tagMember.id ?classResaltDirect : ''">
+
                 <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o'" ></span>
-                <!--    <span ng-class="(isConnected(member.id))?'fa fa-heart':'fa fa-heart-o' ; member.id == tagMember.id ?classResaltDirect : ''" ></span>    -->
+
 
                 {{member.username}}
+                <span class="badge badge-info pull-right" id="directChannelNotificationBadge" ng-show="member.notificationsCount > 0">{{member.notificationsCount}}</span>
+
+
+
+
               </a>
             </li>
 
@@ -222,29 +262,10 @@
                     </span>
 
 
-                      <!--                             <span ng-click="setSettingsOptions(0)" class="input-group-addon">
-                                                      <i class="fa fa-search"></i>
-                                                  </span>
-                                                  <input ng-model="searchText" type="text" class="form-control" placeholder="{{searchinputplaceholder}}"/>
-      -->
+
                     </div>
 
 
-                    <!--
-                    <input id="searchbox" type="text" class="search-query form-control" placeholder="Search" />
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-danger" type="button">
-                                            <span class=" glyphicon glyphicon-search"></span>
-                                        </button>
-                                    </span>
-    -->
-
-                    <!-- ************************* -->
-
-                    <!-- de momento no se usa, es el que abre el contenedor de busqueda -->
-
-                    <!--  <a ng-click="changeSearchNav()" id="changesearch"><span class="glyphicon glyphicon-option-vertical"></span>
-                       </a> -->
 
                   </div>
 
@@ -419,23 +440,6 @@
                       </div>
 
 
-                      <!-- <ul ng-class="(option == 1) ? 'list-group-add' : ((option == 2) ? 'list-group-remove' :  'list-group')" id="list-group">
-                       <li  ng-class="{'disabled':member.isinvited || adminGroup.id == member.id}"
-                            ng-click="(option == 1) ? inviteUserToGroup(member) : ((option == 2) ? removeUserFromGroup(member) :  null)"
-                            class="list-group-item"
-                            ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
-                            ng-repeat="member in membersSettings | filter:searchText" ng-if="membersSettings.length > 0">
-                       &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
-                                <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
-                                         <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
-                                         <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
-                                         <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
-                                         </p>
-                                         <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
-                       </li>
-                     </ul>-->
-
-
 
                     </div>  <!-- container-fluid panel-container -->
 
@@ -452,7 +456,7 @@
 
               <!--***********************************************-->
 
-              <!-- si hemos seleccionado canal y le hemos dado al nombre del canal en la cabecera (seetings) se muestra otro panel (settings canal) -->
+              <!-- si hemos seleccionado canal y le hemos dado al nombre del canal en la cabecera (settings) se muestra otro panel (settings canal) -->
               <div ng-if= "tagChannel !== '' && tagGroup !== '' &&activeChannelSettings" class="panel-body" id="panel-body1channels">
 
                 <div class="row" id="row-settingschannels">
@@ -609,27 +613,6 @@
                         </div>
                       </div>
 
-                      <!--<ul class="list-group" id="list-group">
-&lt;!&ndash; cambiar remove, add y search&ndash;&gt;
-                      <li  ng-class="{'disabled': adminChannel.id == member.id}"
-                           ng-click="(option == 1) ? addUserToChannel(member, $index) : ((option == 2) ? deleteUserFromChannel(member, $index) :  null)"
-                      class="list-group-item"
-                      ng-class="membersSettings.length > 2 ? 'col-lg-4': 'col-lg-12'"
-                      ng-repeat="member in membersSettingschannel | filter:searchText" ng-if="membersSettingschannel.length > 0">
-                      &lt;!&ndash; si options = 1 add / options = 2 remove &ndash;&gt;
-                        <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=50&d=identicon" alt="User Avatar"  id="img-circle"/>
-                                        <span ng-if="adminGroup.id == member.id" class="label label-primary" id="labeladmin">Admin</span>
-                                      &lt;!&ndash;  <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span> &ndash;&gt;
-                                        <p ng-bind-html="highlight(member.username, searchText)">{{member.username}}
-                                        </p>
-                                        <p ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
-                      </li>
-                    </ul>-->
-                      <!--  <div class="col-md-4">
-                       </div>
-                       -->
-
-
 
                     </div>  <!-- container-fluid panel-container -->
 
@@ -643,18 +626,9 @@
               </div> <!--  panel-body1 -->
 
               <!--  end panel channel settings -->
-              <!-- ********************************************** -->
 
 
 
-
-              <!-- nueno ****************** -->
-              <!-- antes estaba asi ::
-
-              <div ng-if= "tagChannel !== '' && !activeChannelSettings" class="panel-body" id="panel-body" scroll-bottom-on-last="listaMensajes">
-
-
-              -->
               <div ng-if= "tagChannel !== '' && !activeChannelSettings"
                    class="panel-body" id="panel-body"
                    scroll-bottom-on-last="listaMensajes"
@@ -815,7 +789,7 @@
                          -->
 
                          <a ng-click="openFileModal()">
-                           <span class="glyphicon glyphicon-file"></span>UploadFile
+                           <span class="glyphicon glyphicon-file"></span>Upload a file
                          </a>
 
 
@@ -950,16 +924,10 @@
 
                 <!-- ******************************** -->
 
-
-
               </div>
 
             </div>
             <!-- /#col-md-4 -->
-
-
-
-
 
 
           </div>
@@ -982,8 +950,6 @@
 
 
   <!--errorFileIsFolder-->
-
-
 
   <div id="errorFileIsFolder" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
@@ -1276,9 +1242,15 @@
     </div>
   </div>
 
+
+  <!------------------------ hay que quitar esto --------------------------------->
+
+
+  <!--
+
   <div id="notificationListModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-      <!-- Modal content-->
+      <!-- Modal content--
       <div class="modal-content">
         <div class="modal-header" style="padding:35px 50px;">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -1297,22 +1269,18 @@
     </div>
   </div>
 
+  -->
+
+
   <!--<script src="scripts/myscripts.js"></script>-->
   <!-- Menu Toggle Script -->
   <script>
-    /*$("#menu-toggle").click(function (e) {
-     console.log("ENTRO EN TOGLLE");
-     e.preventDefault();
-     $("#wrapper").toggleClass("toggled");
-     });*/
+
     $(".classtoggle").click(function (e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
     });
-    /*
-     $("#menu").metisMenu2({
-     });
-     */
+
     // Upload file using href
     $("#uploadHref").click(function () {
       $("#uploadFile").trigger('click');
