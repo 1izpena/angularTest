@@ -95,11 +95,38 @@ angular.module('myAppAngularMinApp')
 
 
     $scope.logout = function () {
+
+      console.log("ha llamado disconnect de grupo");
+      Socket.emit('disconnect');
+      console.log("ha llamado disconnect de channel");
+      Socket.emit('disconnectChannel');
+
+
       LoginService.logout();
+
+
     };
 
 
+    $scope.callpruebagithub = function(){
 
+
+      ChatService.callpruebagithub().then(
+        function(result) {
+
+          console.log("esto vale result, aunque creo que no devuelve nada");
+          console.log(result);
+
+
+        },
+        function(error) {
+          // TODO: mostrar error
+          console.log("error callpruebagithub");
+          console.log(error);
+        }
+      );
+
+    }
 
       /* change vars of sidebar-nav menu */
     $scope.changeVarMenu = function(varmenu)
@@ -2012,7 +2039,7 @@ angular.module('myAppAngularMinApp')
 
         if (messageType == 'NEW_ANSWER') {
           answerData = getAnswerData(internalMessage);
-          messageText = "<strong>"+answerData.answerUser + "</strong> add new answer for <a class=\"question-link\" ng-click=\"gotoAnchor('" + answerData.questionId + "')\">"+answerData.questionTitle+"</a>";
+          messageText = "<strong>"+answerData.answerUser + "</strong> added new answer for <a class=\"question-link\" ng-click=\"gotoAnchor('" + answerData.questionId + "')\">"+answerData.questionTitle+"</a>";
         }
         else if (messageType == 'NEW_MEMBER_IN_CHANNEL'){
 
