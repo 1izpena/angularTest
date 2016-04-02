@@ -29,7 +29,7 @@ angular.module('myAppAngularMinApp')
 
         $http({
           method: 'get',
-          url: API_BASE + '/api/v1/auth/pruebaGithub',
+          url: API_BASE + '/api/v1/githubapi',
           headers: { 'x-access-token': $localStorage.token },
         }).then( function(result){
             defered.resolve(result);
