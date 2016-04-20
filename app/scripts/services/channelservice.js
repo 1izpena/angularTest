@@ -11,8 +11,39 @@ angular.module('myAppAngularMinApp')
         addUserToChannel: addUserToChannel,
         editChannel: editChannel,
         searchDirectChannel: searchDirectChannel,
-        createDirectChannel: createDirectChannel
+        createDirectChannel: createDirectChannel,
+        getChannels: getChannels
       };
+
+
+
+
+
+      /* si ya existe el canal sacamos mensaje de error de name */
+      function getChannels (groupid) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+        $http({
+          method: 'get',
+          url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid+'/channels',
+          //url: API_BASE + '/api/v1/channels',
+          headers: { 'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded' }
+          //data: 'channel='+JSON.stringify(channel)+'&&userid='+userid
+          //params: {channel: JSON.stringify(channel)}
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+        return promise;
+      }
+
+
+
 
       function createNewChannel (groupid,data) {
         var defered = $q.defer();
@@ -45,7 +76,7 @@ angular.module('myAppAngularMinApp')
           headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
           url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid +'/channels/'+channelid,
           data: 'channelName='+data2
-                    
+
         }).success(function(data) {
                 defered.resolve(data);
           })

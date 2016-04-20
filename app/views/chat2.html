@@ -1,4 +1,20 @@
+
+
+
+
+
+
+
 <div class="chatContainer" ng-init="init()">
+
+
+
+
+
+
+
+
+
 
 
   <div id="wrapper">
@@ -28,7 +44,16 @@
 
 
                 <!---- new --->
-                <li><a ng-click="callpruebagithub()">PRUEBAGITHUB</a></li>
+                <li><a ng-click="callpruebagithub()">Github con 1izpena</a></li>
+
+                <li><a ng-click="callpruebagithub3()">Github con 2jonpena</a></li>
+
+
+                <li><a ng-click="callpruebagithub2()">Github para crear hooks 1izpena</a></li>
+
+                <li><a ng-click="callpruebagithub4()">Github para crear hooks 2jonpena</a></li>
+
+
               </ul>
             </div>
           </div>
@@ -155,7 +180,18 @@
 
           <!----  add channel -->
         <li ng-show= "activeChannels && activeGroups && tagGroup !== ''" class="menu-option addlink">
+
+           <!--
+            <a ng-click="createNewChannel()" class="" >
+              <span class="fa fa-plus"></span>
+              Add new channel
+            </a>-->
+
+
+        <!-- -->
           <a href="" class="" data-toggle="modal" data-target="#newChannelModal"><span class="fa fa-plus"></span> Add new channel</a>
+
+
         </li>
 
 
@@ -1099,19 +1135,22 @@
           <h4 class="modal-title">Add New Group</h4>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body" >
+
+          <div class="alert alert-danger" role="alert" ng-if="messageNewGroupModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageNewGroupModal}}
+
+          </div>
+
           <div class="form-group">
             <label for="groupNameTxt">Group Name:</label>
             <input type="text" class="form-control" name="groupNameTxt" id="groupNameTxt" placeholder="Enter Group Name..." ng-model="group.groupName">
 
-            <div class="alert alert-danger" role="alert" ng-if="messageNewGroupModal !== ''">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
-                <span aria-hidden="true">&times;</span>
-              </button>
 
-              {{messageNewGroupModal}}
-
-            </div>
           </div>
         </div>
 
@@ -1129,14 +1168,15 @@
 
   <!--  *************************** -->
 
-  <!-- New Channel Modal -->
-  <div id="newChannelModal" class="modal fade" role="dialog">
+  <!-- New Channel FeedBack webhooks Modal -->
+
+  <div id="newChannelWebhooksModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                  ng-click="messageNewChannelModal=''; removeInputChannelName()">
+                  ng-click="">
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 class="modal-title">Add New Channel</h4>
@@ -1144,18 +1184,169 @@
 
         <div class="modal-body">
 
-          <div class="form-group">
-            <label for="channelNameTxt">Channel Name:</label>
-            <input type="text" class="form-control" name="channelNameTxt" id="channelNameTxt" placeholder="Enter Channel Name..." ng-model="channel.channelName">
+
+
+
+          <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageNewChannelModal}}
           </div>
 
 
+          <!--porsi quieres cuando terminas -->
+<!--
+          <spinner name="html5spinnerWebhooks" ng-cloak="">
+            <div class="overlay"></div>
+            <div class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <div class="please-wait">Please Wait...</div>
+          </spinner>
+
+
+          -->
+
+
+          <!-- que se muestre si el ng-show="" arrReposOk.length>0 || arrReposError.lenght>0
+
+          aunque directamente que no pasara seria lo suyo
+          -->
+
+          <div class="form-group" >
+            <label>Github Service Configuration: </label>
+            <p> State of Repositories: </p>
+
+
+            <!-- meter tabla -->
+
+            <!-- me puedo hacer 2 tablas , sucess y unsucess-->
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Repository</th>
+                <th>State</th>
+
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr class="success" ng-repeat="data in arrReposOk" ng-show="arrReposOk.length > 0">
+
+
+                <td>{{ data.item.name }}</td>
+                <td>{{ data.item.id }}</td>
+
+                <!--
+                <td ng-if="$odd" style="background-color:#f1f1f1">{{ x.Name }}</td>
+                <td ng-if="$even">{{ x.Name }}</td>
+                -->
+
+              </tr>
+
+
+
+              <tr class="danger" ng-repeat="data in arrReposError" ng-show="arrReposError.length > 0">
+                <td>{{ data.item.name }}</td>
+                <td> {{ data.code }} : {{ data.message }} </td>
+
+
+                <!--
+                <td ng-if="$odd" style="background-color:#f1f1f1">{{ x.Name }}</td>
+                <td ng-if="$even">{{ x.Name }}</td>
+                -->
+
+              </tr>
+
+
+              </tbody>
+            </table>
+
+
+
+
+
+
+          </div>
+
+
+        </div>
+        <!--end modalbody -->
+
+
+        <!-- crear los hooks y el canal, es el ultimo paso  -->
+        <div class="modal-footer">
+          <div>
+
+
+            <!-- aqui de momento solo aceptar para crear el canal-->
+            <!-- mas a delante cerrar que quite los webhooks asociados -->
+            <!-- y volver a atras lo mismo -->
+
+
+     <!--       <button type="submit" class="btn btn-warning" id="btn-back-account" ng-click="createNewChannelAccountBack()">
+              <!-- habria que volver a atras, a elegir cuenta  --
+              <span class="fa fa-angle-double-left"></span> Back </button>
+-->
+
+
+            <!-- ng-show="messageNewChannelModal !== null && messageNewChannelModal !== undefined" -->
+            <button ng-show="githubrepositories.length > 0" type="submit" class="btn btn-success" id="btn-next-create-channel" ng-click="">
+              <span class="fa fa-floppy-o"></span> Create </button>
+
+<!--
+            <button type="button" class="btn btn-danger" id="btn-close"
+                    data-dismiss="modal" ng-click="initVarsNewChannelReposModal()">
+              <span class="fa fa-remove"></span> Close</button>
+
+-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- ----------------end webhooks Modal --------------------- -->
+
+
+
+  <!-- New Channel Repos Modal -->
+  <!-- si no hay repos no le dejamos pasar  -->
+  <div id="newChannelReposModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  ng-click="initVarsNewChannelReposModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Add New Channel</h4>
+        </div>
+
+        <div class="modal-body">
+
+
           <div class="form-group">
-            <label>Select Channel Type: </label>
-            <br><select class="btn btn-default" data-container="body" ng-model="channel.channelType">
-            <option value="PRIVATE"> PRIVATE </option>
-            <option value="PUBLIC"> PUBLIC </option>
-          </select>
+            <label>Github Authentication: </label>
+
+            <div class="alert alert-success" role="alert">
+              <p> Authenticated to Github as: <strong> {{account.username}}</strong> </p>
+
+            </div>
           </div>
 
           <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
@@ -1166,13 +1357,279 @@
             {{messageNewChannelModal}}
           </div>
 
+
+          <spinner name="html5spinnerRepos" ng-cloak="">
+            <div class="overlay"></div>
+            <div class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <div class="please-wait">Please Wait...</div>
+          </spinner>
+
+
+
+          <div class="form-group" ng-show="githubrepositories.length > 0">
+            <label>Github Service Configuration: </label>
+            <p> Choose your Github repositories: </p>
+
+
+            <!-- meter multipleselect -->
+            <!-- me queda x probar si es vacio-->
+
+           <!-- probar ng-init-->
+
+            <oi-select
+
+              oi-options="item.name for item in githubrepositories track by item.name"
+              ng-model="repositorySelected"
+              multiple
+              required
+              ng-init="githubrepositories[0].name"
+              ></oi-select>
+            <!-- placeholder="Select" -->
+
+
+          </div>
+
+
         </div>
+        <!--end modalbody -->
+
+
+        <!-- crear los hooks y el canal, es el ultimo paso  -->
+        <div class="modal-footer">
+          <div>
+
+
+            <button type="submit" class="btn btn-warning" id="btn-back-account" ng-click="createNewChannelAccountBack()">
+              <!-- habria que volver a atras, a elegir cuenta  -->
+              <span class="fa fa-angle-double-left"></span> Back </button>
+
+
+
+            <!-- ng-show="messageNewChannelModal !== null && messageNewChannelModal !== undefined" -->
+            <button ng-show="githubrepositories.length > 0" type="submit" class="btn btn-success" id="btn-next-create" ng-click="createwebhooks()">
+              <span class="fa fa-angle-double-right"></span> Next</button>
+
+
+            <button type="button" class="btn btn-danger" id="btn-close"
+                    data-dismiss="modal" ng-click="initVarsNewChannelReposModal()">
+              <span class="fa fa-remove"></span> Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <!-- New Channel Integration Modal -->
+  <div id="newChannelIntegrationModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  ng-click="initVarsNewChannelIntegrationModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Add New Channel</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageNewChannelModal}}
+          </div>
+
+
+
+
+            <!-- newwwwwww --->
+
+
+            <spinner name="html5spinnerIntegration" ng-cloak="">
+              <div class="overlay"></div>
+              <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+              </div>
+              <div class="please-wait">Please Wait...</div>
+            </spinner>
+
+
+            <!----------------------------->
+
+
+          <div class="form-group">
+            <label>Github Service Configuration: </label>
+            <p> Choose your Github account: </p>
+
+
+              <select class="btn btn-default" data-container="body"
+                      name="mySelect" id="mySelect"
+                      ng-options="option.username for option in githubaccounts"
+                      ng-model="accountSelected"
+                      ng-init="githubaccounts[0].username"></select>
+
+
+          </div>
+
+
+
+
+
+
+
+          <!-- me queda x probar -->
+          <!-- esto mas adelante hay que cambiarlo, intentar hacerlo con github -->
+          <div class="form-group" ng-show="accountSelected.username == 'Other'">
+
+            <div class="alert alert-danger" role="alert" ng-if="messageNewChannelBadCredentialsModal !== ''">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelBadCredentialsModal=''">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+              {{messageNewChannelBadCredentialsModal}}
+            </div>
+
+
+
+
+            <label for="githubUserTxt">Username:</label>
+            <input type="text" required="true" class="form-control" name="githubUserTxt" id="githubUserTxt" placeholder="Enter Github username..." ng-model="account.username">
+
+            <br>
+            <label for="githubPassTxt">Password:</label>
+            <input type="password" required="true" class="form-control" name="githubPassTxt" id="githubPassTxt" placeholder="Enter Github password..." ng-model="account.password">
+          </div>
+
+
+
+
+
+        </div>
+        <!--end modalbody -->
+
 
         <div class="modal-footer">
           <div>
-            <button type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel(channel)"><span class="fa fa-floppy-o"></span> Create</button>
+            <button type="submit" class="btn btn-warning" id="btn-back-newchannel" ng-click="createNewChannelBack()">
+              <!-- habria que volver a atras, a elegir cuenta  -->
+              <span class="fa fa-angle-double-left"></span> Back </button>
+            <button type="submit" class="btn btn-success" id="btn-next-repos" ng-click="$event.preventDefault();chooseaccount(account)"><span class="fa fa-angle-double-right"></span> Next</button>
+            <button type="button" class="btn btn-danger" id="btn-close2" data-dismiss="modal" ng-click="initVarsNewChannelIntegrationModal()"><span class="fa fa-remove"></span> Close</button>
 
-            <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="messageNewChannelModal=''; removeInputChannelName()"><span class="fa fa-remove"></span> Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- New Channel Modal -->
+  <div id="newChannelModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  ng-click="initVarsNewChannelModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Add New Channel</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelModal=''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+            {{messageNewChannelModal}}
+          </div>
+
+
+          <spinner name="html5spinner" ng-cloak="">
+            <div class="overlay"></div>
+            <div class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <div class="please-wait">Please Wait...</div>
+          </spinner>
+
+          <div class="form-group">
+            <label for="channelNameTxt">Channel Name:</label>
+            <input type="text" class="form-control"
+                   name="channelNameTxt" id="channelNameTxt"
+                   placeholder="Enter Channel Name..."
+                   ng-model="channel.channelName"
+                   data-rule-required="true" />
+
+            <div class="alert alert-danger" role="alert" ng-if="messageNewChannelNameModal !== ''">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelNameModal=''">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+              {{messageNewChannelNameModal}}
+            </div>
+          </div>
+
+
+
+
+          <div class="form-group">
+            <label>Select Channel Type: </label>
+            <br>
+            <select class="btn btn-default" data-container="body" ng-model="channel.channelType">
+                <option value="PRIVATE"> PRIVATE </option>
+                <option value="PUBLIC"> PUBLIC </option>
+            </select>
+          </div>
+
+
+          <!-- aqui metemos checkbox -->
+          <div class="form-group">
+            <label>Integrate extenal APIs: </label>
+            <br>
+
+
+            <!-- si se activa que ponga next en el boton -->
+              <input type="checkbox"
+                     ng-model="githubchecked"
+                     ng-click="setGithubCheckbox(githubchecked)">
+                GitHub
+            <br/>
+          </div>
+
+
+        </div>
+        <!--end modalbody -->
+
+        <div class="modal-footer">
+          <div>
+            <button ng-show="!githubchecked" type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel(channel)">
+              <span class="fa fa-floppy-o"></span> Create</button>
+
+            <button ng-show="githubchecked" type="submit" class="btn btn-success" id="btn-new-channel-next" ng-click="createNewChannel(channel)">
+              <span class="fa fa-angle-double-right"></span> Next </button>
+            <button type="button" class="btn btn-danger" id="btn-new-channel-close" data-dismiss="modal" ng-click="initVarsNewChannelModal()">
+              <span class="fa fa-remove"></span> Close</button>
 
           </div>
         </div>
@@ -1294,7 +1751,15 @@
       console.log("entro en jquery");
       /*class="col-xs-7 col-sm-7 col-md-8 col-lg-8"*/
     });
+
+
+
   </script>
+
+
+
+
+
 
 
   <link rel="stylesheet" ng-href="styles/chat2.css">
@@ -1305,3 +1770,6 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
   <!---------- iconos -------------------------->
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+
+
+</div>

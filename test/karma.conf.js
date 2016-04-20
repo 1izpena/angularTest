@@ -34,7 +34,6 @@ module.exports = function(config) {
       'bower_components/angular-aria/angular-aria.js',
       'bower_components/angular-material/angular-material.js',
       'bower_components/ngstorage/ngStorage.js',
-      'bower_components/metisMenu/dist/metisMenu.js',
       'bower_components/socket.io-client/socket.io.js',
       'bower_components/moment/moment.js',
       'bower_components/angular-moment/angular-moment.js',
@@ -56,6 +55,8 @@ module.exports = function(config) {
       'bower_components/HTML5-Desktop-Notifications2/desktop-notify.js',
       'bower_components/angular-web-notification/angular-web-notification.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/oi.select/dist/select-tpls.min.js',
+      'bower_components/angular-spinners/dist/angular-spinners.min.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

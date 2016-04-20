@@ -12,35 +12,11 @@ angular.module('myAppAngularMinApp')
         postAnswer: postAnswer,
         publishMessage: publishMessage,
         getMetaTags: getMetaTags,
-        openNotification: openNotification,
-        /* new */
-        callpruebagithub: callpruebagithub
+        openNotification: openNotification
+
 
       };
 
-
-
-      /****** new ***************/
-      function callpruebagithub () {
-        var defered = $q.defer();
-        var promise = defered.promise;
-
-
-
-        $http({
-          method: 'get',
-          url: API_BASE + '/api/v1/githubapi',
-          headers: { 'x-access-token': $localStorage.token },
-        }).then( function(result){
-            defered.resolve(result);
-          },
-          function (err) {
-            defered.reject(err);
-          });
-        return promise;
-      }
-
-      /********** end new *****************/
 
 
       function publishMessage (data) {
