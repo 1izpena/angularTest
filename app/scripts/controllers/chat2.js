@@ -781,6 +781,10 @@ angular.module('myAppAngularMinApp')
       /* vale con mandar el nombre de los repos
       * y el login */
 
+
+      /* esto puede ser solo decir que se ha hecho correctamente */
+      /* importante, en este momento reiniciar las variables del canal */
+
       $scope.createwebhooks = function(){
 
 
