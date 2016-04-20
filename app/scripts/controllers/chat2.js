@@ -485,11 +485,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-      /* comentario de prueba:: quitar */
-
-
-
-
+      
 
     $scope.removeInput = function(){
       $("#groupNameTxt").val('').trigger('input');
