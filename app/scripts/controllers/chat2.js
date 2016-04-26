@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService', 'LoginService', '$location', '$localStorage', 'ChatService', 'Socket', 'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5', 'searchservice', 'GithubService', '$timeout', 'spinnerService',
-    function ($scope, $window, $uibModal, ProfileService, LoginService, $location, $localStorage, ChatService, Socket, GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5, searchservice, GithubService, $timeout, spinnerService) {
+  .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService',
+    'LoginService', '$location', '$localStorage', 'ChatService', 'Socket',
+    'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
+    'searchservice', 'GithubService', '$timeout', 'spinnerService', 'INTERNAL_USER',
+    function ($scope, $window, $uibModal, ProfileService,
+              LoginService, $location, $localStorage, ChatService, Socket,
+              GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5,
+              searchservice, GithubService, $timeout, spinnerService, INTERNAL_USER) {
 
       $scope.init = function()
       {
@@ -449,6 +455,24 @@ angular.module('myAppAngularMinApp')
       };
 
 
+
+      function removeVarsNewChannelWebhooksModal () {
+
+        /* el error es el mismo */
+        removeErrorMessageNewChannelReposModal();
+
+        $scope.arrReposOk = [];
+        $scope.arrReposError = [];
+
+
+
+
+      };
+
+
+
+
+
       /******************* end vars init ********************************/
 
 
@@ -480,12 +504,24 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      $scope.initVarsNewChannelWebhooksModal = function(){
+        /* las anteriores (initVarsNewChannelReposModal) y estas */
+        $scope.initVarsNewChannelReposModal();
+        removeVarsNewChannelWebhooksModal();
+
+
+      };
+
+
+
+
+
 
       /************************** end  modales inicializar valores *****************************************/
 
 
 
-      
+
 
     $scope.removeInput = function(){
       $("#groupNameTxt").val('').trigger('input');
@@ -797,124 +833,119 @@ angular.module('myAppAngularMinApp')
         console.log($scope.repositorySelected);
         /* mirar el tipo */
 
-        console.log("esto vale channel en create webhhoks");
 
-        /* tengo el tipo channelType 'PUBLIC' y channelName */
-        console.log($scope.githubchannel);
+        /* si esta vacio mensaje de error */
 
 
+        if($scope.repositorySelected == null
+          || $scope.repositorySelected == undefined
+          || $scope.repositorySelected == ''){
 
-        /* podemos pasar el token directamente */
-        console.log("esto vale account con token");
+          $scope.messageNewChannelModal = "Field repositories is required.";
+        }
+        else if($scope.repositorySelected.length == 0){
+          $scope.messageNewChannelModal = "Field repositories is required.";
+        }
 
-        /* token, username */
-        console.log($scope.account);
-
-        /* no se que tengo en este momento
-        * usar token de bd o el actual?? yo tiraría del mismo */
-
-
-
-        spinnerService.show('html5spinnerRepos');
-
-        GithubService.createwebhooks($scope.account,
-                                      $scope.repositorySelected,
-                                      $scope.githubchannel,
-                                      $scope.tagGroup.id).then(
-          function(result) {
-
-            console.log("esto vale result");
-            console.log(result);
-
-            spinnerService.hide('html5spinnerRepos');
+        else{
 
 
-            /* si ha ido bien, data no es null, arrReposOk y arrReposError existen
-            * y alguno tiene lenght >0
-            * cerrar ventana y abrir la otra
-            * dentro de arrRepos hay item con nombre e id
-            * y res con la respuesta:: code 201
-            * o code 504 timeout */
+          console.log("esto vale channel en create webhhoks");
+          /* tengo el tipo channelType 'PUBLIC' y channelName */
+          console.log($scope.githubchannel);
 
-            /* mirar vuelta
-             *  */
-            /* creo que tenemos arrOk y arrErr */
-            /* lo suyo es cogerlos y mirar */
 
-            /*
+          /* podemos pasar el token directamente */
+          console.log("esto vale account con token");
+          /* token, username */
+          console.log($scope.account);
 
-            $("#newChannelReposModal").modal("hide");
-             $("#newChannelWebhooksModal").modal("show");
-             */
+          /* no se que tengo en este momento
+           * usar token de bd o el actual?? yo tiraría del mismo */
 
-            /* result.data.data es 1 objeto si */
-            if(result.data !== null &&
-               result.data !== undefined){
 
-              if((result.data.arrReposOk !== null &&
-                 result.data.arrReposOk !== undefined)||
-                 (result.data.arrReposError !== null &&
-                 result.data.arrReposError !== undefined)){
-                /* entonces rellenamos tabla */
-                $scope.arrReposOk = result.data.arrReposOk;
-                $scope.arrReposError = result.data.arrReposError;
 
-                /* chapamos esta ventana y metemos la otra */
-                $("#newChannelReposModal").modal("hide");
+          spinnerService.show('html5spinnerRepos');
 
-                /* este solo tiene:
-                 * messageNewChannelModal
-                 * $scope.arrReposOk
-                 * $scope.arrReposError
-                 * */
-                $("#newChannelWebhooksModal").modal("show");
+          GithubService.createwebhooks($scope.account,
+            $scope.repositorySelected,
+            $scope.githubchannel,
+            $scope.tagGroup.id).then(
+            function(result) {
 
-                /* aqui podríamos llamar a crear canal con los resultados */
+              console.log("esto vale result");
+              console.log(result);
 
-               /* ChannelService.createNewChannel($scope.tagGroup.id,
-                                                $scope.githubchannel).then(
-                  function(data) {
+              spinnerService.hide('html5spinnerRepos');
 
-                    /* aqui depende lo que tarde hacemos lo del spinner o no *
-                    console.log("se crea el nuevo canal");
+              /* aqui aun no se han borrado las variables */
 
-                  },function(err){
-                    // Tratar el error
-                    console.log("Hay error al crear canal: " + err.data.message);
 
-                    $scope.messageNewChannelModal = err.data.message;
+              /* si ha ido bien, data no es null, arrReposOk y arrReposError existen
+               * y alguno tiene lenght >0
+               * cerrar ventana y abrir la otra
+               * dentro de arrRepos hay item con nombre e id
+               * y res con la respuesta:: code 201
+               * o code 504 timeout */
 
-                  }
-                );
 
-                */
 
+              /* result.data.data es 1 objeto si */
+              if(result.data !== null &&
+                result.data !== undefined){
+
+                if((result.data.arrReposOk !== null &&
+                  result.data.arrReposOk !== undefined)||
+                  (result.data.arrReposError !== null &&
+                  result.data.arrReposError !== undefined)){
+                  /* entonces rellenamos tabla */
+                  $scope.arrReposOk = result.data.arrReposOk;
+                  $scope.arrReposError = result.data.arrReposError;
+
+                  /* chapamos esta ventana y metemos la otra */
+                  $("#newChannelReposModal").modal("hide");
+
+                  /* este solo tiene:
+                   * messageNewChannelModal
+                   * $scope.arrReposOk
+                   * $scope.arrReposError
+                   * */
+                  $("#newChannelWebhooksModal").modal("show");
+
+                  /* en el caso de que arrReposOk sea vacio volver a atras */
+                  /* falta parseo de que no sea vacio la parte de elegir repos */
+
+                }
+
+
+
+              }
+              else{
+                /* esto no debería pasar */
+                $scope.messageNewChannelModal = "No repositories added to channel. Try again.";
+                /* para este caso volver a atras */
 
               }
 
 
 
-            }
-            else{
-              /* esto no debería pasar */
-              $scope.messageNewChannelModal = "No repositories added to channel. Try again.";
+
+            },
+            function(error) {
+              // TODO: mostrar error
+              console.log("error createhooks");
+              console.log(error);
+
+              spinnerService.hide('html5spinnerRepos');
+              $scope.messageNewChannelModal = error.data.message;
 
             }
+          );
+
+        }
 
 
 
-
-          },
-          function(error) {
-            // TODO: mostrar error
-            console.log("error createhooks");
-            console.log(error);
-
-            spinnerService.hide('html5spinnerRepos');
-            $scope.messageNewChannelModal = error.data.message;
-
-          }
-        );
 
 
       };
@@ -957,7 +988,7 @@ angular.module('myAppAngularMinApp')
             $scope.messageNewChannelBadCredentialsModal = "Field username is required.";
 
           }
-          else if($scope.account.password == null || $scope.account.password == '' || $scope.account.username == password){
+          else if($scope.account.password == null || $scope.account.password == '' || $scope.account.password == undefined){
             /* meter mensaje de error x el pass */
             $scope.messageNewChannelBadCredentialsModal = "Field password is required.";
           }
@@ -1010,6 +1041,7 @@ angular.module('myAppAngularMinApp')
             }*/
 
 
+            /* aqui podríamos cargarnos */
 
             $("#newChannelIntegrationModal").modal("hide");
             $("#newChannelReposModal").modal("show");
@@ -2761,6 +2793,258 @@ angular.module('myAppAngularMinApp')
 
     };
 
+
+
+
+    $scope.isGithubMessage = function ($index) {
+      if(typeof ($scope.listaMensajes[$index].user) !== "undefined"){
+        //console.log($scope.listaMensajes[$index].text);
+        if ($scope.listaMensajes[$index].user.mail == INTERNAL_USER
+            && $scope.listaMensajes[$index].messageType == 'TEXT') {
+
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+
+
+
+      /********************** new ****************************/
+      $scope.getGithubMessage = function ($index) {
+
+
+        /* hay que mirar si se convierte bien en JSON y podemos coger cosas */
+        var githubMessageString = $scope.listaMensajes[$index].text;
+        console.log("githubMessageString");
+        console.log(githubMessageString);
+
+
+        var githubMessageMiddle = JSON.parse(githubMessageString);
+
+
+        console.log("githubMessageMiddle");
+        console.log(githubMessageMiddle);
+
+
+        var githubMessageJSON = JSON.parse(githubMessageMiddle);
+
+
+        console.log("githubMessageJSON");
+        console.log(githubMessageJSON);
+
+
+        /* miramos en tipo de evento y en funcion de cual sea devolvemos 1 cosa u otra */
+
+        var messageEventType = githubMessageJSON.event;
+
+        var messageText = '';
+        var repositoryParse = '';
+
+        var commitsParse = '';
+        var commitsParse2 = '';
+        var senderHtmlUrl = '';
+        var numParticipants = 0;
+        var authors = [];
+        var uniqueAuthors = [];
+        var literalCommit = '';
+
+
+
+        /* eventos que ahora controlamos, primera prueba con push
+        * issues
+         issue_comment
+         push
+         commit_comment
+         */
+
+        /* hay que parsear esto:
+        * text: '
+        * "{\\"event\\":\\"push\\",
+        * \\"repository\\":{\\
+        * "id\\":53012875,\\"name\\":\\"angularProject\\"},
+        * \\"ref\\":\\"refs/heads/master\\",
+        * \\"commits\\":[
+        * {\\"id\\":\\"63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
+        * \\"url\\":\\"https://github.com/1izpena/angularProject/commit/63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
+        * \\"author\\":\\"1izpena\\"}],\\
+        * "sender\\":{\\"login\\":\\"1izpena\\",\\"html_url\\":\\"https://github.com/1izpena\\"}}"' }
+
+         *
+        * */
+
+        if(messageEventType == "push"){
+          /* no tengo muy claro como era esto
+          * en slack
+          *
+          *
+           github BOT [3:13 PM]
+           [ionicProject:master] 1 new commit by urtzip:
+           6daf664: Arreglados scroll en preguntas y publicacion - urtzip
+          *
+          * */
+
+          /* para repository y branch */
+          if(githubMessageJSON.repository !== null && githubMessageJSON.repository !== undefined ){
+            if(githubMessageJSON.repository.name !== null && githubMessageJSON.repository.name !== undefined){
+
+              if(githubMessageJSON.ref !== null && githubMessageJSON.ref !== undefined){
+                /* tenemos que hacer split */
+
+                var ref = (githubMessageJSON.ref).split("/");
+                if(ref.length > 0){
+                  repositoryParse = "<p> [" + githubMessageJSON.repository.name + ": " + ref[ref.length-1] +" ]</p> ";
+
+
+                }
+                else{
+                  repositoryParse = "<p> [" + githubMessageJSON.repository.name + ": " + githubMessageJSON.ref +" ]</p> ";
+
+
+                }
+              }
+              else{
+                repositoryParse = "<p> [" + githubMessageJSON.repository.name + " ]</p> ";
+
+              }
+
+
+
+            }
+
+          }
+          /* para commits varios tengo 1 array
+          * commits\\":[
+           * {\\"id\\":\\"63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
+           * \\"url\\":\\"https://github.com/1izpena/angularProject/commit/63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
+           * \\"author\\":\\"1izpena\\"}],
+           *
+           * ¿ falta meter texto ?
+           *
+           *
+           * y luego tenemos sender que es quien aparece en la cabecera
+           * sender\\":{\\"login\\":\\"1izpena\\",\\"html_url\\":\\"https://github.com/1izpena\\"}}
+          *
+          *
+          *
+          * [RestAPI:master] 2 new commits by Laiene:
+           05e227c: Arreglos varios emitir notificaciones a conectados y no conectados - Laiene
+           9f1c815: Merge branch 'master' of https://github.com/dessi15/RestAPI - Laiene
+          * */
+
+          /* contabilizamos array */
+          if(githubMessageJSON.commits !== null && githubMessageJSON.commits !== undefined){
+
+            if(githubMessageJSON.commits.length > 0){
+
+              if(githubMessageJSON.sender !== null && githubMessageJSON.sender !== undefined){
+
+                if(githubMessageJSON.sender.login !== null && githubMessageJSON.sender.login !== undefined){
+                  /* falta meter href  senderHtmlUrl */
+
+                  /* son varios commits, hay que mirar si el author del commit coincide con el sender */
+
+
+                  /* aqui tambien estaria bien meter los commits */
+                  for( var i = 0; i < githubMessageJSON.commits.length; i++){
+
+                    /* aqui queda hacer if para ver si son variables nulas no meterlo */
+                    if( githubMessageJSON.commits[i].id == null || githubMessageJSON.commits[i].id == undefined){
+                      githubMessageJSON.commits[i].id = '';
+                    }
+
+                    commitsParse2 = commitsParse2 +"<p> " + githubMessageJSON.commits[i].id;
+
+
+                    if(githubMessageJSON.commits[i].texto !== null && githubMessageJSON.commits[i].texto !== undefined){
+                      commitsParse2 = commitsParse2 +": "+ githubMessageJSON.commits[i].texto;
+
+
+                    }
+                    if(githubMessageJSON.commits[i].author !== null && githubMessageJSON.commits[i].author !== undefined){
+                      commitsParse2 = commitsParse2 +" - " + githubMessageJSON.commits[i].author ;
+
+                    }
+                    commitsParse2 = commitsParse2 +" </p> ";
+
+
+
+
+
+
+                    if(githubMessageJSON.commits[i].author !== githubMessageJSON.sender.login){
+                      numParticipants ++;
+                      authors.push(githubMessageJSON.commits[i].author);
+
+
+
+
+
+                    }
+
+
+                  }
+
+                  if(numParticipants > 0){
+
+
+                    $.each(names, function(i, el){
+                      if($.inArray(el, uniqueAuthors) === -1) uniqueAuthors.push(el);
+                    });
+
+                    commitsParse = "<p> " + githubMessageJSON.commits.length + " new commit by "+ githubMessageJSON.sender.login +" and " + uniqueAuthors.length + " other:</p> ";
+
+                  }
+                  else {
+                    if(githubMessageJSON.commits.length > 1){
+                      literalCommit = "commits";
+
+                    }
+                    else{
+                      literalCommit = "commit";
+
+                    }
+                    commitsParse = "<p> " + githubMessageJSON.commits.length + " new "+ literalCommit +" by "+ githubMessageJSON.sender.login +":</p> ";
+                  }
+
+
+                }
+
+              }
+              else{
+                commitsParse = "<p> " + githubMessageJSON.commits.length + " new commits:</p> ";
+
+              }
+
+
+
+
+            }/* end if commits.lenght>0*/
+          }
+
+          messageText = messageText + repositoryParse + commitsParse + commitsParse2;
+
+
+
+        }
+
+
+
+
+        return messageText;
+
+      };
+
+
+
+
+
+
+
+      /************************* end new ****************************/
+
     $scope.isInternalMessage = function ($index) {
       if(typeof ($scope.listaMensajes[$index].text) !== "undefined"){
         //console.log($scope.listaMensajes[$index].text);
@@ -3078,7 +3362,16 @@ angular.module('myAppAngularMinApp')
 
 
       /* por canal, estoy dentro del canal */
+
+      /* mirar si es internal user */
+
+      /* hay que cambiar en newMessage, en newMessageEvent y en push directo cuando carga mensajes
+      * tambien mirar que funcione en notificaciones, tanto para ver si se crea nuevo canal lo mete para noti*/
+
      Socket.on('newMessage', function (data) {
+
+       /* parsear de forma diferente */
+
 
 
      console.log("newMessage from server: " + data.groupid + ', ' + data.message.id);
@@ -3097,6 +3390,50 @@ angular.module('myAppAngularMinApp')
 
 
        }
+
+       /* aqui parseamos si es github */
+
+       /* no hace falta hacer nada,cambiando solo el ng-bind-html vale
+       * para notificacioes de escritorio si haria falta
+       * lo dejamos solo para los consoles, luego lo quitamos
+       * sobraaaaa
+       *
+       * */
+       if(data.message.user.mail == INTERNAL_USER && data.message.messageType == 'TEXT'){
+        /* lo mandamos asi ---> message: result
+         * y data.message es
+        *
+        * { id: 5717ee444763d6341548220f,
+         channel:
+         { id: 56cb893773da764818ec5df1,
+         channelName: 'General',
+         channelType: 'PUBLIC' },
+         user:
+         { id: 56cb8a1c63202f68056c1196,
+         username: 'meanstack',
+         mail: 'internalUser@localhost' },
+         date: Wed Apr 20 2016 23:01:56 GMT+0200 (CEST),
+         messageType: 'TEXT',
+         text: '"{\\"event\\":\\"push\\",\\"repository\\":{\\"id\\":53012875,\\"name\\":\\"angularProject\\"},\\"ref\\":\\"refs/heads/master\\",\\"commits\\":[{\\"id\\":\\"63dfa554e5e35e08e555fa6450d85df00342a1cf\\",\\"url\\":\\"https://github.com/1izpena/angularProject/commit/63dfa554e5e35e08e555fa6450d85df00342a1cf\\",\\"author\\":\\"1izpena\\"}],\\"sender\\":{\\"login\\":\\"1izpena\\",\\"html_url\\":\\"https://github.com/1izpena\\"}}"' }
+
+         *
+        *
+        * */
+         /* mirar el evento */
+
+         /* cogemos text y lo convertimos */
+         var textString = data.message.text;
+         var textJSON = JSON.parse(textString);
+         console.log("esto vale textJSON");
+         console.log(textJSON);
+
+
+         console.log("podre coger el evento de text??");
+         console.log(textJSON.event);
+
+
+       }
+
 
        $scope.listaMensajes.push(data.message);
 
@@ -3861,12 +4198,15 @@ angular.module('myAppAngularMinApp')
           console.log("esta en ese grupo y fuera de la window");
 
           /* esto habra que cambiarlo cuando sean internal y demas */
+          /* esto queda parsearlo para internals */
+
           ChatService.openNotification(data);
 
         }
 
 
 
+        /* estas notificaciones son numericas, no hay que cambiar nada para el newmessagedeGithub*/
 
 
         /* si estamos = grupo e = canal,

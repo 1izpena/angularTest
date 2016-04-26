@@ -717,10 +717,45 @@
                       </p>
 
 
-                      <p ng-if="msg.messageType=='TEXT' && !isInternalMessage($index)" class="text-left">
+                      <!--- unir esto con lo de abajo -->
+
+                      <p ng-if="isGithubMessage($index)" class="text-left">
+                        <span bind-html-compile="getGithubMessage($index)"></span>
+                      </p>
+
+
+                      <!-- aqui vamos a parsear los de github -->
+
+                      <!--
+                      <p ng-if="msg.messageType=='URL'" class="text-left"/>
+                      <a ng-if="msg.messageType=='URL'" ng-href="{{msg.text}}">
+                        {{msg.text}}
+                      </a>
+                      <i ng-if="msg.messageType=='URL'" ng-click="changeVisible(msg,$index)" class="fa fa-caret-square-o-down fa-lg"></i>
+
+                      <div class="metadatalinks" ng-if="msg.messageType=='URL' && msg.visible" ng-bind-html="listaMensajes[$index].response_data_url">
+                      </div>
+
+                      </p>
+                      -->
+
+
+
+                      <!---------- fin de agregado -->
+
+                      <p ng-if="msg.messageType=='TEXT' && !isInternalMessage($index) && !isGithubMessage($index)" class="text-left">
                         {{msg.text}}
                       </p>
 
+
+
+
+
+
+
+
+
+                      <!--   -->
 
                       <!--
                       <p ng-if="msg.messageType=='URL'" class="text-left"/>
@@ -1176,7 +1211,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                  ng-click="">
+                  ng-click="initVarsNewChannelWebhooksModal()">
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 class="modal-title">Add New Channel</h4>
@@ -1215,9 +1250,19 @@
 
           aunque directamente que no pasara seria lo suyo
           -->
+          <!-- falta gestionar errores -->
+
+
 
           <div class="form-group" >
             <label>Github Service Configuration: </label>
+
+
+            <div class="alert alert-success" role="alert">
+              <p> Successfully created channel: <strong> {{githubchannel.channelName}}</strong> </p>
+
+            </div>
+
             <p> State of Repositories: </p>
 
 
@@ -1237,13 +1282,10 @@
               <tr class="success" ng-repeat="data in arrReposOk" ng-show="arrReposOk.length > 0">
 
 
-                <td>{{ data.item.name }}</td>
-                <td>{{ data.item.id }}</td>
+                <td>{{ data.item.name }} ({{ data.item.id }})</td>
+                <td>201 : Attached</td>
 
-                <!--
-                <td ng-if="$odd" style="background-color:#f1f1f1">{{ x.Name }}</td>
-                <td ng-if="$even">{{ x.Name }}</td>
-                -->
+
 
               </tr>
 
@@ -1254,10 +1296,7 @@
                 <td> {{ data.code }} : {{ data.message }} </td>
 
 
-                <!--
-                <td ng-if="$odd" style="background-color:#f1f1f1">{{ x.Name }}</td>
-                <td ng-if="$even">{{ x.Name }}</td>
-                -->
+
 
               </tr>
 
@@ -1294,15 +1333,21 @@
 
 
             <!-- ng-show="messageNewChannelModal !== null && messageNewChannelModal !== undefined" -->
-            <button ng-show="githubrepositories.length > 0" type="submit" class="btn btn-success" id="btn-next-create-channel" ng-click="">
-              <span class="fa fa-floppy-o"></span> Create </button>
 
-<!--
-            <button type="button" class="btn btn-danger" id="btn-close"
-                    data-dismiss="modal" ng-click="initVarsNewChannelReposModal()">
+            <!--
+            <button ng-show="githubrepositories.length > 0" type="submit" class="btn btn-success" id="btn-next-create-channel"
+                    ng-click="initVarsNewChannelWebhooksModal()">
+              <span class="fa fa-floppy-o"></span> Create </button>
+              -->
+
+
+
+            <button type="button" class="btn btn-danger" id="btn-new-channel-github-close"
+                    data-dismiss="modal" ng-click="initVarsNewChannelWebhooksModal()">
               <span class="fa fa-remove"></span> Close</button>
 
--->
+
+
           </div>
         </div>
       </div>
