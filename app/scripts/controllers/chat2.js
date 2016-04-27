@@ -2821,224 +2821,38 @@ angular.module('myAppAngularMinApp')
         console.log("githubMessageString");
         console.log(githubMessageString);
 
+        if(githubMessageString !== null && githubMessageString !== undefined && githubMessageString !== ''){
+          var githubMessageMiddle = JSON.parse(githubMessageString);
+          console.log("githubMessageMiddle");
+          console.log(githubMessageMiddle);
 
-        var githubMessageMiddle = JSON.parse(githubMessageString);
 
+          var githubMessageJSON = JSON.parse(githubMessageMiddle);
+          console.log("githubMessageJSON");
+          console.log(githubMessageJSON);
 
-        console.log("githubMessageMiddle");
-        console.log(githubMessageMiddle);
 
 
-        var githubMessageJSON = JSON.parse(githubMessageMiddle);
+          var messageText = '';
 
 
-        console.log("githubMessageJSON");
-        console.log(githubMessageJSON);
 
+          /* llamamos al servicio que parsee */
+          messageText = GithubService.parseGithubEvents(githubMessageJSON);
 
-        /* miramos en tipo de evento y en funcion de cual sea devolvemos 1 cosa u otra */
+          /* mirar que devueleve */
 
-        var messageEventType = githubMessageJSON.event;
-
-        var messageText = '';
-        var repositoryParse = '';
-
-        var commitsParse = '';
-        var commitsParse2 = '';
-        var senderHtmlUrl = '';
-        var numParticipants = 0;
-        var authors = [];
-        var uniqueAuthors = [];
-        var literalCommit = '';
-
-
-
-        /* eventos que ahora controlamos, primera prueba con push
-        * issues
-         issue_comment
-         push
-         commit_comment
-         */
-
-        /* hay que parsear esto:
-        * text: '
-        * "{\\"event\\":\\"push\\",
-        * \\"repository\\":{\\
-        * "id\\":53012875,\\"name\\":\\"angularProject\\"},
-        * \\"ref\\":\\"refs/heads/master\\",
-        * \\"commits\\":[
-        * {\\"id\\":\\"63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
-        * \\"url\\":\\"https://github.com/1izpena/angularProject/commit/63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
-        * \\"author\\":\\"1izpena\\"}],\\
-        * "sender\\":{\\"login\\":\\"1izpena\\",\\"html_url\\":\\"https://github.com/1izpena\\"}}"' }
-
-         *
-        * */
-
-        if(messageEventType == "push"){
-          /* no tengo muy claro como era esto
-          * en slack
-          *
-          *
-           github BOT [3:13 PM]
-           [ionicProject:master] 1 new commit by urtzip:
-           6daf664: Arreglados scroll en preguntas y publicacion - urtzip
-          *
-          * */
-
-          /* para repository y branch */
-          if(githubMessageJSON.repository !== null && githubMessageJSON.repository !== undefined ){
-            if(githubMessageJSON.repository.name !== null && githubMessageJSON.repository.name !== undefined){
-
-              if(githubMessageJSON.ref !== null && githubMessageJSON.ref !== undefined){
-                /* tenemos que hacer split */
-
-                var ref = (githubMessageJSON.ref).split("/");
-                if(ref.length > 0){
-                  repositoryParse = "<p> [" + githubMessageJSON.repository.name + ": " + ref[ref.length-1] +" ]</p> ";
-
-
-                }
-                else{
-                  repositoryParse = "<p> [" + githubMessageJSON.repository.name + ": " + githubMessageJSON.ref +" ]</p> ";
-
-
-                }
-              }
-              else{
-                repositoryParse = "<p> [" + githubMessageJSON.repository.name + " ]</p> ";
-
-              }
-
-
-
-            }
-
-          }
-          /* para commits varios tengo 1 array
-          * commits\\":[
-           * {\\"id\\":\\"63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
-           * \\"url\\":\\"https://github.com/1izpena/angularProject/commit/63dfa554e5e35e08e555fa6450d85df00342a1cf\\",
-           * \\"author\\":\\"1izpena\\"}],
-           *
-           * ¿ falta meter texto ?
-           *
-           *
-           * y luego tenemos sender que es quien aparece en la cabecera
-           * sender\\":{\\"login\\":\\"1izpena\\",\\"html_url\\":\\"https://github.com/1izpena\\"}}
-          *
-          *
-          *
-          * [RestAPI:master] 2 new commits by Laiene:
-           05e227c: Arreglos varios emitir notificaciones a conectados y no conectados - Laiene
-           9f1c815: Merge branch 'master' of https://github.com/dessi15/RestAPI - Laiene
-          * */
-
-          /* contabilizamos array */
-          if(githubMessageJSON.commits !== null && githubMessageJSON.commits !== undefined){
-
-            if(githubMessageJSON.commits.length > 0){
-
-              if(githubMessageJSON.sender !== null && githubMessageJSON.sender !== undefined){
-
-                if(githubMessageJSON.sender.login !== null && githubMessageJSON.sender.login !== undefined){
-                  /* falta meter href  senderHtmlUrl */
-
-                  /* son varios commits, hay que mirar si el author del commit coincide con el sender */
-
-
-                  /* aqui tambien estaria bien meter los commits */
-                  for( var i = 0; i < githubMessageJSON.commits.length; i++){
-
-                    /* aqui queda hacer if para ver si son variables nulas no meterlo */
-                    if( githubMessageJSON.commits[i].id == null || githubMessageJSON.commits[i].id == undefined){
-                      githubMessageJSON.commits[i].id = '';
-                    }
-
-                    commitsParse2 = commitsParse2 +"<p> " + githubMessageJSON.commits[i].id;
-
-
-                    if(githubMessageJSON.commits[i].texto !== null && githubMessageJSON.commits[i].texto !== undefined){
-                      commitsParse2 = commitsParse2 +": "+ githubMessageJSON.commits[i].texto;
-
-
-                    }
-                    if(githubMessageJSON.commits[i].author !== null && githubMessageJSON.commits[i].author !== undefined){
-                      commitsParse2 = commitsParse2 +" - " + githubMessageJSON.commits[i].author ;
-
-                    }
-                    commitsParse2 = commitsParse2 +" </p> ";
-
-
-
-
-
-
-                    if(githubMessageJSON.commits[i].author !== githubMessageJSON.sender.login){
-                      numParticipants ++;
-                      authors.push(githubMessageJSON.commits[i].author);
-
-
-
-
-
-                    }
-
-
-                  }
-
-                  if(numParticipants > 0){
-
-
-                    $.each(names, function(i, el){
-                      if($.inArray(el, uniqueAuthors) === -1) uniqueAuthors.push(el);
-                    });
-
-                    commitsParse = "<p> " + githubMessageJSON.commits.length + " new commit by "+ githubMessageJSON.sender.login +" and " + uniqueAuthors.length + " other:</p> ";
-
-                  }
-                  else {
-                    if(githubMessageJSON.commits.length > 1){
-                      literalCommit = "commits";
-
-                    }
-                    else{
-                      literalCommit = "commit";
-
-                    }
-                    commitsParse = "<p> " + githubMessageJSON.commits.length + " new "+ literalCommit +" by "+ githubMessageJSON.sender.login +":</p> ";
-                  }
-
-
-                }
-
-              }
-              else{
-                commitsParse = "<p> " + githubMessageJSON.commits.length + " new commits:</p> ";
-
-              }
-
-
-
-
-            }/* end if commits.lenght>0*/
-          }
-
-          messageText = messageText + repositoryParse + commitsParse + commitsParse2;
-
+        }
+        else {
+          messageText = null;
 
 
         }
 
 
-
-
         return messageText;
 
       };
-
-
-
 
 
 

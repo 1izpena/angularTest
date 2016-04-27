@@ -251,6 +251,10 @@ angular.module('myAppAngularMinApp')
           }
         );
         return promise;
-      }
+      };
+
+
+
+
     }
   ]);

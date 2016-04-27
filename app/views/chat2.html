@@ -719,7 +719,7 @@
 
                       <!--- unir esto con lo de abajo -->
 
-                      <p ng-if="isGithubMessage($index)" class="text-left">
+                      <p ng-if="isGithubMessage($index) && getGithubMessage($index)!== ''" class="text-left">
                         <span bind-html-compile="getGithubMessage($index)"></span>
                       </p>
 
