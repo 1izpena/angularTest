@@ -36,6 +36,7 @@ angular.module('myAppAngularMinApp')
 
         $scope.arrReposOk = [];
         $scope.arrReposError = [];
+        $scope.flag = {};
 
 
 
@@ -439,6 +440,7 @@ angular.module('myAppAngularMinApp')
         $scope.removeInputsAccount();
         $scope.account = {};
         $scope.accountSelected = {};
+        $scope.flag = {};
 
 
       };
@@ -975,6 +977,8 @@ angular.module('myAppAngularMinApp')
         console.log("esto vale channel en choose account");
         console.log($scope.githubchannel);
 
+
+
         if($scope.accountSelected.username == 'Other'){
           /* coger la pass y el username */
           /* username y password */
@@ -1003,8 +1007,34 @@ angular.module('myAppAngularMinApp')
 
         }
         else{
+
+
+
+
+          if($scope.flag !== undefined && $scope.flag !== null && $scope.flag !== '' ){
+            if(($scope.flag.username !== undefined && $scope.flag.username !== null && $scope.flag.username !== '') &&
+              $scope.flag.status == true ){
+
+              if(($scope.account.password == null || $scope.account.password == '' || $scope.account.password == undefined) &&
+                $scope.flag.username == $scope.account.username){
+                $scope.messageNewChannelBadCredentialsModal = "Field password is required.";
+                console.log("entro");
+              }
+
+
+
+
+            }
+
+          }
+
+
           $scope.account.username = $scope.accountSelected.username;
-          $scope.account.password = null;
+
+
+
+
+
 
 
         }
@@ -1012,7 +1042,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-        GithubService.getAuth($scope.account.username, $scope.account.password).then(
+        GithubService.getAuth($scope.account.username, $scope.account.password, $scope.flag).then(
           function(result) {
 
             console.log("esto vale result");
@@ -1030,7 +1060,7 @@ angular.module('myAppAngularMinApp')
             $scope.account = result.data.githubtoken;
 
             if($scope.githubrepositories.length == 0){
-              $scope.messageNewChannelModal = "There are not repositories to add to the channel which you are owner";
+              $scope.messageNewChannelModal = "There are not repositories to add to the channel which you are owner. ";
 
             }
 
@@ -1043,6 +1073,9 @@ angular.module('myAppAngularMinApp')
 
             /* aqui podríamos cargarnos */
 
+            /* si tods sale bien ponemos flag a {} */
+            $scope.flag= {};
+
             $("#newChannelIntegrationModal").modal("hide");
             $("#newChannelReposModal").modal("show");
 
@@ -1053,8 +1086,24 @@ angular.module('myAppAngularMinApp')
             console.log("error getAuth");
             console.log(error);
 
-            spinnerService.hide('html5spinnerIntegration');
 
+
+            spinnerService.hide('html5spinnerIntegration');
+            /* si el error.status == 401 quitamos esta ventana y ponemos otra */
+
+            if(error.status == 404 && $scope.accountSelected.username !== 'Other'){
+              /* ponemos el flag a 1*/
+
+
+              $scope.flag = { username : $scope.accountSelected.username,
+                              status : true
+
+              };
+
+              /* metemos a ese accountselected un parametro que cuando
+               se seleccione debajo salga para meter la pass
+              * */
+            }
             /*
             if($scope.accountSelected.username == 'Other'){
               spinnerService.hide('html5spinnerIntegration');
@@ -1373,23 +1422,23 @@ angular.module('myAppAngularMinApp')
                 /* esto se quedaría asi
                  * pero hay que comprobar que el campo de nombre
                  * no es vacio */
-                /*
-                 ChannelService.createNewChannel($scope.groupid,channel).then(
-                 function(data) {
-                 $("#newChannelModal").modal("hide");
 
-                 $scope.removeInputChannelName();
-                 $scope.messageNewChannelModal = '';
-                 console.log("se crea el nuevo canal");
+               ChannelService.createNewChannel($scope.groupid,channel).then(
+                function(data) {
+                   $("#newChannelModal").modal("hide");
 
-                 },function(err){
-                 // Tratar el error
-                 console.log("Hay error al crear canal: " + err.data.message);
-                 $scope.removeInputChannelName();
-                 $scope.messageNewChannelModal = err.data.message;
+                   $scope.removeInputChannelName();
+                   $scope.messageNewChannelModal = '';
+                   console.log("se crea el nuevo canal");
 
-                 }
-                 );*/
+                },function(err){
+               // Tratar el error
+                   console.log("Hay error al crear canal: " + err.data.message);
+                   $scope.removeInputChannelName();
+                   $scope.messageNewChannelModal = err.data.message;
+
+                }
+               );
 
 
               }
@@ -2818,18 +2867,19 @@ angular.module('myAppAngularMinApp')
 
         /* hay que mirar si se convierte bien en JSON y podemos coger cosas */
         var githubMessageString = $scope.listaMensajes[$index].text;
-        console.log("githubMessageString");
-        console.log(githubMessageString);
+        /*console.log("githubMessageString");
+        console.log(githubMessageString);*/
 
         if(githubMessageString !== null && githubMessageString !== undefined && githubMessageString !== ''){
           var githubMessageMiddle = JSON.parse(githubMessageString);
-          console.log("githubMessageMiddle");
-          console.log(githubMessageMiddle);
+          /*console.log("githubMessageMiddle");
+          console.log(githubMessageMiddle);*/
 
 
           var githubMessageJSON = JSON.parse(githubMessageMiddle);
-          console.log("githubMessageJSON");
-          console.log(githubMessageJSON);
+          //console.log("githubMessageJSON");
+          /*console.log("githubMessageJSON");
+          console.log(githubMessageJSON);*/
 
 
 
@@ -3213,7 +3263,9 @@ angular.module('myAppAngularMinApp')
        * sobraaaaa
        *
        * */
-       if(data.message.user.mail == INTERNAL_USER && data.message.messageType == 'TEXT'){
+
+       /* esto sobraria, no haria falta */
+       //if(data.message.user.mail == INTERNAL_USER && data.message.messageType == 'TEXT'){
         /* lo mandamos asi ---> message: result
          * y data.message es
         *
@@ -3236,7 +3288,7 @@ angular.module('myAppAngularMinApp')
          /* mirar el evento */
 
          /* cogemos text y lo convertimos */
-         var textString = data.message.text;
+         /*var textString = data.message.text;
          var textJSON = JSON.parse(textString);
          console.log("esto vale textJSON");
          console.log(textJSON);
@@ -3246,7 +3298,7 @@ angular.module('myAppAngularMinApp')
          console.log(textJSON.event);
 
 
-       }
+       }*/
 
 
        $scope.listaMensajes.push(data.message);

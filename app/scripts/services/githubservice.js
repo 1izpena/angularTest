@@ -52,21 +52,44 @@ angular.module('myAppAngularMinApp')
 
 
       /****** new ***************/
-      function getAuth (username, pass) {
+      function getAuth (username, pass, flag) {
         var defered = $q.defer();
         var promise = defered.promise;
 
         /* aqui no habría que pasarle el userid, sino la cuenta
          * que haya elegido ??????*/
         var userid = $localStorage.id;
+        var rebuildAuth = false;
 
         /* pass puede ir vacio */
+
+        if(flag){
+          if(flag.status == true &&
+            (flag.username !== undefined && flag.username !== null && flag.username !== '')){
+            rebuildAuth = true;
+
+          }
+
+        }
+
+        console.log("esto vale githubservice");
+        console.log("flag");
+        console.log(flag);
+        console.log("username");
+        console.log(username);
+
+        console.log("pass");
+        console.log(pass);
+
+        console.log("rebuildAuth");
+        console.log(rebuildAuth);
+
 
         $http({
           method: 'post',
           url: API_BASE + '/api/v1/users/'+userid+'/github/auth',
           headers: { 'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded' },
-          data: 'username='+username+'&&pass='+pass
+          data: 'username='+username+'&&pass='+pass+'&&rebuildAuth='+rebuildAuth
         }).then( function(result){
             defered.resolve(result);
           },
@@ -439,11 +462,13 @@ angular.module('myAppAngularMinApp')
           if(githubMessageJSON.sender !== null && githubMessageJSON.sender !== undefined){
             if(githubMessageJSON.sender.login !== null && githubMessageJSON.sender.login !== undefined){
               if(githubMessageJSON.sender.html_url !== null && githubMessageJSON.sender.html_url !== undefined){
-                sender = " by "+ githubMessageJSON.sender.login ;
+                sender = " by <a href='"+ githubMessageJSON.sender.html_url +"'>" + githubMessageJSON.sender.login + "</a>";
+
 
               }
               else{
-                sender = " by <a href='"+ githubMessageJSON.sender.html_url +"'>" + githubMessageJSON.sender.login + "</a>";
+                sender = " by "+ githubMessageJSON.sender.login ;
+
 
               }
 
@@ -738,8 +763,8 @@ angular.module('myAppAngularMinApp')
       function parseGithubEvents(githubMessageJSON) {
 
 
-        console.log("en el servicio esto vale githubMessageJSON");
-        console.log(githubMessageJSON);
+        /*console.log("en el servicio esto vale githubMessageJSON");
+        console.log(githubMessageJSON);*/
         /* miramos en tipo de evento y en funcion de cual sea devolvemos 1 cosa u otra */
 
         var messageEventType = githubMessageJSON.event;

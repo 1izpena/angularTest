@@ -1214,10 +1214,22 @@
                   ng-click="initVarsNewChannelWebhooksModal()">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Add New Channel</h4>
+          <h4 class="modal-title">Add New Channel <span class="helpico"></span></h4>
         </div>
 
         <div class="modal-body">
+
+
+          <div class="form-group">
+            <div class="wizard">
+              <a><span class="badge">1</span> Account</a>
+              <a><span class="badge">2</span> Repositories</a>
+              <a class="current"><span class="badge badge-inverse">3</span> Feedback</a>
+            </div>
+          </div>
+
+
+
 
 
 
@@ -1231,47 +1243,23 @@
           </div>
 
 
-          <!--porsi quieres cuando terminas -->
-<!--
-          <spinner name="html5spinnerWebhooks" ng-cloak="">
-            <div class="overlay"></div>
-            <div class="spinner">
-              <div class="double-bounce1"></div>
-              <div class="double-bounce2"></div>
-            </div>
-            <div class="please-wait">Please Wait...</div>
-          </spinner>
-
-
-          -->
-
-
-          <!-- que se muestre si el ng-show="" arrReposOk.length>0 || arrReposError.lenght>0
-
-          aunque directamente que no pasara seria lo suyo
-          -->
-          <!-- falta gestionar errores -->
-
 
 
           <div class="form-group" >
-            <label>Github Service Configuration: </label>
+            <label> Feedback of Github Service Channel: </label>
 
 
-            <div class="alert alert-success" role="alert">
-              <p> Successfully created channel: <strong> {{githubchannel.channelName}}</strong> </p>
-
+            <div id="messageModal" class="alert alert-success" role="alert">
+              <p> <strong>Successfully </strong>created channel: <strong> {{githubchannel.channelName}}</strong>
+                <!--<span class="fa fa-check"></span>-->
+                <i class="glyphicon glyphicon-ok"></i>
+              </p>
             </div>
 
-            <p> State of Repositories: </p>
-
-
-            <!-- meter tabla -->
-
-            <!-- me puedo hacer 2 tablas , sucess y unsucess-->
             <table class="table">
               <thead>
               <tr>
+                <th>  </th>
                 <th>Repository</th>
                 <th>State</th>
 
@@ -1279,34 +1267,23 @@
               </thead>
               <tbody>
 
-              <tr class="success" ng-repeat="data in arrReposOk" ng-show="arrReposOk.length > 0">
+              <tr  ng-repeat="data in arrReposOk" ng-show="arrReposOk.length > 0">
 
-
+                <td><span class="fa fa-check"></span></td>
                 <td>{{ data.item.name }} ({{ data.item.id }})</td>
                 <td>201 : Attached</td>
-
-
-
               </tr>
 
-
-
-              <tr class="danger" ng-repeat="data in arrReposError" ng-show="arrReposError.length > 0">
-                <td>{{ data.item.name }}</td>
+              <tr  ng-repeat="data in arrReposError" ng-show="arrReposError.length > 0">
+                <td><span class="fa fa-close"></span></td>
+                <td>{{ data.item.name }} ({{ data.item.id }})</td>
                 <td> {{ data.code }} : {{ data.message }} </td>
-
-
-
 
               </tr>
 
 
               </tbody>
             </table>
-
-
-
-
 
 
           </div>
@@ -1319,27 +1296,6 @@
         <!-- crear los hooks y el canal, es el ultimo paso  -->
         <div class="modal-footer">
           <div>
-
-
-            <!-- aqui de momento solo aceptar para crear el canal-->
-            <!-- mas a delante cerrar que quite los webhooks asociados -->
-            <!-- y volver a atras lo mismo -->
-
-
-     <!--       <button type="submit" class="btn btn-warning" id="btn-back-account" ng-click="createNewChannelAccountBack()">
-              <!-- habria que volver a atras, a elegir cuenta  --
-              <span class="fa fa-angle-double-left"></span> Back </button>
--->
-
-
-            <!-- ng-show="messageNewChannelModal !== null && messageNewChannelModal !== undefined" -->
-
-            <!--
-            <button ng-show="githubrepositories.length > 0" type="submit" class="btn btn-success" id="btn-next-create-channel"
-                    ng-click="initVarsNewChannelWebhooksModal()">
-              <span class="fa fa-floppy-o"></span> Create </button>
-              -->
-
 
 
             <button type="button" class="btn btn-danger" id="btn-new-channel-github-close"
@@ -1379,17 +1335,31 @@
                   ng-click="initVarsNewChannelReposModal()">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Add New Channel</h4>
+          <h4 class="modal-title">Add New Channel<span class="helpico"></span></h4>
         </div>
 
         <div class="modal-body">
+
+          <div class="form-group">
+            <div class="wizard">
+              <a><span class="badge">1</span> Account</a>
+              <a class="current"><span class="badge">2</span> Repositories</a>
+              <a><span class="badge badge-inverse">3</span> Feedback</a>
+            </div>
+          </div>
+
 
 
           <div class="form-group">
             <label>Github Authentication: </label>
 
-            <div class="alert alert-success" role="alert">
-              <p> Authenticated to Github as: <strong> {{account.username}}</strong> </p>
+            <div id="messageModal2" class="alert alert-success" role="alert">
+              <p> Authenticated to Github as: <strong> {{account.username}}</strong>
+
+                <i class="glyphicon glyphicon-ok"></i>
+
+
+              </p>
 
             </div>
           </div>
@@ -1400,6 +1370,10 @@
             </button>
 
             {{messageNewChannelModal}}
+
+            <p ng-if="githubrepositories.length == 0">
+              Please create new repository and try again.
+            </p>
           </div>
 
 
@@ -1409,7 +1383,6 @@
               <div class="double-bounce1"></div>
               <div class="double-bounce2"></div>
             </div>
-            <div class="please-wait">Please Wait...</div>
           </spinner>
 
 
@@ -1484,10 +1457,29 @@
                   ng-click="initVarsNewChannelIntegrationModal()">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Add New Channel</h4>
+          <h4 class="modal-title">Add New Channel<span class="helpico"></span></h4>
+
+
         </div>
 
         <div class="modal-body">
+
+
+          <!----------------new-------------------->
+          <div class="form-group">
+            <div class="wizard">
+              <a class="current"><span class="badge">1</span> Account</a>
+              <a><span class="badge">2</span> Repositories</a>
+              <a><span class="badge badge-inverse">3</span> Feedback</a>
+            </div>
+          </div>
+
+
+          <!-------------end new ---------------->
+
+
+
+
 
           <div class="alert alert-danger" role="alert" ng-if="messageNewChannelModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewChannelModal=''">
@@ -1531,8 +1523,26 @@
           </div>
 
 
+          <!--                                        -->
+          <div class="form-group" ng-show="accountSelected.username == flag.username && flag.status">
 
 
+            <label for="githubPassTxt">Password:</label>
+            <input type="password" required="true" class="form-control" name="githubPassTxt2" id="githubPassTxt2" placeholder="Enter Github password..." ng-model="account.password">
+          </div>
+
+
+
+
+
+          <!--                                        -->
+
+
+
+          <!-- aqui si hay error y el status es 401, es que el token de la bd es incorrecto
+          si esque no es other el account selected -->
+          <!--que hacemos le dejamos elegir otra cuenta o activamos 1 flag a 1 que
+          si manda la peticion igual con other me permita loguearme de nuevo -->
 
 
 
