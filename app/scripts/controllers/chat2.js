@@ -95,7 +95,11 @@ angular.module('myAppAngularMinApp')
       $scope.messageNewChannelModal = '';
       $scope.messageNewChannelNameModal = '';
 
-      $scope.messageNewChannelBadCredentialsModal = '';
+
+      $scope.messageNewChannelPassBadCredentialsModal = '';
+      $scope.messageNewChannelUsernameBadCredentialsModal = '';
+
+      $scope.messageNewChannelModalReposEmpty = '';
 
 
       $scope.channel = {channelType:"PUBLIC"};
@@ -421,13 +425,18 @@ angular.module('myAppAngularMinApp')
       function removeErrorMessageNewChannelIntegrationModal () {
         /* se reutiliza la primera para integration */
         $scope.messageNewChannelModal = '';
-        $scope.messageNewChannelBadCredentialsModal = '';
+
+
+
+        $scope.messageNewChannelPassBadCredentialsModal = '';
+        $scope.messageNewChannelUsernameBadCredentialsModal = '';
 
       };
 
       function removeErrorMessageNewChannelReposModal () {
         /* se reutiliza la primera para integration */
         $scope.messageNewChannelModal = '';
+        $scope.messageNewChannelModalReposEmpty = '';
 
       };
 
@@ -843,10 +852,10 @@ angular.module('myAppAngularMinApp')
           || $scope.repositorySelected == undefined
           || $scope.repositorySelected == ''){
 
-          $scope.messageNewChannelModal = "Field repositories is required.";
+          $scope.messageNewChannelModalReposEmpty = "Field repositories is required.";
         }
         else if($scope.repositorySelected.length == 0){
-          $scope.messageNewChannelModal = "Field repositories is required.";
+          $scope.messageNewChannelModalReposEmpty = "Field repositories is required.";
         }
 
         else{
@@ -869,85 +878,104 @@ angular.module('myAppAngularMinApp')
 
           spinnerService.show('html5spinnerRepos');
 
-          GithubService.createwebhooks($scope.account,
-            $scope.repositorySelected,
-            $scope.githubchannel,
-            $scope.tagGroup.id).then(
-            function(result) {
 
-              console.log("esto vale result");
-              console.log(result);
+          /******** new ***************/
 
-              spinnerService.hide('html5spinnerRepos');
-
-              /* aqui aun no se han borrado las variables */
+          if($scope.account.username !== undefined &&
+            $scope.account.username !== null &&
+            $scope.account.username !== '' ){
 
 
-              /* si ha ido bien, data no es null, arrReposOk y arrReposError existen
-               * y alguno tiene lenght >0
-               * cerrar ventana y abrir la otra
-               * dentro de arrRepos hay item con nombre e id
-               * y res con la respuesta:: code 201
-               * o code 504 timeout */
+            GithubService.createwebhooks($scope.account.username,
+              $scope.repositorySelected,
+              $scope.githubchannel,
+              $scope.tagGroup.id).then(
+              function(result) {
+
+                console.log("esto vale result");
+                console.log(result);
+
+                spinnerService.hide('html5spinnerRepos');
+
+                /* aqui aun no se han borrado las variables */
+
+
+                /* si ha ido bien, data no es null, arrReposOk y arrReposError existen
+                 * y alguno tiene lenght >0
+                 * cerrar ventana y abrir la otra
+                 * dentro de arrRepos hay item con nombre e id
+                 * y res con la respuesta:: code 201
+                 * o code 504 timeout */
 
 
 
-              /* result.data.data es 1 objeto si */
-              if(result.data !== null &&
-                result.data !== undefined){
+                /* result.data.data es 1 objeto si */
+                if(result.data !== null &&
+                  result.data !== undefined){
 
-                if((result.data.arrReposOk !== null &&
-                  result.data.arrReposOk !== undefined)||
-                  (result.data.arrReposError !== null &&
-                  result.data.arrReposError !== undefined)){
-                  /* entonces rellenamos tabla */
-                  $scope.arrReposOk = result.data.arrReposOk;
-                  $scope.arrReposError = result.data.arrReposError;
+                  if((result.data.arrReposOk !== null &&
+                    result.data.arrReposOk !== undefined)||
+                    (result.data.arrReposError !== null &&
+                    result.data.arrReposError !== undefined)){
+                    /* entonces rellenamos tabla */
+                    $scope.arrReposOk = result.data.arrReposOk;
+                    $scope.arrReposError = result.data.arrReposError;
 
-                  /* chapamos esta ventana y metemos la otra */
-                  $("#newChannelReposModal").modal("hide");
+                    /* chapamos esta ventana y metemos la otra */
+                    $("#newChannelReposModal").modal("hide");
 
-                  /* este solo tiene:
-                   * messageNewChannelModal
-                   * $scope.arrReposOk
-                   * $scope.arrReposError
-                   * */
-                  $("#newChannelWebhooksModal").modal("show");
+                    /* este solo tiene:
+                     * messageNewChannelModal
+                     * $scope.arrReposOk
+                     * $scope.arrReposError
+                     * */
+                    $("#newChannelWebhooksModal").modal("show");
 
-                  /* en el caso de que arrReposOk sea vacio volver a atras */
-                  /* falta parseo de que no sea vacio la parte de elegir repos */
+                    /* en el caso de que arrReposOk sea vacio volver a atras */
+                    /* falta parseo de que no sea vacio la parte de elegir repos */
+
+                  }
+
+
+
+                }
+                else{
+                  /* esto no debería pasar */
+                  $scope.messageNewChannelModal = "No repositories added to channel. Try again.";
+                  /* para este caso volver a atras */
 
                 }
 
 
 
-              }
-              else{
-                /* esto no debería pasar */
-                $scope.messageNewChannelModal = "No repositories added to channel. Try again.";
-                /* para este caso volver a atras */
+
+              },
+              function(error) {
+                // TODO: mostrar error
+                console.log("error createhooks");
+                console.log(error);
+
+                spinnerService.hide('html5spinnerRepos');
+                $scope.messageNewChannelModal = error.data.message;
 
               }
+            );
+
+          }
+          else{
+
+            console.log("error createhooks no hay username de account");
 
 
+            spinnerService.hide('html5spinnerRepos');
+            $scope.messageNewChannelModal = "Field account username missed. " +
+              "Please go back and select account again.";
+
+          }
 
 
-            },
-            function(error) {
-              // TODO: mostrar error
-              console.log("error createhooks");
-              console.log(error);
-
-              spinnerService.hide('html5spinnerRepos');
-              $scope.messageNewChannelModal = error.data.message;
-
-            }
-          );
 
         }
-
-
-
 
 
       };
@@ -959,79 +987,54 @@ angular.module('myAppAngularMinApp')
 
       $scope.chooseaccount = function(){
 
-        /* aqui tenemos lo que ha elegido, parsear que si es
-        * Other la opcion, los campos no sean nulos
-        * luego llamamos a get repos, al servicio */
-
-
-        spinnerService.show('html5spinnerIntegration');
-
 
         removeErrorMessageNewChannelIntegrationModal();
+        console.log("entro en chooseaccount");
 
+        /* tenemos
+          $scope.accountSelected (.username) (las cuentas que mandamos desde la bd de meanstack)
+          $scope.account (si la opcion es other, tenemos esta var (.username, .password)
+          $scope.githubchannel
 
-        console.log("esto vale account");
-        console.log($scope.accountSelected);
-        /* mirar el tipo */
-
-        console.log("esto vale channel en choose account");
-        console.log($scope.githubchannel);
-
+          devolvemos repos sin webhooks
+        */
 
 
         if($scope.accountSelected.username == 'Other'){
-          /* coger la pass y el username */
-          /* username y password */
-          console.log("esto vale account con scope");
-          console.log($scope.account);
-          /* mirar que no son vacios */
 
           if($scope.account.username == null || $scope.account.username == '' || $scope.account.username == undefined){
-
-            /* meter mensaje de error xel nombre */
-            $scope.messageNewChannelBadCredentialsModal = "Field username is required.";
+            $scope.messageNewChannelUsernameBadCredentialsModal = "Field username is required.";
 
           }
           else if($scope.account.password == null || $scope.account.password == '' || $scope.account.password == undefined){
-            /* meter mensaje de error x el pass */
-            $scope.messageNewChannelBadCredentialsModal = "Field password is required.";
+            $scope.messageNewChannelPassBadCredentialsModal = "Field password is required.";
           }
-          /*
-          else{
-            spinnerService.show('html5spinnerIntegration');
-          }*/
-
-
-
 
 
         }
         else{
 
+          /* miramos si flag existe, de forma que si es true,
+          es porque el token de auth falla */
 
-
-
+          /* y tiene que rellenar el campo de password */
           if($scope.flag !== undefined && $scope.flag !== null && $scope.flag !== '' ){
             if(($scope.flag.username !== undefined && $scope.flag.username !== null && $scope.flag.username !== '') &&
               $scope.flag.status == true ){
 
               if(($scope.account.password == null || $scope.account.password == '' || $scope.account.password == undefined) &&
                 $scope.flag.username == $scope.account.username){
-                $scope.messageNewChannelBadCredentialsModal = "Field password is required.";
-                console.log("entro");
+                $scope.messageNewChannelPassBadCredentialsModal = "Field password is required.";
+
               }
-
-
 
 
             }
 
           }
 
-
+          /* es como si fuera other, hay que mandar el account.username */
           $scope.account.username = $scope.accountSelected.username;
-
-
 
 
 
@@ -1040,81 +1043,74 @@ angular.module('myAppAngularMinApp')
         }
 
 
+        /* si no hay errores que haga esto */
+        if($scope.messageNewChannelPassBadCredentialsModal == '' &&
+          $scope.messageNewChannelUsernameBadCredentialsModal == '' ){
 
 
-        GithubService.getAuth($scope.account.username, $scope.account.password, $scope.flag).then(
-          function(result) {
-
-            console.log("esto vale result");
-            console.log(result);
-            /* luego mirar con jon que creo que son vacios */
-            /* data.arrRepos[0].id
-             data.arrRepos[0].name
-             + githubtoken.username: como estas registrado
-             *  */
-
-            spinnerService.hide('html5spinnerIntegration');
+          spinnerService.show('html5spinnerIntegration');
 
 
-            $scope.githubrepositories = result.data.arrRepos;
-            $scope.account = result.data.githubtoken;
+          GithubService.getAuth($scope.account.username, $scope.account.password, $scope.flag).then(
+            function(result) {
 
-            if($scope.githubrepositories.length == 0){
-              $scope.messageNewChannelModal = "There are not repositories to add to the channel which you are owner. ";
 
-            }
 
-            /*
-            if($scope.accountSelected.username == 'Other'){
+
+
+              /* data.arrRepos[0].id
+               data.arrRepos[0].name
+               + githubtoken.username: como estas registrado
+               *  */
+
               spinnerService.hide('html5spinnerIntegration');
 
-            }*/
+
+              $scope.githubrepositories = result.data.arrRepos;
+              $scope.account = result.data.githubtoken;
+
+              if($scope.githubrepositories.length == 0){
+                $scope.messageNewChannelModal = "There are not repositories to add to the channel which you are owner. ";
+
+              }
+
+              $scope.flag= {};
+
+              $("#newChannelIntegrationModal").modal("hide");
+              $("#newChannelReposModal").modal("show");
 
 
-            /* aqui podríamos cargarnos */
+            },
+            function(error) {
+              // TODO: mostrar error
 
-            /* si tods sale bien ponemos flag a {} */
-            $scope.flag= {};
-
-            $("#newChannelIntegrationModal").modal("hide");
-            $("#newChannelReposModal").modal("show");
-
-
-          },
-          function(error) {
-            // TODO: mostrar error
-            console.log("error getAuth");
-            console.log(error);
+              console.log("error getAuth");
+              console.log(error);
 
 
 
-            spinnerService.hide('html5spinnerIntegration');
-            /* si el error.status == 401 quitamos esta ventana y ponemos otra */
-
-            if(error.status == 404 && $scope.accountSelected.username !== 'Other'){
-              /* ponemos el flag a 1*/
-
-
-              $scope.flag = { username : $scope.accountSelected.username,
-                              status : true
-
-              };
-
-              /* metemos a ese accountselected un parametro que cuando
-               se seleccione debajo salga para meter la pass
-              * */
-            }
-            /*
-            if($scope.accountSelected.username == 'Other'){
               spinnerService.hide('html5spinnerIntegration');
+              /* si el error.status == 401 quitamos esta ventana y ponemos otra */
 
-            }
-            */
+              if((error.status == 404 && $scope.accountSelected.username !== 'Other')
+                || error.status == 503){
+                /* ponemos el flag a 1*/
+                $scope.flag = { username : $scope.accountSelected.username,
+                  status : true };
 
-            $scope.messageNewChannelModal = error.data.message;
+              }
 
-          }
-        );
+
+              $scope.messageNewChannelModal = error.data.message;
+
+            });
+        }
+
+
+
+
+
+
 
       };
 
@@ -1127,15 +1123,6 @@ angular.module('myAppAngularMinApp')
       /* cuando vuelves hacia atras desde elegir los repos */
       function getGithubAccountsBack () {
 
-
-
-
-
-
-        console.log("esto vale githubchannel en getgithubaccountback");
-        console.log($scope.githubchannel);
-
-
         removeVarsNewChannelReposModal();
 
 
@@ -1146,12 +1133,6 @@ angular.module('myAppAngularMinApp')
           function(data) {
 
 
-            console.log("hay datos");
-            console.log(data);
-
-            // si es nullhay que inicializar el array
-            // sino metemos data.data
-            // y mirar si hace falta meter other u otra modal
             $scope.githubaccounts = [];
 
             if(data.data !== null ){
@@ -1168,8 +1149,6 @@ angular.module('myAppAngularMinApp')
 
             $("#newChannelReposModal").modal("hide");
             $("#newChannelIntegrationModal").modal("show");
-
-
 
 
 
@@ -1190,10 +1169,6 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-
-
-
       /*******************************/
 
       function getGithubAccounts () {
@@ -1201,34 +1176,25 @@ angular.module('myAppAngularMinApp')
 
         spinnerService.show('html5spinner');
 
-        console.log("esto vale githubchannel en getgithub accounts");
-        console.log($scope.githubchannel);
 
         removeErrorMessageNewChannelModal();
+
 
         GithubService.getGithubAccounts().then(
           function(data) {
 
-            //$scope.githubchecked = false;
-
-
-            // data puede ser null
-            console.log("hay datos");
-            console.log(data);
-
 
             $scope.githubaccounts = [];
 
-            if(data.data !== null ){
+
+            /* data es null o 1 array de github tokens */
+            if(data.data !== null && data.data !== undefined){
               $scope.githubaccounts = data.data;
 
             }
 
             $scope.githubaccounts.push({username:"Other"});
             $scope.accountSelected = $scope.githubaccounts[0];
-
-            /* cerramos esta modal y creamos otra */
-            /* data es null o 1 array de github tokens */
 
 
             spinnerService.hide('html5spinner');
@@ -1260,13 +1226,14 @@ angular.module('myAppAngularMinApp')
       $scope.createNewChannelAccountBack = function(){
 
 
-
         /* aqui hay que recoger de nuevo las accounts si es other lo elegido */
         /* inicializamos githubrepositories, repositorySelected y messageNewChannel modal */
 
         removeVarsNewChannelReposModal();
 
-        /* si la opción es other que coja las cuentas de nuevo */
+        /* si la opción es other que coja las cuentas de nuevo
+        * porque se habra podido loguear anteriormente y
+        * se habra añadido otra cuenta */
         if($scope.accountSelected !== null && $scope.accountSelected !== undefined && $scope.accountSelected !== '' ){
           if($scope.accountSelected.username == "Other"){
             getGithubAccountsBack();
@@ -1285,44 +1252,8 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-
-
       };
 
-
-      /**
-
-
-      $scope.createNewChannelGithubService = function(){
-
-        /* hacemos el canal mandando el id de los repos *
-
-
-        ChannelService.createNewChannelGithubService($scope.groupid,channel).then(
-          function(data) {
-            $("#newChannelModal").modal("hide");
-
-            $scope.removeInputChannelName();
-            $scope.messageNewChannelModal = '';
-            console.log("se crea el nuevo canal");
-
-          },function(err){
-            // Tratar el error
-            console.log("Hay error al crear canal: " + err.data.message);
-            $scope.removeInputChannelName();
-            $scope.messageNewChannelModal = err.data.message;
-
-          }
-        );
-
-
-
-
-
-      };
-
-      */
 
 
 
@@ -1338,29 +1269,25 @@ angular.module('myAppAngularMinApp')
         $("#newChannelModal").modal("show");
 
 
-
       };
+
+
+
 
 
       $scope.createNewChannel = function(channel){
 
 
 
-
-
-
-
-        /* hay que mirar en el api si existe algun canal con ese nombre */
-        /*hay que mirar si es null cuando regresamos */
         if(channel.channelName == '' || channel.channelName == null || channel.channelName == undefined){
 
           removeErrorMessageNewChannelModal();
           $scope.messageNewChannelNameModal = "Channel Name is required."
 
 
+
         }
         else {
-          /******************************************************************/
 
           var enc = false;
 
@@ -1373,9 +1300,7 @@ angular.module('myAppAngularMinApp')
                 i = $scope.privateChannels.length;
 
               }
-
             }
-
 
           }
           else {
@@ -1386,8 +1311,6 @@ angular.module('myAppAngularMinApp')
                 i = $scope.publicChannels.length;
 
               }
-
-
             }
 
 
@@ -1397,7 +1320,6 @@ angular.module('myAppAngularMinApp')
 
 
             removeErrorMessageNewChannelModal();
-
             $scope.messageNewChannelNameModal = "Already exists channel with that name.";
 
           }
@@ -1409,8 +1331,6 @@ angular.module('myAppAngularMinApp')
               console.log("esto vale github channel en createnewchannel");
               console.log($scope.githubchannel);
 
-              /* y podriamos coger los repos */
-
               getGithubAccounts();
 
 
@@ -1419,9 +1339,7 @@ angular.module('myAppAngularMinApp')
             else{
                 console.log("entra sin github");
 
-                /* esto se quedaría asi
-                 * pero hay que comprobar que el campo de nombre
-                 * no es vacio */
+
 
                ChannelService.createNewChannel($scope.groupid,channel).then(
                 function(data) {
@@ -1432,7 +1350,7 @@ angular.module('myAppAngularMinApp')
                    console.log("se crea el nuevo canal");
 
                 },function(err){
-               // Tratar el error
+                   // Tratar el error
                    console.log("Hay error al crear canal: " + err.data.message);
                    $scope.removeInputChannelName();
                    $scope.messageNewChannelModal = err.data.message;

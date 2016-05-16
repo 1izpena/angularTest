@@ -103,7 +103,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-      function createwebhooks (account, arrRepos, githubchannel, groupid) {
+      function createwebhooks (accountUsername, arrRepos, githubchannel, groupid) {
 
         /* comprobar que no son vacios */
 
@@ -122,7 +122,7 @@ angular.module('myAppAngularMinApp')
           url: API_BASE + '/api/v1/users/'+userid+'/github/createHooks',
           dataType:'application/json',
           headers: { 'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded' },
-          data: 'repositories='+JSON.stringify(arrRepos)+'&&account='+JSON.stringify(account)+
+          data: 'repositories='+JSON.stringify(arrRepos)+'&&account='+accountUsername+
                 '&&githubchannel='+JSON.stringify(githubchannel)+'&&groupid='+groupid
         }).then( function(result){
             defered.resolve(result);
