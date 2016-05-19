@@ -6,9 +6,9 @@ angular.module('myAppAngularMinApp')
       return {
         createNewGroup: createNewGroup,
         unsuscribeFromGroup : unsuscribeFromGroup,
-        editGroup: editGroup, 
-        inviteUserToGroup : inviteUserToGroup, 
-        removeUserFromGroup : removeUserFromGroup, 
+        editGroup: editGroup,
+        inviteUserToGroup : inviteUserToGroup,
+        removeUserFromGroup : removeUserFromGroup,
         getInvitedUsers : getInvitedUsers,
         removeGroup : removeGroup
 
@@ -18,6 +18,12 @@ angular.module('myAppAngularMinApp')
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
+
+        console.log("esto vale data == groups");
+        console.log(data);
+
+
+
         $http({
           method: 'post',
           headers: {'x-access-token': $localStorage.token},
@@ -31,10 +37,13 @@ angular.module('myAppAngularMinApp')
             defered.reject(error);
           }
         );
+
         return promise;
+
+
       };
 
-     
+
 
 
       function unsuscribeFromGroup (group) {
@@ -81,7 +90,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
-   
+
       function removeUserFromGroup (user, group) {
         var defered = $q.defer();
         var promise = defered.promise;
@@ -105,7 +114,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-/* para borrar grupos enteros */ 
+/* para borrar grupos enteros */
       function removeGroup (group) {
         var defered = $q.defer();
         var promise = defered.promise;
@@ -126,14 +135,14 @@ angular.module('myAppAngularMinApp')
       };
 
 
-      
+
       function getInvitedUsers (groupid) {
           var defered = $q.defer();
           var promise = defered.promise;
           var userid = $localStorage.id;
           console.log("entro en getinvitedusers");
 
-          
+
           $http.get(API_BASE+'/api/v1/users/'+ $localStorage.id +'/chat/groups/'+groupid+'/invitedUsers', {
                   headers: {'x-access-token': $localStorage.token}
             }).success(function(data) {
@@ -145,7 +154,7 @@ angular.module('myAppAngularMinApp')
 
           return promise;
       };
-       
+
 
       function editGroup (groupid,data2) {
         var defered = $q.defer();
@@ -157,7 +166,7 @@ angular.module('myAppAngularMinApp')
           headers: {'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded'},
           url: API_BASE + '/api/v1/users/'+userid+'/chat/groups/'+groupid,
           data: 'groupName='+data2
-                    
+
         }).success(function(data) {
                 defered.resolve(data);
           })

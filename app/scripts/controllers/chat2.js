@@ -28,8 +28,13 @@ angular.module('myAppAngularMinApp')
         /* para saber si esta activada la funcionalidad de
         integraction con github */
 
+
+
+        /* mirar si cambiamos lo de githubchecked funciona */
         $scope.githubchannel = {};
-        $scope.githubchecked = false;
+
+
+        //$scope.githubchecked = false;
         $scope.githubaccounts = [];
         $scope.account = {};
         $scope.accountSelected = {};
@@ -40,6 +45,16 @@ angular.module('myAppAngularMinApp')
 
 
 
+        /* SCRUM */
+        /*$scope.scrumchecked = false;*/
+        $scope.group = {};
+        $scope.channel = {};
+
+        $scope.channel = {};
+        $scope.channel.channelType = "PUBLIC";
+        $scope.channel.channelService = 0;
+
+
 
 
 
@@ -48,26 +63,18 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-      $window.onblur = function() {
-        console.log('blur');
-        $scope.window_focus = false;
-      };
-      $window.onfocus = function() {
-        console.log('focus');
-        $scope.window_focus = true;
-      };
-
-/*
-    $scope.logoutLogin = function () {
-        sharedProperties.setProperty('/chat2');
-        console.log("estoy en chatjs");
-        LoginService.logoutLogin();
-    };
-*/
+      /* ************** init vars ******************* */
 
 
-    /* variables para el menu sidebar-nav */
+      /*$scope.channel = {channelType:"PUBLIC"};
+      $scope.channel = {channelService:0};*/
+
+
+
+
+
+
+      /* variables para el menu sidebar-nav */
       $scope.activeInvitations = 0;
       $scope.activeGroups = 1;
       $scope.activeChannels = 0;
@@ -76,11 +83,11 @@ angular.module('myAppAngularMinApp')
 
 
       $scope.user = '';
-	    $scope.membersSettings = '';
-	    $scope.membersSettingschannel = '';
+      $scope.membersSettings = '';
+      $scope.membersSettingschannel = '';
 
-	    $scope.members = '';
-	    $scope.channelMembers = '';
+      $scope.members = '';
+      $scope.channelMembers = '';
 
       $scope.tagChannel = '';
       $scope.tagGroup = '';
@@ -102,7 +109,7 @@ angular.module('myAppAngularMinApp')
       $scope.messageNewChannelModalReposEmpty = '';
 
 
-      $scope.channel = {channelType:"PUBLIC"};
+
 
 
       $scope.error1 = 0;
@@ -126,6 +133,32 @@ angular.module('myAppAngularMinApp')
       $scope.classResaltChannelPublic = "textnormal";
       $scope.classResaltChannelPrivate = "textnormal";
       $scope.classResaltDirect = "textnormal";
+
+
+
+      /* ***************** end init vars ******************** */
+
+
+
+      $window.onblur = function() {
+        console.log('blur');
+        $scope.window_focus = false;
+      };
+      $window.onfocus = function() {
+        console.log('focus');
+        $scope.window_focus = true;
+      };
+
+/*
+    $scope.logoutLogin = function () {
+        sharedProperties.setProperty('/chat2');
+        console.log("estoy en chatjs");
+        LoginService.logoutLogin();
+    };
+*/
+
+
+
 
 
     $scope.logout = function () {
@@ -411,6 +444,14 @@ angular.module('myAppAngularMinApp')
 
 
       /*********************** modales inicializar valores ********************************************/
+      /* errores */
+
+
+      function removeErrorMessageNewGroupModal () {
+        $scope.messageNewGroupModal = '';
+
+      };
+
 
 
 
@@ -420,6 +461,7 @@ angular.module('myAppAngularMinApp')
         $scope.messageNewChannelNameModal = '';
 
       };
+
 
 
       function removeErrorMessageNewChannelIntegrationModal () {
@@ -486,16 +528,40 @@ angular.module('myAppAngularMinApp')
 
       /******************* end vars init ********************************/
 
+      /* GROUP */
+      $scope.initVarsNewGroup = function(){
+        $scope.removeInput();
+        //$scope.srumchecked = false;
 
+        /* no se si group entero o solo scrum */
+        $scope.group = {};
+        removeErrorMessageNewGroupModal();
+
+
+      };
+
+
+
+      /* CHANNEL */
       $scope.initVarsNewChannelModal = function(){
         $scope.removeInputChannelName();
-        $scope.githubchecked = false;
+        /*$scope.githubchecked = false;*/
+
+
+        $scope.channel = {};
+        $scope.channel.channelType = "PUBLIC";
+        $scope.channel.channelService = 0;
+
+
         $scope.githubaccounts = [];
         $scope.githubchannel = {};
         removeErrorMessageNewChannelModal();
 
 
       };
+
+
+
 
       $scope.initVarsNewChannelIntegrationModal = function(){
         /* las anteriores y estas */
@@ -539,30 +605,84 @@ angular.module('myAppAngularMinApp')
     };
 
 
+
+
       $scope.createNewGroup = function(group){
 
-        GroupService.createNewGroup(group).then(
-          function(data) {
-            $("#newGroupModal").modal("hide");
-            $scope.removeInput();
-            console.log("ha llamado disconnect de grupo");
-            Socket.emit('disconnect');
-            console.log("ha llamado disconnect de channel");
-            Socket.emit('disconnectChannel');
-            $scope.messageNewGroupModal = '';
-            $scope.tagGroup = '';
-            $scope.groupindex = -1;
-            $scope.tagChannel = '';
+
+        if(group.groupName == '' || group.groupName == null || group.groupName == undefined){
+          removeErrorMessageNewGroupModal();
+          $scope.messageNewGroupModal = "Group Name is required.";
 
 
-          },function(err){
-            // Tratar el error
-            console.log("Error on create new group: " + err.data.message);
-            $scope.removeInput();
-            $scope.messageNewGroupModal = err.data.message;
+        }
+        else{
+          var enc = false;
+          /* buscamos en los grupos */
+          console.log("esto vale scope.groups");
+          console.log($scope.groups);
+          /* groups[i].groupName */
+
+          /* los recorremos para ver si ya existe */
+          for (var i = 0; i < $scope.groups.length; i++) {
+            if ($scope.groups[i].groupName == group.groupName) {
+              enc = true;
+              i = $scope.groups.length;
+
+            }
+          }
+
+          if (enc) {
+            removeErrorMessageNewGroupModal();
+            $scope.messageNewGroupModal = "Already exists group with that name.";
 
           }
-        );
+
+
+          else {
+            GroupService.createNewGroup(group).then(
+              function(data) {
+                $("#newGroupModal").modal("hide");
+
+
+                $scope.initVarsNewGroup(); /* tiene::
+                                            $scope.removeInput();,
+                                             $scope.messageNewGroupModal = '';
+                                              $scope.group = {};*/
+
+
+                console.log("ha llamado disconnect de grupo");
+                Socket.emit('disconnect');
+                console.log("ha llamado disconnect de channel");
+                Socket.emit('disconnectChannel');
+
+
+                $scope.tagGroup = '';
+                $scope.groupindex = -1;
+                $scope.tagChannel = '';
+
+
+
+
+              },function(err){
+                // Tratar el error
+                console.log("Error on create new group: " + err.data.message);
+                //$scope.removeInput();
+                removeErrorMessageNewGroupModal();
+                $scope.messageNewGroupModal = err.data.message;
+
+              }
+            );
+
+          }
+
+
+
+        }
+
+
+
+
       };
 
 
@@ -734,7 +854,8 @@ angular.module('myAppAngularMinApp')
 
 
 
-    /* avisa antes de cambiarlo si es erroneo o no */
+    /* avisa antes de cambiar el nombre del canal actual si es erroneo o no
+    * se le llama desde el html */
     $scope.checkChannelName = function(data, tagChannel) {
 
       if (data === '') {
@@ -761,7 +882,16 @@ angular.module('myAppAngularMinApp')
 
 
       /************ new ******************/
+/*
+      $scope.setScrumCheckbox = function(scrumchecked){
+        if(scrumchecked){
+          scrumchecked = false;
+        }
+        else{
+          scrumchecked = true;
+        }
 
+      };
 
 
 
@@ -769,54 +899,16 @@ angular.module('myAppAngularMinApp')
 
         if(githubchecked){
           githubchecked = false;
-
-
         }
         else{
           githubchecked = true;
-
-
         }
 
-      }
-
+      };
+*/
 
       /******** new ***********/
-/*
-      $scope.createNewChannel = function () {
 
-        //entra desde aqui para el arrastre de ficheros en la pantalla
-        console.log("entro en create new channel");
-
-
-        var modalInstance = $uibModal.open({
-          templateUrl: 'views/modals/createChannelModal.html',
-          controller: 'createChannelModalCtrl',
-          scope: $scope,
-          resolve: {
-            data: function () {
-              return {
-                groupid: $scope.groupid,
-                channelid: $scope.channelid,
-                file: $scope.file
-              }
-            }
-          }
-        });
-
-        modalInstance.result.then(function () {
-            $scope.file="";
-          },function () {
-            $scope.file="";
-          }
-        );
-
-
-
-
-      };
-
-      */
 /********************** end new ******************/
 
 /* podria cambiarlo para hacerlo mas facil en 1 controller aparte */
@@ -1175,10 +1267,7 @@ angular.module('myAppAngularMinApp')
 
 
         spinnerService.show('html5spinner');
-
-
         removeErrorMessageNewChannelModal();
-
 
         GithubService.getGithubAccounts().then(
           function(data) {
@@ -1275,11 +1364,9 @@ angular.module('myAppAngularMinApp')
 
 
 
-      $scope.createNewChannel = function(channel){
+      $scope.createNewChannel = function(){
 
-
-
-        if(channel.channelName == '' || channel.channelName == null || channel.channelName == undefined){
+        if($scope.channel.channelName == '' || $scope.channel.channelName == null || $scope.channel.channelName == undefined){
 
           removeErrorMessageNewChannelModal();
           $scope.messageNewChannelNameModal = "Channel Name is required."
@@ -1292,10 +1379,10 @@ angular.module('myAppAngularMinApp')
           var enc = false;
 
           /* miramos si ya coincide con alguno de los que tenemos */
-          if (channel.channelType == 'PRIVATE') {
+          if ($scope.channel.channelType == 'PRIVATE') {
             /* recorremos el array de canales privados del grupo */
             for (var i = 0; i < $scope.privateChannels.length; i++) {
-              if ($scope.privateChannels[i].channelName == channel.channelName) {
+              if ($scope.privateChannels[i].channelName == $scope.channel.channelName) {
                 enc = true;
                 i = $scope.privateChannels.length;
 
@@ -1306,7 +1393,7 @@ angular.module('myAppAngularMinApp')
           else {
             /* recorremos el array de canales publicos del grupo */
             for (var i = 0; i < $scope.publicChannels.length; i++) {
-              if ($scope.publicChannels[i].channelName == channel.channelName) {
+              if ($scope.publicChannels[i].channelName == $scope.channel.channelName) {
                 enc = true;
                 i = $scope.publicChannels.length;
 
@@ -1326,45 +1413,44 @@ angular.module('myAppAngularMinApp')
           /* sino buscamos accounts si github checked marcado, sino creamos el canal */
           else {
 
-            if($scope.githubchecked) {
-              $scope.githubchannel = channel;
-              console.log("esto vale github channel en createnewchannel");
-              console.log($scope.githubchannel);
+            /* probamos si funciona el radio */
+            /* <!-- 0: no service/ 1:github/ 2:scrum  --> */
 
+            console.log("probamos radio");
+            console.log($scope.channel.channelService);
+
+
+
+            if($scope.channel.channelService == 1){
+              /* para integracion con github */
+              $scope.githubchannel = channel;
               getGithubAccounts();
+
+            }
+            else{
+              /* para el resto de integraciones */
+              ChannelService.createNewChannel($scope.groupid, $scope.channel).then(
+                function(data) {
+                  $("#newChannelModal").modal("hide");
+
+                  /*$scope.removeInputChannelName();*/
+                  /*$scope.messageNewChannelModal = '';*/
+                  initVarsNewChannelModal();
+                  console.log("se crea el nuevo canal");
+
+                },function(err){
+                  // Tratar el error
+                  console.log("Hay error al crear canal: " + err.data.message);
+                  /*$scope.removeInputChannelName();*/
+                  initVarsNewChannelModal();
+                  $scope.messageNewChannelModal = err.data.message;
+
+                });
 
 
             }
 
-            else{
-                console.log("entra sin github");
-
-
-
-               ChannelService.createNewChannel($scope.groupid,channel).then(
-                function(data) {
-                   $("#newChannelModal").modal("hide");
-
-                   $scope.removeInputChannelName();
-                   $scope.messageNewChannelModal = '';
-                   console.log("se crea el nuevo canal");
-
-                },function(err){
-                   // Tratar el error
-                   console.log("Hay error al crear canal: " + err.data.message);
-                   $scope.removeInputChannelName();
-                   $scope.messageNewChannelModal = err.data.message;
-
-                }
-               );
-
-
-              }
-
-
-
           }
-
 
 
         }/* nombre no es vacio */
@@ -1547,7 +1633,14 @@ angular.module('myAppAngularMinApp')
           .then(function (data) {
 
             $scope.privateChannels = data.privateChannels;
+
+
+            console.log("esto vale privatechannels");
+            console.log($scope.privateChannels);
+
             $scope.publicChannels = data.publicChannels;
+            console.log("esto vale publicChannels");
+            console.log($scope.publicChannels);
 
             $scope.directChannels = data.directMessageChannels;
             $scope.adminGroup = data.admin;
@@ -2419,6 +2512,9 @@ angular.module('myAppAngularMinApp')
         $scope.getGroupMembers(group);
 
         $scope.tagGroup=group;
+
+        console.log("ESTO VALE TAGGROUP********");
+        console.log($scope.tagGroup);
         $scope.channelSelected = false;
 
 
@@ -2650,6 +2746,10 @@ angular.module('myAppAngularMinApp')
 
         $scope.channelid=channel.id;
         $scope.tagChannel=channel;
+
+        console.log("esto vale tagChannel despues de selectChannel");
+        console.log($scope.tagChannel);
+
         $scope.tagChannel.type = type;
 
 

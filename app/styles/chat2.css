@@ -10,7 +10,19 @@
 
 
 
+
+
+
+
 /********* new ******************/
+
+.sidebar-nav li a:hover,
+.sidebar-nav li a:focus {
+  text-decoration: blink;
+  cursor: pointer;
+}
+
+
 
 .alert i {
   float: right;
@@ -515,7 +527,19 @@ form.well {
   height: 15%!important;
 }
 
+
+#panel-settingsEdit {
+  /*antes 11*/
+  height: 15%!important;
+}
+
+
 #panel-settingschannels {
+  /*antes 11*/
+  height: 15%!important;
+}
+
+#panel-settingschannels2 {
   /*antes 11*/
   height: 15%!important;
 }
@@ -530,6 +554,12 @@ form.well {
 #inline-group{
   margin-top: -5px;
 }
+
+#inline-groupScrum{
+  margin-top: -5px;
+}
+
+
 
 
 #searchbox{
@@ -569,6 +599,16 @@ form.well {
     background-color: #F44336;
 }
 
+#labeladminAd{
+  float: right;
+  background-color: #F44336;
+}
+
+#labeladminIn{
+  float: right;
+  background-color: #F44336;
+}
+
 
 #img-circle{
     float:left;
@@ -584,9 +624,26 @@ form.well {
 
 }
 
+#alertnotusers2 {
+  text-align: center;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+
+}
+
+
+
 #containermembersettings{
 	height: 75%;
 	padding-right: 0px;
+  text-align: center;
+}
+
+#containermembersettings2{
+  height: 75%;
+  padding-right: 0px;
   text-align: center;
 }
 
@@ -605,6 +662,14 @@ form.well {
 
 #btnviewright a{
 	float:right;
+}
+
+#btnviewright2 a{
+  float:right;
+}
+
+#btnviewright3 a{
+  float:right;
 }
 
 
@@ -807,8 +872,15 @@ img#avatar {
   color: white;
 }
 
+#panel-settingsEdit .fa {
+  color: white;
+}
 
 #panel-settingschannels .fa {
+  color: white;
+}
+
+#panel-settingschannels2 .fa {
   color: white;
 }
 
@@ -1067,15 +1139,80 @@ ul {   list-style-type: none; }
 
 }
 
+/* new */
+/*a:hover {background:#ffffff; text-decoration:none;} /*BG color is a must for IE6*/
+/*a.classscrum span {display:none; padding:2px 3px; margin-left:8px; width:130px;}
+a.classscrum:hover span{display:inline; position:absolute; background:#ffffff; border:1px solid #cccccc; color:#6c6c6c;}
+
+
+*/
 
 
 .classtoggle:hover,
 .classtoggle:focus {
     text-decoration: none;
     cursor: pointer;
+  /* backlog */
 
 
 }
+
+
+.classscrum:hover,
+.classscrum:focus {
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+
+a.classscrum {
+  position: relative;
+  display: inline-block;
+}
+
+
+a.classscrum span {
+  position: absolute;
+  left: 50%;
+  width:100px;
+  padding: 6px;
+  margin-left: -76px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  visibility: hidden;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+
+a.classscrum span:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -8px;
+  width: 0; height: 0;
+  border-top: 8px solid #000;
+  /*border-right: 8px solid transparent;
+  border-left: 8px solid transparent;*/
+}
+
+a:hover.classscrum span {
+  visibility: visible;
+  opacity: 0.8;
+  bottom: -40px;
+  z-index: 999;
+}
+
+
+
+
+
+
+
+
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
@@ -1378,6 +1515,17 @@ ul {   list-style-type: none; }
 }
 
 
+#panel-heading-settingsTeam {
+  border-color: #bce8f1;
+  height:10%;
+}
+
+#panel-heading-settingsTeam h3{
+  /*font-size: inherit;*/
+}
+
+
+
 #panel-heading-settingschannels {
     border-color: #bce8f1;
     height:10%;
@@ -1385,6 +1533,16 @@ ul {   list-style-type: none; }
 
 #panel-heading-settingschannels h3{
     /*font-size: inherit;*/
+}
+
+
+#panel-heading-settingschannels2 {
+  border-color: #bce8f1;
+  height:10%;
+}
+
+#panel-heading-settingschannels2 h3{
+  /*font-size: inherit;*/
 }
 
 
@@ -1499,6 +1657,24 @@ ul {   list-style-type: none; }
   height: 84%;
 }
 
+#panel-body-scrum-menu
+{
+  overflow-y: scroll;
+  min-height: 33em;
+  height: 84%;
+  /*width: %;*/
+}
+
+
+
+
+.panel-body-scrum
+{
+  width: 95%;
+}
+
+
+
 #panel-body1
 {
     /*overflow-y: scroll;*/
@@ -1535,11 +1711,27 @@ ul {   list-style-type: none; }
 
 }
 
+#panel-settingsEdit {
+  height: 94%;
+  border-color: transparent;
+  min-height: 1px;
+
+
+}
+
 
 #panel-settingschannels {
    height: 94%;
    border-color: transparent;
    min-height: 1px;
+
+
+}
+
+#panel-settingschannels2 {
+  height: 94%;
+  border-color: transparent;
+  min-height: 1px;
 
 
 }

@@ -109,7 +109,8 @@
 
         <!----  add group -->
         <li ng-if="groupindex == -1 && activeGroups" class="menu-option addlink">
-          <a class="" data-toggle="modal" data-target="#newGroupModal"><span class="fa fa-plus"></span> Add new group</a>
+          <a class="" data-toggle="modal" data-target="#newGroupModal">
+            <span class="fa fa-plus"></span> Add new group</a>
         </li>
 
 
@@ -261,9 +262,7 @@
             <!--Sidebar content-->
 
             <div class="panel panel-info" id="panel-info">
-
               <div  class="panel-heading" id="panel-heading">
-
                 <div class="container-fluid panel-container">
 
 
@@ -273,6 +272,7 @@
                        class="glyphicon glyphicon-th-list classtoggle" >
                     </a>
                   </div>
+
 
 
                   <div class="col-xs-7 text-center ">
@@ -285,14 +285,12 @@
                     </a>
                   </div>
 
-                  <div class="col-xs-3" id="btnviewright">
 
-                    <!-- ******************** -->
 
+                  <div class="col-xs-3" id="btnviewright2">
+
+                    <!-- ****** si queremos hacer busquedas de canal ************** -->
                     <div ng-show="tagGroup !== '' && tagChannel !== ''" class="input-group input-group-unstyled" id="inline-group">
-
-
-
                       <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
 
                     <span class="input-group-btn">
@@ -301,13 +299,22 @@
                         </button>
                     </span>
 
-
-
                     </div>
 
+                    <!-- ********* si queremos ver el dashboard de scrum :: classscrum********** -->
+
+                    <!--
+                    <a ng-show="tagGroup !== '' && (tagChannel == '' || tagChannel == null || tagChannel == undefined ) && tagGroup.scrum"
+                       ng-href=""
+                       class="glyphicon glyphicon-tasks classscrum" ><span>Backlog</span>
+                    </a>
+                    -->
 
 
-                  </div>
+
+
+
+                  </div>  <!-- btnviewright2 -->
 
                 </div>  <!-- container-fluid panel-container -->
 
@@ -318,27 +325,21 @@
               <!-- si no hemos seleccionado canal se muestra otro panel (settings grupo) -->
               <div ng-if= "tagChannel == '' " class="panel-body" id="panel-body1">
 
+
                 <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
                   <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set">
 
 
                     <div class="panel-heading" id="panel-heading-settings">
-
                       <div class="container-fluid panel-container">
-
                         <div class="col-xs-12">
                           <h3 class="panel-title">Group Settings </h3>
-                          <!-- <h3 ng-click="#menu-toggle" class="glyphicon glyphicon-th-list" id="menu-toggle"></a>    -->
                         </div>
-
-
                       </div>  <!-- container-fluid panel-container -->
-
-
                     </div> <!-- end panel-heading-settings  -->
 
 
-                    <div class="panel-body" id="panel-settings">
+                    <div class="panel-body" id="panel-settingsEdit">
                       <div class="container-fluid panel-container">
 
                         <div class="col-xs-5 col-sm-3 col-md-3">
@@ -352,20 +353,15 @@
 
 
                         <div class="col-xs-7 col-sm-9 col-md-9 " id="btneditgroup">
-
                           <div class="btn-group" role="group" aria-label="">
                             <button type="button" title="Edit group name" class="btn btn-info" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible || adminGroup.id != userid">
                               <span class="fa fa-pencil fa-fw"></span>
                             </button>
 
-                            <!--  de momento si el usuario es el admin,
-                                  no se puede salir hasta que no gestionemos eso
-                            -->
                             <button type="button" title="unsuscribe from group" class="btn btn-warning"
                                     data-toggle="modal" data-target="#unsuscribeFromGroupModal"
                                     ng-hide="textBtnForm.$visible || adminGroup.id == userid">
                               <span class="fa fa-chain-broken fa-fw"> </span> <span class="white-label"><strong></strong> </span>
-
                             </button>
 
 
@@ -377,7 +373,6 @@
                             </button>
 
                           </div>
-
                         </div>
 
 
@@ -386,36 +381,29 @@
                     </div> <!-- end panel-body -->
 
                   </div>   <!-- end panel-info -->
-                </div>     <!-- end row -->
+                </div>     <!-- end row:: <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
+                              (Panel1: borrar, editar, unlink:: settings de grupo) -->
+
 
 
                 <div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
                   <div ng-if= "tagGroup !== '' " class="panel panel-info" id="panel-set1">
 
-                    <div class="panel-heading" id="panel-heading-settings">
-
+                    <div class="panel-heading" id="panel-heading-settingsTeam">
                       <div class="container-fluid panel-container">
-
                         <div class="col-xs-11">
                           <h3 class="panel-title">Group Team Directory
                             <span class="badge">{{membersSettings.length}}</span>
                           </h3>
                         </div>
-
-
-
                       </div>  <!-- container-fluid panel-container -->
-
                     </div> <!-- end panel-heading-settings  1-->
 
 
                     <div class="panel-body" id="panel-settings">
-
                       <div class="container-fluid panel-container">
 
                         <div class="col-xs-8 col-xs-offset-2 text-center">
-
-
                           <div class="input-group input-group-unstyled">
                                              <span ng-click="setSettingsOptions(0)" class="input-group-addon">
                                                 <i class="fa fa-search"></i>
@@ -432,22 +420,18 @@
                                             </span>
 
                           </div>
-
                         </div>
-
 
                         <div class="col-xs-2" id="btnviewright">
                         </div>
 
                       </div>  <!-- container-fluid panel-container -->
-
-
                     </div> <!-- panel-settings(panel-body) -->
 
 
 
                     <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettings.length == 0">
-                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettings.length == 0">
+                      <div class="alert alert-warning" id="alertnotusers" role="alert" ng-if="membersSettings.length == 0">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -470,8 +454,8 @@
                                                      ((option == 2 && (member.id != adminGroup.id)) ? removeUserFromGroup(member) :  null)">
                             <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
 
-                            <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladmin">Admin</span>
-                            <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladmin">Invited</span>
+                            <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladminAd">Admin</span>
+                            <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladminIn">Invited</span>
 
                             <p class="username" ng-bind-html="highlight(member.username, searchText)">{{member.username}}</p>
                             <p class="mail" ng-bind-html="highlight(member.mail, searchText)">{{member.mail}}</p>
@@ -482,22 +466,22 @@
 
 
                     </div>  <!-- container-fluid panel-container -->
-
-
-
                   </div> <!-- panel-set1 (team directory)-->
+                </div> <!-- end row-settings1::<div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
+                              (Panel1: borrar, editar, unlink:: settings de grupo) -->
 
-                </div> <!-- row-settings -->
 
 
+              </div> <!--  panel-body1 (( ng-if= "tagChannel == '' "))-->
 
-              </div> <!--  panel-body1 -->
 
 
               <!--***********************************************-->
 
-              <!-- si hemos seleccionado canal y le hemos dado al nombre del canal en la cabecera (settings) se muestra otro panel (settings canal) -->
-              <div ng-if= "tagChannel !== '' && tagGroup !== '' &&activeChannelSettings" class="panel-body" id="panel-body1channels">
+              <!-- Channel seleccionado y le hemos dado al nombre del canal en la cabecera (settings)
+              se muestra otro panel (settings canal) -->
+
+              <div ng-if= "tagChannel !== '' && tagGroup !== '' && activeChannelSettings" class="panel-body" id="panel-body1channels">
 
                 <div class="row" id="row-settingschannels">
                   <div class="panel panel-info" id="panel-setchannels">
@@ -566,7 +550,7 @@
                 <div class="row" id="row-settings1channels">
                   <div class="panel panel-info" id="panel-set1channels" ng-show="tagChannel.type == 'private'">
 
-                    <div class="panel-heading" id="panel-heading-settingschannels">
+                    <div class="panel-heading" id="panel-heading-settingschannels2">
 
                       <div class="container-fluid panel-container">
 
@@ -583,10 +567,8 @@
                     </div> <!-- end panel-heading-settings  1-->
 
 
-                    <div class="panel-body" id="panel-settingschannels">
-
+                    <div class="panel-body" id="panel-settingschannels2">
                       <div class="container-fluid panel-container">
-
                         <div class="col-xs-8 col-xs-offset-2 text-center">
 
 
@@ -611,7 +593,7 @@
                         </div>
 
 
-                        <div class="col-xs-2" id="btnviewright">
+                        <div class="col-xs-2" id="btnviewright3">
                         </div>
 
                       </div>  <!-- container-fluid panel-container -->
@@ -622,7 +604,7 @@
 
 
                     <div class="col-xs-8 col-xs-offset-2 text-center" ng-if="membersSettingschannel.length == 0">
-                      <div class="alert alert-warning" id="alertnotusers"role="alert" ng-if="membersSettingschannel.length == 0">
+                      <div class="alert alert-warning" id="alertnotusers2"role="alert" ng-if="membersSettingschannel.length == 0">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -631,7 +613,7 @@
                     </div>
 
 
-                    <div class="container-fluid panel-container" id="containermembersettings" ng-if="membersSettingschannel.length > 0">
+                    <div class="container-fluid panel-container" id="containermembersettings2" ng-if="membersSettingschannel.length > 0">
 
                       <div id="list-group">
                         <div class="clearfix" ng-if="$index % 3 == 0"></div>
@@ -666,10 +648,40 @@
               </div> <!--  panel-body1 -->
 
               <!--  end panel channel settings -->
+              <!--   <div ng-if= "tagChannel !== '' && tagGroup !== ''
+                                  && activeChannelSettings" id="panel-body1>
+    -->
 
 
+              <!-- aqui empieza la parte del chat -->
+              <!-- ahi que mostrar timeline xdefecto o cuando la opcion sea la escogida
+                    tener en cuenta que puede que haya canales sin scrum
+                    si consigo coger de tagChannel el .scrum !== true:: no lo tiene y mostramos esto
+                    sino mostramos en la cabecera el simbolo para escoger e ir cambiando pantallas -->
 
-              <div ng-if= "tagChannel !== '' && !activeChannelSettings"
+
+              <!-- class="panel-body" id="panel-body-scrum" -->
+
+
+              <!--  <a ng-click="selectChannel(channel, 'public')"
+              ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
+                  -->
+
+
+              <!-- class="panel-body-scrum" id="panel-body"
+              antes asi: ng-class="tagChannel.scrum ? 'panel-body-scrum' : 'panel-body'" id="panel-body"
+
+              -->
+
+              <!-- <div ng-if=
+                  class="col-xs-7 col-sm-7 col-md-7 col-lg-8"> -->
+
+<!--
+              <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
+                ng-class="tagChannel.scrum ? 'col-xs-7 col-sm-7 col-md-7 col-lg-8' : 'panel-body'">-->
+
+
+              <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
                    class="panel-body" id="panel-body"
                    scroll-bottom-on-last="listaMensajes"
                    ngf-drop ng-model="$parent.file"
@@ -679,6 +691,10 @@
                    accept="*/*"
                    ngf-pattern="'*/*'">
 
+
+
+
+
                <!-- <div class="upload-drop-zone drop-box" id="drop-zone" ngf-drop ngf-select ng-model="files"
                      ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
                      accept="*/*"
@@ -686,10 +702,17 @@
 
 -->
 
+                <!-- falta ng-if scrum -->
+
+
+
+
+
+
+
+                <!--aqui hacemos lo del ng-if: tagChannel.scrum -->
 
                 <ul class="chat">
-
-
 
                   <li ng-repeat="msg in listaMensajes" send-last
                       ng-class="{'internal-message':isInternalMessage($index)}"
@@ -724,21 +747,6 @@
                       </p>
 
 
-                      <!-- aqui vamos a parsear los de github -->
-
-                      <!--
-                      <p ng-if="msg.messageType=='URL'" class="text-left"/>
-                      <a ng-if="msg.messageType=='URL'" ng-href="{{msg.text}}">
-                        {{msg.text}}
-                      </a>
-                      <i ng-if="msg.messageType=='URL'" ng-click="changeVisible(msg,$index)" class="fa fa-caret-square-o-down fa-lg"></i>
-
-                      <div class="metadatalinks" ng-if="msg.messageType=='URL' && msg.visible" ng-bind-html="listaMensajes[$index].response_data_url">
-                      </div>
-
-                      </p>
-                      -->
-
 
 
                       <!---------- fin de agregado -->
@@ -751,24 +759,6 @@
 
 
 
-
-
-
-
-                      <!--   -->
-
-                      <!--
-                      <p ng-if="msg.messageType=='URL'" class="text-left"/>
-                        <a ng-if="msg.messageType=='URL'" ng-init="getMetaTags(msg, $index)" ng-href="{{msg.text}}">
-                          {{msg.text}}
-                        </a>
-                        <i ng-if="msg.messageType=='URL'" ng-click="changeVisible($index)" class="fa fa-caret-square-o-down fa-lg"></i>
-
-                        <div class="metadatalinks" ng-if="msg.messageType=='URL' && msg.visible" ng-bind-html="listaMensajes[$index].response_data_url">
-                        </div>
-
-                      </p>
-                      -->
                       <p ng-if="msg.messageType=='URL'" class="text-left"/>
                           <a ng-if="msg.messageType=='URL'" ng-href="{{msg.text}}">
                             {{msg.text}}
@@ -841,7 +831,47 @@
                   <hr ng-if="listaMensajes.length > 0 && $last">
 
                 </ul>
+
+              </div> <!-- ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings-->
+
+              <!-- new .-->
+             <!-- </div>
+
+
+              <!--panel-body-scrum-menu> id="panel-body-scrum-menu"--
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' &&
+                            !activeChannelSettings && tagChannel.scrum"
+                   ng-class="tagChannel.scrum ? 'col-xs-5 col-sm-5 col-md-5 col-lg-4' : ''">
+
+
               </div>
+              -->
+
+
+              <!-- aqui hay que meter el menu -->
+              <!-- <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
+                   ng-class="tagChannel.scrum ? 'panel-body-scrum' : 'panel-body'" id="panel-body"
+                   scroll-bottom-on-last="listaMensajes"
+                   ngf-drop ng-model="$parent.file"
+                   ngf-drag-over-class="'dragover'"
+                   ngf-multiple="true"
+                   ngf-allow-dir="true"
+                   accept="*/*"
+                   ngf-pattern="'*/*'">-->
+
+            <!--  <div ng-show= "tagChannel !== '' && tagGroup !== '' &&
+                              !activeChannelSettings && tagChannel.scrum"
+                   ng-class="tagChannel.scrum ? 'panel-body-scrum-menu' : ''"
+                   id="panel-body-scrum-menu">
+
+
+              </div>
+
+-->
+
+
+
+
               <div ng-show= "tagChannel !== '' && !activeChannelSettings" class="panel-footer" id="panel-footer">
                 <form name="sendMessageForm">
                   <div class="input-group">
@@ -855,32 +885,11 @@
                        <!----------------- new ------------------->
 
                        <li>
-                         <!--
-                         <input type="file" id="uploadFile" name="uploadFile"
-                                file="file" upload-fn="confirmUploadFile()" style="display: none"/>
-                         <a id="uploadHref" >
-                           <span class="glyphicon glyphicon-file"></span>Upload a file
-                         </a>
-                         -->
 
                          <a ng-click="openFileModal()">
                            <span class="glyphicon glyphicon-file"></span>Upload a file
                          </a>
-
-
                        </li>
-                       <!--
-                       <li class="divider"></li>
-
-                       <!------------ end new -----------------
-                       <li>
-                         <input type="file" id="uploadFile" name="uploadFile"
-                                file="file" upload-fn="confirmUploadFile()" style="display: none"/>
-                         <a id="uploadHref" >
-                           <span class="glyphicon glyphicon-file"></span>Upload a file
-                         </a>
-                       </li>
-                       -->
 
                        <li class="divider"></li>
                        <li>
@@ -1156,7 +1165,7 @@
 
 
 
-  <!-- New Group Modal -->
+  <!-- New Group Modal (meter integracion SCRUM -->
   <div id="newGroupModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-md">
       <!-- Modal content-->
@@ -1187,6 +1196,8 @@
 
 
           </div>
+
+
         </div>
 
 
@@ -1194,7 +1205,9 @@
 
           <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewGroup(group)"><span class="fa fa-floppy-o"></span> Create</button>
 
-          <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="messageNewGroupModal=''; removeInput()"><span class="fa fa-remove"></span> Close</button>
+          <!-- inicializar variables -->
+          <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="initVarsNewGroup()">
+            <span class="fa fa-remove"></span> Close</button>
 
         </div>
       </div>
@@ -1692,16 +1705,34 @@
 
           <!-- aqui metemos checkbox -->
           <div class="form-group">
-            <label>Integrate extenal APIs: </label>
+            <label>Integrate Services: </label>
             <br>
 
 
-            <!-- si se activa que ponga next en el boton -->
-              <input type="checkbox"
-                     ng-model="githubchecked"
-                     ng-click="setGithubCheckbox(githubchecked)">
-                GitHub
-            <br/>
+            <input type="radio"
+                   ng-model="channel.channelService" value=1 >
+            GitHub (Code Hosting Platform)
+
+            <br>
+
+
+            <input type="radio"
+                   ng-model="channel.channelService" value=2 >
+            Scrum (Agile Development)
+
+            <br>
+
+
+            <input type="radio"
+                   ng-model="channel.channelService" value=0 >
+            None
+
+
+
+            <!--<input type="radio" ng-model="color.name" ng-value="specialValue">-->
+
+
+
           </div>
 
 
@@ -1710,10 +1741,10 @@
 
         <div class="modal-footer">
           <div>
-            <button ng-show="!githubchecked" type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel(channel)">
+            <button ng-show="channel.channelService != 1" type="submit" class="btn btn-success" id="btn-new-channel" ng-click="createNewChannel()">
               <span class="fa fa-floppy-o"></span> Create</button>
 
-            <button ng-show="githubchecked" type="submit" class="btn btn-success" id="btn-new-channel-next" ng-click="createNewChannel(channel)">
+            <button ng-show="channel.channelService == 1" type="submit" class="btn btn-success" id="btn-new-channel-next" ng-click="createNewChannel()">
               <span class="fa fa-angle-double-right"></span> Next </button>
             <button type="button" class="btn btn-danger" id="btn-new-channel-close" data-dismiss="modal" ng-click="initVarsNewChannelModal()">
               <span class="fa fa-remove"></span> Close</button>

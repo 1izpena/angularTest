@@ -8,17 +8,17 @@ angular.module('myAppAngularMinApp')
 
      return {
 
-	getUserinfo: getUserinfo,
+	  getUserinfo: getUserinfo,
     getInvitations : getInvitations,
 
     acceptGroup : acceptGroup,
     refuseGroup : refuseGroup,
 
     getGroups: getGroups,
-	getChannels: getChannels,
-	getGroupMembers: getGroupMembers,
-	/* de momento no se usa */
-	getChannelMembers: getChannelMembers,
+    getChannels: getChannels,
+    getGroupMembers: getGroupMembers,
+    /* de momento no se usa */
+    getChannelMembers: getChannelMembers,
     getSystemUsers : getSystemUsers
 
      };
