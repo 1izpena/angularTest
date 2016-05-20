@@ -641,48 +641,20 @@
 
 
                   </div> <!-- panel-set1 (team directory)-->
-
                 </div> <!-- row-settings -->
 
 
               </div> <!--  panel-body1 -->
-
               <!--  end panel channel settings -->
-              <!--   <div ng-if= "tagChannel !== '' && tagGroup !== ''
-                                  && activeChannelSettings" id="panel-body1>
-    -->
 
 
-              <!-- aqui empieza la parte del chat -->
-              <!-- ahi que mostrar timeline xdefecto o cuando la opcion sea la escogida
-                    tener en cuenta que puede que haya canales sin scrum
-                    si consigo coger de tagChannel el .scrum !== true:: no lo tiene y mostramos esto
-                    sino mostramos en la cabecera el simbolo para escoger e ir cambiando pantallas -->
 
 
-              <!-- class="panel-body" id="panel-body-scrum" -->
-
-
-              <!--  <a ng-click="selectChannel(channel, 'public')"
-              ng-class="channel.id == tagChannel.id ?classResaltChannelPublic : ''">
-                  -->
-
-
-              <!-- class="panel-body-scrum" id="panel-body"
-              antes asi: ng-class="tagChannel.scrum ? 'panel-body-scrum' : 'panel-body'" id="panel-body"
-
-              -->
-
-              <!-- <div ng-if=
-                  class="col-xs-7 col-sm-7 col-md-7 col-lg-8"> -->
-
-<!--
-              <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
-                ng-class="tagChannel.scrum ? 'col-xs-7 col-sm-7 col-md-7 col-lg-8' : 'panel-body'">-->
 
 
               <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
-                   class="panel-body" id="panel-body"
+                   ng-class="tagChannel.scrum ? 'col-xs-115 panel-body' : 'panel-body'"
+                   id="panel-body"
                    scroll-bottom-on-last="listaMensajes"
                    ngf-drop ng-model="$parent.file"
                    ngf-drag-over-class="'dragover'"
@@ -694,25 +666,8 @@
 
 
 
-
-               <!-- <div class="upload-drop-zone drop-box" id="drop-zone" ngf-drop ngf-select ng-model="files"
-                     ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-                     accept="*/*"
-                     ngf-pattern="'*/*'">Just drag and drop files here or click to upload</div>
-
--->
-
-                <!-- falta ng-if scrum -->
-
-
-
-
-
-
-
-                <!--aqui hacemos lo del ng-if: tagChannel.scrum -->
-
-                <ul class="chat">
+                <ul class="chat" ng-show="!tagChannel.scrum || (tagChannel.scrum && (item.itemMenuScrumClicked !== 2 && item.itemMenuScrumClicked !== 3
+                && item.itemMenuScrumClicked !== 4 && item.itemMenuScrumClicked !== 5))">
 
                   <li ng-repeat="msg in listaMensajes" send-last
                       ng-class="{'internal-message':isInternalMessage($index)}"
@@ -832,42 +787,97 @@
 
                 </ul>
 
+                <!-- parcial views -->
+
+
+                <ul class="chat" ng-show="tagChannel.scrum && (item.itemMenuScrumClicked == 2 || item.itemMenuScrumClicked == 3
+                || item.itemMenuScrumClicked == 4 || item.itemMenuScrumClicked == 5)" ng-include="'views/partial1.html'">
+
+
+                 <!-- <li>Coffee</li>
+                  <li>Tea</li>
+                  <li>Milk</li>-->
+
+
+
+                </ul>
+
+
+
+
+                <!-- end partials views -->
+
+
+
               </div> <!-- ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings-->
 
-              <!-- new .-->
-             <!-- </div>
+              <!-- ****************** new **************************.-->
 
 
-              <!--panel-body-scrum-menu> id="panel-body-scrum-menu"--
-              <div ng-show= "tagChannel !== '' && tagGroup !== '' &&
-                            !activeChannelSettings && tagChannel.scrum"
-                   ng-class="tagChannel.scrum ? 'col-xs-5 col-sm-5 col-md-5 col-lg-4' : ''">
 
-
-              </div>
-              -->
-
-
-              <!-- aqui hay que meter el menu -->
-              <!-- <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
-                   ng-class="tagChannel.scrum ? 'panel-body-scrum' : 'panel-body'" id="panel-body"
-                   scroll-bottom-on-last="listaMensajes"
-                   ngf-drop ng-model="$parent.file"
-                   ngf-drag-over-class="'dragover'"
-                   ngf-multiple="true"
-                   ngf-allow-dir="true"
-                   accept="*/*"
-                   ngf-pattern="'*/*'">-->
-
-            <!--  <div ng-show= "tagChannel !== '' && tagGroup !== '' &&
-                              !activeChannelSettings && tagChannel.scrum"
-                   ng-class="tagChannel.scrum ? 'panel-body-scrum-menu' : ''"
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum"
+                   class="col-xs-05 panel-body"
                    id="panel-body-scrum-menu">
 
 
+                <!-- issues, timeline, backlog, sprints,
+                4 son fijos: ahora tenemos 7
+                podemos meter graficos aparte
+                team, settings ??-->
+
+                <div id="group-scrum-menu" class="btn-group-scrum-menu">
+
+
+
+
+                  <!-- -->
+
+
+                  <button class="btn" id="timeline" ng-class="item.itemMenuScrumClicked == 1 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
+                          ng-click="item.itemMenuScrumClicked = 1;showitemclicked()">
+                    <span class="fa fa-comment-o fa-lg"></span></button> <!-- timeline -->
+                  <button class="btn" id="backlog" ng-class="item.itemMenuScrumClicked == 2 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
+                          ng-click="item.itemMenuScrumClicked = 2;showitemclicked()">
+                    <span class="fa fa-tasks fa-lg"></span></button> <!-- userstories, backlog -->
+                  <button class="btn" id="sprint" ng-class="item.itemMenuScrumClicked == 3 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
+                          ng-click="item.itemMenuScrumClicked = 3;showitemclicked()">
+                    <span class="fa fa-table fa-lg fa-lg"></span></button> <!-- sprints -->
+                  <button class="btn" id="issues" ng-class="item.itemMenuScrumClicked == 4 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
+                          ng-click="item.itemMenuScrumClicked = 4;showitemclicked()">
+                    <span class="fa fa-check-square-o fa-lg"></span></button> <!-- issues -->
+
+                  <button class="btn" id="charts" ng-class="item.itemMenuScrumClicked == 5 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
+                          ng-click="item.itemMenuScrumClicked = 5;showitemclicked()">
+                    <span class="fa fa-area-chart fa-lg"></span></button> <!-- ?? chart -->
+
+
+
+
+                  <!--
+                   fa-area-chart
+                   fa-bar-chart
+                   fa-line-chart
+                    -->
+
+                  <!-- ahora dependiendo de lo que valga item.itemMenuScrumClicked mostrar 1 cosa u otra
+                  en ul=chat -->
+
+
+                </div>
+
+
+
+
               </div>
 
--->
+
+              <!-- ****************** end new ******************** -->
+
+
+
+
+
+
 
 
 
@@ -912,6 +922,8 @@
                   </div>
                 </form>
               </div>
+
+
 
 
             </div>
@@ -1027,12 +1039,13 @@
 
   </div>
 
+
+
+
+
   <!-- MODALS -->
 
   <!--********** Notification deleting ********* -->
-
-
-
   <!--errorFileIsFolder-->
 
   <div id="errorFileIsFolder" class="modal fade" role="dialog">
@@ -1774,9 +1787,7 @@
 
 
         <div class="modal-body">
-
           <p>Do you really want to unsuscribe from this channel?</p>
-
         </div>
 
         <div class="modal-footer">

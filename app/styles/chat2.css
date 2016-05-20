@@ -8,7 +8,139 @@
   font-family: lora;
 }
 
+.col-xs-05, .col-xs-115 {
+  float: left;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+}
 
+/*
+.col-xs-05 {
+  width: 4.63%;
+}
+.col-xs-115 {
+  width: 95.33%;
+}
+*/
+
+.col-xs-05 {
+  width: 6%;
+}
+.col-xs-115 {
+  width: 94%;
+}
+
+.btn-group-scrum-menu{
+  display: flex;
+  flex-direction: column;
+  flex:1;
+  /*height: 50%;*/
+}
+
+/* flex:1*/
+
+
+
+
+
+
+#panel-body-scrum-menu{
+  background: rgba(0, 37, 128, 0.5);
+  background-image: url('../images/patern.png');
+
+}
+
+.btn-group-scrum-menu {
+  height: 50%;
+}
+
+
+/*
+.btn-group-scrum-menu button{
+  flex:1;
+  background: transparent;
+  border-color: transparent;
+  padding-left: 0px;
+  padding-right: 0px;
+}*/
+
+
+/*font-size: 1.5em;
+line-height: 1.3em;*/
+
+.btn-group-scrum-menu button{
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+
+
+
+
+.btn-scrum-menu-normal {
+  flex:1;
+  background: transparent;
+  border-color: transparent;
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+
+.btn-scrum-menu-active {
+  opacity: 0.3;
+  background: black; !important
+  font-size: 1.4em; !important
+  flex:1;
+
+  border-color: transparent;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+/*font-size: 1.7em;
+    line-height: 1.3em; span del active */
+.btn-scrum-menu-active span{
+  font-size: 1.7em;
+  line-height: 1.6em;
+}
+
+
+
+
+.btn-group-scrum-menu button:hover{
+  text-decoration: none;
+  cursor: pointer;
+  /*background-color: transparent;*/
+}
+
+.btn-group-scrum-menu button:focus,
+.btn-group-scrum-menu button:active{
+  text-decoration: none;
+  cursor: pointer;
+
+}
+
+
+
+
+
+.btn-group-scrum-menu span:hover,
+.btn-group-scrum-menu span:focus,
+.btn-group-scrum-menu span:active{
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+
+
+
+
+.btn-group-scrum-menu span{
+  color: #ffffff;
+}
 
 
 
@@ -770,7 +902,10 @@ form.well {
 /* #8C33B7*/
 
 #panel-footer {
-    height: 8%;
+  height: 8%;
+  /*new */
+  float:right;
+
     /*background-color: #d9edf7*/
 }
 
@@ -944,6 +1079,7 @@ ul {   list-style-type: none; }
 
 #sidebar-wrapper {
 
+    overflow-x: hidden;
     z-index: 1000;
     position: absolute;
     left: 250px;
@@ -1659,9 +1795,13 @@ a:hover.classscrum span {
 
 #panel-body-scrum-menu
 {
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
   min-height: 33em;
   height: 84%;
+  /* new */
+  padding: 0px;
+  display:flex;
+
   /*width: %;*/
 }
 

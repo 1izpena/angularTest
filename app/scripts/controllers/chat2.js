@@ -108,7 +108,8 @@ angular.module('myAppAngularMinApp')
 
       $scope.messageNewChannelModalReposEmpty = '';
 
-
+      $scope.item = {};
+      $scope.item.itemMenuScrumClicked = 1;
 
 
 
@@ -160,6 +161,18 @@ angular.module('myAppAngularMinApp')
 
 
 
+/*
+*
+* var property = document.getElementById(btn);
+*
+*
+*
+* */
+
+
+$scope.showitemclicked= function () {
+  console.log($scope.item.itemMenuScrumClicked);
+};
 
     $scope.logout = function () {
 
