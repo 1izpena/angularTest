@@ -29,7 +29,12 @@ angular
     'textAngular',
     'angular-web-notification',
     'oi.select',
-    'angularSpinners'
+    'angularSpinners',
+    'angular-svg-round-progressbar',
+    'chart.js',
+    'checklist-model'
+
+
   ])
   .run(function(editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
@@ -109,7 +114,6 @@ angular
 
   }).config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default').accentPalette('green');
-
 
 
   }).config(['$httpProvider', function($httpProvider) {

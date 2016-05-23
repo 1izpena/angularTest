@@ -58,7 +58,16 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+
+
+
+
+
       };
+
+
 
 
 
@@ -68,6 +77,131 @@ angular.module('myAppAngularMinApp')
 
       /*$scope.channel = {channelType:"PUBLIC"};
       $scope.channel = {channelService:0};*/
+
+
+
+      $scope.showgraph = {};
+      $scope.showgraph.show = false;
+
+      $scope.labels = [];
+      $scope.series = ['Sprints'];
+      $scope.chartdata = [
+        [50, 0]
+      ];
+
+
+
+      $scope.sortType     = 'subject'; // set the default sort type
+      $scope.sortReverse  = false;  // set the default sort order
+
+
+
+      $scope.comboOptionsSelected = {name: "All", num: 0};
+      $scope.comboOptions = [
+        {name: "All", num: 0},
+        {name: "Subject", num: 1},
+        {name: "Status", num: 2},
+        {name: "Tags", num: 3}
+
+      ];
+
+
+
+      $scope.tableCells = {};
+      $scope.tableCells.selected = [];
+      $scope.ischeckedAllCells = false;
+
+
+
+      function checkAll () {
+
+        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          $scope.rowCollectionUserStories[i].selectedCell = true;
+        }
+        $scope.tableCells.selected  = angular.copy($scope.rowCollectionUserStories);
+        /*$scope.tableCells.selected  = angular.copy($scope.rowCollectionUserStories);
+        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          $scope.rowCollectionUserStories[i].selectedCell = true;
+        }*/
+
+      };
+
+      function uncheckAll () {
+
+
+        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          $scope.rowCollectionUserStories[i].selectedCell = false;
+        }
+
+        $scope.tableCells.selected = [];
+       /* $scope.tableCells.selected = [];
+        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          $scope.rowCollectionUserStories[i].selectedCell = false;
+        }*/
+
+      };
+
+
+
+      $scope.checkAllNone = function() {
+
+        if($scope.ischeckedAllCells){
+          uncheckAll();
+          $scope.ischeckedAllCells = false;
+
+
+        }
+        else{
+          checkAll();
+          $scope.ischeckedAllCells = true;
+        }
+
+      };
+
+
+      $scope.changeCheckedTableCell = function(row) {
+        if(row.selectedCell == undefined || !row.selectedCell){
+          row.selectedCell = true;
+        }
+        else{
+          row.selectedCell = false;
+
+        }
+
+
+
+
+      };
+
+
+
+
+      $scope.rowCollectionUserStories = [
+        {votes: 1, subject: '#1 Enviar mensaje privado', status: 'Ready for test', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 10, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 3, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag3']},
+        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'In progress', points: 0, sprint: 'Sprint3', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 5, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag3']},
+        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'In progress', points: 0, sprint: 'Sprint4', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint5', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint5', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'Ready for test', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag3']},
+        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint3', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']}
+
+
+
+      ];
 
 
 
@@ -113,6 +247,9 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+
       $scope.error1 = 0;
       $scope.message1 = '';
       //error codes in channel setting modals
@@ -138,6 +275,7 @@ angular.module('myAppAngularMinApp')
 
 
       /* ***************** end init vars ******************** */
+
 
 
 
@@ -170,10 +308,6 @@ angular.module('myAppAngularMinApp')
 * */
 
 
-$scope.showitemclicked= function () {
-  console.log($scope.item.itemMenuScrumClicked);
-};
-
     $scope.logout = function () {
 
       console.log("ha llamado disconnect de grupo");
@@ -187,6 +321,29 @@ $scope.showitemclicked= function () {
 
     };
 
+
+
+      $scope.changePercentClass = function()
+        {
+          if($scope.showgraph !== undefined && $scope.showgraph !== null){
+            if($scope.showgraph.show){
+              $scope.showgraph.show = false;
+
+            }
+            else{
+              $scope.showgraph.show = true;
+
+            }
+          }
+
+        };
+
+
+
+
+      $scope.onClickpoints = function (points, evt) {
+        console.log(points, evt);
+      };
 
 
 

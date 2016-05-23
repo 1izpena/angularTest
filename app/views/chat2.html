@@ -283,14 +283,29 @@
                     <a ng-click="changeSettingsChannelVisible()" class="" id="menu-tag" ng-if= "tagChannel !== '' ">
                       #{{tagChannel.channelName}}
                     </a>
+
+                    <a class="" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 2">
+                      : Backlog
+                    </a>
+
+                    <a class="" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 3">
+                      : Sprints
+                    </a>
+
+                    <a class="" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 4">
+                      : Issues
+                    </a>
+
+
+
                   </div>
 
 
 
                   <div class="col-xs-3" id="btnviewright2">
 
-                    <!-- ****** si queremos hacer busquedas de canal ************** -->
-                    <div ng-show="tagGroup !== '' && tagChannel !== ''" class="input-group input-group-unstyled" id="inline-group">
+                    <!-- ****** si queremos hacer busquedas de canal ************** && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked == 2 " -->
+                    <div ng-show="tagGroup !== '' && tagChannel !== '' && !activeChannelSettings && (!tagChannel.scrum || (tagChannel.scrum && item.itemMenuScrumClicked == 1))" class="input-group input-group-unstyled" id="inline-group">
                       <input id="searchbox" type="text" class="search-query form-control" ng-model="textsearchbox" placeholder="Search" />
 
                     <span class="input-group-btn">
@@ -650,9 +665,64 @@
 
 
 
+<!-- si es de tipo canal, timeline deberia ser esto , sino como los settings -->
+
+              <!-- si tagChannel.scrum y && item.itemMenuScrumClicked == 2 sin margenes -->
 
 
-              <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
+
+              <!--<div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
+                   ng-class="tagChannel.scrum ? 'col-xs-115 panel-body' : 'panel-body'"
+                   id="panel-body"
+                   scroll-bottom-on-last="listaMensajes"
+                   ngf-drop ng-model="$parent.file"
+                   ngf-drag-over-class="'dragover'"
+                   ngf-multiple="true"
+                   ngf-allow-dir="true"
+                   accept="*/*"
+                   ngf-pattern="'*/*'">
+                   -->
+
+
+
+
+
+
+              <!-- pruebita 2 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              <!-- pruebita:: id="panel-body"
+              ng-attr-id="tagChannel.scrum ? 'panel-body1channels' : 'panel-body'"
+
+              #panel-body1channels {
+    min-height: 33em;
+    /* height: 94%; */
+    padding: 0px;
+}
+
+
+              -->
+
+
+
+              <!-- ng-show= "tagChannel !== '' && !activeChannelSettings && (!tagChannel.scrum || (tagChannel.scrum && item.itemMenuScrumClicked == 1)) "-->
+
+
+              <div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && (!tagChannel.scrum || (tagChannel.scrum && item.itemMenuScrumClicked == 1)) "
                    ng-class="tagChannel.scrum ? 'col-xs-115 panel-body' : 'panel-body'"
                    id="panel-body"
                    scroll-bottom-on-last="listaMensajes"
@@ -666,8 +736,7 @@
 
 
 
-                <ul class="chat" ng-show="!tagChannel.scrum || (tagChannel.scrum && (item.itemMenuScrumClicked !== 2 && item.itemMenuScrumClicked !== 3
-                && item.itemMenuScrumClicked !== 4 && item.itemMenuScrumClicked !== 5))">
+                <ul class="chat" ng-show="!tagChannel.scrum || (tagChannel.scrum && item.itemMenuScrumClicked == 1)">
 
                   <li ng-repeat="msg in listaMensajes" send-last
                       ng-class="{'internal-message':isInternalMessage($index)}"
@@ -790,17 +859,18 @@
                 <!-- parcial views -->
 
 
-                <ul class="chat" ng-show="tagChannel.scrum && (item.itemMenuScrumClicked == 2 || item.itemMenuScrumClicked == 3
-                || item.itemMenuScrumClicked == 4 || item.itemMenuScrumClicked == 5)" ng-include="'views/partial1.html'">
+                <!--<ul class="chat" ng-show="tagChannel.scrum && (item.itemMenuScrumClicked == 2 || item.itemMenuScrumClicked == 3
+                || item.itemMenuScrumClicked == 4 || item.itemMenuScrumClicked == 5)" ng-include="'views/partials/backlog.html'">
 
 
-                 <!-- <li>Coffee</li>
-                  <li>Tea</li>
-                  <li>Milk</li>-->
+                </ul> -->
 
 
 
-                </ul>
+
+
+
+
 
 
 
@@ -811,78 +881,118 @@
 
               </div> <!-- ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings-->
 
-              <!-- ****************** new **************************.-->
 
 
+              <!-- sino queremos 1 div como ese pero hasta abajo xq no tiene footer -->
 
-              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum"
-                   class="col-xs-05 panel-body"
-                   id="panel-body-scrum-menu">
-
-
-                <!-- issues, timeline, backlog, sprints,
-                4 son fijos: ahora tenemos 7
-                podemos meter graficos aparte
-                team, settings ??-->
-
-                <div id="group-scrum-menu" class="btn-group-scrum-menu">
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked == 2 "
+                   class="col-xs-115 panel-body"
+                   id="panel-body-scrum-not-chat2"
+                   ng-include="'views/partials/backlog.html'">
 
 
 
 
-                  <!-- -->
+               <!-- <ul class="chat" ng-show="tagChannel.scrum && item.itemMenuScrumClicked == 2"
+                    ng-include="'views/partials/backlog.html'">
 
 
-                  <button class="btn" id="timeline" ng-class="item.itemMenuScrumClicked == 1 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
-                          ng-click="item.itemMenuScrumClicked = 1;showitemclicked()">
-                    <span class="fa fa-comment-o fa-lg"></span></button> <!-- timeline -->
-                  <button class="btn" id="backlog" ng-class="item.itemMenuScrumClicked == 2 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
-                          ng-click="item.itemMenuScrumClicked = 2;showitemclicked()">
-                    <span class="fa fa-tasks fa-lg"></span></button> <!-- userstories, backlog -->
-                  <button class="btn" id="sprint" ng-class="item.itemMenuScrumClicked == 3 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
-                          ng-click="item.itemMenuScrumClicked = 3;showitemclicked()">
-                    <span class="fa fa-table fa-lg fa-lg"></span></button> <!-- sprints -->
-                  <button class="btn" id="issues" ng-class="item.itemMenuScrumClicked == 4 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
-                          ng-click="item.itemMenuScrumClicked = 4;showitemclicked()">
-                    <span class="fa fa-check-square-o fa-lg"></span></button> <!-- issues -->
+                </ul>-->
 
-                  <button class="btn" id="charts" ng-class="item.itemMenuScrumClicked == 5 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
-                          ng-click="item.itemMenuScrumClicked = 5;showitemclicked()">
-                    <span class="fa fa-area-chart fa-lg"></span></button> <!-- ?? chart -->
-
-
-
-
-                  <!--
-                   fa-area-chart
-                   fa-bar-chart
-                   fa-line-chart
-                    -->
-
-                  <!-- ahora dependiendo de lo que valga item.itemMenuScrumClicked mostrar 1 cosa u otra
-                  en ul=chat -->
 
 
                 </div>
 
 
 
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked == 3 "
+                   class="col-xs-115 panel-body"
+                   id="panel-body-scrum-not-chat3"
+                   ng-include="'views/partials/backlog.html'">
+
+
+
+
+                <!-- <ul class="chat" ng-show="tagChannel.scrum && item.itemMenuScrumClicked == 2"
+                     ng-include="'views/partials/backlog.html'">
+
+
+                 </ul>-->
+
+
 
               </div>
 
 
-              <!-- ****************** end new ******************** -->
+
+
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked == 4 "
+                   class="col-xs-115 panel-body"
+                   id="panel-body-scrum-not-chat4"
+                   ng-include="'views/partials/backlog.html'">
 
 
 
 
+                <!-- <ul class="chat" ng-show="tagChannel.scrum && item.itemMenuScrumClicked == 2"
+                     ng-include="'views/partials/backlog.html'">
+
+
+                 </ul>-->
+
+
+
+              </div>
+
+
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked == 5 "
+                   class="col-xs-115 panel-body"
+                   id="panel-body-scrum-not-chat5"
+                   ng-include="'views/partials/backlog.html'">
 
 
 
 
+                <!-- <ul class="chat" ng-show="tagChannel.scrum && item.itemMenuScrumClicked == 2"
+                     ng-include="'views/partials/backlog.html'">
 
 
-              <div ng-show= "tagChannel !== '' && !activeChannelSettings" class="panel-footer" id="panel-footer">
+                 </ul>-->
+
+
+
+              </div>
+
+
+
+              <!-- ****************** menu scrum lateral **************************.-->
+
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked == 1"
+                   class="col-xs-05 panel-body"
+                   id="panel-body-scrum-menu">
+
+                <div id="group-scrum-menu" class="btn-group-scrum-menu" ng-include="'views/partials/scrummenu.html'">
+                </div>
+              </div>
+
+
+
+              <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked !== 1"
+                   class="col-xs-05 panel-body"
+                   id="panel-body-scrum-menu-not-timeline">
+
+                <div id="btn-group-scrum-menu-not-timeline" class="btn-group-scrum-menu-not-timeline"  ng-include="'views/partials/scrummenu.html'">
+                </div>
+              </div>
+
+              <!-- ****************** end menu scrum lateral ******************** -->
+
+
+
+
+              <div ng-show= "tagChannel !== '' && !activeChannelSettings && (!tagChannel.scrum || (tagChannel.scrum && item.itemMenuScrumClicked == 1)) "
+                   class= "panel-footer"
+                   id="panel-footer">
                 <form name="sendMessageForm">
                   <div class="input-group">
                 <span class="input-group-btn">

@@ -8,6 +8,15 @@
   font-family: lora;
 }
 
+
+
+.round-progress-wrapper{
+  margin-left:3em;
+
+}
+
+
+
 .col-xs-05, .col-xs-115 {
   float: left;
   min-height: 1px;
@@ -28,8 +37,460 @@
 .col-xs-05 {
   width: 6%;
 }
+
+/*
+#panel-body-scrum-channel
+{
+  /*overflow-y: scroll;*
+  min-height: 33em;
+  /*height: 84%;*
+
+  height: 70%
+
+}*/
+
+
+/*new .class y es el de #id el que cambia las cosas */
+
+
+.panel-body-backlog-charts {
+  background: rgba(0, 37, 128, 0.5);
+  background-image: url('../images/patern.png');
+  color: white;
+  border:none;
+  height: 100%;
+
+
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  /*no se */
+  /*flex-wrap: wrap;*/
+
+}
+
+
+
+.panel-body-backlog-graphs {
+  background: rgba(0, 37, 128, 0.5);
+  background-image: url('../images/patern.png');
+  color: white;
+  border:none;
+  height: 100%;
+
+
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+
+
+  /*no se */
+  /*flex-wrap: wrap;*/
+
+}
+
+
+.panel-body-backlog-userstories {
+  /*background: rgba(0, 37, 128, 0.5);*/
+  /*background-image: url('../images/patern.png');*/
+  color: white;
+  border:none;
+  height: 100%;
+
+/*
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  */
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding: 0px !important;
+
+  /*padding-top: 0px !important;
+  padding-bottom: 0px !important;*/
+
+
+
+}
+
+
+.panel-body-backlog-userstories .table-without-margin{
+  margin-bottom: 0px;
+
+}
+
+
+
+.panel-body-backlog-userstories .table-without-margin a{
+  font-family: inherit;
+}
+
+
+.panel-body-backlog-userstories .table-without-margin a:hover,
+.panel-body-backlog-userstories .table-without-margin a:focus,
+.panel-body-backlog-userstories .table-without-margin a:active
+{
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+
+
+
+
+
+
+
+
+
+.panel-body-backlog-userstories .table-without-margin th{
+  background: #D9EDF7;
+  color: rgb(51, 122, 183);
+
+}
+
+
+
+
+.panel-body-backlog-userstories-new-btn {
+  /*background: rgba(0, 37, 128, 0.5);*/
+  /*background-image: url('../images/patern.png');*/
+  color: white;
+  border:none;
+  height: 100%;
+
+  /*
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    */
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+
+  /*padding-top: 0px !important;
+  padding-bottom: 0px !important;*/
+
+
+
+}
+
+.panel-body-backlog-userstories-new-btn i {
+  margin-right: 0.4em;
+
+}
+
+
+.panel-body-backlog-userstories-new-btn .input-group-btn {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+.panel-body-backlog-userstories-new-btn input {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+
+
+.panel-body-backlog-userstories-list {
+  /*background: rgba(0, 37, 128, 0.5);*/
+  /*background-image: url('../images/patern.png');*/
+  color: white;
+  border:none;
+  height: 100%;
+
+  /*
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    */
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding: 0px !important;
+
+  /*padding-top: 0px !important;
+  padding-bottom: 0px !important;*/
+
+
+
+}
+
+/* selector :: combo */
+oi-select .select-search-list-item {
+  padding-right: 1em;
+}
+
+.input-group .select-dropdown li{
+  color: #000;
+}
+
+
+
+
+.panel-body-backlog-userstories-list th{
+  color: #000;
+  /*font-family: 'Oswald', sans-serif;*/
+  /*font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;*/
+  /*font-family: 'Oswald', sans-serif;;
+  font-size: larger;*/
+  text-align: center;
+
+}
+
+.panel-body-backlog-userstories-list td{
+  /*color: rgba(0, 0, 0, 0.41);*/
+  color: rgba(0,0,0,0.54);
+  text-align: center;
+
+  /*font-family: 'Oswald', sans-serif;*/
+  /*font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;*/
+  /*font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;*/
+
+}
+
+.panel-body-backlog-userstories-list td span{
+  margin-right: 0.5em;
+
+
+}
+
+
+
+
+
+
+
+/************************* new table *************************/
+
+
+.panel-body-backlog-userstories-list .table .table-cell01{
+  flex:0.1;
+}
+
+
+.panel-body-backlog-userstories-list .table .table-cell05{
+  flex:0.5;
+}
+
+.panel-body-backlog-userstories-list .table .table-cell06{
+  flex:0.6;
+}
+
+.panel-body-backlog-userstories-list .table .table-cell23{
+  flex:2.3;
+}
+
+.panel-body-backlog-userstories-list .table .table-cell1{
+  flex:1;
+}
+
+
+
+.panel-body-backlog-userstories-list td span {
+  background: rgba(138, 43, 226, 0.65);
+}
+
+.panel-body-backlog-userstories-list .cellSelectedClass{
+  background: aliceblue;
+}
+
+
+
+
+
+.panel-body-backlog-userstories-list .table {
+  border-bottom:0px !important;
+}
+.panel-body-backlog-userstories-list .table th, .table td {
+  border: 1px !important;
+}
+.panel-body-backlog-userstories-list .fixed-table-container {
+  border:0px !important;
+}
+
+
+
+.panel-body-backlog-userstories-list table {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%; /* this can vary */
+}
+
+.panel-body-backlog-userstories-list table * {
+  box-sizing: inherit;
+  -moz-box-sizing: inherit;
+}
+
+.panel-body-backlog-userstories-list thead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.panel-body-backlog-userstories-list tbody {
+  overflow-y: scroll;
+  display: inline-block;
+}
+
+.panel-body-backlog-userstories-list thead > tr, tbody > tr, tfoot > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.panel-body-backlog-userstories-list thead, tfoot {
+  flex-shrink: 0;
+}
+
+.panel-body-backlog-userstories-list th, tbody td {
+  width: 20%; /* this can vary */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.panel-body-backlog-userstories-list tfoot {
+  display: inline-block;
+}
+
+.panel-body-backlog-userstories-list tfoot td {
+  width: 100%;
+  display: inline-block;
+}
+
+
+
+
+
+
+/************************* end new *******************************/
+
+
+
+
+ .summary-stats {
+  margin: 0 .5rem;
+  flex:0.2;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+
+.summary-stats span {
+  color: #5DD4D4;
+}
+
+
+
+
+
+
+.summary-stats .percent {
+
+  font-size: 4rem;
+  font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;
+  /* line-height: .9; */
+  margin-left: 0.3em;
+  color: #5DD4D4;
+
+
+
+}
+
+
+
+
+.summary-stats .number {
+
+  font-size: 4rem;
+  font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;
+  /* line-height: .9; */
+  /*margin-left: 1.3em;*/
+  text-align: center;
+  margin-bottom: 0px;
+
+
+
+}
+
+
+
+.summary-stats .description {
+
+  font-size: 1.1rem;
+  line-height: 1;
+  /*margin-right: 0.1em;
+  margin-left: 0.5em;*/
+  text-align: center;
+  /* background-color: white; */
+  margin-left: 1em;
+  margin-top: 1.4em;
+  font-family: 'Oswald', sans-serif;
+
+
+}
+
+
+.panel-body a{
+  font-family: 'Oswald', sans-serif;
+}
+
+
+
+
+
+
+#panel-body-scrum-not-chat2,
+#panel-body-scrum-not-chat3,
+#panel-body-scrum-not-chat4,
+#panel-body-scrum-not-chat5{
+  /*overflow-y: scroll;*/
+  min-height: 33em; /*?*/
+  height: 92%;
+  padding-bottom: 0px;
+
+}
+
+/*class*/
 .col-xs-115 {
   width: 94%;
+
+  /*padding: 0;*/
+
 }
 
 .btn-group-scrum-menu{
@@ -42,6 +503,13 @@
 /* flex:1*/
 
 
+.btn-group-scrum-menu-not-timeline{
+  display: flex;
+  flex-direction: column;
+  flex:1;
+  /*height: 50%;*/
+}
+
 
 
 
@@ -52,9 +520,29 @@
 
 }
 
+#panel-body-scrum-menu-not-timeline{
+  background: rgba(0, 37, 128, 0.5);
+  background-image: url('../images/patern.png');
+
+}
+
+
+
+
 .btn-group-scrum-menu {
   height: 50%;
 }
+
+
+.btn-group-scrum-menu-not-timeline{
+  height: 45%;
+
+}
+
+/*
+.btn-group-scrum-menu {
+  height: 45%;
+}*/
 
 
 /*
@@ -71,6 +559,11 @@
 line-height: 1.3em;*/
 
 .btn-group-scrum-menu button{
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+.btn-group-scrum-menu-not-timeline button{
   padding-left: 0px;
   padding-right: 0px;
 
@@ -125,6 +618,25 @@ line-height: 1.3em;*/
 
 
 
+.btn-group-scrum-menu-not-timeline button:hover{
+  text-decoration: none;
+  cursor: pointer;
+  /*background-color: transparent;*/
+}
+
+.btn-group-scrum-menu-not-timeline button:focus,
+.btn-group-scrum-menu-not-timeline button:active{
+  text-decoration: none;
+  cursor: pointer;
+
+}
+
+
+
+
+
+
+
 
 .btn-group-scrum-menu span:hover,
 .btn-group-scrum-menu span:focus,
@@ -135,10 +647,24 @@ line-height: 1.3em;*/
 }
 
 
+.btn-group-scrum-menu-not-timeline span:hover,
+.btn-group-scrum-menu-not-timeline span:focus,
+.btn-group-scrum-menu-not-timeline span:active{
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+
 
 
 
 .btn-group-scrum-menu span{
+  color: #ffffff;
+}
+
+
+.btn-group-scrum-menu-not-timeline span{
   color: #ffffff;
 }
 
@@ -1563,11 +2089,75 @@ a:hover.classscrum span {
 
 
 
-
 #row-settings {
     margin: 0px;
     height: 20%;
 }
+
+
+/************* panels of charts + userstories **************************/
+
+.row-backlog-chart {
+  margin: 0px;
+  height: 15%;
+}
+
+.row-backlog-userstories {
+  margin: 0px;
+  height: 85%;
+}
+
+
+/* sobraria 24 + 15 = 39 el total es 15 + 85 = 100 */
+
+/* se añade esta clase si quieren ver el grafico */
+.row-backlog-charts-show-graph {
+  margin: 0px;
+  height: 24%;
+}
+
+/*esta clase se hace mas pequeña cuando se visualiza el grafico */
+.row-backlog-userstories-show-graph {
+  margin: 0px;
+  height: 61%;
+}
+
+
+.chart-container{
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#line{
+  flex:1;
+  /*max-width: 902px;*/
+  max-height: 126px;
+}
+
+
+/* panel de añadir boton */
+.row-backlog-userstories-new-btn {
+  margin: 0px;
+  height: 15%;
+
+}
+
+
+.row-backlog-userstories-list {
+  margin: 0px;
+  height: 85%;
+
+}
+
+
+/************* end panels of charts + userstories **************************/
+
+
+
+
 
 #row-settingschannels {
     margin: 0px;
@@ -1594,11 +2184,48 @@ a:hover.classscrum span {
 #panel-set {
     margin: 0px;
     border-color: white;
+    height: 100%;
 }
+
+
+#panel-backlog-chart {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+
+#panel-backlog-graphs {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+#panel-backlog-userstories {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+#panel-backlog-userstories-new-btn {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+#panel-backlog-userstories-list {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+
+
 
 #panel-setchannels {
     margin: 0px;
     border-color: white;
+    height: 100%;
 }
 
 
@@ -1643,7 +2270,7 @@ a:hover.classscrum span {
 }
 #panel-heading-settings {
     border-color: #bce8f1;
-    height:10%;
+    height:40%;
 }
 
 #panel-heading-settings h3{
@@ -1664,7 +2291,7 @@ a:hover.classscrum span {
 
 #panel-heading-settingschannels {
     border-color: #bce8f1;
-    height:10%;
+    height:40%;
 }
 
 #panel-heading-settingschannels h3{
@@ -1793,6 +2420,13 @@ a:hover.classscrum span {
   height: 84%;
 }
 
+
+
+
+
+
+
+
 #panel-body-scrum-menu
 {
   /*overflow-y: scroll;*/
@@ -1805,7 +2439,18 @@ a:hover.classscrum span {
   /*width: %;*/
 }
 
+#panel-body-scrum-menu-not-timeline{
 
+  /*overflow-y: scroll;*/
+  min-height: 33em;
+  height: 92%;
+  /* new */
+  padding: 0px;
+  display:flex;
+
+  /*width: %;*/
+
+}
 
 
 .panel-body-scrum
@@ -1828,7 +2473,7 @@ a:hover.classscrum span {
 {
 
     min-height: 33em;
-    height: 94%;
+    height: 92%;
     padding: 0px;
 }
 

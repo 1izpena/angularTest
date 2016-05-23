@@ -57,6 +57,10 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/oi.select/dist/select-tpls.min.js',
       'bower_components/angular-spinners/dist/angular-spinners.min.js',
+      'bower_components/angular-svg-round-progressbar/build/roundProgress.min.js',
+      'bower_components/Chart.js/Chart.js',
+      'bower_components/angular-chart.js/dist/angular-chart.js',
+      'bower_components/checklist-model/checklist-model.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
