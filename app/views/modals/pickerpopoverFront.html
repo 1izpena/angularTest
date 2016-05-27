@@ -1,0 +1,11 @@
+<div class="picker">
+
+  <div class="picker-items">
+
+    <div ng-class="point.selected ? 'resalt-background' : 'normal-background'" ng-repeat="point in statics.points"class="picker-item">
+      <a ng-click="choosePointRoleFront(point)">{{point.num}}</a>
+    </div>
+
+
+  </div>
+</div>

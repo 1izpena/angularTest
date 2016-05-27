@@ -9,12 +9,148 @@
 }
 
 
+/************** modal new userstory *********************/
+.modal-body .form-group .btn-group-justified>.btn{
+  width: 25%;
+}
+
+.modal-body .form-group .btn-group-justified>label{
+  width: 25%;
+  text-align: center;
+}
+
+.modal-body .form-group .total-points{
+  float: right;
+  margin-right: 2em;
+}
+
+
+
+/************ picker data ******************/
+
+.picker {
+  position: relative;
+  text-align: left;
+  text-shadow: none;
+  line-height: 0;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+}
+.picker * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  position: relative;
+}
+.picker:before,
+.picker:after {
+  content: " ";
+  display: table;
+}
+.picker:after {
+  clear: both;
+}
+.picker .picker-items {
+  position: relative;
+  clear: both;
+  float: none;
+  padding: 14px 0 0 14px;
+  background: #fff;
+  margin: 0;
+  overflow: hidden;
+  overflow-y: auto;
+  min-height: 62px;
+  max-height: 310px;
+}
+.picker .picker-items:before,
+.picker .picker-items:after {
+  content: " ";
+  display: table;
+}
+.picker .picker-items:after {
+  clear: both;
+}
+.picker .picker-item {
+  float: left;
+  padding: 5px;
+  margin: 0 14px 14px 0;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 15px;
+  box-shadow: 0 0 0 1px #70dda4;
+  /*&:nth-child(4n+4) {
+            margin-right: 0;
+        }
+        &:nth-last-child(-n+4) {
+            margin-bottom: 0;
+        }*/
+}
+.picker .picker-item:hover:not(.picker-selected) {
+  background-color: #70dda4;
+}
+.picker .picker-item.picker-selected {
+  box-shadow: none;
+}
+
+.picker .picker-item{
+  width: 15px;
+}
+
+.picker .picker-item a {
+  display: inline-block;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  text-decoration: none;
+  color: white;
+}
+
+.picker-component {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.popover-inner{
+  width:200px;;
+}
+
+.popover-content{
+  padding: 0px; !important;
+}
+
+.resalt-background{
+  background: #70dda4;
+}
+
+.normal-background{
+  background: #64ef6a;
+
+}
+
+/************ end picker data ******************/
+
+
 
 .round-progress-wrapper{
   margin-left:3em;
 
 }
 
+/******* ckeckbox buttons *************/
+
+.requirements .btn-group{
+  width: 100%;
+}
+
+.requirements .btn-group label{
+  width: 33.3%;
+}
+
+#userstoryUX option{
+  position: relative;
+}
 
 
 .col-xs-05, .col-xs-115 {
@@ -325,7 +461,10 @@ oi-select .select-search-list-item {
 
 
 
-
+.panel-body-backlog-userstories .img-custom-responsive{
+  max-height: 100%;
+  width: 100%;
+}
 
 .panel-body-backlog-userstories-list .table {
   border-bottom:0px !important;
@@ -2096,6 +2235,35 @@ a:hover.classscrum span {
 
 
 /************* panels of charts + userstories **************************/
+
+
+
+.panel-backlog-empty{
+  background: transparent url('../images/backlogempty.jpg') no-repeat left center;
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=20);
+  -moz-opacity: 0.2;
+  -khtml-opacity: 0.2;
+  opacity: 0.2;
+  background-size: cover;
+
+
+
+}
+
+
+.panel-body-backlog-userstories .carousel-caption{
+  /*padding-bottom: 11.5em;*/
+  /*top: 13.7%;
+  left:74.7%;*/
+  top:52.5%;
+
+}
+
+
+
+
 
 .row-backlog-chart {
   margin: 0px;

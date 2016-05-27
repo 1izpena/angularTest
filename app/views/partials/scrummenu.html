@@ -1,10 +1,20 @@
 <button class="btn" id="timeline" ng-class="item.itemMenuScrumClicked == 1 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
         ng-click="item.itemMenuScrumClicked = 1"
         title="Timeline">
-  <span class="fa fa-comment-o fa-lg"></span></button> <!-- timeline -->
+
+  <span ng-show = "badge.scrummenu !== 1" class="fa fa-comment-o fa-lg"></span>
+  <span ng-show = "badge.scrummenu == 1" class="badge">{{badge.scrummenu}}</span>
+</button> <!-- timeline -->
+
+<!--
 <button class="btn" id="backlog" ng-class="item.itemMenuScrumClicked == 2 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
         ng-click="item.itemMenuScrumClicked = 2"
+        title="Backlog">-->
+
+<button class="btn" id="backlog" ng-class="item.itemMenuScrumClicked == 2 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
+        ng-click="changeViewToUserstory()"
         title="Backlog">
+
   <span class="fa fa-tasks fa-lg"></span></button> <!-- userstories, backlog -->
 <button class="btn" id="sprint" ng-class="item.itemMenuScrumClicked == 3 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
         ng-click="item.itemMenuScrumClicked = 3"

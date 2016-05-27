@@ -18,6 +18,11 @@
             current:: num userstories closed
             color, es el color del circulo current
             bdcolor:: el color de fondo -->
+
+
+        <!-- cambiarlo xdatos reales -->
+
+
         <round-progress
           max=50
           current=20
@@ -80,7 +85,7 @@
 
           <div class="summary-stats">
             <!-- boton que muestra o no el grafico -->
-            <a class="btn btn-graphic" ng-click="changePercentClass()">
+            <a ng-show="rowCollectionUserStories.length > 0" class="btn btn-graphic" ng-click="changePercentClass()">
               <span class="fa fa-area-chart fa-3x"></span>
             </a>
 
@@ -102,13 +107,15 @@
 
 
 
-<div class="row row-backlog-charts-show-graph" ng-show="showgraph.show">
+<div ng-show="showgraph.show && rowCollectionUserStories.length > 0"
+     class="row row-backlog-charts-show-graph">
   <div class="panel panel-info" id="panel-backlog-graphs">
 
 
     <div class="panel-body panel-body-backlog-graphs">
 
       <!-- y aqui meteriamos la grafica -->
+      <!-- hay que modificarla en base a los puntos que haya -->
 
 
       <!-- .chart-line
@@ -138,17 +145,50 @@
 
 
 
-<!-- end new************************* -->
+
+
+
   <div class="row"
        ng-class="showgraph.show ? 'row-backlog-userstories-show-graph': 'row-backlog-userstories'">
     <div class="panel panel-info" id="panel-backlog-userstories">
 
-      <div class="panel-body panel-body-backlog-userstories">
+
+
+
+      <!-- dejamos el panel anterior para que se cubra la pantalla -->
+
+      <div class="panel-body panel-body-backlog-userstories" ng-show="rowCollectionUserStories.length == 0">
+
+        <div class="panel-backlog-empty">
+          <div class="container">
+          </div>
+        </div>
+
+        <div class="carousel-caption">
+
+
+
+          <a class="btn btn-large btn-success" data-toggle="modal" data-target="#newUserStoryModal">
+            <i class="fa fa-plus"></i>
+            Add a new userstory
+          </a>
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+
+      <!-- tod esto se muestra si hay userstories -->
+      <div class="panel-body panel-body-backlog-userstories" ng-show="rowCollectionUserStories.length > 0">
 
       <!-- hay que meter container fluid para dividir nivel btn aniadir y la lista -->
         <!-- boton de aniadir userstory -->
 
-        <!-- esto hay que cambiarlo -->
 
         <div class="row row-backlog-userstories-new-btn">
           <div class="panel panel-info" id="panel-backlog-userstories-new-btn">
@@ -231,7 +271,7 @@
 
 
 
-        <!-- esto hay que cambiarlo -->
+
         <div class="row row-backlog-userstories-list">
           <div class="panel panel-info" id="panel-backlog-userstories-list">
             <div class="panel-body panel-body-backlog-userstories-list">
@@ -311,7 +351,7 @@
                   </td>
 
 
-                  <td class="table-cell05">{{row.votes}}</td>
+                  <td class="table-cell05">{{row.voters.length}}</td>
                   <td class="table-cell23">{{row.subject}}</td>
                   <td class="table-cell1">{{row.status}}</td>
                   <td class="table-cell06">{{row.points}}</td>
@@ -339,9 +379,176 @@
   </div> <!-- end row--->
 
 
-
 <!--
 </div> <!--  panel-body1 (( ng-if= "tagChannel == '' "))-->
+
+
+
+
+<!--- ********** MODALS ************ -->
+
+
+<!-- New User Story Modal (meter integracion SCRUM -->
+<div id="newUserStoryModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initVarsNewUserstoryModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">New User Story</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+
+
+
+
+
+
+        <!-- subject -->
+        <div class="form-group">
+          <label for="userstorySubject">Subject:</label>
+          <input type="text" class="form-control" name="userstorySubjectTxt"
+                 id="userstorySubject" placeholder="Enter Userstory Subject..."
+                 ng-model="userstory.subject">
+
+          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{modalsError.messageNewUserstoryModal}}
+
+          </div>
+
+        </div>
+
+
+
+        <!-- points -->
+        <div class="form-group">
+
+          <div class="btn-group btn-group-justified">
+            <label>UX</label>
+            <label>Design</label>
+            <label>Back</label>
+            <label>Front</label>
+          </div>
+
+
+
+          <div class="btn-group btn-group-justified">
+
+            <button uib-popover-template="dynamicPopover.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryUX"
+                    popover="Popover 1">
+              {{userstory.ux}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverDes.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryDes"
+                    popover="Popover 2">
+              {{userstory.design}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverFront.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryFront"
+                    popover="Popover 3">
+              {{userstory.front}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverBack.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryBack"
+                    popover="Popover 4">
+              {{userstory.back}}
+            </button>
+
+          </div>
+
+
+
+
+            <br>
+            <label class="total-points">Total points: {{ parseFloat(userstory.ux) +
+              parseFloat(userstory.design) +
+              parseFloat(userstory.front) +
+              parseFloat(userstory.back) }}</label>
+
+
+          </div> <!-- end form-group -->
+
+
+
+
+          <!-- tags (separar con tabulador) -->
+        <div class="form-group">
+          <label for="userstoryTag"> Tags: </label>
+          <br>
+
+          <tags-input ng-model="userstory.tags" display-property="text"
+                      placeholder="Tag me.."
+                      replace-spaces-with-dashes="false"
+                      id="userstoryTag">
+          </tags-input>
+        </div>
+
+
+
+        <!-- descripcion -->
+        <div class="form-group">
+          <label for="userstoryDescr">Description:</label>
+          <textarea class="form-control" id="userstoryDescr"
+                 placeholder="Enter description to helps others better understand..."
+                 ng-model="userstory.description">
+          </textarea>
+        </div>
+
+
+        <!-- requirement:: checkbox type requirement-->
+        <div class="form-group requirements">
+
+          <div class="btn-group">
+            <label class="btn btn-primary" ng-model="userstory.requirements.team" uib-btn-checkbox>Team Requirement</label>
+            <label class="btn btn-info" ng-model="userstory.requirements.client" uib-btn-checkbox>Client Requirement</label>
+            <label class="btn btn-warning" ng-model="userstory.requirements.blocked" uib-btn-checkbox>Bloqued</label>
+          </div>
+
+        </div>
+
+
+
+        <!-- falta votes ?-->
+
+      </div> <!-- end modal body -->
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewUserstory()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables -->
+        <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="initVarsNewUserstoryModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 
 
 

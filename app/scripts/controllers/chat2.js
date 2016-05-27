@@ -4,11 +4,11 @@ angular.module('myAppAngularMinApp')
   .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService',
     'LoginService', '$location', '$localStorage', 'ChatService', 'Socket',
     'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
-    'searchservice', 'GithubService', '$timeout', 'spinnerService', 'INTERNAL_USER',
+    'searchservice', 'GithubService', '$timeout', 'spinnerService', 'INTERNAL_USER', 'ScrumService','ScrumParseService',
     function ($scope, $window, $uibModal, ProfileService,
               LoginService, $location, $localStorage, ChatService, Socket,
               GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5,
-              searchservice, GithubService, $timeout, spinnerService, INTERNAL_USER) {
+              searchservice, GithubService, $timeout, spinnerService, INTERNAL_USER, ScrumService, ScrumParseService) {
 
       $scope.init = function()
       {
@@ -78,6 +78,11 @@ angular.module('myAppAngularMinApp')
       /*$scope.channel = {channelType:"PUBLIC"};
       $scope.channel = {channelService:0};*/
 
+      /******************* backlog dashboard *******************/
+
+
+      $scope.badge = {};
+      $scope.badge.scrummenu = 0;
 
 
       $scope.showgraph = {};
@@ -119,26 +124,15 @@ angular.module('myAppAngularMinApp')
           $scope.rowCollectionUserStories[i].selectedCell = true;
         }
         $scope.tableCells.selected  = angular.copy($scope.rowCollectionUserStories);
-        /*$scope.tableCells.selected  = angular.copy($scope.rowCollectionUserStories);
-        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
-          $scope.rowCollectionUserStories[i].selectedCell = true;
-        }*/
-
       };
 
+
+
       function uncheckAll () {
-
-
         for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
           $scope.rowCollectionUserStories[i].selectedCell = false;
         }
-
         $scope.tableCells.selected = [];
-       /* $scope.tableCells.selected = [];
-        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
-          $scope.rowCollectionUserStories[i].selectedCell = false;
-        }*/
-
       };
 
 
@@ -169,13 +163,29 @@ angular.module('myAppAngularMinApp')
         }
 
 
-
-
       };
 
+     /*
+      $scope.changeUserstoryReqChecked = function(row) {
+        if(row.selectedCell == undefined || !row.selectedCell){
+          row.selectedCell = true;
+        }
+        else{
+          row.selectedCell = false;
+
+        }
+
+      };
+      */
 
 
 
+
+      /* backlog userstories, esto lo asignariamos abajo */
+      $scope.rowCollectionUserStories = [];
+
+
+      /*
       $scope.rowCollectionUserStories = [
         {votes: 1, subject: '#1 Enviar mensaje privado', status: 'Ready for test', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
         {votes: 10, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
@@ -203,7 +213,25 @@ angular.module('myAppAngularMinApp')
 
       ];
 
+*/
 
+
+      $scope.createNewUserstory = function() {
+        console.log("esto vale $scope.userstory despues de editar");
+        console.log($scope.userstory);
+
+        if($scope.userstory.subject == undefined ||
+           $scope.userstory.subject == null || $scope.userstory.subject == ''){
+
+          $scope.modalsError.messageNewUserstoryModal = "Field subject is required.";
+
+        }
+
+      };
+
+
+
+      /******************* end backlog dashboard *******************/
 
 
 
@@ -233,19 +261,68 @@ angular.module('myAppAngularMinApp')
       $scope.errorG= '';
       $scope.messageNewGroupModal = '';
 
-      $scope.messageNewChannelModal = '';
-      $scope.messageNewChannelNameModal = '';
+      $scope.modalsError = {};
 
 
-      $scope.messageNewChannelPassBadCredentialsModal = '';
-      $scope.messageNewChannelUsernameBadCredentialsModal = '';
 
-      $scope.messageNewChannelModalReposEmpty = '';
+      $scope.modalsError.messageNewChannelModal= '';
+      $scope.modalsError.messageNewChannelNameModal = '';
+
+
+      $scope.modalsError.messageNewChannelPassBadCredentialsModal = '';
+      $scope.modalsError.messageNewChannelUsernameBadCredentialsModal = '';
+
+      $scope.modalsError.messageNewChannelModalReposEmpty = '';
 
       $scope.item = {};
       $scope.item.itemMenuScrumClicked = 1;
 
 
+
+
+      /* esto son cosas que no cambian */
+      $scope.statics = {};
+      $scope.statics.points = [
+        {num:0, status: false},
+        {num:0.5, status: false},
+        {num:1, status: false},
+        {num:2, status: false},
+        {num:3, status: false},
+        {num:5, status: false},
+        {num:8, status: false},
+        {num:10, status: false},
+        {num:15, status: false},
+        {num:20, status: false},
+        {num:40, status: false}];
+
+      $scope.statics.requirements = ["Team Requirement", "Client Requirement", "Blocked" ];
+
+      $scope.dynamicPopover = {
+        templateUrl: 'views/modals/pickerpopover.html',
+      };
+
+      $scope.dynamicPopoverDes = {
+        templateUrl: 'views/modals/pickerpopoverDes.html',
+      };
+
+      $scope.dynamicPopoverBack = {
+        templateUrl: 'views/modals/pickerpopoverBack.html',
+      };
+
+      $scope.dynamicPopoverFront = {
+        templateUrl: 'views/modals/pickerpopoverFront.html',
+      };
+
+      /* fin de cosas que no cambian */
+
+
+
+
+
+
+
+      /* inicializa sus variables y el error */
+      removeVarsNewUserstoryModal();
 
 
 
@@ -274,6 +351,8 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+      $scope.parseFloat = parseFloat;
       /* ***************** end init vars ******************** */
 
 
@@ -295,17 +374,6 @@ angular.module('myAppAngularMinApp')
         LoginService.logoutLogin();
     };
 */
-
-
-
-
-/*
-*
-* var property = document.getElementById(btn);
-*
-*
-*
-* */
 
 
     $scope.logout = function () {
@@ -520,13 +588,10 @@ angular.module('myAppAngularMinApp')
     {
       console.log("estoy en chat js");
       if(optionsearch == 1){
-          console.log("estoy en id cambiando a 1");
-
           $scope.navsearch = 1;
           $scope.class1 = "col-xs-7 col-sm-7 col-md-7 col-lg-8";
       }
       else {
-          console.log("estoy en id cambiando a 0");
           $scope.navsearch = 0;
           $scope.class1 = "col-xs-12 col-sm-12 col-md-12 col-lg-12";
       }
@@ -536,7 +601,6 @@ angular.module('myAppAngularMinApp')
 
     $scope.putBlanktextsearchbox = function(textsearchbox)
     {
-
       $scope.textsearchbox = '';
 
     };
@@ -544,8 +608,6 @@ angular.module('myAppAngularMinApp')
 
 
      $scope.searchtextinchannel = function (textsearchbox, channel) {
-      console.log("esto vale searchboz");
-      console.log(textsearchbox);
 
       if ( textsearchbox !== 'undefined' && textsearchbox !== '' ){
         searchservice.chatsearch(textsearchbox, $scope.tagGroup.id, $scope.tagChannel.id).then(function (res){
@@ -625,10 +687,10 @@ angular.module('myAppAngularMinApp')
 
 
 
-      function removeErrorMessageNewChannelModal () {
+      function removeErrormessageNewChannelModal () {
         /* se reutiliza la primera para integration */
-        $scope.messageNewChannelModal = '';
-        $scope.messageNewChannelNameModal = '';
+        $scope.modalsError.messageNewChannelModal= '';
+        $scope.modalsError.messageNewChannelNameModal = '';
 
       };
 
@@ -636,19 +698,28 @@ angular.module('myAppAngularMinApp')
 
       function removeErrorMessageNewChannelIntegrationModal () {
         /* se reutiliza la primera para integration */
-        $scope.messageNewChannelModal = '';
+        $scope.modalsError.messageNewChannelModal= '';
 
 
 
-        $scope.messageNewChannelPassBadCredentialsModal = '';
-        $scope.messageNewChannelUsernameBadCredentialsModal = '';
+        $scope.modalsError.messageNewChannelPassBadCredentialsModal = '';
+        $scope.modalsError.messageNewChannelUsernameBadCredentialsModal = '';
 
       };
 
       function removeErrorMessageNewChannelReposModal () {
         /* se reutiliza la primera para integration */
-        $scope.messageNewChannelModal = '';
-        $scope.messageNewChannelModalReposEmpty = '';
+        $scope.modalsError.messageNewChannelModal= '';
+        $scope.modalsError.messageNewChannelModalReposEmpty = '';
+
+      };
+
+
+
+
+      function removeErrorMessageNewUserstoryModal () {
+        /* se reutiliza la primera para integration */
+        $scope.modalsError.messageNewUserstoryModal = '';
 
       };
 
@@ -671,10 +742,6 @@ angular.module('myAppAngularMinApp')
         removeErrorMessageNewChannelReposModal();
         $scope.githubrepositories = [];
         $scope.repositorySelected = [];
-
-
-
-
       };
 
 
@@ -683,7 +750,6 @@ angular.module('myAppAngularMinApp')
 
         /* el error es el mismo */
         removeErrorMessageNewChannelReposModal();
-
         $scope.arrReposOk = [];
         $scope.arrReposError = [];
 
@@ -692,11 +758,103 @@ angular.module('myAppAngularMinApp')
 
       };
 
+      function removeVarsNewUserstoryModal(){
 
+        removeErrorMessageNewUserstoryModal();
+        $scope.userstory = {};
+        $scope.userstory.requirements = {};
+
+        /* para iniciar */
+        $scope.userstory.ux = $scope.statics.points[0].num; /* statico y vale 0 */
+        $scope.userstory.design = $scope.statics.points[0].num;
+        $scope.userstory.front = $scope.statics.points[0].num;
+        $scope.userstory.back = $scope.statics.points[0].num;
+
+      }
+
+
+      function choosePointLoop (point) {
+        for(var i= 0; i< $scope.statics.points.length; i++){
+          if($scope.statics.points[i].num !== point.num){
+            $scope.statics.points[i].selected = false;
+          }
+          else{
+            $scope.statics.points[i].selected = true;
+          }
+        }
+
+      };
+
+
+      $scope.choosePointRole  = function(point){
+        $scope.userstory.ux = point.num;
+        choosePointLoop(point);
+      };
+
+
+      $scope.choosePointRoleDes  = function(point){
+        $scope.userstory.design = point.num;
+        choosePointLoop(point);
+      };
+
+
+      $scope.choosePointRoleFront  = function(point){
+        $scope.userstory.front = point.num;
+        choosePointLoop(point);
+      };
+
+      $scope.choosePointRoleBack  = function(point){
+        $scope.userstory.back = point.num;
+        choosePointLoop(point);
+      };
 
 
 
       /******************* end vars init ********************************/
+
+      /****************** SCRUM *****************************************/
+      /****************** scrum method to popover hide ******************/
+
+      angular.element(document.body).bind('click', function (e) {
+        var popups = document.querySelectorAll('*[popover]');
+        if(popups) {
+          for(var i=0; i<popups.length; i++) {
+            var popup = popups[i];
+            var popupElement = angular.element(popup);
+
+            var content;
+            var arrow;
+            if(popupElement.next()) {
+
+              /*content = popupElement.next()[0].querySelector('.popover-content');*/
+              /*arrow = popupElement.next()[0].querySelector('.arrow');*/
+            }
+            /* en el if con && e.target != arrow*/
+            if(popup != e.target ) {
+              if(popupElement.next().hasClass('popover')) {
+                popupElement.next().remove();
+                popupElement.scope().tt_isOpen = false;
+              }
+            }
+          }
+        }
+      });
+      /**************** end scrum method popover hide *****************/
+
+
+
+      /*******           viene de partials/scrummenu         *******/
+      /* cuando cambio la vista, cambio la opcion y recojo los userstories,
+       * los userstories los estoy recogiendo ya cuando selecciono el channel */
+      $scope.changeViewToUserstory = function(){
+        $scope.item.itemMenuScrumClicked = 2;
+
+      };
+
+
+
+
+
 
       /* GROUP */
       $scope.initVarsNewGroup = function(){
@@ -725,7 +883,7 @@ angular.module('myAppAngularMinApp')
 
         $scope.githubaccounts = [];
         $scope.githubchannel = {};
-        removeErrorMessageNewChannelModal();
+        removeErrormessageNewChannelModal();
 
 
       };
@@ -760,19 +918,17 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      $scope.initVarsNewUserstoryModal = function(){
+        removeVarsNewUserstoryModal();
+
+      };
 
 
-
+      $scope.removeInput = function(){
+        $("#groupNameTxt").val('').trigger('input');
+      };
 
       /************************** end  modales inicializar valores *****************************************/
-
-
-
-
-
-    $scope.removeInput = function(){
-      $("#groupNameTxt").val('').trigger('input');
-    };
 
 
 
@@ -833,7 +989,6 @@ angular.module('myAppAngularMinApp')
 
 
 
-
               },function(err){
                 // Tratar el error
                 console.log("Error on create new group: " + err.data.message);
@@ -846,13 +1001,7 @@ angular.module('myAppAngularMinApp')
 
           }
 
-
-
         }
-
-
-
-
       };
 
 
@@ -1050,33 +1199,6 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-      /************ new ******************/
-/*
-      $scope.setScrumCheckbox = function(scrumchecked){
-        if(scrumchecked){
-          scrumchecked = false;
-        }
-        else{
-          scrumchecked = true;
-        }
-
-      };
-
-
-
-      $scope.setGithubCheckbox = function(githubchecked){
-
-        if(githubchecked){
-          githubchecked = false;
-        }
-        else{
-          githubchecked = true;
-        }
-
-      };
-*/
-
       /******** new ***********/
 
 /********************** end new ******************/
@@ -1114,10 +1236,10 @@ angular.module('myAppAngularMinApp')
           || $scope.repositorySelected == undefined
           || $scope.repositorySelected == ''){
 
-          $scope.messageNewChannelModalReposEmpty = "Field repositories is required.";
+          $scope.modalsError.messageNewChannelModalReposEmpty = "Field repositories is required.";
         }
         else if($scope.repositorySelected.length == 0){
-          $scope.messageNewChannelModalReposEmpty = "Field repositories is required.";
+          $scope.modalsError.messageNewChannelModalReposEmpty = "Field repositories is required.";
         }
 
         else{
@@ -1203,7 +1325,7 @@ angular.module('myAppAngularMinApp')
                 }
                 else{
                   /* esto no debería pasar */
-                  $scope.messageNewChannelModal = "No repositories added to channel. Try again.";
+                  $scope.modalsError.messageNewChannelModal= "No repositories added to channel. Try again.";
                   /* para este caso volver a atras */
 
                 }
@@ -1218,7 +1340,7 @@ angular.module('myAppAngularMinApp')
                 console.log(error);
 
                 spinnerService.hide('html5spinnerRepos');
-                $scope.messageNewChannelModal = error.data.message;
+                $scope.modalsError.messageNewChannelModal= error.data.message;
 
               }
             );
@@ -1230,7 +1352,7 @@ angular.module('myAppAngularMinApp')
 
 
             spinnerService.hide('html5spinnerRepos');
-            $scope.messageNewChannelModal = "Field account username missed. " +
+            $scope.modalsError.messageNewChannelModal= "Field account username missed. " +
               "Please go back and select account again.";
 
           }
@@ -1265,11 +1387,11 @@ angular.module('myAppAngularMinApp')
         if($scope.accountSelected.username == 'Other'){
 
           if($scope.account.username == null || $scope.account.username == '' || $scope.account.username == undefined){
-            $scope.messageNewChannelUsernameBadCredentialsModal = "Field username is required.";
+            $scope.modalsError.messageNewChannelUsernameBadCredentialsModal = "Field username is required.";
 
           }
           else if($scope.account.password == null || $scope.account.password == '' || $scope.account.password == undefined){
-            $scope.messageNewChannelPassBadCredentialsModal = "Field password is required.";
+            $scope.modalsError.messageNewChannelPassBadCredentialsModal = "Field password is required.";
           }
 
 
@@ -1286,7 +1408,7 @@ angular.module('myAppAngularMinApp')
 
               if(($scope.account.password == null || $scope.account.password == '' || $scope.account.password == undefined) &&
                 $scope.flag.username == $scope.account.username){
-                $scope.messageNewChannelPassBadCredentialsModal = "Field password is required.";
+                $scope.modalsError.messageNewChannelPassBadCredentialsModal = "Field password is required.";
 
               }
 
@@ -1306,8 +1428,8 @@ angular.module('myAppAngularMinApp')
 
 
         /* si no hay errores que haga esto */
-        if($scope.messageNewChannelPassBadCredentialsModal == '' &&
-          $scope.messageNewChannelUsernameBadCredentialsModal == '' ){
+        if($scope.modalsError.messageNewChannelPassBadCredentialsModal == '' &&
+          $scope.modalsError.messageNewChannelUsernameBadCredentialsModal == '' ){
 
 
           spinnerService.show('html5spinnerIntegration');
@@ -1332,7 +1454,7 @@ angular.module('myAppAngularMinApp')
               $scope.account = result.data.githubtoken;
 
               if($scope.githubrepositories.length == 0){
-                $scope.messageNewChannelModal = "There are not repositories to add to the channel which you are owner. ";
+                $scope.modalsError.messageNewChannelModal= "There are not repositories to add to the channel which you are owner. ";
 
               }
 
@@ -1363,7 +1485,7 @@ angular.module('myAppAngularMinApp')
               }
 
 
-              $scope.messageNewChannelModal = error.data.message;
+              $scope.modalsError.messageNewChannelModal= error.data.message;
 
             });
         }
@@ -1422,7 +1544,7 @@ angular.module('myAppAngularMinApp')
 
 
             spinnerService.hide('html5spinnerRepos');
-            $scope.messageNewChannelModal = err.data.message;
+            $scope.modalsError.messageNewChannelModal= err.data.message;
 
           }
         );
@@ -1437,7 +1559,7 @@ angular.module('myAppAngularMinApp')
 
 
         spinnerService.show('html5spinner');
-        removeErrorMessageNewChannelModal();
+        removeErrormessageNewChannelModal();
 
         GithubService.getGithubAccounts().then(
           function(data) {
@@ -1471,7 +1593,7 @@ angular.module('myAppAngularMinApp')
 
 
             spinnerService.hide('html5spinner');
-            $scope.messageNewChannelModal = err.data.message;
+            $scope.modalsError.messageNewChannelModal= err.data.message;
 
           }
         );
@@ -1538,8 +1660,8 @@ angular.module('myAppAngularMinApp')
 
         if($scope.channel.channelName == '' || $scope.channel.channelName == null || $scope.channel.channelName == undefined){
 
-          removeErrorMessageNewChannelModal();
-          $scope.messageNewChannelNameModal = "Channel Name is required."
+          removeErrormessageNewChannelModal();
+          $scope.modalsError.messageNewChannelNameModal = "Channel Name is required."
 
 
 
@@ -1576,8 +1698,8 @@ angular.module('myAppAngularMinApp')
           if (enc) {
 
 
-            removeErrorMessageNewChannelModal();
-            $scope.messageNewChannelNameModal = "Already exists channel with that name.";
+            removeErrormessageNewChannelModal();
+            $scope.modalsError.messageNewChannelNameModal = "Already exists channel with that name.";
 
           }
           /* sino buscamos accounts si github checked marcado, sino creamos el canal */
@@ -1604,7 +1726,7 @@ angular.module('myAppAngularMinApp')
                   $("#newChannelModal").modal("hide");
 
                   /*$scope.removeInputChannelName();*/
-                  /*$scope.messageNewChannelModal = '';*/
+                  /*$scope.modalsError.messageNewChannelModal= '';*/
                   initVarsNewChannelModal();
                   console.log("se crea el nuevo canal");
 
@@ -1613,7 +1735,7 @@ angular.module('myAppAngularMinApp')
                   console.log("Hay error al crear canal: " + err.data.message);
                   /*$scope.removeInputChannelName();*/
                   initVarsNewChannelModal();
-                  $scope.messageNewChannelModal = err.data.message;
+                  $scope.modalsError.messageNewChannelModal= err.data.message;
 
                 });
 
@@ -2887,15 +3009,11 @@ angular.module('myAppAngularMinApp')
 
 
 
-      /* aqui ponemos a cursiva el canal seleccionado */
-      $scope.selectChannel = function (channel, type) {
-
-
+      function changeItalicChannelName (type) {
         if(type == "public"){
           $scope.classResaltChannelPublic = "textitalic";
           $scope.classResaltChannelPrivate = "textnormal";
           $scope.classResaltDirect = "textnormal";
-          console.log("entro en public");
 
         }
         else if (type == "private"){
@@ -2903,7 +3021,6 @@ angular.module('myAppAngularMinApp')
           $scope.classResaltChannelPublic = "textnormal";
           $scope.classResaltChannelPrivate = "textitalic";
           $scope.classResaltDirect = "textnormal";
-          console.log("entro en private");
 
         }
         else {
@@ -2911,16 +3028,23 @@ angular.module('myAppAngularMinApp')
           $scope.classResaltChannelPrivate = "textnormal";
           $scope.classResaltDirect = "textitalic";
         }
+      };
 
 
+
+
+      $scope.selectChannel = function (channel, type) {
+
+        /* ponemos a cursiva el canal seleccionado */
+        changeItalicChannelName(type);
 
         $scope.channelid=channel.id;
         $scope.tagChannel=channel;
+        $scope.tagChannel.type = type;
+
 
         console.log("esto vale tagChannel despues de selectChannel");
         console.log($scope.tagChannel);
-
-        $scope.tagChannel.type = type;
 
 
         /* si selecciona un canal por defecto le salga la conversacion, no los settings */
@@ -2930,15 +3054,39 @@ angular.module('myAppAngularMinApp')
         $scope.getChannelMembers();
         $scope.getMessages(channel);
 
-        // Emitimos evento de selecion de canal para recibir nuevos mensajes
+
+        /* Emitimos evento de selecion de canal para recibir nuevos mensajes */
         console.log("ha llamado disconnect de channel");
         Socket.emit('selectChannel', { 'channelid': channel.id , 'userid': $localStorage.id} );
 
 
-
         updateAllNotificationsWithSelectChannel(channel, type);
 
-        //$scope.$apply();
+
+
+        /* vamos a ver que devuelve channel y si eso no haria falta hacer esto
+         * habra que hacerlo para el api, pero no mas */
+
+        /* cuando seleccionamos 1 canal que tiene scrum nos descargamos los datos y los enchufamos */
+        if($scope.tagChannel.scrum){
+          /* le ponemos en el timeline del CH */
+          $scope.item.itemMenuScrumClicked = 1;
+
+          /* recogemos los userstories */
+          /** con lo que devuelve recargamos el array:: rowCollectionUserStories */
+         ScrumService.getUserstories($scope.tagGroup.id, $scope.tagChannel.id)
+           .then(function (res) {
+             console.log("esto vale res de getuserstories");
+             console.log(res);
+
+
+           }, function (err) {
+             console.log("esto vale err de getuserstories");
+             console.log(err);
+
+           });
+
+         }
 
 
       };
@@ -3032,19 +3180,51 @@ angular.module('myAppAngularMinApp')
 
 
 
-
+/* no van a salir mensajes xq no tengo serviceType, habria que cambiar bd*/
+      /* valdria con mirar que es de tipo github */
     $scope.isGithubMessage = function ($index) {
-      if(typeof ($scope.listaMensajes[$index].user) !== "undefined"){
+      if(typeof ($scope.listaMensajes[$index].user) !== undefined){
         //console.log($scope.listaMensajes[$index].text);
         if ($scope.listaMensajes[$index].user.mail == INTERNAL_USER
-            && $scope.listaMensajes[$index].messageType == 'TEXT') {
+            && $scope.listaMensajes[$index].messageType == 'TEXT'
+            /*&& $scope.listaMensajes[$index].serviceType == 'GITHUB'*/) {
 
+
+          /* lo de arriba descomentar cuando la bd este bien */
           return true;
         }
       }
 
       return false;
     };
+
+
+    $scope.isScrumMessage = function ($index) {
+      if( $scope.listaMensajes[$index].user.mail == INTERNAL_USER
+        && $scope.listaMensajes[$index].messageType == 'TEXT'
+        && $scope.listaMensajes[$index].serviceType == 'SCRUM'){
+
+        console.log("esto vale github mensaje sin parsear");
+        console.log($scope.listaMensajes[$index].text);
+        return true;
+
+      }
+
+      return false;
+    };
+
+      /* ha estos metodos les llamo desde scrumparseservice */
+
+      $scope.viewUserProfile = function (userid){
+        console.log("esto vale user id en viewUserProfile");
+        console.log(userid);
+      };
+
+      $scope.viewUserstory = function (userstoryid){
+        console.log("esto vale userstory id en viewUserstory");
+        console.log(userstoryid);
+      };
+
 
 
 
@@ -3082,7 +3262,7 @@ angular.module('myAppAngularMinApp')
 
         }
         else {
-          messageText = null;
+          messageText = '';
 
 
         }
@@ -3091,6 +3271,74 @@ angular.module('myAppAngularMinApp')
         return messageText;
 
       };
+
+
+
+      /********************* new **************************/
+      $scope.getScrumMessage = function ($index) {
+
+
+        /* hay que mirar si se convierte bien en JSON y podemos coger cosas */
+
+        var scrumMessageString = $scope.listaMensajes[$index].text;
+
+        console.log("ScrumMessageString");
+         console.log(ScrumMessageString);
+
+        if(scrumMessageString !== null && scrumMessageString !== undefined && scrumMessageString !== ''){
+          var scrumMessageMiddle = JSON.parse(scrumMessageString);
+
+          console.log("scrumMessageMiddle");
+           console.log(scrumMessageMiddle);
+
+
+          var scrumMessageJSON = JSON.parse(scrumMessageMiddle);
+          //console.log("githubMessageJSON");
+          console.log("scrumMessageJSON");
+           console.log(scrumMessageJSON);
+
+
+
+          var messageText = '';
+
+
+
+          /* llamamos al servicio que parsee */
+          messageText = ScrumParseService.parseScrumEvents(githubMessageJSON);
+
+
+        }
+        else {
+          messageText = '';
+
+
+        }
+
+
+        return messageText;
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /********************** end new *********************************/
+
 
 
 
@@ -3276,6 +3524,13 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+
+
+
+
+
     $scope.channelSelected = false;
     $scope.listaMensajes = [];
     $scope.listaUsuariosConectados = {};
@@ -3413,7 +3668,28 @@ angular.module('myAppAngularMinApp')
       };
 
 
+
+
+
+
+
+      /*************** SOCKETS ******************************/
       /* por canal, estoy dentro del canal */
+      Socket.on('newUserstory', function (data) {
+
+        console.log("newUserstory");
+        console.log(data);
+
+        /* backlog userstories, esto lo asignariamos abajo */
+        $scope.rowCollectionUserStories.push(data);
+        $scope.$apply();
+      });
+
+
+
+
+
+
 
       /* mirar si es internal user */
 
@@ -3423,7 +3699,7 @@ angular.module('myAppAngularMinApp')
      Socket.on('newMessage', function (data) {
 
        /* parsear de forma diferente */
-
+       /* puede que este en el canal pero no mirando los mensajes, queremos ponerle 1 badge */
 
 
      console.log("newMessage from server: " + data.groupid + ', ' + data.message.id);
@@ -3434,6 +3710,15 @@ angular.module('myAppAngularMinApp')
       */
 
      if (data.message.channel.id == $scope.tagChannel.id) {
+
+       /* mirar que la opcion sea distinta de 1 poner badge */
+       if($scope.tagChannel.scrum && $scope.item.itemMenuScrumClicked > 1){
+         $scope.badge.scrummenu = $scope.badge.scrummenu + 1;
+
+
+       }
+
+
        /* mirar si es 1 url y hasta que no este ready no pintar */
 
        if(data.message.messageType == 'URL'){
@@ -3578,15 +3863,8 @@ angular.module('myAppAngularMinApp')
         console.log ("newGroup received from server");
         console.log(data);
 
-        /* los inicializa */
-        /*
-        data.groupNotificationsCount = 0;
-        data.channelsNotificationsCount = 0;
-        data.directChannelsNotificationsCount = 0;
-        $scope.groups.push(data);*/
 
         $scope.groups.push(data);
-
 
         /* cuando cree el nuevo grupo que le muestre los settings, si el es el que lo crea */
         if(data.users.length == 1){
@@ -3599,15 +3877,11 @@ angular.module('myAppAngularMinApp')
 
 
           var user = {username :'meanstack'};
-
           if(data.message == undefined){
             data.message = {text : ' created new group: '+ data.groupName, user: user };
 
           }
-
           ChatService.openNotification(data);
-
-
 
         }
         $scope.$apply();
@@ -3623,11 +3897,7 @@ angular.module('myAppAngularMinApp')
         console.log ("deletedGroup receive from server");
         console.log(data);
 
-        /* si se borra el grupo se muestra 1 notificacion de escritorio
-        * este o no dentro de la app */
-
         var user = {username :'meanstack'};
-
         if(data.message == undefined){
           data.message = {text : ' deleted group: '+ data.groupName, user: user };
 
@@ -4693,14 +4963,9 @@ angular.module('myAppAngularMinApp')
       /********* end updateScopeNotifications **********/
 
 
-
-
-
-
       /* esto esta como 1 mensaje, no hay que notificar */
       Socket.on('newMemberInChannelEvent', function (data) {
         console.log ("newMemberInChannelEvent received from server");
-
 
       });
 
@@ -4708,7 +4973,6 @@ angular.module('myAppAngularMinApp')
       /* esta como un mensaje, no hay que notificar */
       Socket.on('deletedMemberInChannelEvent', function (data) {
         console.log ("deletedMemberInChannelEvent received from server");
-
 
       });
 
