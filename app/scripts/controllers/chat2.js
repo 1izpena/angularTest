@@ -56,178 +56,130 @@ angular.module('myAppAngularMinApp')
 
 
 
+        /************* scrum dashboard init ***********************/
+
+
+        /* esto son cosas que no cambian:: static siempre lo primero
+        * menos la carga de modales que usan cosas dinamicas */
+
+        /* si queremos ponerle label al eje x de la grafica */
+        $scope.labels = [];
+        /* nombre de la grafica */
+        $scope.series = ['Sprints'];
+        /* de momento estatico, luego habra que ir cambiandolo e inicializandolo como los otros*/
+        $scope.chartdata = [
+          [50, 0]
+        ];
+
+
+
+        $scope.comboOptions = [
+          {name: "All", num: 0},
+          {name: "Subject", num: 1},
+          {name: "Status", num: 2},
+          {name: "Tags", num: 3}
+
+        ];
+
+
+        $scope.statics = {};
+        $scope.statics.points = [
+          {num:0, status: false},
+          {num:0.5, status: false},
+          {num:1, status: false},
+          {num:2, status: false},
+          {num:3, status: false},
+          {num:5, status: false},
+          {num:8, status: false},
+          {num:10, status: false},
+          {num:15, status: false},
+          {num:20, status: false},
+          {num:40, status: false}];
+
+        $scope.statics.requirements = ["Team Requirement", "Client Requirement", "Blocked" ];
+
+        /* errores de modales */
+        $scope.modalsError = {};
+        $scope.modalsError.messageNewGroupModal = '';
+        $scope.modalsError.messageNewChannelModal= '';
+        $scope.modalsError.messageNewChannelNameModal = '';
+        $scope.modalsError.messageNewChannelPassBadCredentialsModal = '';
+        $scope.modalsError.messageNewChannelUsernameBadCredentialsModal = '';
+        $scope.modalsError.messageNewChannelModalReposEmpty = '';
+
+
+        /* inicializa vars de scrum */
+        initVarsScrumChannel();
+
+        /* inicializa sus variables y el error de userstory create */
+        removeVarsNewUserstoryModal();
 
 
 
 
 
 
+        $scope.dynamicPopover = {
+          templateUrl: 'views/modals/pickerpopover.html',
+        };
+
+        $scope.dynamicPopoverDes = {
+          templateUrl: 'views/modals/pickerpopoverDes.html',
+        };
+
+        $scope.dynamicPopoverBack = {
+          templateUrl: 'views/modals/pickerpopoverBack.html',
+        };
+
+        $scope.dynamicPopoverFront = {
+          templateUrl: 'views/modals/pickerpopoverFront.html',
+        };
+
+        /* fin de cosas que no cambian */
+
+        $scope.parseFloat = parseFloat;
 
 
 
-      };
+
+
+
+      }; /* end scope init */
 
 
 
 
+      /********* backlog dashboard (vars) ***************/
+
+      /* ************** init vars, no estaticas  ******************* */
+      function initVarsScrumChannel () {
+        /* variables scrum */
+        $scope.item = {};
+        $scope.item.itemMenuScrumClicked = 1;
+
+        /* si itemMenuScrumClicked no esta en timeline y llega sms */
+        $scope.badge = {};
+        $scope.badge.scrummenu = 0;
 
 
-      /* ************** init vars ******************* */
+        /* grafica de sprint + array de tabla */
+        $scope.showgraph = {};
+        $scope.showgraph.show = false;
+        $scope.rowCollectionUserStories = [];
 
 
-      /*$scope.channel = {channelType:"PUBLIC"};
-      $scope.channel = {channelService:0};*/
-
-      /******************* backlog dashboard *******************/
-
-
-      $scope.badge = {};
-      $scope.badge.scrummenu = 0;
+        /* inicializar busquedas en tabla */
+        $scope.sortType     = 'subject'; // set the default sort type
+        $scope.sortReverse  = false;  // set the default sort order
+        $scope.comboOptionsSelected = {name: "All", num: 0};
 
 
-      $scope.showgraph = {};
-      $scope.showgraph.show = false;
-
-      $scope.labels = [];
-      $scope.series = ['Sprints'];
-      $scope.chartdata = [
-        [50, 0]
-      ];
-
-
-
-      $scope.sortType     = 'subject'; // set the default sort type
-      $scope.sortReverse  = false;  // set the default sort order
-
-
-
-      $scope.comboOptionsSelected = {name: "All", num: 0};
-      $scope.comboOptions = [
-        {name: "All", num: 0},
-        {name: "Subject", num: 1},
-        {name: "Status", num: 2},
-        {name: "Tags", num: 3}
-
-      ];
-
-
-
-      $scope.tableCells = {};
-      $scope.tableCells.selected = [];
-      $scope.ischeckedAllCells = false;
-
-
-
-      function checkAll () {
-
-        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
-          $scope.rowCollectionUserStories[i].selectedCell = true;
-        }
-        $scope.tableCells.selected  = angular.copy($scope.rowCollectionUserStories);
-      };
-
-
-
-      function uncheckAll () {
-        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
-          $scope.rowCollectionUserStories[i].selectedCell = false;
-        }
+        /* inicializar que las filas de la tabla no estan seleccionadas */
+        $scope.tableCells = {};
         $scope.tableCells.selected = [];
-      };
+        $scope.ischeckedAllCells = false;
 
-
-
-      $scope.checkAllNone = function() {
-
-        if($scope.ischeckedAllCells){
-          uncheckAll();
-          $scope.ischeckedAllCells = false;
-
-
-        }
-        else{
-          checkAll();
-          $scope.ischeckedAllCells = true;
-        }
-
-      };
-
-
-      $scope.changeCheckedTableCell = function(row) {
-        if(row.selectedCell == undefined || !row.selectedCell){
-          row.selectedCell = true;
-        }
-        else{
-          row.selectedCell = false;
-
-        }
-
-
-      };
-
-     /*
-      $scope.changeUserstoryReqChecked = function(row) {
-        if(row.selectedCell == undefined || !row.selectedCell){
-          row.selectedCell = true;
-        }
-        else{
-          row.selectedCell = false;
-
-        }
-
-      };
-      */
-
-
-
-
-      /* backlog userstories, esto lo asignariamos abajo */
-      $scope.rowCollectionUserStories = [];
-
-
-      /*
-      $scope.rowCollectionUserStories = [
-        {votes: 1, subject: '#1 Enviar mensaje privado', status: 'Ready for test', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 10, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 3, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag3']},
-        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'In progress', points: 0, sprint: 'Sprint3', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 5, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag3']},
-        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'In progress', points: 0, sprint: 'Sprint4', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint5', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint5', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'Ready for test', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag3']},
-        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint3', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#1 Enviar mensaje privado', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-        {votes: 0, subject: '#3 Enviar mensaje privado3', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']}
-
-
-
-      ];
-
-*/
-
-
-      $scope.createNewUserstory = function() {
-        console.log("esto vale $scope.userstory despues de editar");
-        console.log($scope.userstory);
-
-        if($scope.userstory.subject == undefined ||
-           $scope.userstory.subject == null || $scope.userstory.subject == ''){
-
-          $scope.modalsError.messageNewUserstoryModal = "Field subject is required.";
-
-        }
-
-      };
+      }
 
 
 
@@ -259,73 +211,6 @@ angular.module('myAppAngularMinApp')
 
       /* modal de errores para los settings del grupo */
       $scope.errorG= '';
-      $scope.messageNewGroupModal = '';
-
-      $scope.modalsError = {};
-
-
-
-      $scope.modalsError.messageNewChannelModal= '';
-      $scope.modalsError.messageNewChannelNameModal = '';
-
-
-      $scope.modalsError.messageNewChannelPassBadCredentialsModal = '';
-      $scope.modalsError.messageNewChannelUsernameBadCredentialsModal = '';
-
-      $scope.modalsError.messageNewChannelModalReposEmpty = '';
-
-      $scope.item = {};
-      $scope.item.itemMenuScrumClicked = 1;
-
-
-
-
-      /* esto son cosas que no cambian */
-      $scope.statics = {};
-      $scope.statics.points = [
-        {num:0, status: false},
-        {num:0.5, status: false},
-        {num:1, status: false},
-        {num:2, status: false},
-        {num:3, status: false},
-        {num:5, status: false},
-        {num:8, status: false},
-        {num:10, status: false},
-        {num:15, status: false},
-        {num:20, status: false},
-        {num:40, status: false}];
-
-      $scope.statics.requirements = ["Team Requirement", "Client Requirement", "Blocked" ];
-
-      $scope.dynamicPopover = {
-        templateUrl: 'views/modals/pickerpopover.html',
-      };
-
-      $scope.dynamicPopoverDes = {
-        templateUrl: 'views/modals/pickerpopoverDes.html',
-      };
-
-      $scope.dynamicPopoverBack = {
-        templateUrl: 'views/modals/pickerpopoverBack.html',
-      };
-
-      $scope.dynamicPopoverFront = {
-        templateUrl: 'views/modals/pickerpopoverFront.html',
-      };
-
-      /* fin de cosas que no cambian */
-
-
-
-
-
-
-
-      /* inicializa sus variables y el error */
-      removeVarsNewUserstoryModal();
-
-
-
 
       $scope.error1 = 0;
       $scope.message1 = '';
@@ -350,9 +235,6 @@ angular.module('myAppAngularMinApp')
       $scope.classResaltDirect = "textnormal";
 
 
-
-
-      $scope.parseFloat = parseFloat;
       /* ***************** end init vars ******************** */
 
 
@@ -680,7 +562,7 @@ angular.module('myAppAngularMinApp')
 
 
       function removeErrorMessageNewGroupModal () {
-        $scope.messageNewGroupModal = '';
+        $scope.modalsError.messageNewGroupModal = '';
 
       };
 
@@ -720,6 +602,7 @@ angular.module('myAppAngularMinApp')
       function removeErrorMessageNewUserstoryModal () {
         /* se reutiliza la primera para integration */
         $scope.modalsError.messageNewUserstoryModal = '';
+        $scope.modalsError.messageNewUserstoryRequiredSubModal = '';
 
       };
 
@@ -762,17 +645,29 @@ angular.module('myAppAngularMinApp')
 
         removeErrorMessageNewUserstoryModal();
         $scope.userstory = {};
-        $scope.userstory.requirements = {};
+        $scope.userstory.requirement = {};
 
         /* para iniciar */
-        $scope.userstory.ux = $scope.statics.points[0].num; /* statico y vale 0 */
-        $scope.userstory.design = $scope.statics.points[0].num;
-        $scope.userstory.front = $scope.statics.points[0].num;
-        $scope.userstory.back = $scope.statics.points[0].num;
+        $scope.userstory.point = {};
+        $scope.userstory.point.ux = $scope.statics.points[0].num; /* statico y vale 0 */
+        $scope.userstory.point.design = $scope.statics.points[0].num;
+        $scope.userstory.point.front = $scope.statics.points[0].num;
+        $scope.userstory.point.back = $scope.statics.points[0].num;
 
       }
 
 
+      /******************* end vars init ********************************/
+
+
+
+
+      /****************** SCRUM *****************************************/
+
+      /************************* backlog dashboard *********************/
+      /*************************  USERSTORY  *************************/
+
+      /* CREATE ::  choose points */
       function choosePointLoop (point) {
         for(var i= 0; i< $scope.statics.points.length; i++){
           if($scope.statics.points[i].num !== point.num){
@@ -782,39 +677,34 @@ angular.module('myAppAngularMinApp')
             $scope.statics.points[i].selected = true;
           }
         }
-
       };
 
-
       $scope.choosePointRole  = function(point){
-        $scope.userstory.ux = point.num;
+        $scope.userstory.point.ux = point.num;
         choosePointLoop(point);
       };
 
 
       $scope.choosePointRoleDes  = function(point){
-        $scope.userstory.design = point.num;
+        $scope.userstory.point.design = point.num;
         choosePointLoop(point);
       };
 
 
       $scope.choosePointRoleFront  = function(point){
-        $scope.userstory.front = point.num;
+        $scope.userstory.point.front = point.num;
         choosePointLoop(point);
       };
 
       $scope.choosePointRoleBack  = function(point){
-        $scope.userstory.back = point.num;
+        $scope.userstory.point.back = point.num;
         choosePointLoop(point);
       };
 
 
 
-      /******************* end vars init ********************************/
 
-      /****************** SCRUM *****************************************/
-      /****************** scrum method to popover hide ******************/
-
+      /* method to popover hide :: points */
       angular.element(document.body).bind('click', function (e) {
         var popups = document.querySelectorAll('*[popover]');
         if(popups) {
@@ -839,15 +729,121 @@ angular.module('myAppAngularMinApp')
           }
         }
       });
-      /**************** end scrum method popover hide *****************/
 
 
 
-      /*******           viene de partials/scrummenu         *******/
-      /* cuando cambio la vista, cambio la opcion y recojo los userstories,
-       * los userstories los estoy recogiendo ya cuando selecciono el channel */
+      /* VIEW :: userstory table checkbox */
+      function checkAll () {
+        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          $scope.rowCollectionUserStories[i].selectedCell = true;
+        }
+        $scope.tableCells.selected  = angular.copy($scope.rowCollectionUserStories);
+      };
+
+      function uncheckAll () {
+        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          $scope.rowCollectionUserStories[i].selectedCell = false;
+        }
+        $scope.tableCells.selected = [];
+      };
+
+
+      $scope.checkAllNone = function() {
+        if($scope.ischeckedAllCells){
+          uncheckAll();
+          $scope.ischeckedAllCells = false;
+        }
+        else{
+          checkAll();
+          $scope.ischeckedAllCells = true;
+        }
+
+      };
+
+      $scope.changeCheckedTableCell = function(row) {
+        if(row.selectedCell == undefined || !row.selectedCell){
+          row.selectedCell = true;
+        }
+        else{
+          row.selectedCell = false;
+        }
+      };
+
+
+      /*
+       $scope.rowCollectionUserStories = [
+       {votes: 1, subject: '#1 Enviar mensaje privado', status: 'Ready for test', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+       {votes: 10, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+
+       ];
+
+       */
+
+
+      $scope.createNewUserstory = function() {
+        console.log("esto vale $scope.userstory despues de editar");
+        console.log($scope.userstory);
+
+        if($scope.userstory.subject == undefined ||
+          $scope.userstory.subject == null || $scope.userstory.subject == ''){
+
+          $scope.modalsError.messageNewUserstoryRequiredSubModal = "Field subject is required.";
+
+        }
+        else {
+          ScrumService.createUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.userstory)
+            .then(function (res) {
+              console.log("esto vale res de createuserstories");
+              console.log(res);
+
+              $scope.rowCollectionUserStories.push(res.data);
+              $("#newUserStoryModal").modal("hide");
+
+
+            }, function (err) {
+              console.log("esto vale err de create userstories");
+              console.log(err);
+              $scope.modalsError.messageNewUserstoryModal = err.data.message;
+            });
+        }
+
+      };
+
+
+
+
+
+      /* en partials/scrummenu */
       $scope.changeViewToUserstory = function(){
         $scope.item.itemMenuScrumClicked = 2;
+
+        /* recogemos los userstories :: recargar array :: rowCollectionUserStories */
+        ScrumService.getUserstories($scope.tagGroup.id, $scope.tagChannel.id)
+          .then(function (res) {
+            console.log("esto vale res de getuserstories");
+            console.log(res);
+
+
+            /*
+            ahora es 1 array de voters con ids
+            {votes: 1,
+            xx:: subject: '#1 Enviar mensaje privado',
+            ::status: 'Ready for test',
+            points: 0, /*ahora point con ux,de...*
+            xx tags: ['tag1','tag2']},
+             */
+
+
+
+
+            $scope.rowCollectionUserStories = res.data;
+
+
+          }, function (err) {
+            console.log("esto vale err de getuserstories");
+            console.log(err);
+            $scope.modalsError.messageNewUserstoryModal = err.data.message;
+        });
 
       };
 
@@ -938,7 +934,7 @@ angular.module('myAppAngularMinApp')
 
         if(group.groupName == '' || group.groupName == null || group.groupName == undefined){
           removeErrorMessageNewGroupModal();
-          $scope.messageNewGroupModal = "Group Name is required.";
+          $scope.modalsError.messageNewGroupModal = "Group Name is required.";
 
 
         }
@@ -960,7 +956,7 @@ angular.module('myAppAngularMinApp')
 
           if (enc) {
             removeErrorMessageNewGroupModal();
-            $scope.messageNewGroupModal = "Already exists group with that name.";
+            $scope.modalsError.messageNewGroupModal = "Already exists group with that name.";
 
           }
 
@@ -973,7 +969,7 @@ angular.module('myAppAngularMinApp')
 
                 $scope.initVarsNewGroup(); /* tiene::
                                             $scope.removeInput();,
-                                             $scope.messageNewGroupModal = '';
+                                             $scope.modalsError.messageNewGroupModal = '';
                                               $scope.group = {};*/
 
 
@@ -994,7 +990,7 @@ angular.module('myAppAngularMinApp')
                 console.log("Error on create new group: " + err.data.message);
                 //$scope.removeInput();
                 removeErrorMessageNewGroupModal();
-                $scope.messageNewGroupModal = err.data.message;
+                $scope.modalsError.messageNewGroupModal = err.data.message;
 
               }
             );
@@ -3033,10 +3029,19 @@ angular.module('myAppAngularMinApp')
 
 
 
+
       $scope.selectChannel = function (channel, type) {
 
         /* ponemos a cursiva el canal seleccionado */
         changeItalicChannelName(type);
+
+        /* miramos el tagChannel anterior, si es scrum == true, inicializamos variables */
+        if($scope.tagChannel !== undefined && $scope.tagChannel !== null && $scope.tagChannel !== ''){
+          if($scope.tagChannel.scrum){
+            initVarsScrumChannel();
+          }
+        }
+
 
         $scope.channelid=channel.id;
         $scope.tagChannel=channel;
@@ -3064,29 +3069,9 @@ angular.module('myAppAngularMinApp')
 
 
 
-        /* vamos a ver que devuelve channel y si eso no haria falta hacer esto
-         * habra que hacerlo para el api, pero no mas */
-
-        /* cuando seleccionamos 1 canal que tiene scrum nos descargamos los datos y los enchufamos */
-        if($scope.tagChannel.scrum){
-          /* le ponemos en el timeline del CH */
-          $scope.item.itemMenuScrumClicked = 1;
-
-          /* recogemos los userstories */
-          /** con lo que devuelve recargamos el array:: rowCollectionUserStories */
-         ScrumService.getUserstories($scope.tagGroup.id, $scope.tagChannel.id)
-           .then(function (res) {
-             console.log("esto vale res de getuserstories");
-             console.log(res);
 
 
-           }, function (err) {
-             console.log("esto vale err de getuserstories");
-             console.log(err);
 
-           });
-
-         }
 
 
       };

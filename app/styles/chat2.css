@@ -415,6 +415,10 @@ oi-select .select-search-list-item {
 
 .panel-body-backlog-userstories-list td span{
   margin-right: 0.5em;
+  position: relative;
+  float: right;
+  /* padding-bottom: 2em; */
+  margin-bottom: 0.5em;
 
 
 }

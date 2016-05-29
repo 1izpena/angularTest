@@ -766,13 +766,13 @@
 
                       <!--- unir esto con lo de abajo -->
 
-                      <p ng-if="isGithubMessage($index) && getGithubMessage($index)!== ''" class="text-left">
-                        <span bind-html-compile="getGithubMessage($index)"></span>
+                      <p ng-if="isGithubMessage($index)" class="text-left">
+                        <span ng-show="getGithubMessage($index)!== ''" bind-html-compile="getGithubMessage($index)"></span>
                       </p>
 
 
                       <p ng-if="isScrumMessage($index) && getScrumMessage($index)!== ''" class="text-left">
-                        <span bind-html-compile="getScrumMessage($index)"></span>
+                        <span ng-show="getScrumMessage($index)!== ''" bind-html-compile="getScrumMessage($index)"></span>
                       </p>
 
 
@@ -1300,7 +1300,7 @@
       <div class="modal-content">
         <div class="modal-header" >
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                  ng-click="messageNewGroupModal=''; removeInput()">
+                  ng-click="modalsError.messageNewGroupModal=''; removeInput()">
             <span aria-hidden="true">&times;</span>
           </button>
           <h4 class="modal-title">New Group</h4>
@@ -1308,12 +1308,12 @@
 
         <div class="modal-body" >
 
-          <div class="alert alert-danger" role="alert" ng-if="messageNewGroupModal !== ''">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="messageNewGroupModal=''">
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewGroupModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewGroupModal=''">
               <span aria-hidden="true">&times;</span>
             </button>
 
-            {{messageNewGroupModal}}
+            {{modalsError.messageNewGroupModal}}
 
           </div>
 
@@ -1374,7 +1374,7 @@
 
 
 
-          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelModal !== ''">
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelModal=''">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -1520,7 +1520,7 @@
           </spinner>
 
 
-          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelModal !== ''">
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelModal=''">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -1556,7 +1556,7 @@
               ></oi-select>
             <!-- placeholder="Select" -->
 
-            <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelModalReposEmpty !== ''">
+            <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelModalReposEmpty !== ''">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelModalReposEmpty=''">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -1645,7 +1645,7 @@
             </spinner>
 
 
-          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelModal !== ''">
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelModal=''">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -1684,7 +1684,7 @@
             <label for="githubPassTxt">Password:</label>
             <input type="password" required="true" class="form-control" name="githubPassTxt2" id="githubPassTxt2" placeholder="Enter Github password..." ng-model="account.password">
 
-            <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelPassBadCredentialsModal !== ''">
+            <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelPassBadCredentialsModal !== ''">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelPassBadCredentialsModal=''">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -1705,7 +1705,7 @@
             <label for="githubUserTxt">Username:</label>
             <input type="text" required="true" class="form-control" name="githubUserTxt" id="githubUserTxt" placeholder="Enter Github username..." ng-model="account.username">
 
-            <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelUsernameBadCredentialsModal !== ''">
+            <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelUsernameBadCredentialsModal !== ''">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelUsernameBadCredentialsModal=''">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -1722,7 +1722,7 @@
             <label for="githubPassTxt">Password:</label>
             <input type="password" required="true" class="form-control" name="githubPassTxt" id="githubPassTxt" placeholder="Enter Github password..." ng-model="account.password">
 
-            <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelPassBadCredentialsModal !== ''">
+            <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelPassBadCredentialsModal !== ''">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelPassBadCredentialsModal=''">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -1776,7 +1776,7 @@
 
         <div class="modal-body">
 
-          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelModal !== ''">
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelModal=''">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -1808,7 +1808,7 @@
                    ng-model="channel.channelName"
                    data-rule-required="true" />
 
-            <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewChannelNameModal !== ''">
+            <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelNameModal !== ''">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelNameModal=''">
                 <span aria-hidden="true">&times;</span>
               </button>

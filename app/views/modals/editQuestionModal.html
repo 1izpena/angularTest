@@ -8,10 +8,10 @@
         <div class="form-group">
 	       <div class="form-group">
 				    <label class="control-label" for="title">Title</label>
-            <input class="form-control ng-pristine ng-valid ng-touched" type="text" name="title" ng-model="question.title" ng-required="true"  >
+            <input class="form-control ng-pristine ng-valid ng-touched" type="text" id="title" name="title" ng-model="question.title" ng-required="true"  >
 			   </div>
           <div class="form-group">
-            <label>Body</div>
+            <label>Body</label>
             <div text-angular ng-model="question.body"></div>
           </div>
 			<button type="submit" ng-click="editQuestion(question._id,question)" class="btn btn-primary">Send</button>
