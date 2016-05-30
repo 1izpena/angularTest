@@ -185,14 +185,16 @@ angular.module('myAppAngularMinApp')
           scrumMessageJSON.userstory.id !== undefined &&
           scrumMessageJSON.userstory.id !== ''){
 
-          header = "<p><strong> #" + num + " </strong>" +
-            "<a ng-click='viewUserstory(" + '"'+scrumMessageJSON.userstory.id+'"'+")'>"+scrumMessageJSON.subject+"</a> " +
+          header = "<p><a ng-click='viewUserstory(" + '"'+scrumMessageJSON.userstory.id+'"'+")'>#" + num + " "+subject+"</a> " +
             "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
 
 
         }
         else{
-          header = "<p><strong> #" + num + " </strong> subject </p>";
+          header = "<p><a>#" + num + " "+subject+"</a> " +
+            "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
+
+
 
         }
 
@@ -226,14 +228,14 @@ angular.module('myAppAngularMinApp')
           scrumMessageJSON.userstory.voters !== undefined &&
           scrumMessageJSON.userstory.voters !== '' ){
           if(scrumMessageJSON.userstory.voters.length){
-            params += "<p> Votes: "+scrumMessageJSON.userstory.voters.length+"</p>";
+            params += "<p class='scrum-msg-p'> Votes: "+scrumMessageJSON.userstory.voters.length+"</p>";
           }
           else{
-            params += "<p> Votes: 0</p>";
+            params += "<p class='scrum-msg-p'> Votes: 0</p>";
           }
         }
         else{
-          params += "<p> Votes: 0</p>";
+          params += "<p class='scrum-msg-p'> Votes: 0</p>";
         }
 
         /*podria poner en detalle, pero que se miren la descripcion, vagos */
@@ -247,7 +249,15 @@ angular.module('myAppAngularMinApp')
 
         }
 
-        params += "<p> Status: <span class='label label-info status' >New</span></p>";
+        if(scrumMessageJSON.userstory.description !== null &&
+          scrumMessageJSON.userstory.description !== undefined &&
+          scrumMessageJSON.userstory.description !== '' ){
+          params = params + "<p>Description: "+scrumMessageJSON.userstory.description+"</p>";
+
+
+        }
+
+        params += "<p class='scrum-msg-labels'> Status: <span class='label label-info status' >New</span></p>";
 
 
 
@@ -258,7 +268,7 @@ angular.module('myAppAngularMinApp')
           && scrumMessageJSON.userstory.tags !== ''){
           if(scrumMessageJSON.userstory.tags.length){
 
-            params = params + "<p> Tags: ";
+            params += "<p class='scrum-msg-labels'> Tags: ";
             for( var i = 0; i< scrumMessageJSON.userstory.tags.length; i++){
               params += "<span class='label label-info tags' >"+ scrumMessageJSON.userstory.tags[i] +"</span>";
             }
@@ -266,16 +276,37 @@ angular.module('myAppAngularMinApp')
           }
         }
 
+        /* team, client, blocked */
+        if(scrumMessageJSON.userstory.requirement !== undefined
+          && scrumMessageJSON.userstory.requirement !== null
+          && scrumMessageJSON.userstory.requirement !== ''){
 
-        if(scrumMessageJSON.userstory.description !== null &&
-          scrumMessageJSON.userstory.description !== undefined &&
-          scrumMessageJSON.userstory.description !== '' ){
-          params = params + "<p> <i>"+scrumMessageJSON.userstory.description+"</i></p>";
+          if(scrumMessageJSON.userstory.requirement.team == true
+            || scrumMessageJSON.userstory.requirement.client == true
+            || scrumMessageJSON.userstory.requirement.blocked == true) {
 
+            params += "<p>Type: ";
 
+            if(scrumMessageJSON.userstory.requirement.team == true) {
+              params += "<span class='label label-primary' >Team requirement</span>";
+
+            }
+            if(scrumMessageJSON.userstory.requirement.client == true) {
+              params += "<span class='label label-primary' >Client requirement</span>";
+            }
+            if(scrumMessageJSON.userstory.requirement.blocked == true) {
+              params += "<span class='label label-blocked' >Blocked</span>";
+            }
+
+            params += "</p>";
+
+          }
         }
 
-        /* faltan tags y requirement*/
+
+
+
+        /* faltan requirement*/
 
         body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'>"+ params +"</div>";
         return body;

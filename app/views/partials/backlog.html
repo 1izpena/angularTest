@@ -7,7 +7,7 @@
 
 <!-- no estaria mal saber cuantos estan new, cuantos in progress y cuantos closed dentro de cada sprint
 -->
-
+<div class="row row-all-content" ng-show="!item.viewinDetail" >
 <div class="row row-backlog-chart">
     <div class="panel panel-info" id="panel-backlog-chart">
 
@@ -205,12 +205,11 @@
                           <i class="fa fa-search"></i>
                         </button>
                     </span>
+
                     <span class="input-group-btn">
-                    <!--<button class="btn btn-secondary" type="button">Love it</button>-->
                       <oi-select
                         oi-options="item.name for item in comboOptions track by item.name"
                         ng-model="comboOptionsSelected">
-
                       </oi-select>
                     </span>
 
@@ -222,38 +221,35 @@
                     <input ng-show="comboOptionsSelected.num == 3" type="text" class="form-control" placeholder="Search" ng-model="search.tags"/>
 
 
-
-                    <!-- si hay mas de 1 seleccionado -->
-
-                    <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
-                      <button class="btn btn-warning" type="button" title="Move to sprint">
-                        <i class="fa fa-exchange"></i>
-                        Move to sprint
-                      </button>
-                    </span>
-                    <span ng-show="tableCells.selected.length == 1" class="input-group-btn">
-                      <button class="btn btn-info" type="button">
-                        <i class="fa fa-pencil"></i>
-                        Edit
-                      </button>
-                    </span>
-
-                    <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
-                      <button class="btn btn-danger" type="button" >
-                        <i class="fa fa-trash"></i>
-                        Delete
-                      </button>
-                    </span>
-
-
-
-                    <!-- si no hay ninguno seleccionado -->
+                    <!-- no hay seleccionados -->
                     <span ng-show="tableCells.selected.length == 0" class="input-group-btn">
+                      <div class="input-group-btn">
                       <button class="btn btn-success" type="button" data-toggle="modal" data-target="#newUserStoryModal">
                         <i class="fa fa-plus"></i>
                         Add a new userstory
                       </button>
+                        </div>
                     </span>
+
+
+                    <!-- si hay varios seleccionados -->
+                    <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
+                      <div class="input-group-btn">
+                        <button class="btn btn-warning" type="button">
+                          <i class="fa fa-exchange"></i>
+                          Move to sprint
+                        </button>
+                        <button ng-show="tableCells.selected.length == 1" class="btn btn-info" type="button">
+                          <i class="fa fa-pencil"></i>
+                          Edit
+                        </button>
+                        <button class="btn btn-danger" type="button">
+                          <i class="fa fa-trash"></i>
+                          Delete
+                        </button>
+                      </div>
+                    </span>
+
 
 
                   </div>
@@ -339,7 +335,8 @@
                 <tbody>
                 <tr ng-show="row.sprint == undefined "
                     ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse |filter:search"
-                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''">
+                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''"
+                    data-ng-click="viewDetailsUserstory($index, row)">
 
 
 
@@ -380,6 +377,227 @@
 
     </div> <!-- panel-info-->
   </div> <!-- end row--->
+
+</div>
+
+
+
+
+
+<!---------- new new new ---------------------------------------->
+
+
+
+<!-- vista en detalle -->
+<div class="row row-all-content" ng-show="item.viewinDetail">
+
+ <!-- <div class="row row-detail-userstory">-->
+    <div class="panel panel-info" id="panel-detail-userstory">
+
+
+      <!-- le hacemos flexbox y metemos colums -->
+      <div class="panel-body panel-body-detail-userstory" id="panel-body-detail-userstory">
+
+        <!-- esto sería la cabecera con votar, subject y puntos -->
+        <!-- tmbn flex pero de rows -->
+
+        <div class="summary-header-detail-userstory-parent">
+
+          <div class="summary-header-detail-userstory">
+
+            <div class="summary-detail-view3">
+              <span class="nextuserstory">
+                <i class="fa fa-plus">1</i>
+              </span>
+            </div>
+
+            <div class="summary-detail-view2">
+              <span class="subject">#1 añadir un userstory con scrum en el canal con scrum diemdo tu llepa</span>
+            </div>
+
+            <div class="summary-detail-view3">
+              <span class="nextuserstory">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </div>
+
+          </div><!-- end div summary-header-detail-userstory -->
+
+
+          <div class="summary-detail-body1">
+            <div class="created-by">
+              <p> Created by
+                <a ng-click=""> Amaia
+                </a>
+              </p>
+              <p> 26 Nov 2015 14:28</p>
+            </div>
+
+            <div>
+              <img
+                ng-src="http://www.gravatar.com/avatar/{{getHash('1izpena@mail.es')}}?s=50&d=identicon"
+                alt="User Avatar"
+                class="avatar" id="img-circle"/>
+            </div>
+
+            <div class="view-task-detail-userstory">
+
+              <button class="btn btn-default related-tasks" type="button">
+                Related tasks
+              </button>
+            </div>
+
+
+          </div>
+
+        </div> <!-- end div summary-header-detail-userstory-parent -->
+
+
+
+
+
+
+
+        <div class="summary-body-detail-userstory">
+          <!-- aqui metemos los datos y ademas metemos tags-->
+          <!-- aqui dentro hay que seguir haciendo columnas -->
+
+
+          <div class="summary-detail-body2">
+
+            <div class="form-group">
+
+              <div class="btn-group btn-group-justified">
+                <label>UX</label>
+                <label>Design</label>
+                <label>Back</label>
+                <label>Front</label>
+              </div>
+
+
+
+              <div class="btn-group btn-group-justified">
+
+                <button uib-popover-template="dynamicPopover.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default" id="userstoryUX"
+                        popover="Popover 1">
+                  {{userstory.point.ux}}
+                </button>
+
+                <button uib-popover-template="dynamicPopoverDes.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default" id="userstoryDes"
+                        popover="Popover 2">
+                  {{userstory.point.design}}
+                </button>
+
+                <button uib-popover-template="dynamicPopoverFront.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default" id="userstoryFront"
+                        popover="Popover 3">
+                  {{userstory.point.front}}
+                </button>
+
+                <button uib-popover-template="dynamicPopoverBack.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default" id="userstoryBack"
+                        popover="Popover 4">
+                  {{userstory.point.back}}
+                </button>
+
+              </div>
+
+
+
+
+              <br>
+              <label class="total-points">Total points: {{
+                parseFloat(userstory.point.ux) +
+                parseFloat(userstory.point.design) +
+                parseFloat(userstory.point.front) +
+                parseFloat(userstory.point.back) }}</label>
+
+
+            </div> <!-- end form-group -->
+
+
+          </div>
+
+          <div class="summary-detail-body3">
+            <div class="form-group">
+              <label for="userstoryTag"> Tags: </label>
+              <br>
+
+              <tags-input ng-model="userstory.tags" display-property="text"
+                          placeholder="Tag me.."
+                          replace-spaces-with-dashes="false">
+              </tags-input>
+            </div>
+          </div>
+
+          <div class="summary-detail-body4">
+              <div class="form-group">
+                <label for="userstoryDescr">Description:</label>
+                <textarea class="form-control"
+                          placeholder="Enter description to helps others better understand..."
+                          ng-model="userstory.description">
+                </textarea>
+              </div>
+          </div>
+
+
+          <div class="summary-detail-body5">
+            <div class="form-group requirements">
+
+              <div class="btn-group">
+                <label class="btn btn-primary" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
+                <label class="btn btn-primary" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
+                <label class="btn btn-warning" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Bloqued</label>
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+
+
+
+        </div>
+       <!-- <div class="tasks">
+          <!-- aqui metemos los datos y ademas metemos tags--
+
+
+
+        </div>
+-->
+
+
+
+
+
+      </div>  <!-- end panel body:: flexbox con columns, que en realidad son filas -->
+    </div>   <!-- end panel-info -->
+ <!-- </div>     <!-- end row:: row-detail-subject -->
+
+
+
+
+
+</div> <!--ng-show="item.viewinDetail" vista en detalle -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!--
@@ -528,7 +746,7 @@
 
           <div class="btn-group">
             <label class="btn btn-primary" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
-            <label class="btn btn-info" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
+            <label class="btn btn-primary" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
             <label class="btn btn-warning" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Bloqued</label>
           </div>
 

@@ -157,6 +157,8 @@ angular.module('myAppAngularMinApp')
         $scope.item = {};
         $scope.item.itemMenuScrumClicked = 1;
 
+        $scope.item.viewinDetail = false;
+
         /* si itemMenuScrumClicked no esta en timeline y llega sms */
         $scope.badge = {};
         $scope.badge.scrummenu = 0;
@@ -777,14 +779,18 @@ angular.module('myAppAngularMinApp')
       };
 
 
-      /*
-       $scope.rowCollectionUserStories = [
-       {votes: 1, subject: '#1 Enviar mensaje privado', status: 'Ready for test', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
-       {votes: 10, subject: '#2 Enviar mensaje privado2', status: 'New', points: 0, sprint: 'Sprint1', tags: ['tag1','tag2']},
+      /* viewdetails of userstory */
 
-       ];
+      /* variable nueva como la de item */
+      $scope.viewDetailsUserstory = function($index, row) {
+        console.log("esto vale row");
+        console.log(row);
+        console.log("esto vale $index");
+        console.log($index);
+        $scope.item.viewinDetail = true;
 
-       */
+      };
+
 
 
       $scope.createNewUserstory = function() {
