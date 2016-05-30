@@ -429,6 +429,7 @@ oi-select .select-search-list-item {
 
 
 
+
 /************************* new table *************************/
 
 
@@ -2739,6 +2740,10 @@ a:hover.classscrum span {
   border-left-color: lavender;
 }
 
+
+
+
+
 .chat li.left i
 {
 
@@ -2758,6 +2763,21 @@ a:hover.classscrum span {
 {
   background-color: rgb(121,134,203);
 }
+
+
+.chat li.left .metadatalinks .status{
+  background-color: #5bc0de;
+
+}
+
+
+.chat li.left .metadatalinks .tags{
+  margin-right: 0.4em;
+  /*margin-top:0.7em;*/
+
+}
+
+
 
 
 .chat li.left .metadatalinks p

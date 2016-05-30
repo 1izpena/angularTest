@@ -12,7 +12,9 @@ angular.module('myAppAngularMinApp')
       return {
 
         getUserstories: getUserstories,
-        createUserstory: createUserstory
+        createUserstory: createUserstory,
+        getSprints: getSprints,
+        getIssues: getIssues
 
 
       };
@@ -52,6 +54,7 @@ angular.module('myAppAngularMinApp')
 
         var userstoryTagsTemp = [];
 
+
         /* tags es 1 array con property text */
         /* hay que parsearlo para que sea 1 array de strings */
 
@@ -72,6 +75,59 @@ angular.module('myAppAngularMinApp')
           url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories',
           headers: { 'x-access-token': $localStorage.token },
           data: userstory
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
+
+
+
+
+      function getSprints(groupid, channelid) {
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        $http({
+          method: 'get',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/sprints',
+          headers: { 'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded' }
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+        return promise;
+
+      };
+
+
+      function getIssues(groupid, channelid) {
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        $http({
+          method: 'get',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/issues',
+          headers: { 'x-access-token': $localStorage.token, 'Content-Type': 'application/x-www-form-urlencoded' }
 
         }).then(
           function(response) {

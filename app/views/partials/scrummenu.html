@@ -12,7 +12,7 @@
         title="Backlog">-->
 
 <button class="btn" id="backlog" ng-class="item.itemMenuScrumClicked == 2 ?'btn-scrum-menu-active' : 'btn-scrum-menu-normal'"
-        ng-click="changeViewToUserstory()"
+        ng-click="item.itemMenuScrumClicked = 2; badge.scrummenu = 0"
         title="Backlog">
 
   <span class="fa fa-tasks fa-lg"></span></button> <!-- userstories, backlog -->

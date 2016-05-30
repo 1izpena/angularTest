@@ -166,6 +166,8 @@ angular.module('myAppAngularMinApp')
         $scope.showgraph = {};
         $scope.showgraph.show = false;
         $scope.rowCollectionUserStories = [];
+        $scope.rowCollectionSprints = [];
+        $scope.rowCollectionIssues = [];
 
 
         /* inicializar busquedas en tabla */
@@ -236,6 +238,11 @@ angular.module('myAppAngularMinApp')
 
 
       /* ***************** end init vars ******************** */
+
+
+
+
+
 
 
 
@@ -796,7 +803,6 @@ angular.module('myAppAngularMinApp')
               console.log("esto vale res de createuserstories");
               console.log(res);
 
-              $scope.rowCollectionUserStories.push(res.data);
               $("#newUserStoryModal").modal("hide");
 
 
@@ -810,31 +816,18 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      /* hacemos funciones que recojan los userstories, issues y sprints
+       * cuando seleccionamos 1 canal que sea de tipo scrum */
 
 
+      function getUserstories () {
 
-      /* en partials/scrummenu */
-      $scope.changeViewToUserstory = function(){
-        $scope.item.itemMenuScrumClicked = 2;
-
-        /* recogemos los userstories :: recargar array :: rowCollectionUserStories */
         ScrumService.getUserstories($scope.tagGroup.id, $scope.tagChannel.id)
           .then(function (res) {
+
+
             console.log("esto vale res de getuserstories");
             console.log(res);
-
-
-            /*
-            ahora es 1 array de voters con ids
-            {votes: 1,
-            xx:: subject: '#1 Enviar mensaje privado',
-            ::status: 'Ready for test',
-            points: 0, /*ahora point con ux,de...*
-            xx tags: ['tag1','tag2']},
-             */
-
-
-
 
             $scope.rowCollectionUserStories = res.data;
 
@@ -843,9 +836,58 @@ angular.module('myAppAngularMinApp')
             console.log("esto vale err de getuserstories");
             console.log(err);
             $scope.modalsError.messageNewUserstoryModal = err.data.message;
-        });
+          });
+
 
       };
+
+
+      /* los recogemos pero no hacemos nada */
+      function getSprints () {
+        ScrumService.getSprints($scope.tagGroup.id, $scope.tagChannel.id)
+          .then(function (res) {
+
+
+
+            console.log("esto vale res de getsprints");
+            console.log(res);
+
+            $scope.rowCollectionSprints = res.data;
+
+
+          }, function (err) {
+            console.log("esto vale err de getsprints");
+            console.log(err);
+            $scope.modalsError.messageNewUserstoryModal = err.data.message;
+          });
+
+
+      };
+
+      /* los recogemos pero no hacemos nada */
+      function getIssues () {
+        ScrumService.getIssues($scope.tagGroup.id, $scope.tagChannel.id)
+          .then(function (res) {
+
+
+            /* hay que meterlo en 1 array */
+            console.log("esto vale res de getissues");
+            console.log(res);
+
+            $scope.rowCollectionIssues = res.data;
+
+
+          }, function (err) {
+            console.log("esto vale err de getissues");
+            console.log(err);
+            $scope.modalsError.messageNewUserstoryModal = err.data.message;
+          });
+
+
+      };
+
+
+
 
 
 
@@ -2141,8 +2183,23 @@ angular.module('myAppAngularMinApp')
             if(result.data[i].messageType == 'URL'){
               result.data[i].visible = 0;
             }
+
+            if($scope.tagChannel.scrum){
+              result.data[i].visible = 0;
+
+            }
+
+
+
+
+
+
+
           }
           $scope.listaMensajes = result.data;
+
+          console.log("esto vale $scope.listaMensajes");
+          console.log($scope.listaMensajes);
 
 
 
@@ -2327,6 +2384,23 @@ angular.module('myAppAngularMinApp')
         console.log($scope.listaMensajes[$index].visible );
 
       };
+
+
+      $scope.changeVisibleDetails = function ($index) {
+        if($scope.listaMensajes[$index].visible == 0){
+
+          $scope.listaMensajes[$index].visible = 1;
+
+
+
+        }
+        else{
+          $scope.listaMensajes[$index].visible = 0;
+
+        }
+        console.log($scope.listaMensajes[$index].visible );
+
+      }
 
 
 
@@ -3035,10 +3109,11 @@ angular.module('myAppAngularMinApp')
         /* ponemos a cursiva el canal seleccionado */
         changeItalicChannelName(type);
 
-        /* miramos el tagChannel anterior, si es scrum == true, inicializamos variables */
+        /* miramos el tagChannel ANTERIOR, si es scrum == true, inicializamos variables */
         if($scope.tagChannel !== undefined && $scope.tagChannel !== null && $scope.tagChannel !== ''){
           if($scope.tagChannel.scrum){
             initVarsScrumChannel();
+
           }
         }
 
@@ -3060,12 +3135,24 @@ angular.module('myAppAngularMinApp')
         $scope.getMessages(channel);
 
 
+        /* si el canal actual es scrum recogemos userstories, sprints e issues */
+        if($scope.tagChannel !== undefined && $scope.tagChannel !== null && $scope.tagChannel !== ''){
+          if($scope.tagChannel.scrum){
+            getUserstories();
+            getSprints();
+            getIssues();
+          }
+        }
+
+
         /* Emitimos evento de selecion de canal para recibir nuevos mensajes */
         console.log("ha llamado disconnect de channel");
         Socket.emit('selectChannel', { 'channelid': channel.id , 'userid': $localStorage.id} );
 
 
         updateAllNotificationsWithSelectChannel(channel, type);
+
+
 
 
 
@@ -3172,7 +3259,9 @@ angular.module('myAppAngularMinApp')
         //console.log($scope.listaMensajes[$index].text);
         if ($scope.listaMensajes[$index].user.mail == INTERNAL_USER
             && $scope.listaMensajes[$index].messageType == 'TEXT'
-            /*&& $scope.listaMensajes[$index].serviceType == 'GITHUB'*/) {
+            && $scope.listaMensajes[$index].serviceType == 'GITHUB') {
+
+          /* esto de momento para hacer bien los parseos */
 
 
           /* lo de arriba descomentar cuando la bd este bien */
@@ -3189,7 +3278,7 @@ angular.module('myAppAngularMinApp')
         && $scope.listaMensajes[$index].messageType == 'TEXT'
         && $scope.listaMensajes[$index].serviceType == 'SCRUM'){
 
-        console.log("esto vale github mensaje sin parsear");
+        console.log("esto vale scrum mensaje sin parsear");
         console.log($scope.listaMensajes[$index].text);
         return true;
 
@@ -3260,7 +3349,7 @@ angular.module('myAppAngularMinApp')
 
 
       /********************* new **************************/
-      $scope.getScrumMessage = function ($index) {
+      $scope.getScrumMessage = function ($index,msg) {
 
 
         /* hay que mirar si se convierte bien en JSON y podemos coger cosas */
@@ -3268,28 +3357,36 @@ angular.module('myAppAngularMinApp')
         var scrumMessageString = $scope.listaMensajes[$index].text;
 
         console.log("ScrumMessageString");
-         console.log(ScrumMessageString);
+        console.log(scrumMessageString);
 
         if(scrumMessageString !== null && scrumMessageString !== undefined && scrumMessageString !== ''){
           var scrumMessageMiddle = JSON.parse(scrumMessageString);
 
+          /* esta vez con esto funciona */
           console.log("scrumMessageMiddle");
-           console.log(scrumMessageMiddle);
+          console.log(scrumMessageMiddle);
 
 
-          var scrumMessageJSON = JSON.parse(scrumMessageMiddle);
+          /*var scrumMessageJSON = JSON.parse(scrumMessageMiddle);
           //console.log("githubMessageJSON");
           console.log("scrumMessageJSON");
-           console.log(scrumMessageJSON);
+           console.log(scrumMessageJSON);*/
 
 
 
           var messageText = '';
 
+          console.log("******************************");
+          console.log("******************************");
+          console.log("estovale msg en getscrum controller");
+          console.log(msg);
+          console.log("******************************");
+          console.log("******************************");
+
 
 
           /* llamamos al servicio que parsee */
-          messageText = ScrumParseService.parseScrumEvents(githubMessageJSON);
+          messageText = ScrumParseService.parseScrumEvents(scrumMessageMiddle, $index, msg);
 
 
         }
@@ -3298,6 +3395,7 @@ angular.module('myAppAngularMinApp')
 
 
         }
+        console.log(messageText);
 
 
         return messageText;
@@ -3666,7 +3764,7 @@ angular.module('myAppAngularMinApp')
         console.log(data);
 
         /* backlog userstories, esto lo asignariamos abajo */
-        $scope.rowCollectionUserStories.push(data);
+        $scope.rowCollectionUserStories.push(data.userstory);
         $scope.$apply();
       });
 
@@ -3687,8 +3785,10 @@ angular.module('myAppAngularMinApp')
        /* puede que este en el canal pero no mirando los mensajes, queremos ponerle 1 badge */
 
 
-     console.log("newMessage from server: " + data.groupid + ', ' + data.message.id);
-     console.log(data);
+     console.log("newMessage from server: " + data.message.id);
+     console.log(data.message.text);
+
+
 
      /* Si es el canal actual, añadimos mensaje a la listaMensaje
      y sino esta en la ventana (window de la app, le sacamos 1 notificacion
@@ -3697,11 +3797,22 @@ angular.module('myAppAngularMinApp')
      if (data.message.channel.id == $scope.tagChannel.id) {
 
        /* mirar que la opcion sea distinta de 1 poner badge */
-       if($scope.tagChannel.scrum && $scope.item.itemMenuScrumClicked > 1){
-         $scope.badge.scrummenu = $scope.badge.scrummenu + 1;
+       if($scope.tagChannel.scrum) {
 
+         data.message.visible = 0;
+         if( $scope.item.itemMenuScrumClicked > 1) {
 
+           $scope.badge.scrummenu = $scope.badge.scrummenu + 1;
+         }
        }
+
+
+
+
+
+
+
+
 
 
        /* mirar si es 1 url y hasta que no este ready no pintar */
@@ -3764,6 +3875,8 @@ angular.module('myAppAngularMinApp')
 
        /* mostramos notificaciones cuando no esta en la ventana */
        if($scope.window_focus !== true){
+
+         /* parseos cuando son objetos los mensajes, falta x hacer */
 
          var datatemp = JSON.parse(JSON.stringify(data));
 
@@ -4523,6 +4636,11 @@ angular.module('myAppAngularMinApp')
          * no hacemos nada
          * */
 
+        console.log("esto no funciona??");
+        console.log("data.groupid");
+        console.log(data.groupid);
+        console.log("data.channelid");
+        console.log($scope.tagChannel.id);
         if(data.groupid === $scope.tagGroup.id && data.channelid === $scope.tagChannel.id){
           console.log("No hay que actualizar nada");
 

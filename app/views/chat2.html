@@ -765,14 +765,25 @@
 
 
                       <!--- unir esto con lo de abajo -->
+<!--
+                      <p ng-if="isGithubMessage($index)" class="text-left">
+                        <span ng-show="getGithubMessage($index)!== ''" bind-html-compile="getGithubMessage($index)"></span>
+                      </p>
+
+
+                      <p ng-if="isScrumMessage($index)" class="text-left">
+                        <span ng-show="getScrumMessage($index)!== ''" bind-html-compile="getScrumMessage($index)"></span>
+                      </p>
+                      -->
+
 
                       <p ng-if="isGithubMessage($index)" class="text-left">
                         <span ng-show="getGithubMessage($index)!== ''" bind-html-compile="getGithubMessage($index)"></span>
                       </p>
 
 
-                      <p ng-if="isScrumMessage($index) && getScrumMessage($index)!== ''" class="text-left">
-                        <span ng-show="getScrumMessage($index)!== ''" bind-html-compile="getScrumMessage($index)"></span>
+                      <p ng-if="isScrumMessage($index)" class="text-left">
+                        <span ng-show="getScrumMessage($index, msg)!== ''" bind-html-compile="getScrumMessage($index, msg)"></span>
                       </p>
 
 

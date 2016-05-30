@@ -17,7 +17,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-    function parseUserstory(scrumMessageJSON) {
+    function parseUserstory(scrumMessageJSON, $index, msg) {
 
       /* de momento se adecua a la
        action      : 'created',*/
@@ -47,11 +47,21 @@ angular.module('myAppAngularMinApp')
       * */
 
 
+
+
       var messageText = '';
       var projectParse = '';
       var actionParse = '';
       var userstoryHeaderParse = '';
       var userstoryBodyParse = '';
+
+      console.log("esto vale en el parser scrumMessageJSON ");
+      console.log(scrumMessageJSON);
+      console.log("*****************************");
+      console.log(scrumMessageJSON.sender);
+      console.log("*****************************");
+
+      console.log(scrumMessageJSON.userstory);
 
       if(scrumMessageJSON.sender !== null &&
         scrumMessageJSON.sender !== undefined &&
@@ -60,10 +70,21 @@ angular.module('myAppAngularMinApp')
         scrumMessageJSON.userstory !== undefined &&
         scrumMessageJSON.userstory !== ''){
 
+
+
+        console.log("******************************");
+        console.log("******************************");
+        console.log("estovale msg en getscrum services parseuserstory");
+        console.log(msg);
+        console.log("******************************");
+        console.log("******************************");
+
+
+
         projectParse = getProjectFields();
         actionParse = getActionFields(scrumMessageJSON);
-        userstoryHeaderParse = getHeaderFields(scrumMessageJSON);
-        userstoryBodyParse = getBodyFields (scrumMessageJSON);
+        userstoryHeaderParse = getHeaderFields(scrumMessageJSON, $index, msg);
+        userstoryBodyParse = getBodyFields (scrumMessageJSON, $index, msg);
 
 
 
@@ -97,6 +118,11 @@ angular.module('myAppAngularMinApp')
         var senderlink = "";
         var action = scrumMessageJSON.action;
 
+        console.log("esto vale userstory en getAction fields");
+        console.log(scrumMessageJSON.sender.username);
+        console.log(scrumMessageJSON.sender.id);
+
+
         if(action == null ||
           action == undefined ||
           action == ''){
@@ -110,8 +136,8 @@ angular.module('myAppAngularMinApp')
           if(scrumMessageJSON.sender.id !== null &&
             scrumMessageJSON.sender.id !== undefined &&
             scrumMessageJSON.sender.id !== ''){
-            senderlink = " by <a ng-click='"+ viewUserProfile(scrumMessageJSON.sender.id) +
-              "'> scrumMessageJSON.sender.username </a> "
+
+            senderlink = "by <a ng-click='viewUserProfile(" + '"'+scrumMessageJSON.sender.id+'"'+")'>"+scrumMessageJSON.sender.username+"</a>";
 
           }
           else{
@@ -119,14 +145,14 @@ angular.module('myAppAngularMinApp')
           }
 
         }
-        actionfields = "<p> Userstory " + action + " " + senderlink + " </p>"
+        actionfields = "<p> Userstory " + action + " " + senderlink + ": </p>"
 
         return actionfields;
 
       };
 
 
-      function getHeaderFields(){
+      function getHeaderFields(scrumMessageJSON, $index,msg){
         /* (3) #num [Subject] con link  */
 
 
@@ -134,17 +160,21 @@ angular.module('myAppAngularMinApp')
         var num = 0;
         var subject = "";
 
-        if(scrumMessageJSON.userstory.num == null ||
-          scrumMessageJSON.userstory.num == undefined ||
-          scrumMessageJSON.userstory.num == '' ){
+        console.log("esto vale num en getheaders field con num");
+        console.log(scrumMessageJSON.userstory.num);
+
+        if(scrumMessageJSON.userstory.num !== null &&
+          scrumMessageJSON.userstory.num !== undefined &&
+          scrumMessageJSON.userstory.num !== '' ){
 
           num = scrumMessageJSON.userstory.num;
 
         }
 
-        if(scrumMessageJSON.userstory.subject == null ||
-          scrumMessageJSON.userstory.subject == undefined ||
-          scrumMessageJSON.userstory.subject == '' ){
+
+        if(scrumMessageJSON.userstory.subject !== null &&
+          scrumMessageJSON.userstory.subject !== undefined &&
+          scrumMessageJSON.userstory.subject !== '' ){
 
           subject = scrumMessageJSON.userstory.subject;
 
@@ -156,12 +186,19 @@ angular.module('myAppAngularMinApp')
           scrumMessageJSON.userstory.id !== ''){
 
           header = "<p><strong> #" + num + " </strong>" +
-            "<a ng-click='"+ viewUserstory(scrumMessageJSON.userstory.id) +"'>subject</a> </p>";
+            "<a ng-click='viewUserstory(" + '"'+scrumMessageJSON.userstory.id+'"'+")'>"+scrumMessageJSON.subject+"</a> " +
+            "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
+
+
         }
         else{
           header = "<p><strong> #" + num + " </strong> subject </p>";
 
         }
+
+
+
+        /* <i ng-if="msg.messageType=='URL'" ng-click="changeVisible(msg,$index)" class="fa fa-caret-square-o-down fa-lg ng-scope" role="button" tabindex="0"></i>*/
 
         return header;
 
@@ -177,104 +214,57 @@ angular.module('myAppAngularMinApp')
 
 
 
-      function getBodyFields(){
-        /* (3) <metadatalinks>
-          *  Votes :
-           * Total points :
-           *
-           * Description : xxx, si tiene "<div class='metadatalinks'>";
-           * */
+      function getBodyFields(scrumMessageJSON, $index, msg){
 
         var params = "";
         var body = "";
+        var totalPoints = 0;
 
-        var pux = 0;
-        var pdes = 0;
-        var pfront = 0;
-        var pback= 0;
-        var totalpoints = 0;
 
-        if(scrumMessageJSON.userstory.votes !== null &&
-          scrumMessageJSON.userstory.votes !== undefined &&
-          scrumMessageJSON.userstory.votes !== '' ){
 
-          params = "<p> Votes: "+scrumMessageJSON.userstory.votes+"</p>";
+        if(scrumMessageJSON.userstory.voters !== null &&
+          scrumMessageJSON.userstory.voters !== undefined &&
+          scrumMessageJSON.userstory.voters !== '' ){
+          if(scrumMessageJSON.userstory.voters.length){
+            params += "<p> Votes: "+scrumMessageJSON.userstory.voters.length+"</p>";
+          }
+          else{
+            params += "<p> Votes: 0</p>";
+          }
+        }
+        else{
+          params += "<p> Votes: 0</p>";
+        }
+
+        /*podria poner en detalle, pero que se miren la descripcion, vagos */
+
+        if(scrumMessageJSON.userstory.totalPoints !== null &&
+          scrumMessageJSON.userstory.totalPoints !== undefined &&
+          scrumMessageJSON.userstory.totalPoints !== '' ){
+
+          totalPoints = scrumMessageJSON.userstory.totalPoints;
+          params += "<p> Points: "+totalPoints+"</p>";
 
         }
 
-        if(scrumMessageJSON.userstory.points !== null &&
-          scrumMessageJSON.userstory.points !== undefined &&
-          scrumMessageJSON.userstory.points !== '' ){
-
-          if(scrumMessageJSON.userstory.points.ux !== null &&
-            scrumMessageJSON.userstory.points.ux !== undefined &&
-            scrumMessageJSON.userstory.points.ux !== '' ){
-            pux = parseFloat(scrumMessageJSON.userstory.points.ux);
+        params += "<p> Status: <span class='label label-info status' >New</span></p>";
 
 
+
+
+
+        if(scrumMessageJSON.userstory.tags !== undefined
+          && scrumMessageJSON.userstory.tags !== null
+          && scrumMessageJSON.userstory.tags !== ''){
+          if(scrumMessageJSON.userstory.tags.length){
+
+            params = params + "<p> Tags: ";
+            for( var i = 0; i< scrumMessageJSON.userstory.tags.length; i++){
+              params += "<span class='label label-info tags' >"+ scrumMessageJSON.userstory.tags[i] +"</span>";
+            }
+            params += "</p>";
           }
-          if(scrumMessageJSON.userstory.points.design !== null &&
-            scrumMessageJSON.userstory.points.design !== undefined &&
-            scrumMessageJSON.userstory.points.design !== '' ){
-            pdes = parseFloat(scrumMessageJSON.userstory.points.design);
-
-
-          }
-
-          if(scrumMessageJSON.userstory.points.front !== null &&
-            scrumMessageJSON.userstory.points.front !== undefined &&
-            scrumMessageJSON.userstory.points.front !== '' ){
-            pfront = parseFloat(scrumMessageJSON.userstory.points.front);
-
-
-          }
-          if(scrumMessageJSON.userstory.points.back !== null &&
-            scrumMessageJSON.userstory.points.back !== undefined &&
-            scrumMessageJSON.userstory.points.back !== '' ){
-            pback = parseFloat(scrumMessageJSON.userstory.points.back);
-
-
-          }
-          totalpoints = pux + pdes + pfront+ pback;
-
-          params = params + "<p> Points: "+totalpoints+"</p>";
-
         }
-        if(scrumMessageJSON.status !== null &&
-          scrumMessageJSON.status !== undefined &&
-          scrumMessageJSON.status !== '' ){
-
-
-
-
-          /* pondria 1 cuadradito de color:: verde new */
-          /* NEW, READY, INPROGRESS, READYTEST, DONE */
-          var btnclass= "btn-default";
-
-          if(scrumMessageJSON.status == "New"){
-            btnclass= "btn-primary";
-
-          }
-
-          else if (scrumMessageJSON.status == "In progress"){
-            btnclass= "btn-info";
-
-          }
-          else if (scrumMessageJSON.status == "Ready for test"){
-            btnclass= "btn-warning";
-
-          }
-          else if (scrumMessageJSON.status == "Done"){
-            btnclass= "btn-success";
-
-          }
-
-          params = params + "<p><button type='button' class='btn"+ btnclass +"'>"+ scrumMessageJSON.status +"</button></p>";
-
-
-
-        }
-
 
 
         if(scrumMessageJSON.userstory.description !== null &&
@@ -285,7 +275,9 @@ angular.module('myAppAngularMinApp')
 
         }
 
+        /* faltan tags y requirement*/
 
+        body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'>"+ params +"</div>";
         return body;
 
 
@@ -294,20 +286,32 @@ angular.module('myAppAngularMinApp')
 
 
 
-    function parseScrumEvents(scrumMessageJSON) {
+    function parseScrumEvents(scrumMessageJSON, $index, msg) {
 
       var messageText = '';
+
+
+      console.log("******************************");
+      console.log("******************************");
+      console.log("estovale msg en getscrum services");
+      console.log(msg);
+      console.log("******************************");
+      console.log("******************************");
+
+      console.log("scrumMessageJSON");
+      console.log(scrumMessageJSON);
 
       if(scrumMessageJSON !== null &&
         scrumMessageJSON !== undefined &&
         scrumMessageJSON !== ''){
+
         var messageEventType = scrumMessageJSON.event;
 
 
         if(messageEventType == "userstory"){
 
           /* llamamos al parseo de eventos push */
-          messageText = parseUserstory(scrumMessageJSON);
+          messageText = parseUserstory(scrumMessageJSON, $index, msg);
 
 
         }
