@@ -335,8 +335,7 @@
                 <tbody>
                 <tr ng-show="row.sprint == undefined "
                     ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse |filter:search"
-                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''"
-                    data-ng-click="viewDetailsUserstory($index, row)">
+                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''">
 
 
 
@@ -349,11 +348,11 @@
                   </td>
 
 
-                  <td class="table-cell05">{{row.voters.length}}</td>
-                  <td class="table-cell23">#{{row.num}} {{row.subject}}</td>
-                  <td class="table-cell1">{{row.status}}</td>
-                  <td class="table-cell06">{{row.totalPoints}}</td>
-                  <td class="table-cell1">
+                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell05">{{row.voters.length}}</td>
+                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell23">#{{row.num}} {{row.subject}}</td>
+                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell1">{{row.status}}</td>
+                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell06">{{row.totalPoints}}</td>
+                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell1">
                     <span class="label label-info" ng-repeat="tag in row.tags">{{tag}}</span><br ng-repeat="tag in row.tags">
                   </td>
 
@@ -390,10 +389,7 @@
 
 <!-- vista en detalle -->
 <div class="row row-all-content" ng-show="item.viewinDetail">
-
- <!-- <div class="row row-detail-userstory">-->
     <div class="panel panel-info" id="panel-detail-userstory">
-
 
       <!-- le hacemos flexbox y metemos colums -->
       <div class="panel-body panel-body-detail-userstory" id="panel-body-detail-userstory">
@@ -405,19 +401,30 @@
 
           <div class="summary-header-detail-userstory">
 
-            <div class="summary-detail-view3">
-              <span class="nextuserstory">
-                <i class="fa fa-plus">1</i>
+            <div class="summary-detail-view">
+
+              <span class="votes">{{tagUserstory.voters.length}}
               </span>
+              <i ng-click="editVoteUserstory(0)" ng-show="!tagUserstoryTemp.disableVote" class="fa fa-plus"></i>
+              <i ng-click="editVoteUserstory(1)" ng-show="tagUserstoryTemp.disableVote" class="fa fa-minus"></i>
+
+            </div>
+
+            <div class="summary-detail-view1">
+              <span class="subject">#{{tagUserstory.num}}</span>
+
             </div>
 
             <div class="summary-detail-view2">
-              <span class="subject">#1 añadir un userstory con scrum en el canal con scrum diemdo tu llepa</span>
+              <!--<span class="subject">Añadir un userstory con scrum en el canal con scrum diemdo tu llepa</span>-->
+              <span class="subject" editable-text="tagUserstory.subject" e-required onbeforesave="editSubjectUserstory($data, tagUserstory)">
+                                  {{ tagUserstory.subject || 'empty' }}
+                                     </span>
             </div>
 
             <div class="summary-detail-view3">
               <span class="nextuserstory">
-                <i class="fa fa-angle-right"></i>
+                <i class="fa fa-angle-right fa-lg"></i>
               </span>
             </div>
 
@@ -427,15 +434,15 @@
           <div class="summary-detail-body1">
             <div class="created-by">
               <p> Created by
-                <a ng-click=""> Amaia
+                <a ng-click=""> {{tagUserstory.createdby.username}}
                 </a>
               </p>
-              <p> 26 Nov 2015 14:28</p>
+              <p> {{tagUserstory.datetime | date:'medium'}}</p>
             </div>
 
             <div>
               <img
-                ng-src="http://www.gravatar.com/avatar/{{getHash('1izpena@mail.es')}}?s=50&d=identicon"
+                ng-src="http://www.gravatar.com/avatar/{{getHash(tagUserstory.createdby.mail)}}?s=50&d=identicon"
                 alt="User Avatar"
                 class="avatar" id="img-circle"/>
             </div>
@@ -444,6 +451,7 @@
 
               <button class="btn btn-default related-tasks" type="button">
                 Related tasks
+                <span class="glyphicon glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
               </button>
             </div>
 
@@ -462,9 +470,7 @@
           <!-- aqui metemos los datos y ademas metemos tags-->
           <!-- aqui dentro hay que seguir haciendo columnas -->
 
-
           <div class="summary-detail-body2">
-
             <div class="form-group">
 
               <div class="btn-group btn-group-justified">
@@ -475,33 +481,30 @@
               </div>
 
 
-
               <div class="btn-group btn-group-justified">
-
-                <button uib-popover-template="dynamicPopover.templateUrl" popover-placement="bottom"
-                        type="button" class="btn btn-default" id="userstoryUX"
+                <button uib-popover-template="dynamicPopoverEdit.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default"
                         popover="Popover 1">
-                  {{userstory.point.ux}}
+                  {{tagUserstory.point.ux}}
                 </button>
 
-                <button uib-popover-template="dynamicPopoverDes.templateUrl" popover-placement="bottom"
-                        type="button" class="btn btn-default" id="userstoryDes"
+                <button uib-popover-template="dynamicPopoverDesEdit.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default"
                         popover="Popover 2">
-                  {{userstory.point.design}}
+                  {{tagUserstory.point.design}}
                 </button>
 
-                <button uib-popover-template="dynamicPopoverFront.templateUrl" popover-placement="bottom"
-                        type="button" class="btn btn-default" id="userstoryFront"
+                <button uib-popover-template="dynamicPopoverFrontEdit.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default"
                         popover="Popover 3">
-                  {{userstory.point.front}}
+                  {{tagUserstory.point.front}}
                 </button>
 
-                <button uib-popover-template="dynamicPopoverBack.templateUrl" popover-placement="bottom"
-                        type="button" class="btn btn-default" id="userstoryBack"
+                <button uib-popover-template="dynamicPopoverBackEdit.templateUrl" popover-placement="bottom"
+                        type="button" class="btn btn-default"
                         popover="Popover 4">
-                  {{userstory.point.back}}
+                  {{tagUserstory.point.back}}
                 </button>
-
               </div>
 
 
@@ -509,10 +512,10 @@
 
               <br>
               <label class="total-points">Total points: {{
-                parseFloat(userstory.point.ux) +
-                parseFloat(userstory.point.design) +
-                parseFloat(userstory.point.front) +
-                parseFloat(userstory.point.back) }}</label>
+                parseFloat(tagUserstory.point.ux) +
+                parseFloat(tagUserstory.point.design) +
+                parseFloat(tagUserstory.point.front) +
+                parseFloat(tagUserstory.point.back) }}</label>
 
 
             </div> <!-- end form-group -->
@@ -525,9 +528,11 @@
               <label for="userstoryTag"> Tags: </label>
               <br>
 
-              <tags-input ng-model="userstory.tags" display-property="text"
+              <tags-input ng-model="tagUserstoryTemp.tags" display-property="text"
                           placeholder="Tag me.."
-                          replace-spaces-with-dashes="false">
+                          replace-spaces-with-dashes="false"
+                          on-tag-added="onAddedTag($tag)"
+                          on-tag-removed="onRemovedTag($tag)">
               </tags-input>
             </div>
           </div>
@@ -535,10 +540,12 @@
           <div class="summary-detail-body4">
               <div class="form-group">
                 <label for="userstoryDescr">Description:</label>
-                <textarea class="form-control"
-                          placeholder="Enter description to helps others better understand..."
-                          ng-model="userstory.description">
-                </textarea>
+                <p editable-textarea="tagUserstory.description"
+                   e-required
+                   onbeforesave="editDescriptionUserstory($data, tagUserstory)">
+                  {{ tagUserstory.description || 'Enter description to helps others better understand...' }}
+
+                </p>
               </div>
           </div>
 
@@ -547,9 +554,9 @@
             <div class="form-group requirements">
 
               <div class="btn-group">
-                <label class="btn btn-primary" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
-                <label class="btn btn-primary" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
-                <label class="btn btn-warning" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Bloqued</label>
+                <label type='button' ng-click="editRequirementUserstory(0)" class="btn btn-default" ng-model="tagUserstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
+                <label type='button' ng-click="editRequirementUserstory(1)" class="btn btn-default" ng-model="tagUserstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
+                <label type='button' ng-click="editRequirementUserstory(2)" class="btn btn-default" ng-model="tagUserstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
               </div>
 
             </div>
@@ -745,9 +752,9 @@
         <div class="form-group requirements">
 
           <div class="btn-group">
-            <label class="btn btn-primary" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
-            <label class="btn btn-primary" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
-            <label class="btn btn-warning" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Bloqued</label>
+            <label class="btn btn-default" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
+            <label class="btn btn-default" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
+            <label class="btn btn-default" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
           </div>
 
         </div>
@@ -772,6 +779,177 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- --------------------- notification error modal -----------------------  --->
+
+<!--
+$scope.modalsError.messageErrorUserstory = '';
+
+<div id="errorUserStoryModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-md">
+    <!-- Modal content--
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initErrorUserstoryModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">New User Story</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryModal !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryModal =''">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{modalsError.messageNewUserstoryModal}}
+
+        </div>
+
+
+
+
+
+
+        <!-- subject --
+        <div class="form-group">
+          <label for="userstorySubject">Subject:</label>
+          <input type="text" class="form-control" name="userstorySubjectTxt"
+                 id="userstorySubject" placeholder="Enter Userstory Subject..."
+                 ng-model="userstory.subject">
+
+          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryRequiredSubModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryRequiredSubModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{modalsError.messageNewUserstoryRequiredSubModal}}
+
+          </div>
+
+        </div>
+
+
+
+        <!-- points --
+        <div class="form-group">
+
+          <div class="btn-group btn-group-justified">
+            <label>UX</label>
+            <label>Design</label>
+            <label>Back</label>
+            <label>Front</label>
+          </div>
+
+
+
+          <div class="btn-group btn-group-justified">
+
+            <button uib-popover-template="dynamicPopover.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryUX"
+                    popover="Popover 1">
+              {{userstory.point.ux}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverDes.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryDes"
+                    popover="Popover 2">
+              {{userstory.point.design}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverFront.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryFront"
+                    popover="Popover 3">
+              {{userstory.point.front}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverBack.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryBack"
+                    popover="Popover 4">
+              {{userstory.point.back}}
+            </button>
+
+          </div>
+
+
+
+
+          <br>
+          <label class="total-points">Total points: {{
+            parseFloat(userstory.point.ux) +
+            parseFloat(userstory.point.design) +
+            parseFloat(userstory.point.front) +
+            parseFloat(userstory.point.back) }}</label>
+
+
+        </div> <!-- end form-group -->
+
+
+
+
+        <!-- tags (separar con tabulador) --
+        <div class="form-group">
+          <label for="userstoryTag"> Tags: </label>
+          <br>
+
+          <tags-input ng-model="userstory.tags" display-property="text"
+                      placeholder="Tag me.."
+                      replace-spaces-with-dashes="false"
+                      id="userstoryTag">
+          </tags-input>
+        </div>
+
+
+
+        <!-- descripcion --
+        <div class="form-group">
+          <label for="userstoryDescr">Description:</label>
+          <textarea class="form-control" id="userstoryDescr"
+                    placeholder="Enter description to helps others better understand..."
+                    ng-model="userstory.description">
+          </textarea>
+        </div>
+
+
+        <!-- requirement:: checkbox type requirement--
+        <div class="form-group requirements">
+
+          <div class="btn-group">
+            <label class="btn btn-default" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
+            <label class="btn btn-default" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
+            <label class="btn btn-default" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
+          </div>
+
+        </div>
+
+
+
+        <!-- falta votes ?--
+
+      </div> <!-- end modal body --
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewUserstory()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables --
+        <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="initVarsNewUserstoryModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+-->
 
 
 

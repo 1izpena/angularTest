@@ -5,10 +5,12 @@ angular.module('myAppAngularMinApp')
     'LoginService', '$location', '$localStorage', 'ChatService', 'Socket',
     'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
     'searchservice', 'GithubService', '$timeout', 'spinnerService', 'INTERNAL_USER', 'ScrumService','ScrumParseService',
+    'toastr',
     function ($scope, $window, $uibModal, ProfileService,
               LoginService, $location, $localStorage, ChatService, Socket,
               GroupService, ChannelService, sharedProperties, $log, $sce, $anchorScroll, md5,
-              searchservice, GithubService, $timeout, spinnerService, INTERNAL_USER, ScrumService, ScrumParseService) {
+              searchservice, GithubService, $timeout, spinnerService, INTERNAL_USER, ScrumService, ScrumParseService,
+              toastr) {
 
       $scope.init = function()
       {
@@ -108,6 +110,7 @@ angular.module('myAppAngularMinApp')
         $scope.modalsError.messageNewChannelModalReposEmpty = '';
 
 
+
         /* inicializa vars de scrum */
         initVarsScrumChannel();
 
@@ -134,6 +137,25 @@ angular.module('myAppAngularMinApp')
         $scope.dynamicPopoverFront = {
           templateUrl: 'views/modals/pickerpopoverFront.html',
         };
+
+
+        $scope.dynamicPopoverEdit = {
+          templateUrl: 'views/modals/pickerpopoverEdit.html',
+        };
+
+        $scope.dynamicPopoverDesEdit = {
+          templateUrl: 'views/modals/pickerpopoverDesEdit.html',
+        };
+
+        $scope.dynamicPopoverBackEdit = {
+          templateUrl: 'views/modals/pickerpopoverBackEdit.html',
+        };
+
+        $scope.dynamicPopoverFrontEdit = {
+          templateUrl: 'views/modals/pickerpopoverFrontEdit.html',
+        };
+
+
 
         /* fin de cosas que no cambian */
 
@@ -182,6 +204,8 @@ angular.module('myAppAngularMinApp')
         $scope.tableCells = {};
         $scope.tableCells.selected = [];
         $scope.ischeckedAllCells = false;
+        $scope.tagUserstory = {};
+        $scope.tagUserstoryTemp = {};
 
       }
 
@@ -615,6 +639,12 @@ angular.module('myAppAngularMinApp')
 
       };
 
+
+
+
+
+
+
       /******************* end message errors *****************************/
 
 
@@ -666,6 +696,16 @@ angular.module('myAppAngularMinApp')
       }
 
 
+      function removeVarsDetailUserstory(){
+        $scope.tagUserstory = {};
+        $scope.tagUserstoryTemp = {};
+
+      }
+
+
+
+
+
       /******************* end vars init ********************************/
 
 
@@ -707,6 +747,30 @@ angular.module('myAppAngularMinApp')
 
       $scope.choosePointRoleBack  = function(point){
         $scope.userstory.point.back = point.num;
+        choosePointLoop(point);
+      };
+
+      /* aqui si cambia lo updateo en la bd y mando sms */
+
+      $scope.choosePointRoleEdit  = function(point){
+        $scope.tagUserstory.point.ux = point.num;
+        choosePointLoop(point);
+      };
+
+
+      $scope.choosePointRoleDesEdit  = function(point){
+        $scope.tagUserstory.point.design = point.num;
+        choosePointLoop(point);
+      };
+
+
+      $scope.choosePointRoleFrontEdit  = function(point){
+        $scope.tagUserstory.point.front = point.num;
+        choosePointLoop(point);
+      };
+
+      $scope.choosePointRoleBackEdit  = function(point){
+        $scope.tagUserstory.point.back = point.num;
         choosePointLoop(point);
       };
 
@@ -783,11 +847,192 @@ angular.module('myAppAngularMinApp')
 
       /* variable nueva como la de item */
       $scope.viewDetailsUserstory = function($index, row) {
+
+        /* en row lo tengo all, asique lo asignamos a 1 variable */
+
+        $scope.initVarsNewUserstoryModal();
+
+
         console.log("esto vale row");
         console.log(row);
+
+        $scope.tagUserstory = row;
+        $scope.tagUserstoryTemp = angular.copy(row);
+        $scope.tagUserstoryTemp.disableVote = false;
+
+        /* hay que mirar si ha votado o no y dejarle o no
+         * para esto hay 1 array con voters */
+        if($scope.tagUserstory.voters !== undefined &&
+          $scope.tagUserstory.voters !== null &&
+          $scope.tagUserstory.voters !== ''){
+          if($scope.tagUserstory.voters.length){
+            for(var i = 0; i< $scope.tagUserstory.voters.length; i++){
+              if($scope.tagUserstory.voters[i].id == $localStorage.id){
+                /* si esta no puede votar */
+                $scope.tagUserstoryTemp.disableVote = true;
+
+
+              }
+
+            }
+          }
+        }
+
+
+
         console.log("esto vale $index");
         console.log($index);
         $scope.item.viewinDetail = true;
+
+      };
+
+      $scope.editSubjectUserstory = function(data, tagUserstory) {
+        /* en row lo tengo all, asique lo asignamos a 1 variable */
+        console.log("esto vale data en edit subject");
+        console.log(data);
+
+
+        console.log("esto vale tagUserstory en edit subject");
+        console.log(tagUserstory);
+
+        /* no hay que validar, lo hace xmi */
+
+        var field = 'subject';
+        ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field )
+          .then(function (res) {
+            console.log("esto vale res de update userstories con subject");
+            console.log(res);
+
+            toastr.info('Userstory subject changed', 'Information', {
+              closeButton: true
+            });
+
+
+          }, function (err) {
+
+
+            console.log("esto vale err de update userstories con subject");
+            console.log(err);
+
+            toastr.error(err.message, 'Error', {
+              closeButton: true
+            });
+
+
+
+          });
+
+
+      };
+
+
+      $scope.editDescriptionUserstory = function(data, tagUserstory) {
+
+        /* en row lo tengo all, asique lo asignamos a 1 variable */
+        console.log("esto vale data en edit description");
+        /* data es lo cambiado */
+        console.log(data);
+
+
+        /* aqui esta cambiado se supone */
+        console.log("esto vale tagUserstory update de userstories con description");
+        console.log(tagUserstory);
+
+
+        var field = 'description';
+        ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field )
+          .then(function (res) {
+            console.log("esto vale res de update userstories con description");
+            console.log(res);
+
+            toastr.info('Userstory description changed', 'Information', {
+              closeButton: true
+            });
+
+
+
+
+          }, function (err) {
+
+            console.log("esto vale err de create userstories");
+            console.log(err);
+
+            toastr.error(err.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+
+
+      };
+
+
+      /* lo tenemos en temp */
+      $scope.onAddedTag = function(tag) {
+        console.log("esto vale la tag añadida");
+        console.log(tag);
+      };
+
+      $scope.onRemovedTag = function(tag) {
+        console.log("esto vale la tag quitada");
+        console.log(tag);
+      };
+
+
+
+
+      $scope.editRequirementUserstory = function(num) {
+
+        /* en row lo tengo all, asique lo asignamos a 1 variable */
+
+
+        console.log("esto vale tagUserstory en edit requirement");
+        console.log($scope.tagUserstory.requirement);
+
+        console.log("esto vale num en edit requirement");
+        console.log(num);
+
+
+      };
+
+
+
+
+      $scope.editVoteUserstory = function(num) {
+
+        console.log("entro en editVoteUserstory");
+
+        /* si num es 0 añadimos su id al de voters */
+        if(num == 0){
+          if($scope.tagUserstory.voters == null ||
+            $scope.tagUserstory.voters == undefined ||
+            $scope.tagUserstory.voters == ''){
+            $scope.tagUserstory.voters = [];
+
+          }
+
+          $scope.tagUserstory.voters.push($localStorage.id);
+          $scope.tagUserstoryTemp.disableVote = true;
+
+
+        }
+        else {
+
+
+          var index = $scope.tagUserstory.voters.indexOf($localStorage.id);
+          if (index > -1) {
+            console.log("lo ha encontrado");
+            $scope.tagUserstory.voters.splice(index, 1);
+          }
+
+          $scope.tagUserstoryTemp.disableVote = true;
+
+        }
+
+
+
+
 
       };
 
@@ -810,6 +1055,10 @@ angular.module('myAppAngularMinApp')
               console.log(res);
 
               $("#newUserStoryModal").modal("hide");
+
+              toastr.success('Successfully created', {
+                closeButton: true
+              });
 
 
             }, function (err) {
@@ -966,6 +1215,10 @@ angular.module('myAppAngularMinApp')
         removeVarsNewUserstoryModal();
 
       };
+
+
+
+
 
 
       $scope.removeInput = function(){
@@ -2752,13 +3005,9 @@ angular.module('myAppAngularMinApp')
                   for (var j = 0; j < $scope.groups[i].publicChannels.length; j++) {
 
                     if ($scope.groups[i].publicChannels[j].notificationsCount !== undefined) {
-
-
                       if ($scope.groups[i].publicChannels[j].notificationsCount > 0) {
                         /* hay que buscarlo en el $scope */
-
                         for (var k = 0; k < $scope.publicChannels.length; k++) {
-
 
                           if ($scope.groups[i].publicChannels[j].id == $scope.publicChannels[k].id) {
                             $scope.publicChannels[k].notificationsCount = $scope.groups[i].publicChannels[j].notificationsCount;
@@ -3774,6 +4023,27 @@ angular.module('myAppAngularMinApp')
         $scope.$apply();
       });
 
+
+
+
+      Socket.on('updateUserstory', function (data) {
+        console.log("updateUserstory");
+        console.log(data.userstory);
+
+        /* backlog userstories, esto lo asignariamos abajo */
+        /*$scope.rowCollectionUserStories.push(data.userstory);*/
+
+        /* recorremos el array, buscamos y cambiamos */
+        for (var i = 0; i<rowCollectionUserStories.length; i++){
+          if(rowCollectionUserStories[i].id == data.userstory.id){
+            console.log("encontrado el userstory, lo cambiamos");
+            rowCollectionUserStories[i]= data.userstory;
+
+          }
+        }
+
+        $scope.$apply();
+      });
 
 
 

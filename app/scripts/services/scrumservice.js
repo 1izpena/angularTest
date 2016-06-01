@@ -47,13 +47,11 @@ angular.module('myAppAngularMinApp')
 
 
       function createUserstory(groupid, channelid, userstory) {
-
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
 
         var userstoryTagsTemp = [];
-
 
         /* tags es 1 array con property text */
         /* hay que parsearlo para que sea 1 array de strings */
@@ -68,7 +66,6 @@ angular.module('myAppAngularMinApp')
             userstory.tags = userstoryTagsTemp;
           }
         }
-
 
         $http({
           method: 'post',
@@ -88,6 +85,45 @@ angular.module('myAppAngularMinApp')
         return promise;
 
       };
+
+
+      function updateUserstory(groupid, channelid, userstory, field) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+        var userstoryid = userstory.id;
+
+        var changesinuserstory = {};
+        changesinuserstory.userstory = userstory;
+        changesinuserstory.fieldchange = field;
+
+
+
+
+        $http({
+          method: 'put',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid,
+          headers: { 'x-access-token': $localStorage.token },
+          data: changesinuserstory
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
+
+
+
+
+
+
 
 
 

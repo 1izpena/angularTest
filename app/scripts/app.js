@@ -32,8 +32,8 @@ angular
     'angularSpinners',
     'angular-svg-round-progressbar',
     'chart.js',
-    'checklist-model'
-
+    'checklist-model',
+    'toastr'
 
   ])
   .run(function(editableOptions) {
