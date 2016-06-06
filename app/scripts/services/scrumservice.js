@@ -13,6 +13,9 @@ angular.module('myAppAngularMinApp')
 
         getUserstories: getUserstories,
         createUserstory: createUserstory,
+        updateUserstory: updateUserstory,
+        createRelatedTask: createRelatedTask,
+        updateAssignedtoTask: updateAssignedtoTask,
         getSprints: getSprints,
         getIssues: getIssues
 
@@ -87,7 +90,90 @@ angular.module('myAppAngularMinApp')
       };
 
 
-      function updateUserstory(groupid, channelid, userstory, field) {
+
+      function createRelatedTask(groupid, channelid, userstory, task) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        $http({
+          method: 'post',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+userstory.id+'/tasks',
+          headers: { 'x-access-token': $localStorage.token },
+          data: task
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
+
+      /*updateAssignedtoTask($scope.groupid, $scope.channelid,$scope.taskid, member)*/
+
+
+
+      function updateAssignedtoTask(groupid, channelid, userstoryid, taskid, memberid, oldvalue) {
+
+        //puedo coger en el servidor el valor anterior
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        var changesintask = {};
+
+        changesintask.field = 'assignedto';
+        changesintask.fieldnewvalue = memberid;
+        console.log("esto vale old value");
+        console.log(oldvalue);
+        changesintask.fieldoldvalue = oldvalue;
+        /* lo usamos para points + tags */
+        /*changesinuserstory.codepoints = code;*/
+
+
+        /*console.log("********************************");
+        console.log("esto vale code");
+        console.log(code);*/
+
+
+
+        $http({
+          method: 'put',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid+'/tasks/'+ taskid,
+          headers: { 'x-access-token': $localStorage.token },
+          data: changesintask
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
+
+
+
+
+
+
+
+
+      /*********************************************************/
+
+      function updateUserstory(groupid, channelid, userstory, field, code) {
         var defered = $q.defer();
         var promise = defered.promise;
         var userid = $localStorage.id;
@@ -95,8 +181,14 @@ angular.module('myAppAngularMinApp')
 
         var changesinuserstory = {};
         changesinuserstory.userstory = userstory;
-        changesinuserstory.fieldchange = field;
+        changesinuserstory.field = field;
+        /* lo usamos para points + tags */
+        changesinuserstory.codepoints = code;
 
+
+        console.log("********************************");
+        console.log("esto vale code");
+        console.log(code);
 
 
 

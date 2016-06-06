@@ -328,11 +328,19 @@
   background-color: #d9edf7;
   border-color: #bce8f1;
   font-size:16px;
+
+  border: 0 none transparent;
+  outline: 0 none transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+
 }
 
 
 .view-task-detail-userstory .related-tasks:hover,
-.view-task-detail-userstory .related-tasks:focus
+.view-task-detail-userstory .related-tasks:focus,
+.view-task-detail-userstory .related-tasks:active
+
 
 {
   width: 100%;
@@ -342,6 +350,12 @@
   background-color: initial;
   /*background:rgba(229, 249, 255, 0.45);*/
   font-size:16px;
+
+  border: 0 none transparent;
+  outline: 0 none transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+
 }
 
 
@@ -548,12 +562,9 @@
 
 }
 
-
-
 .panel-body-backlog-userstories .table-without-margin a{
   font-family: inherit;
 }
-
 
 .panel-body-backlog-userstories .table-without-margin a:hover,
 .panel-body-backlog-userstories .table-without-margin a:focus,
@@ -564,16 +575,36 @@
 
 
 }
-
-
-
-
-
-
-
-
-
 .panel-body-backlog-userstories .table-without-margin th{
+  background: #D9EDF7;
+  color: rgb(51, 122, 183);
+
+}
+
+
+
+.summary-body-detail-userstory .table-without-margin{
+  margin-bottom: 0px;
+
+}
+
+
+
+.summary-body-detail-userstory .table-without-margin a{
+  font-family: inherit;
+}
+
+
+.summary-body-detail-userstory .table-without-margin a:hover,
+.summary-body-detail-userstory .table-without-margin a:focus,
+.summary-body-detail-userstory .table-without-margin a:active
+{
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+.summary-body-detail-userstory .table-without-margin th{
   background: #D9EDF7;
   color: rgb(51, 122, 183);
 
@@ -583,30 +614,17 @@
 
 
 .panel-body-backlog-userstories-new-btn {
-  /*background: rgba(0, 37, 128, 0.5);*/
-  /*background-image: url('../images/patern.png');*/
+
   color: white;
   border:none;
   height: 100%;
 
-  /*
-
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    */
   margin: 0 .5rem;
   margin-left: 1.5em;
   margin-right: 1.5em;
 
   padding-left: 0px !important;
   padding-right: 0px !important;
-
-  /*padding-top: 0px !important;
-  padding-bottom: 0px !important;*/
-
-
 
 }
 
@@ -625,6 +643,57 @@
 
   font-family: 'Oswald', sans-serif;
 }
+
+
+
+
+
+
+
+.panel-body-backlog-tasks-new-btn {
+
+  color: white;
+  border:none;
+  height: 100%;
+
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  flex: 17%;
+
+}
+
+.panel-body-backlog-tasks-new-btn i {
+  margin-right: 0.4em;
+
+}
+
+
+.panel-body-backlog-tasks-new-btn .input-group-btn {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+.panel-body-backlog-tasks-new-btn input {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -682,21 +751,26 @@ oi-select .select-search-list-item {
   color: rgba(0,0,0,0.54);
   text-align: center;
 
-  /*font-family: 'Oswald', sans-serif;*/
-  /*font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;*/
-  /*font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;*/
+}
+
+
+.summary-body-detail-userstory th{
+  color: #000;
+  text-align: center;
 
 }
 
-.panel-body-backlog-userstories-list td span{
-  margin-right: 0.5em;
-  position: relative;
-  float: right;
-  /* padding-bottom: 2em; */
-  margin-bottom: 0.5em;
-
+.summary-body-detail-userstory td{
+  /*color: rgba(0, 0, 0, 0.41);*/
+  color: rgba(0,0,0,0.54);
+  text-align: center;
 
 }
+
+
+
+
+
 
 
 
@@ -706,6 +780,159 @@ oi-select .select-search-list-item {
 
 
 /************************* new table *************************/
+
+
+
+/* para las tareas 0.1 +0.5 + 2.3 + 1 + 0.6 + 1 =1,2 +2.3 +2 = 3.5 +2 =5.5
+ 0.1 se mantiene
+ 0.5 votes sobra
+ 0.6 total points sobra
+ 2.3 subject se mantiene
+ 1 tags sobra
+ 1 status se mantiene
+
+ entonces tengo 0.1 + 2.3 + 1= 3.4 de subject + checkbox + status + assigned to
+ 2.1 para assigned to
+
+*/
+.summary-body-detail-userstory .table .table-cell01{
+  flex:0.1;
+}
+
+
+.summary-body-detail-userstory .table .table-cell05{
+  flex:0.5;
+}
+
+.summary-body-detail-userstory .table .table-cell06{
+  flex:0.6;
+}
+
+.summary-body-detail-userstory .table .table-cell23{
+  flex:2.3;
+}
+
+.summary-body-detail-userstory .table .table-cell21{
+  flex:2.1;
+}
+
+
+.summary-body-detail-userstory .table .table-cell1{
+  flex:1;
+}
+
+
+.summary-body-detail-userstory td span{
+  margin-right: 0.5em;
+  position: relative;
+  float: right;
+  margin-bottom: 0.5em;
+  background: lime;
+  /*background: rgba(138, 43, 226, 0.65);*/
+
+
+}
+
+
+.summary-body-detail-userstory .cellSelectedClass{
+  background: aliceblue;
+}
+
+
+
+
+.summary-body-detail-userstory .table {
+  border-bottom:0px !important;
+
+}
+.summary-body-detail-userstory .table th, .table td {
+  border: 1px !important;
+
+  border: 0 none transparent;
+  outline: 0 none transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.summary-body-detail-userstory .fixed-table-container {
+  border:0px !important;
+
+}
+
+
+
+.summary-body-detail-userstory table {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%; /* this can vary */
+}
+
+.summary-body-detail-userstory table * {
+  box-sizing: inherit;
+  -moz-box-sizing: inherit;
+
+}
+
+.summary-body-detail-userstory thead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.summary-body-detail-userstory tbody {
+  overflow-y: scroll;
+  display: inline-block;
+}
+
+.summary-body-detail-userstory thead > tr, tbody > tr, tfoot > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.summary-body-detail-userstory thead, tfoot {
+  flex-shrink: 0;
+
+}
+
+.summary-body-detail-userstory th, tbody td {
+  width: 20%; /* this can vary */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+
+.summary-body-detail-userstory table tr:hover,
+.summary-body-detail-userstory table tr:focus,
+.summary-body-detail-userstory table tr:active
+{
+  background:rgba(229, 249, 255, 0.45);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .panel-body-backlog-userstories-list .table .table-cell01{
@@ -730,10 +957,17 @@ oi-select .select-search-list-item {
 }
 
 
+.panel-body-backlog-userstories-list td span{
+  margin-right: 0.5em;
+  position: relative;
+  float: right;
+  margin-bottom: 0.5em;
+  background: lime;
+  /*background: rgba(138, 43, 226, 0.65);*/
 
-.panel-body-backlog-userstories-list td span {
-  background: rgba(138, 43, 226, 0.65);
+
 }
+
 
 .panel-body-backlog-userstories-list .cellSelectedClass{
   background: aliceblue;
@@ -748,12 +982,19 @@ oi-select .select-search-list-item {
 
 .panel-body-backlog-userstories-list .table {
   border-bottom:0px !important;
+
 }
 .panel-body-backlog-userstories-list .table th, .table td {
   border: 1px !important;
+
+  border: 0 none transparent;
+  outline: 0 none transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 .panel-body-backlog-userstories-list .fixed-table-container {
   border:0px !important;
+
 }
 
 
@@ -770,6 +1011,7 @@ oi-select .select-search-list-item {
 .panel-body-backlog-userstories-list table * {
   box-sizing: inherit;
   -moz-box-sizing: inherit;
+
 }
 
 .panel-body-backlog-userstories-list thead {
@@ -791,6 +1033,7 @@ oi-select .select-search-list-item {
 
 .panel-body-backlog-userstories-list thead, tfoot {
   flex-shrink: 0;
+
 }
 
 .panel-body-backlog-userstories-list th, tbody td {
@@ -798,24 +1041,15 @@ oi-select .select-search-list-item {
   overflow-x: hidden;
   text-overflow: ellipsis;
   display: inline-block;
+
 }
 
-.panel-body-backlog-userstories-list tfoot {
-  display: inline-block;
-}
-
-.panel-body-backlog-userstories-list tfoot td {
-  width: 100%;
-  display: inline-block;
-}
 
 .panel-body-backlog-userstories-list table tr:hover,
 .panel-body-backlog-userstories-list table tr:focus,
 .panel-body-backlog-userstories-list table tr:active
 {
-
   background:rgba(229, 249, 255, 0.45);
-  border:none;
 
 }
 
@@ -1868,6 +2102,24 @@ form.well {
     float:left;
 }
 
+#img-circle2{
+  float:left;
+}
+
+
+.summary-body-detail-userstory img{
+  float:left;
+  width: 2.7em;
+
+}
+
+.summary-body-detail-userstory .avatar {
+  opacity: 0.5;
+
+}
+
+
+
 
 #alertnotusers {
     text-align: center;
@@ -2709,8 +2961,50 @@ a:hover.classscrum span {
 
 }
 
+.panel-tasks-empty{
+  background: transparent url('../images/tasks1empty.png') no-repeat left center;
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=20);
+  -moz-opacity: 0.2;
+  -khtml-opacity: 0.2;
+  opacity: 0.2;
+  background-size: cover;
+
+
+
+}
+
+
+
+.panel-tasks-not-empty{
+  background: transparent url('../images/tasks1empty.png') no-repeat left center;
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=20);
+  -moz-opacity: 0.2;
+  -khtml-opacity: 0.2;
+  opacity: 0.2;
+  background-size: cover;
+
+
+
+}
+
+
+
+
+
 
 .panel-body-backlog-userstories .carousel-caption{
+  /*padding-bottom: 11.5em;*/
+  /*top: 13.7%;
+  left:74.7%;*/
+  top:52.5%;
+
+}
+
+.summary-body-detail-userstory .carousel-caption{
   /*padding-bottom: 11.5em;*/
   /*top: 13.7%;
   left:74.7%;*/
@@ -3245,44 +3539,55 @@ a:hover.classscrum span {
   margin-left:0.3em;
 }
 
-.chat li.left .metadatalinks .label-info
-{
-  background-color: rgb(121,134,203);
-
-}
-
-
-.chat li.left .metadatalinks .status{
-  background-color: #5bc0de;
-
-
-}
 
 
 .chat li.left .metadatalinks .tags{
   margin-right: 0.4em;
   margin-bottom: 55px;
-  /*margin-top:0.7em;*/
+  background: lime;
 
 }
 
-.chat li.left .metadatalinks .scrum-msg-labels{
-  margin-bottom: 8px;
-  /*margin-top:0.7em;*/
+
+.chat li.left .metadatalinks .label-marked{
+  font-size: 85%;
+  margin-left: 9px;
 
 }
+
+.chat li.left .metadatalinks .label-default{
+  background-color: rgba(119, 119, 119, 0.52) ;
+
+}
+
+
+.chat li.left .metadatalinks .scrum-msg-labels .label{
+  font-size: 85%;
+
+}
+
 
 .chat li.left .metadatalinks .scrum-msg-p{
   margin-top: 10px;
-  /*margin-top:0.7em;*/
 
 }
 
+
+.chat li.left .metadatalinks strong{
+  font-size: large;
+  font-weight: 500;
+
+}
 
 
 
 
 .chat li.left .metadatalinks p
+{
+  margin-left:0.5em;
+}
+
+.chat li.left .metadatalinks h4
 {
   margin-left:0.5em;
 }

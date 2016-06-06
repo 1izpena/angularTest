@@ -1,6 +1,24 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
+
+  .filter('prueba', function () {
+    return function (item, searchTaskAssignedto) {
+      if(item.assignedto == undefined || item.assignedto == ''){
+        return false;
+      }
+      else if(item.assignedto.username == undefined || item.assignedto.username == ''){
+        return false;
+      }
+      else if(item.assignedto.indexOf(searchTaskAssignedto) >= 0){
+        return true;
+      }
+      else{
+        return false;
+      }
+
+    };
+  })
   .controller('Chat2Ctrl', ['$scope', '$window', '$uibModal','ProfileService',
     'LoginService', '$location', '$localStorage', 'ChatService', 'Socket',
     'GroupService', 'ChannelService', 'sharedProperties', '$log', '$sce', '$anchorScroll','md5',
@@ -83,6 +101,14 @@ angular.module('myAppAngularMinApp')
 
         ];
 
+        $scope.comboOptionsTasks = [
+          {name: "All", num: 0},
+          {name: "Subject", num: 1},
+          {name: "Status", num: 2},
+          {name: "Assigned to", num: 3}
+
+        ];
+
 
         $scope.statics = {};
         $scope.statics.points = [
@@ -100,6 +126,12 @@ angular.module('myAppAngularMinApp')
 
         $scope.statics.requirements = ["Team Requirement", "Client Requirement", "Blocked" ];
 
+        $scope.statics.status = ["New", "In progress", "Ready for test", "Closed"];
+
+
+
+
+
         /* errores de modales */
         $scope.modalsError = {};
         $scope.modalsError.messageNewGroupModal = '';
@@ -116,6 +148,10 @@ angular.module('myAppAngularMinApp')
 
         /* inicializa sus variables y el error de userstory create */
         removeVarsNewUserstoryModal();
+
+
+        /* inicializa sus variables y el error de task create */
+        removeVarsNewRelatedTaskModal();
 
 
 
@@ -170,16 +206,50 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.FilterFunction = function (item) {
+        if(item.assignedto == undefined || item.assignedto == ''){
+          return false;
+        }
+        else if(item.assignedto.username == undefined || item.assignedto.username == ''){
+          return false;
+        }
+        else if(item.assignedto.indexOf($scope.searchTaskAssignedto) >= 0){
+          return true;
+        }
+        else{
+          return false;
+        }
+
+
+      };
+
+
+
+
+
 
       /********* backlog dashboard (vars) ***************/
 
       /* ************** init vars, no estaticas  ******************* */
+      function initVarsScrumChannelTasks () {
+
+        //$scope.rowCollectionTasks = [];
+        $scope.tagTask = {};
+        $scope.item.viewRelatedTasks = false;
+
+
+
+      }
+
+
+
       function initVarsScrumChannel () {
         /* variables scrum */
         $scope.item = {};
         $scope.item.itemMenuScrumClicked = 1;
 
         $scope.item.viewinDetail = false;
+
 
         /* si itemMenuScrumClicked no esta en timeline y llega sms */
         $scope.badge = {};
@@ -190,22 +260,24 @@ angular.module('myAppAngularMinApp')
         $scope.showgraph = {};
         $scope.showgraph.show = false;
         $scope.rowCollectionUserStories = [];
+
+
         $scope.rowCollectionSprints = [];
         $scope.rowCollectionIssues = [];
 
 
         /* inicializar busquedas en tabla */
-        $scope.sortType     = 'subject'; // set the default sort type
-        $scope.sortReverse  = false;  // set the default sort order
-        $scope.comboOptionsSelected = {name: "All", num: 0};
-
-
+        removeVarsSearchUS();
+        removeVarsSearchTask();
         /* inicializar que las filas de la tabla no estan seleccionadas */
-        $scope.tableCells = {};
-        $scope.tableCells.selected = [];
-        $scope.ischeckedAllCells = false;
+        removeValTableCell();
+
+
         $scope.tagUserstory = {};
         $scope.tagUserstoryTemp = {};
+
+        initVarsScrumChannelTasks ();
+
 
       }
 
@@ -214,6 +286,56 @@ angular.module('myAppAngularMinApp')
       /******************* end backlog dashboard *******************/
 
 
+      /*$scope.item.viewinDetail = false;
+       $scope.item.viewRelatedTasks = false;*/
+
+      $scope.initVarsAndSelectOptionsScrumMenu = function (num){
+
+        $scope.item.itemMenuScrumClicked = num;
+
+        if(num == 1){
+          $scope.badge.scrummenu = 0;
+        }
+        else{
+
+          $scope.item.viewinDetail = false;
+
+          removeVarsSearchUS();
+          removeVarsSearchTask();
+          removeValTableCell();
+          initVarsScrumChannelTasks ();
+
+        }
+      };
+
+
+
+
+
+
+
+      /* usarlo cuando se inicia (init), cuando se cambia de vista en menu, y cuando se selecciona otro canal
+      * y cuando se hace true, viewrelatedtask */
+      function removeValTableCell (){
+
+        //$scope.ischeckedAllCells = false;
+
+
+        $scope.ischeckedAllCells = false;
+        uncheckAll($scope.rowCollectionUserStories);
+
+        if($scope.tagUserstory !== undefined){
+          if($scope.tagUserstory.tasks !== undefined){
+            if($scope.tagUserstory.tasks.length > 0){
+              uncheckAll($scope.tagUserstory.tasks);
+
+            }
+          }
+        }
+
+
+
+      }
 
 
       /* variables para el menu sidebar-nav */
@@ -408,14 +530,13 @@ angular.module('myAppAngularMinApp')
           Socket.emit('disconnect');
           console.log("ha llamado disconnect de channel");
           Socket.emit('disconnectChannel');
+
           $scope.classResalt= "textnormal";
+
           $scope.groupindex = -1;
           $scope.activeGroups = 1;
           $scope.tagGroup = '';
           $scope.tagChannel = '';
-
-          /*$scope.classResaltChannelPublic= "textnormal";
-          $scope.classResaltChannelPrivate = "textnormal";*/
 
           $scope.classResaltDirect = "textnormal";
 
@@ -432,24 +553,16 @@ angular.module('myAppAngularMinApp')
           console.log("ha llamado disconnect de channel");
           Socket.emit('disconnectChannel');
           $scope.activeChannels = 0;
-          /*$scope.classResaltChannelPublic= "textnormal";
-          $scope.classResaltChannelPrivate = "textnormal";*/
-
           $scope.tagChannel = '';
-          /*$scope.tagMember = '';*/
+
 
 
         }
         else {
           $scope.activeChannels = 1;
-          /*$scope.activeGroups = 1;*/
-
           $scope.activeInvitations = 0;
           $scope.activeDirects = 0;
 
-          /*$scope.classResaltChannelPublic= "textnormal";
-          $scope.classResaltChannelPrivate = "textnormal";
-          $scope.classResaltDirect = "textnormal";*/
 
         }
 
@@ -458,15 +571,8 @@ angular.module('myAppAngularMinApp')
       else if(varmenu == 'activeGroupChannels'){
 
           $scope.activeChannels = 1;
-          /*$scope.activeGroups = 1;*/
-
           $scope.activeInvitations = 0;
           $scope.activeDirects = 0;
-
-          /*$scope.classResaltChannelPublic= "textnormal";
-          $scope.classResaltChannelPrivate = "textnormal";
-          $scope.classResaltDirect = "textnormal";*/
-
 
 
       }
@@ -486,8 +592,6 @@ angular.module('myAppAngularMinApp')
 
 
         } else {
-          /*$scope.tagChannel = '';*/
-          /*$scope.classResaltDirect = "textnormal";*/
           $scope.tagMember = '';
 
           $scope.activeDirects = 1;
@@ -639,6 +743,13 @@ angular.module('myAppAngularMinApp')
 
       };
 
+      function removeErrorMessageNewRelatedTaskModal () {
+        /* se reutiliza la primera para integration */
+        $scope.modalsError.messageNewRelatedTaskModal = '';
+        $scope.modalsError.messageNewRelatedTaskRequiredSubModal = '';
+
+      };
+
 
 
 
@@ -706,6 +817,20 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+      function removeVarsNewRelatedTaskModal(){
+
+        removeErrorMessageNewRelatedTaskModal();
+        $scope.task = {};
+        $scope.task.status = $scope.statics.status[0];
+
+
+      }
+
+
+
+
       /******************* end vars init ********************************/
 
 
@@ -728,50 +853,66 @@ angular.module('myAppAngularMinApp')
         }
       };
 
-      $scope.choosePointRole  = function(point){
-        $scope.userstory.point.ux = point.num;
+      $scope.choosePointRole  = function(point, code){
+        if( code == 0){
+          $scope.userstory.point.ux = point.num;
+
+        }
+        else if(code == 1){
+          $scope.userstory.point.design = point.num;
+
+        }
+        else if(code == 2){
+          $scope.userstory.point.back = point.num;
+
+        }
+        else{
+          $scope.userstory.point.front = point.num;
+
+        }
+
         choosePointLoop(point);
       };
 
 
-      $scope.choosePointRoleDes  = function(point){
-        $scope.userstory.point.design = point.num;
+
+      $scope.choosePointRoleEdit  = function(point, code){
+        if(code == 0){
+          $scope.tagUserstory.point.ux = point.num;
+
+        }
+        else if(code == 1){
+          $scope.tagUserstory.point.design = point.num;
+        }
+        else if(code == 2){
+          $scope.tagUserstory.point.back = point.num;
+        }
+        else{
+          $scope.tagUserstory.point.front = point.num;
+        }
+
         choosePointLoop(point);
-      };
+
+        var field = 'point';
+        ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field, code )
+          .then(function (res) {
+
+            toastr.info('Userstory points changed', 'Information', {
+              closeButton: true
+            });
 
 
-      $scope.choosePointRoleFront  = function(point){
-        $scope.userstory.point.front = point.num;
-        choosePointLoop(point);
-      };
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
 
-      $scope.choosePointRoleBack  = function(point){
-        $scope.userstory.point.back = point.num;
-        choosePointLoop(point);
-      };
-
-      /* aqui si cambia lo updateo en la bd y mando sms */
-
-      $scope.choosePointRoleEdit  = function(point){
-        $scope.tagUserstory.point.ux = point.num;
-        choosePointLoop(point);
-      };
+          });
 
 
-      $scope.choosePointRoleDesEdit  = function(point){
-        $scope.tagUserstory.point.design = point.num;
-        choosePointLoop(point);
-      };
 
 
-      $scope.choosePointRoleFrontEdit  = function(point){
-        $scope.tagUserstory.point.front = point.num;
-        choosePointLoop(point);
-      };
 
-      $scope.choosePointRoleBackEdit  = function(point){
-        $scope.tagUserstory.point.back = point.num;
-        choosePointLoop(point);
       };
 
 
@@ -806,33 +947,104 @@ angular.module('myAppAngularMinApp')
 
 
       /* VIEW :: userstory table checkbox */
-      function checkAll () {
-        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
-          $scope.rowCollectionUserStories[i].selectedCell = true;
+      /* lo mismo para la tabla de las tareas */
+      /* lo reutilizamos */
+      function checkAll (arrayCollection) {
+        for(var i = 0; i < arrayCollection.length; i++){
+          arrayCollection[i].selectedCell = true;
         }
-        $scope.tableCells.selected  = angular.copy($scope.rowCollectionUserStories);
+
+        if($scope.tableCells == undefined || $scope.tableCells == null){
+          $scope.tableCells = {};
+
+        }
+        $scope.tableCells.selected  = angular.copy(arrayCollection);
       };
 
-      function uncheckAll () {
-        for(var i = 0; i < $scope.rowCollectionUserStories.length; i++){
-          $scope.rowCollectionUserStories[i].selectedCell = false;
+      function uncheckAll (arrayCollection) {
+        for(var i = 0; i < arrayCollection.length; i++){
+          arrayCollection.selectedCell = false;
         }
+
+        $scope.tableCells = {};
         $scope.tableCells.selected = [];
       };
 
 
-      $scope.checkAllNone = function() {
+      /* num 0 son userstories, num 1 son tasks */
+
+
+      $scope.checkAllNone = function(num) {
+
         if($scope.ischeckedAllCells){
-          uncheckAll();
+          if(num == 0){
+            uncheckAll($scope.rowCollectionUserStories);
+
+          }
+          else {
+            uncheckAll($scope.tagUserstory.tasks);
+          }
           $scope.ischeckedAllCells = false;
+
         }
-        else{
-          checkAll();
+        else {
+          if(num == 0){
+            checkAll($scope.rowCollectionUserStories);
+
+          }
+          else {
+            checkAll($scope.tagUserstory.tasks);
+          }
           $scope.ischeckedAllCells = true;
         }
 
       };
 
+
+
+
+
+
+
+
+      /*
+      $scope.checkAllNone = function(num) {
+
+        if(num == 0){
+          if($scope.ischeckedAllCells){
+            uncheckAll($scope.rowCollectionUserStories);
+            $scope.ischeckedAllCells = false;
+          }
+          else{
+            checkAll($scope.rowCollectionUserStories);
+            $scope.ischeckedAllCells = true;
+          }
+
+        }
+        else{
+
+          if($scope.ischeckedAllCellsTask){
+            //uncheckAll($scope.rowCollectionTask);
+
+            uncheckAll($scope.tagUserstory.tasks);
+            $scope.ischeckedAllCellsTask = false;
+          }
+          else{
+            //checkAll($scope.rowCollectionTask);
+
+            checkAll($scope.tagUserstory.tasks);
+            $scope.ischeckedAllCellsTask = true;
+          }
+
+        }
+
+
+      };*/
+
+
+
+
+      /* esto es a nivel de fila, nos vale el mismo */
       $scope.changeCheckedTableCell = function(row) {
         if(row.selectedCell == undefined || !row.selectedCell){
           row.selectedCell = true;
@@ -843,18 +1055,155 @@ angular.module('myAppAngularMinApp')
       };
 
 
+
+
+      $scope.clearValuesofSearchUS = function(num) {
+
+        if($scope.searchUS == undefined || $scope.searchUS == ''){
+          $scope.searchUS = {};
+        }
+
+        if(num == 0){
+          $scope.searchUS.subject = '';
+          $scope.searchUS.status = '';
+          $scope.searchTags = '';
+
+        }
+        else if(num == 1){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.status = '';
+          $scope.searchTags = '';
+
+        }
+        else if(num == 2){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchTags = '';
+
+        }
+        else if(num == 3){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchUS.status = '';
+        }
+        else{
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchUS.status = '';
+          $scope.searchTags = '';
+        }
+
+      };
+
+
+
+
+
+
+
+      $scope.clearValuesofSearchTask = function(num) {
+
+        if($scope.searchTask == undefined || $scope.searchTask == ''){
+          $scope.searchTask = {};
+        }
+
+
+
+        if(num == 0){
+          $scope.searchTask.subject = '';
+          $scope.searchTask.status = '';
+          $scope.searchTaskAssignedto = '';
+
+        }
+        else if(num == 1){
+          $scope.searchTask.$ = '';
+          $scope.searchTask.status = '';
+          $scope.searchTaskAssignedto = '';
+
+        }
+        else if(num == 2){
+          $scope.searchTask.$ = '';
+          $scope.searchTask.subject = '';
+          $scope.searchTaskAssignedto = '';
+
+        }
+        else if(num == 3){
+          $scope.searchTask.$ = '';
+          $scope.searchTask.subject = '';
+          $scope.searchTask.status = '';
+
+
+        }
+
+        else{
+          $scope.searchTask.$ = '';
+          $scope.searchTask.subject = '';
+          $scope.searchTask.status = '';
+          $scope.searchTaskAssignedto = '';
+
+        }
+
+      };
+
+
+
+
+
+      function removeVarsSearchUS(){
+
+        $(".searchUS").val('').trigger('input');
+        $(".searchTags").val('').trigger('input');
+
+        $scope.comboOptionsSelected = {name: "All", num: 0};
+
+        /* para que borre all of fields */
+        $scope.clearValuesofSearchUS(4);
+
+        $scope.sortType     = 'num';
+        $scope.sortReverse = false;
+        $scope.searchUs = '';
+
+
+      }
+
+
+      function removeVarsSearchTask(){
+
+        $(".searchTask").val('').trigger('input');
+        $scope.comboOptionsSelectedTask = {name: "All", num: 0};
+        $scope.sortType     = 'num';
+        $scope.sortReverse = false;
+        //$scope.ischeckedAllCellsTask = false;
+        $scope.searchTask = '';
+
+        /* para que borre all of fields */
+        $scope.clearValuesofSearchTask(4);
+
+
+      }
+
+
+
+
+
+
       /* viewdetails of userstory */
 
       /* variable nueva como la de item */
-      $scope.viewDetailsUserstory = function($index, row) {
+      $scope.viewDetailsUserstory = function(row) {
 
-        /* en row lo tengo all, asique lo asignamos a 1 variable */
-
-        $scope.initVarsNewUserstoryModal();
+       /* $scope.initVarsNewUserstoryModal();*/
 
 
         console.log("esto vale row");
         console.log(row);
+
+
+        /* inicializamos el valor del combo de busqueda y el input del mismo */
+        removeVarsSearchUS();
+        /* inicializamos variables de tabla */
+        removeValTableCell();
+
 
         $scope.tagUserstory = row;
         $scope.tagUserstoryTemp = angular.copy(row);
@@ -867,41 +1216,170 @@ angular.module('myAppAngularMinApp')
           $scope.tagUserstory.voters !== ''){
           if($scope.tagUserstory.voters.length){
             for(var i = 0; i< $scope.tagUserstory.voters.length; i++){
-              if($scope.tagUserstory.voters[i].id == $localStorage.id){
+              if($scope.tagUserstory.voters[i] == $localStorage.id){
                 /* si esta no puede votar */
                 $scope.tagUserstoryTemp.disableVote = true;
 
 
               }
-
             }
           }
         }
 
-
-
-        console.log("esto vale $index");
-        console.log($index);
+        $scope.item.viewRelatedTasks = false;
         $scope.item.viewinDetail = true;
 
       };
 
+
+
+
+      $scope.viewDetailsTask = function(row) {
+
+        console.log("esto vale row");
+        console.log(row);
+
+
+        /* inicializamos el valor del combo de busqueda y el input del mismo */
+        removeVarsSearchUS();
+        removeValTableCell();
+        removeVarsSearchTask();
+
+
+        $scope.tagTask = row;
+        $scope.item.viewinDetail = true;
+
+      };
+
+
+
+
+
+      $scope.changeTaskAssignedto = function (row) {
+
+        console.log("estovale row assignedto");
+        console.log(row.assignedto);
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/assignedtoModal.html',
+          controller: 'assignedtoModalCtrl',
+          size: 'lg',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.tagGroup.id,
+                channelid: $scope.tagChannel.id,
+                userstoryid: $scope.tagUserstory.id,
+                taskid: row.id,
+                oldvalue : row.assignedto,
+                membersSettingschannel: $scope.membersSettingschannel
+              }
+            }
+          }
+        });
+
+
+        modalInstance.result.then(function (result) {
+          console.log('result: ' + result);
+          toastr.info('Task assigned to changed', 'Information', {
+            closeButton: true
+          });
+        });
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+      /*$scope.changeTaskAssignedto = function(row) {
+
+        console.log("esto vale row en changeTaskAssignedto");
+        console.log(row);
+
+
+
+        /* sacar 1 modal con lista con usuarios que seleccione y lo meta en assignedto */
+
+
+
+        /* inicializamos el valor del combo de busqueda y el input del mismo */
+        /*removeVarsSearchUS();
+        removeValTableCell();
+        removeVarsSearchTask();*/
+
+
+        /*$scope.tagTask = row;
+        $scope.item.viewinDetail = true;*
+
+      };
+*/
+
+
+
+
+
+
+
+
+
+
+
+      /* dentro de row tendrían que estar las tareas
+      * seguimos funcionando con $tagUserstory para recoger sus tareas */
+      $scope.viewRelatedTasksUserstory = function() {
+
+        /* inicializamos las variables de las tareas */
+        /* tag, rowColl y ponemos a vacio $scope.item.viewRelatedTasks = false;
+        * esto no va a funcionar
+        * este metodo se usa para ver o no las related tasks */
+        /*initVarsScrumChannelTasks();*/
+
+        /* NO HACE FALTA INICIALIZAR NADA, ROWCOLLECTION CAMBIA Y CUANDO ELIJAMOS
+        * 1 FILA DE TASK MACHACAMOS LA VAR */
+
+        if($scope.tagUserstory.tasks == undefined ||
+          $scope.tagUserstory.tasks == null ||
+          $scope.tagUserstory.tasks == '' ){
+          $scope.tagUserstory.tasks = [];
+
+        }
+
+        /*$scope.rowCollectionTasks = $scope.tagUserstory.tasks;*/
+
+
+
+        console.log("esto vale $scope.tagUserstory.tasks");
+        console.log($scope.tagUserstory.tasks);
+
+        if($scope.item.viewRelatedTasks == true){
+          $scope.item.viewRelatedTasks = false;
+
+        }
+        else{
+          $scope.item.viewRelatedTasks = true;
+
+        }
+
+      };
+
+
+
+
+
+
+
       $scope.editSubjectUserstory = function(data, tagUserstory) {
-        /* en row lo tengo all, asique lo asignamos a 1 variable */
-        console.log("esto vale data en edit subject");
-        console.log(data);
-
-
-        console.log("esto vale tagUserstory en edit subject");
-        console.log(tagUserstory);
-
-        /* no hay que validar, lo hace xmi */
-
         var field = 'subject';
+
         ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field )
           .then(function (res) {
-            console.log("esto vale res de update userstories con subject");
-            console.log(res);
 
             toastr.info('Userstory subject changed', 'Information', {
               closeButton: true
@@ -909,35 +1387,15 @@ angular.module('myAppAngularMinApp')
 
 
           }, function (err) {
-
-
-            console.log("esto vale err de update userstories con subject");
-            console.log(err);
-
-            toastr.error(err.message, 'Error', {
+            toastr.error(err.data.message, 'Error', {
               closeButton: true
             });
 
-
-
           });
-
-
       };
 
 
       $scope.editDescriptionUserstory = function(data, tagUserstory) {
-
-        /* en row lo tengo all, asique lo asignamos a 1 variable */
-        console.log("esto vale data en edit description");
-        /* data es lo cambiado */
-        console.log(data);
-
-
-        /* aqui esta cambiado se supone */
-        console.log("esto vale tagUserstory update de userstories con description");
-        console.log(tagUserstory);
-
 
         var field = 'description';
         ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field )
@@ -949,15 +1407,9 @@ angular.module('myAppAngularMinApp')
               closeButton: true
             });
 
-
-
-
           }, function (err) {
 
-            console.log("esto vale err de create userstories");
-            console.log(err);
-
-            toastr.error(err.message, 'Error', {
+            toastr.error(err.data.message, 'Error', {
               closeButton: true
             });
 
@@ -968,15 +1420,66 @@ angular.module('myAppAngularMinApp')
       };
 
 
-      /* lo tenemos en temp */
       $scope.onAddedTag = function(tag) {
-        console.log("esto vale la tag añadida");
-        console.log(tag);
+
+        var field = 'tags';
+        var code = {};
+        code.code = 1;
+        code.text = tag.text;
+
+        $scope.tagUserstory.tags.push(tag.text);
+
+
+        ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field, code )
+          .then(function (res) {
+
+            toastr.info('Userstory tags changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+
+
       };
 
       $scope.onRemovedTag = function(tag) {
-        console.log("esto vale la tag quitada");
-        console.log(tag);
+
+        var field = 'tags';
+        var code = {};
+        code.code = 0;
+        code.text = tag.text;
+
+
+        var index = $scope.tagUserstory.tags.indexOf(tag.text);
+        if (index > -1) {
+          $scope.tagUserstory.tags.splice(index, 1);
+        }
+
+
+        ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field, code )
+          .then(function (res) {
+
+            toastr.info('Userstory tags changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+
+
       };
 
 
@@ -984,14 +1487,21 @@ angular.module('myAppAngularMinApp')
 
       $scope.editRequirementUserstory = function(num) {
 
-        /* en row lo tengo all, asique lo asignamos a 1 variable */
+        var field = 'requirement';
+        ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field, num )
+          .then(function (res) {
+
+            toastr.info('Userstory type changed', 'Information', {
+              closeButton: true
+            });
 
 
-        console.log("esto vale tagUserstory en edit requirement");
-        console.log($scope.tagUserstory.requirement);
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
 
-        console.log("esto vale num en edit requirement");
-        console.log(num);
+          });
 
 
       };
@@ -1001,7 +1511,7 @@ angular.module('myAppAngularMinApp')
 
       $scope.editVoteUserstory = function(num) {
 
-        console.log("entro en editVoteUserstory");
+        var field = 'voters';
 
         /* si num es 0 añadimos su id al de voters */
         if(num == 0){
@@ -1009,26 +1519,33 @@ angular.module('myAppAngularMinApp')
             $scope.tagUserstory.voters == undefined ||
             $scope.tagUserstory.voters == ''){
             $scope.tagUserstory.voters = [];
-
           }
-
           $scope.tagUserstory.voters.push($localStorage.id);
           $scope.tagUserstoryTemp.disableVote = true;
-
-
         }
         else {
-
-
           var index = $scope.tagUserstory.voters.indexOf($localStorage.id);
           if (index > -1) {
-            console.log("lo ha encontrado");
             $scope.tagUserstory.voters.splice(index, 1);
           }
-
           $scope.tagUserstoryTemp.disableVote = true;
-
         }
+
+        ScrumService.updateUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, field )
+          .then(function (res) {
+
+            toastr.info('Userstory votes changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
 
 
 
@@ -1038,9 +1555,10 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+
       $scope.createNewUserstory = function() {
-        console.log("esto vale $scope.userstory despues de editar");
-        console.log($scope.userstory);
 
         if($scope.userstory.subject == undefined ||
           $scope.userstory.subject == null || $scope.userstory.subject == ''){
@@ -1051,24 +1569,60 @@ angular.module('myAppAngularMinApp')
         else {
           ScrumService.createUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.userstory)
             .then(function (res) {
-              console.log("esto vale res de createuserstories");
-              console.log(res);
 
               $("#newUserStoryModal").modal("hide");
 
-              toastr.success('Successfully created', {
+              toastr.success('US successfully created', {
                 closeButton: true
               });
 
 
             }, function (err) {
-              console.log("esto vale err de create userstories");
-              console.log(err);
+
               $scope.modalsError.messageNewUserstoryModal = err.data.message;
             });
         }
 
       };
+
+
+
+      $scope.createNewRelatedTask = function() {
+
+        if($scope.task.subject == undefined ||
+          $scope.task.subject == null || $scope.task.subject == ''){
+
+          $scope.modalsError.messageNewRelatedTaskRequiredSubModal = "Field subject is required.";
+
+        }
+        else {
+          ScrumService.createRelatedTask($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagUserstory, $scope.task)
+            .then(function (res) {
+
+              $("#newTaskModal").modal("hide");
+
+              console.log("esto vale la task creada");
+              console.log(res.data);
+
+              toastr.success('Task successfully created', {
+                closeButton: true
+              });
+
+
+            }, function (err) {
+
+              $scope.modalsError.messageNewUserstoryModal = err.data.message;
+            });
+        }
+
+      };
+
+
+
+
+
+
+
 
 
       /* hacemos funciones que recojan los userstories, issues y sprints
@@ -1080,16 +1634,15 @@ angular.module('myAppAngularMinApp')
         ScrumService.getUserstories($scope.tagGroup.id, $scope.tagChannel.id)
           .then(function (res) {
 
-
-            console.log("esto vale res de getuserstories");
+            console.log("********************");
+            console.log("esto vale get userstories");
             console.log(res);
+            console.log("********************");
 
             $scope.rowCollectionUserStories = res.data;
 
 
           }, function (err) {
-            console.log("esto vale err de getuserstories");
-            console.log(err);
             $scope.modalsError.messageNewUserstoryModal = err.data.message;
           });
 
@@ -1213,6 +1766,12 @@ angular.module('myAppAngularMinApp')
 
       $scope.initVarsNewUserstoryModal = function(){
         removeVarsNewUserstoryModal();
+
+      };
+
+
+      $scope.initVarsNewRelatedTaskModal = function(){
+        removeVarsNewRelatedTaskModal();
 
       };
 
@@ -3549,9 +4108,55 @@ angular.module('myAppAngularMinApp')
         console.log(userid);
       };
 
+
+
+      $scope.viewTask = function (taskid){
+        console.log("esto vale taskid en viewTask");
+        console.log(taskid);
+      }
+
+
+
+
+      /* esto viene del mensaje del timeline, si pinchan sobre 1 userstory */
       $scope.viewUserstory = function (userstoryid){
+
+        /* buscamos x id el objecto en el row, ponemos item.itemMenuScrumClicked = 2
+         * y llamamos a view detailsUserstory(row)
+         */
         console.log("esto vale userstory id en viewUserstory");
         console.log(userstoryid);
+
+        var rowTemp;
+
+        for (var i = 0; i<$scope.rowCollectionUserStories.length; i++){
+          if($scope.rowCollectionUserStories[i].id == userstoryid){
+            console.log("encontrado el userstory, lo pasamos en view details");
+            rowTemp = $scope.rowCollectionUserStories[i];
+
+
+          }
+        }
+
+        /* si no lo encuentra, sacamos sms error */
+        if(rowTemp == undefined || rowTemp == null){
+          toastr.error('US does not exists', 'Error', {
+            closeButton: true
+          });
+
+
+        }
+        else{
+          $scope.item.itemMenuScrumClicked = 2;
+          $scope.viewDetailsUserstory(rowTemp);
+        }
+
+
+
+
+
+
+
       };
 
 
@@ -4015,10 +4620,6 @@ angular.module('myAppAngularMinApp')
       /* por canal, estoy dentro del canal */
       Socket.on('newUserstory', function (data) {
 
-        console.log("newUserstory");
-        console.log(data);
-
-        /* backlog userstories, esto lo asignariamos abajo */
         $scope.rowCollectionUserStories.push(data.userstory);
         $scope.$apply();
       });
@@ -4027,19 +4628,66 @@ angular.module('myAppAngularMinApp')
 
 
       Socket.on('updateUserstory', function (data) {
-        console.log("updateUserstory");
-        console.log(data.userstory);
 
-        /* backlog userstories, esto lo asignariamos abajo */
-        /*$scope.rowCollectionUserStories.push(data.userstory);*/
-
-        /* recorremos el array, buscamos y cambiamos */
-        for (var i = 0; i<rowCollectionUserStories.length; i++){
-          if(rowCollectionUserStories[i].id == data.userstory.id){
+        for (var i = 0; i<$scope.rowCollectionUserStories.length; i++){
+          if($scope.rowCollectionUserStories[i].id == data.userstory.id){
             console.log("encontrado el userstory, lo cambiamos");
-            rowCollectionUserStories[i]= data.userstory;
+            console.log(data.userstory);
+            $scope.rowCollectionUserStories[i] = data.userstory;
+
+            i = $scope.rowCollectionUserStories.length;
+
 
           }
+        }
+        if($scope.tagUserstory.id == data.userstory.id){
+          $scope.tagUserstory = data.userstory;
+        }
+
+        $scope.$apply();
+      });
+
+
+
+      Socket.on('updateTask', function (data) {
+
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' ) {
+
+
+
+          for (var i = 0; i < $scope.rowCollectionUserStories.length; i++) {
+
+
+
+            if($scope.rowCollectionUserStories[i].id == data.userstoryid){
+
+              if($scope.rowCollectionUserStories[i].tasks !== undefined &&
+                $scope.rowCollectionUserStories[i].tasks !== null &&
+                $scope.rowCollectionUserStories[i].tasks !== '' ) {
+
+
+                for (var j = 0; j < $scope.rowCollectionUserStories[i].tasks.length; j++) {
+                  if ($scope.rowCollectionUserStories[i].tasks[j].id == data.task.id) {
+
+                    console.log("encontrado la task, la cambiamos");
+                    console.log(data.task);
+                    $scope.rowCollectionUserStories[i].tasks[j] = data.task;
+
+                    j = $scope.rowCollectionUserStories[i].tasks.length;
+                    i = $scope.rowCollectionUserStories.length-1;
+
+                  }
+                }
+              }
+            }
+
+          } /* end for */
+        }
+
+        if($scope.tagTask.id == data.task.id){
+          $scope.tagTask = data.task;
         }
 
         $scope.$apply();

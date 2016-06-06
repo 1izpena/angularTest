@@ -61,6 +61,7 @@ module.exports = function(config) {
       'bower_components/Chart.js/Chart.js',
       'bower_components/angular-chart.js/dist/angular-chart.js',
       'bower_components/checklist-model/checklist-model.js',
+      'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

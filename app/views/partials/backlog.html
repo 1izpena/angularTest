@@ -7,7 +7,7 @@
 
 <!-- no estaria mal saber cuantos estan new, cuantos in progress y cuantos closed dentro de cada sprint
 -->
-<div class="row row-all-content" ng-show="!item.viewinDetail" >
+<div class="row row-all-content" ng-show="!item.viewinDetail && tagTask.num == undefined" >
 <div class="row row-backlog-chart">
     <div class="panel panel-info" id="panel-backlog-chart">
 
@@ -209,16 +209,17 @@
                     <span class="input-group-btn">
                       <oi-select
                         oi-options="item.name for item in comboOptions track by item.name"
-                        ng-model="comboOptionsSelected">
+                        ng-model="comboOptionsSelected" ng-change="clearValuesofSearchUS(comboOptionsSelected.num)">
                       </oi-select>
                     </span>
 
 
-                    <input ng-show="comboOptionsSelected.num == 0" type="text" class="form-control" placeholder="Search" ng-model="search"/>
-                    <input ng-show="comboOptionsSelected.num == 1" type="text" class="form-control" placeholder="Search" ng-model="search.subject"/>
+                    <input ng-show="comboOptionsSelected.num == 0" type="text" class="form-control searchUS" placeholder="Search by all fields" ng-model="searchUS.$"/>
+                    <input ng-show="comboOptionsSelected.num == 1" type="text" class="form-control searchUS" placeholder="Search by subject" ng-model="searchUS.subject"/>
 
-                    <input ng-show="comboOptionsSelected.num == 2" type="text" class="form-control" placeholder="Search" ng-model="search.status"/>
-                    <input ng-show="comboOptionsSelected.num == 3" type="text" class="form-control" placeholder="Search" ng-model="search.tags"/>
+                    <input ng-show="comboOptionsSelected.num == 2" type="text" class="form-control searchUS" placeholder="Search by status" ng-model="searchUS.status"/>
+                    <input ng-show="comboOptionsSelected.num == 3" type="text" class="form-control searchUS" placeholder="Search by tags" ng-model="searchTags"/>
+                    <!--ng-model="searchUS.tags"-->
 
 
                     <!-- no hay seleccionados -->
@@ -238,10 +239,6 @@
                         <button class="btn btn-warning" type="button">
                           <i class="fa fa-exchange"></i>
                           Move to sprint
-                        </button>
-                        <button ng-show="tableCells.selected.length == 1" class="btn btn-info" type="button">
-                          <i class="fa fa-pencil"></i>
-                          Edit
                         </button>
                         <button class="btn btn-danger" type="button">
                           <i class="fa fa-trash"></i>
@@ -287,42 +284,42 @@
 
 
                   <th class="table-cell01">
-                    <input type="checkbox" ng-click="checkAllNone()">
+                    <input type="checkbox" ng-click="checkAllNone(0)">
 
                   </th>
 
 
 
                   <th class="table-cell05">
-                    <a href="" ng-click="sortType = 'voters'; sortReverse = !sortReverse">
+                    <a ng-click="sortType = 'voters'; sortReverse = !sortReverse">
                       Votes
                       <span ng-show="sortType == 'voters'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
                   <th class="table-cell23">
-                    <a href="" ng-click="sortType = 'num'; sortReverse = !sortReverse">
+                    <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
                       User Stories
                       <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
                   <th class="table-cell1">
-                    <a href="" ng-click="sortType = 'status'; sortReverse = !sortReverse">
+                    <a ng-click="sortType = 'status'; sortReverse = !sortReverse">
                       Status
                       <span ng-show="sortType == 'status'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
                   <th class="table-cell06">
-                    <a href="" ng-click="sortType = 'totalPoints'; sortReverse = !sortReverse">
+                    <a ng-click="sortType = 'totalPoints'; sortReverse = !sortReverse">
                       Points
                       <span ng-show="sortType == 'totalPoints'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
                   <th class="table-cell1">
-                    <a href="" ng-click="sortType = 'tags'; sortReverse = !sortReverse">
+                    <a ng-click="sortType = 'tags'; sortReverse = !sortReverse">
                       Tags
                       <span ng-show="sortType == 'tags'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
@@ -333,8 +330,12 @@
 
 
                 <tbody>
-                <tr ng-show="row.sprint == undefined "
-                    ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse |filter:search"
+
+                <!--  | orderBy:sortType:sortReverse |filter:searchUS:strict"
+                    ng-show="row.sprint == undefined "
+                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''"-->
+                <tr ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse | filter: (comboOptionsSelected.num == 3 ? {tags: searchTags} : searchUS)"
+                    ng-hide="row.sprint !== undefined"
                     ng-class="row.selectedCell ? 'cellSelectedClass' : ''">
 
 
@@ -348,12 +349,12 @@
                   </td>
 
 
-                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell05">{{row.voters.length}}</td>
-                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell23">#{{row.num}} {{row.subject}}</td>
-                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell1">{{row.status}}</td>
-                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell06">{{row.totalPoints}}</td>
-                  <td data-ng-click="viewDetailsUserstory($index, row)" class="table-cell1">
-                    <span class="label label-info" ng-repeat="tag in row.tags">{{tag}}</span><br ng-repeat="tag in row.tags">
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell05">{{row.voters.length}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell23">#{{row.num}} {{row.subject}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell1">{{row.status}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell06">{{row.totalPoints}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell1">
+                    <span class="label label-info" ng-repeat="tag in row.tags ">{{tag}}</span><br ng-repeat="tag in row.tags">
                   </td>
 
                 </tr>
@@ -377,7 +378,7 @@
     </div> <!-- panel-info-->
   </div> <!-- end row--->
 
-</div>
+</div><!-- end row-all-content :: !item.viewinDetail && tagTask.num == undefined"-->
 
 
 
@@ -387,8 +388,8 @@
 
 
 
-<!-- vista en detalle -->
-<div class="row row-all-content" ng-show="item.viewinDetail">
+<!-- vista en detalle de userstory y sus relatedtasks -->
+<div class="row row-all-content" ng-show="item.viewinDetail && tagTask.num == undefined">
     <div class="panel panel-info" id="panel-detail-userstory">
 
       <!-- le hacemos flexbox y metemos colums -->
@@ -449,9 +450,17 @@
 
             <div class="view-task-detail-userstory">
 
-              <button class="btn btn-default related-tasks" type="button">
+              <button class="btn btn-info related-tasks" type="button" ng-click ="viewRelatedTasksUserstory()">
                 Related tasks
-                <span class="glyphicon glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+
+                <span
+                  ng-class="item.viewRelatedTasks ? 'glyphicon glyphicon glyphicon-chevron-up' :'glyphicon glyphicon glyphicon-chevron-down'"
+                  aria-hidden="true">
+
+                </span>
+
+
+
               </button>
             </div>
 
@@ -466,7 +475,7 @@
 
 
 
-        <div class="summary-body-detail-userstory">
+        <div class="summary-body-detail-userstory" ng-show="!item.viewRelatedTasks">
           <!-- aqui metemos los datos y ademas metemos tags-->
           <!-- aqui dentro hay que seguir haciendo columnas -->
 
@@ -556,7 +565,7 @@
               <div class="btn-group">
                 <label type='button' ng-click="editRequirementUserstory(0)" class="btn btn-default" ng-model="tagUserstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
                 <label type='button' ng-click="editRequirementUserstory(1)" class="btn btn-default" ng-model="tagUserstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
-                <label type='button' ng-click="editRequirementUserstory(2)" class="btn btn-default" ng-model="tagUserstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
+                <label type='button' ng-click="editRequirementUserstory(2)" class="btn btn-warning" ng-model="tagUserstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
               </div>
 
             </div>
@@ -565,17 +574,220 @@
 
 
 
+        </div> <!-- end view detail -->
+
+
+
+
+
+
+
+        <!-- start view related tasks viewRelatedTasksUserstory-->
+
+        <div class="summary-body-detail-userstory" ng-show="item.viewRelatedTasks && tagUserstory.tasks.length == 0">
+          <!-- queremos 1 div de carrousel si no hay userstories -->
+
+          <div class="panel-tasks-empty">
+            <div class="container">
+            </div>
+          </div>
+
+          <div class="carousel-caption">
+            <a class="btn btn-large btn-success" data-toggle="modal" data-target="#newTaskModal">
+              <i class="fa fa-plus"></i>
+              Add a new task
+            </a>
+          </div>
+
+
+        </div>
+        <!-- sto se muestra si no hay tasks --------------------------------------->
+
+        <!-- si hay tasks mostramos 1 tabla --------------------------------------->
+        <div class="summary-body-detail-userstory" ng-show="item.viewRelatedTasks && tagUserstory.tasks.length > 0" >
+
+          <!--<a class="btn btn-large btn-success" data-toggle="modal" data-target="#newTaskModal">
+            <i class="fa fa-plus"></i>
+            Add a new task
+          </a>-->
+
+
+          <div class="panel-body panel-body-backlog-tasks-new-btn">
+            <form>
+              <div class="form-group">
+                <div class="input-group">
+
+
+                      <span class="input-group-btn">
+                          <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i>
+                          </button>
+                      </span>
+
+                      <span class="input-group-btn">
+                        <oi-select
+                          oi-options="item.name for item in comboOptionsTasks track by item.name"
+                          ng-model="comboOptionsSelectedTask" ng-change="clearValuesofSearchTask(comboOptionsSelectedTask.num)">
+                        </oi-select>
+                      </span>
+
+
+                  <input ng-show="comboOptionsSelectedTask.num == 0" type="text" class="form-control searchTask" placeholder="Search by all fields" ng-model="searchTask.$"/>
+                  <input ng-show="comboOptionsSelectedTask.num == 1" type="text" class="form-control searchTask" placeholder="Search by subject" ng-model="searchTask.subject"/>
+
+                  <input ng-show="comboOptionsSelectedTask.num == 2" type="text" class="form-control searchTask" placeholder="Search by status" ng-model="searchTask.status"/>
+                  <input ng-show="comboOptionsSelectedTask.num == 3" type="text" class="form-control searchTask" placeholder="Search by members that assigned tasks" ng-model="searchTaskAssignedto"/>
+
+                  <!-- ng-model="searchTask.assignedto" -->
+
+
+                  <!-- no hay seleccionados -->
+                      <span ng-show="tableCells.selected.length == 0" class="input-group-btn">
+                        <div class="input-group-btn">
+                          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#newTaskModal">
+                            <i class="fa fa-plus"></i>
+                            Add a new task
+                          </button>
+                        </div>
+                      </span>
+
+
+                  <!-- si hay varios seleccionados -->
+                      <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
+                        <div class="input-group-btn">
+                          <!--<button class="btn btn-warning" type="button">
+                            <i class="fa fa-exchange"></i>
+                            Move to sprint
+                          </button>-->
+                          <button class="btn btn-danger" type="button">
+                            <i class="fa fa-trash"></i>
+                            Delete
+                          </button>
+                        </div>
+                      </span>
+
+
+
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+          <table class="table table-without-margin">
+            <thead>
+            <tr>
+
+
+              <th class="table-cell01">
+                <input type="checkbox" ng-click="checkAllNone(0)">
+              </th>
+
+<!--
+              <th class="table-cell05">
+                <a href="" ng-click="sortType = 'voters'; sortReverse = !sortReverse">
+                  Votes
+                  <span ng-show="sortType == 'voters'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                </a>
+              </th>
+              -->
+
+
+              <th class="table-cell23">
+                <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
+                  Task
+                  <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                </a>
+
+              </th>
+              <th class="table-cellnone">
+                <a ng-click="sortType = 'status'; sortReverse = !sortReverse">
+                  Status
+                  <span ng-show="sortType == 'status'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                </a>
+              </th>
+
+              <th class="table-cellnone">
+                <a ng-click="sortType = 'assignedto'; sortReverse = !sortReverse">
+                  Assigned to
+                  <span ng-show="sortType == 'assignedto'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                </a>
+              </th>
+
+
+            </tr>
+            </thead>
+
+
+            <tbody>
+
+
+            <!--ng-show="row.sprint == undefined "
+            searchTask.status
+            searchTaskAssignedto
+
+
+            filter: (comboOptionsSelected.num == 3 ? FilterFunction : searchUS)
+            searchTask
+
+
+            filter: (comboOptionsSelected.num == 3 ? {prueba : searchTaskAssignedto} : searchTask)
+            -->
+            <tr
+                data-ng-repeat="row in tagUserstory.tasks | orderBy:sortType:sortReverse | filter:searchTask"
+                ng-class="row.selectedCell ? 'cellSelectedClass' : ''"
+                ng-hide="comboOptionsSelected.num == 3 && !FilterFunction(row)">
+
+
+              <td class="table-cell01">
+                <input type="checkbox" data-checklist-model="tableCells.selected" data-checklist-value="row" ng-click="changeCheckedTableCell(row)">
+                <!--cellSelectedClass -->
+              </td>
+
+
+
+              <td data-ng-click="viewDetailsTask(row)" class="table-cell23">#{{row.num}} {{row.subject}}</td>
+              <td data-ng-click="viewDetailsTask(row)" class="table-cellnone">{{row.status}}</td>
+
+
+              <!-- assignedto es 1 json -->
+
+              <td ng-show="row.assignedto !== undefined" data-ng-click="changeTaskAssignedto(row)" class="table-cellnone">
+                <img
+                  ng-src="http://www.gravatar.com/avatar/{{getHash(row.assignedto.mail)}}?s=50&d=identicon"
+                  alt="User Avatar"
+                  class="avatarin"/>
+                <p>{{row.assignedto.username}}</p>
+              </td>
+
+              <td ng-show="row.assignedto == undefined" data-ng-click="changeTaskAssignedto(row)" class="table-cellnone">
+                <img
+                  ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
+                  alt="User Avatar"
+                  class="avatar"/>
+                <p>{{row.assignedto.username || 'Not assigned'}}</p>
+
+              </td>
+
+
+            </tr>
+            </tbody>
+
+
+          </table>
+
+
+
 
 
 
         </div>
-       <!-- <div class="tasks">
-          <!-- aqui metemos los datos y ademas metemos tags--
 
 
 
-        </div>
--->
+
+        <!-- end view related tasks viewRelatedTasksUserstory -->
+
 
 
 
@@ -589,10 +801,19 @@
 
 
 
+
+
+
+
 </div> <!--ng-show="item.viewinDetail" vista en detalle -->
 
 
+<div class="row row-all-content" ng-show="item.viewinDetail && tagTask.num !== undefined">
+  <p>vista detalle task </p>
 
+
+
+</div>
 
 
 
@@ -614,6 +835,171 @@
 
 
 <!--- ********** MODALS ************ -->
+
+
+<!-- ---- New Related Task Modal ---- -->
+<div id="newTaskModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+        <!-- hay que cambiar el initVarsNewUserstoryModal() -->
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initVarsNewRelatedTaskModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">New Task</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewRelatedTaskModal !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewRelatedTaskModal =''">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{modalsError.messageNewRelatedTaskModal}}
+
+        </div>
+
+
+
+
+
+
+        <!-- subject -->
+        <div class="form-group">
+          <label for="taskSubject">Subject:</label>
+          <input type="text" class="form-control" name="taskSubjectTxt"
+                 id="taskSubject" placeholder="Enter Task Subject..."
+                 ng-model="task.subject">
+
+          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewRelatedTaskRequiredSubModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewRelatedTaskRequiredSubModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- cambiar esto diciendo que necesita que elcampo este completo -->
+            {{modalsError.messageNewRelatedTaskRequiredSubModal}}
+
+          </div>
+
+        </div>
+
+
+
+        <!-- status
+        luego poner
+        ng-show="tagUserstory.sprint !== null && !== undefined && !== ''"
+        -->
+        <div class="form-group">
+        <oi-select oi-options="item for item in statics.status track by item"
+          ng-model="task.status"
+          required></oi-select>
+        </div>
+
+
+
+        <!-- descripcion -->
+        <div class="form-group">
+          <label for="taskDescr">Description:</label>
+          <textarea class="form-control" id="taskDescr"
+                    placeholder="Enter description to helps others better understand..."
+                    ng-model="task.description">
+          </textarea>
+        </div>
+
+
+
+        <!-- requirement:: checkbox type requirement-->
+        <!--<div class="form-group requirements">
+
+          <div class="btn-group">
+            <label class="btn btn-default" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
+            <label class="btn btn-default" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
+            <label class="btn btn-warning" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
+          </div>
+
+        </div>
+
+
+        <!-- esto mejor hacerlo 1 vez se ha creado -->
+        <!-- asi podemos reutilizar la modal para detail view o multiselect en tabla-->
+<!-- 1 acordeon con 1 input de busqueda ,cuando selecciones se cierre ymetas los demas -->
+
+
+
+
+
+
+
+        <!-- boton que me abra otra modal con lista y fotos -->
+
+
+        <!-- tiene assignedto -->
+
+        <!-- esto que lo haga una vez creado
+        <div class="summary-detail-body1">
+          <div class="created-by">
+            <!-- combo con los miembros + img de avatar --
+
+
+          </div>
+
+          <div>
+            <img
+              ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
+              alt="User Avatar"
+              class="avatar" id="img-circle2"/>
+          </div>
+
+           </div>
+-->
+
+
+      </div> <!-- end modal body -->
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-new-related-task" ng-click="createNewRelatedTask()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables -->
+        <button type="button" class="btn btn-danger" id="btn-new-related-task-close" data-dismiss="modal" ng-click="initVarsNewRelatedTaskModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- New User Story Modal (meter integracion SCRUM -->
@@ -754,7 +1140,7 @@
           <div class="btn-group">
             <label class="btn btn-default" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
             <label class="btn btn-default" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
-            <label class="btn btn-default" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
+            <label class="btn btn-warning" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
           </div>
 
         </div>
@@ -768,194 +1154,16 @@
 
 
       <div class="modal-footer">
-        <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewUserstory()"><span class="fa fa-floppy-o">
+        <button type="submit" class="btn btn-success" id="btn-new-userstory" ng-click="createNewUserstory()"><span class="fa fa-floppy-o">
         </span> Create</button>
 
         <!-- inicializar variables -->
-        <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="initVarsNewUserstoryModal()">
+        <button type="button" class="btn btn-danger" id="btn-new-userstory-close" data-dismiss="modal" ng-click="initVarsNewUserstoryModal()">
           <span class="fa fa-remove"></span> Close</button>
 
       </div>
     </div>
   </div>
 </div>
-
-
-
-<!-- --------------------- notification error modal -----------------------  --->
-
-<!--
-$scope.modalsError.messageErrorUserstory = '';
-
-<div id="errorUserStoryModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-md">
-    <!-- Modal content--
-
-    <div class="modal-content">
-      <div class="modal-header" >
-
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                ng-click="initErrorUserstoryModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-        <h4 class="modal-title">New User Story</h4>
-      </div>
-
-      <div class="modal-body" >
-
-
-        <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryModal !== ''">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryModal =''">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          {{modalsError.messageNewUserstoryModal}}
-
-        </div>
-
-
-
-
-
-
-        <!-- subject --
-        <div class="form-group">
-          <label for="userstorySubject">Subject:</label>
-          <input type="text" class="form-control" name="userstorySubjectTxt"
-                 id="userstorySubject" placeholder="Enter Userstory Subject..."
-                 ng-model="userstory.subject">
-
-          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryRequiredSubModal !== ''">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryRequiredSubModal =''">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{modalsError.messageNewUserstoryRequiredSubModal}}
-
-          </div>
-
-        </div>
-
-
-
-        <!-- points --
-        <div class="form-group">
-
-          <div class="btn-group btn-group-justified">
-            <label>UX</label>
-            <label>Design</label>
-            <label>Back</label>
-            <label>Front</label>
-          </div>
-
-
-
-          <div class="btn-group btn-group-justified">
-
-            <button uib-popover-template="dynamicPopover.templateUrl" popover-placement="bottom"
-                    type="button" class="btn btn-default" id="userstoryUX"
-                    popover="Popover 1">
-              {{userstory.point.ux}}
-            </button>
-
-            <button uib-popover-template="dynamicPopoverDes.templateUrl" popover-placement="bottom"
-                    type="button" class="btn btn-default" id="userstoryDes"
-                    popover="Popover 2">
-              {{userstory.point.design}}
-            </button>
-
-            <button uib-popover-template="dynamicPopoverFront.templateUrl" popover-placement="bottom"
-                    type="button" class="btn btn-default" id="userstoryFront"
-                    popover="Popover 3">
-              {{userstory.point.front}}
-            </button>
-
-            <button uib-popover-template="dynamicPopoverBack.templateUrl" popover-placement="bottom"
-                    type="button" class="btn btn-default" id="userstoryBack"
-                    popover="Popover 4">
-              {{userstory.point.back}}
-            </button>
-
-          </div>
-
-
-
-
-          <br>
-          <label class="total-points">Total points: {{
-            parseFloat(userstory.point.ux) +
-            parseFloat(userstory.point.design) +
-            parseFloat(userstory.point.front) +
-            parseFloat(userstory.point.back) }}</label>
-
-
-        </div> <!-- end form-group -->
-
-
-
-
-        <!-- tags (separar con tabulador) --
-        <div class="form-group">
-          <label for="userstoryTag"> Tags: </label>
-          <br>
-
-          <tags-input ng-model="userstory.tags" display-property="text"
-                      placeholder="Tag me.."
-                      replace-spaces-with-dashes="false"
-                      id="userstoryTag">
-          </tags-input>
-        </div>
-
-
-
-        <!-- descripcion --
-        <div class="form-group">
-          <label for="userstoryDescr">Description:</label>
-          <textarea class="form-control" id="userstoryDescr"
-                    placeholder="Enter description to helps others better understand..."
-                    ng-model="userstory.description">
-          </textarea>
-        </div>
-
-
-        <!-- requirement:: checkbox type requirement--
-        <div class="form-group requirements">
-
-          <div class="btn-group">
-            <label class="btn btn-default" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
-            <label class="btn btn-default" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
-            <label class="btn btn-default" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
-          </div>
-
-        </div>
-
-
-
-        <!-- falta votes ?--
-
-      </div> <!-- end modal body --
-
-
-
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-success" id="btn-new-group" ng-click="createNewUserstory()"><span class="fa fa-floppy-o">
-        </span> Create</button>
-
-        <!-- inicializar variables --
-        <button type="button" class="btn btn-danger" id="btn-new-group-close" data-dismiss="modal" ng-click="initVarsNewUserstoryModal()">
-          <span class="fa fa-remove"></span> Close</button>
-
-      </div>
-    </div>
-  </div>
-</div>
-
--->
-
-
-
-
-
-
-
 
 
