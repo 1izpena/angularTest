@@ -15,7 +15,11 @@ angular.module('myAppAngularMinApp')
         createUserstory: createUserstory,
         updateUserstory: updateUserstory,
         createRelatedTask: createRelatedTask,
+        updateContributorsTask: updateContributorsTask,
         updateAssignedtoTask: updateAssignedtoTask,
+        updateTask: updateTask,
+        deleteTasks: deleteTasks,
+        deleteUSs : deleteUSs,
         getSprints: getSprints,
         getIssues: getIssues
 
@@ -116,11 +120,11 @@ angular.module('myAppAngularMinApp')
 
       };
 
-      /*updateAssignedtoTask($scope.groupid, $scope.channelid,$scope.taskid, member)*/
 
 
 
-      function updateAssignedtoTask(groupid, channelid, userstoryid, taskid, memberid, oldvalue) {
+      /* add contributor */
+      function updateContributorsTask(groupid, channelid, userstoryid, taskid, memberid) {
 
         //puedo coger en el servidor el valor anterior
         var defered = $q.defer();
@@ -130,19 +134,8 @@ angular.module('myAppAngularMinApp')
 
         var changesintask = {};
 
-        changesintask.field = 'assignedto';
+        changesintask.field = 'contributors';
         changesintask.fieldnewvalue = memberid;
-        console.log("esto vale old value");
-        console.log(oldvalue);
-        changesintask.fieldoldvalue = oldvalue;
-        /* lo usamos para points + tags */
-        /*changesinuserstory.codepoints = code;*/
-
-
-        /*console.log("********************************");
-        console.log("esto vale code");
-        console.log(code);*/
-
 
 
         $http({
@@ -171,7 +164,172 @@ angular.module('myAppAngularMinApp')
 
 
 
-      /*********************************************************/
+
+
+
+
+
+
+
+
+
+
+      /*updateAssignedtoTask($scope.groupid, $scope.channelid,$scope.taskid, member)*/
+      function updateAssignedtoTask(groupid, channelid, userstoryid, taskid, memberid, oldvalue) {
+
+        //puedo coger en el servidor el valor anterior
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        var changesintask = {};
+
+        changesintask.field = 'assignedto';
+        changesintask.fieldnewvalue = memberid;
+        changesintask.fieldoldvalue = oldvalue;
+
+
+        $http({
+          method: 'put',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid+'/tasks/'+ taskid,
+          headers: { 'x-access-token': $localStorage.token },
+          data: changesintask
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
+
+
+
+
+
+      function updateTask(groupid, channelid, userstoryid, taskid, newvalue, oldvalue, field) {
+
+        //puedo coger en el servidor el valor anterior
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        var changesintask = {};
+
+        changesintask.field = field;
+        changesintask.fieldnewvalue = newvalue;
+        changesintask.fieldoldvalue = oldvalue;
+
+        $http({
+          method: 'put',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid+'/tasks/'+ taskid,
+          headers: { 'x-access-token': $localStorage.token },
+          data: changesintask
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
+
+
+
+
+
+
+      function deleteUSs(groupid, channelid, arrUSRemove){
+
+        var defered = $q.defer();
+        //var promise = defered.promise;
+
+        var userid = $localStorage.id;
+
+        var promise = $q.all(null);
+        var responsesDelete = [];
+
+        angular.forEach(arrUSRemove, function(userstoryid){
+          promise = promise.then(function(){
+            return $http({
+              method: 'delete',
+              headers: {'x-access-token': $localStorage.token},
+              url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid,
+
+            }).then(function(res){
+              responsesDelete.push(res.data);
+            });
+          });
+        });
+
+        promise.then(function(){
+          defered.resolve(responsesDelete);
+
+        });
+
+        return defered.promise;
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      function deleteTasks(groupid, channelid, userstoryid, arrTaskRemove){
+
+        var defered = $q.defer();
+        //var promise = defered.promise;
+
+        var userid = $localStorage.id;
+
+        var promise = $q.all(null);
+        var responsesDelete = [];
+
+        angular.forEach(arrTaskRemove, function(taskid){
+          promise = promise.then(function(){
+            return $http({
+              method: 'delete',
+              headers: {'x-access-token': $localStorage.token},
+              url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid+'/tasks/'+ taskid,
+
+            }).then(function(res){
+              responsesDelete.push(res.data);
+            });
+          });
+        });
+
+        promise.then(function(){
+          defered.resolve(responsesDelete);
+
+        });
+
+        return defered.promise;
+
+      };
+
+
+
 
       function updateUserstory(groupid, channelid, userstory, field, code) {
         var defered = $q.defer();

@@ -1,35 +1,42 @@
 /**
- * Created by izaskun on 5/06/16.
+ * Created by izaskun on 8/06/16.
  */
 
 
-
 angular.module('myAppAngularMinApp')
-  .controller('assignedtoModalCtrl', ['$scope', '$uibModalInstance',  '$localStorage', 'ScrumService','data', '$sce',
+  .controller('contributorsModalCtrl', ['$scope', '$uibModalInstance',  '$localStorage', 'ScrumService','data', '$sce',
     function ($scope, $uibModalInstance, $localStorage, ScrumService, data, $sce) {
 
 
       console.log("esto vale data en modal");
       console.log(data);
 
+      /* tengo que saber a quien esta assignado y quitarlo
+      * y quien ya es contributor para quitarlo
+      * tengo que hacer lo mismo en el servidor */
 
       $scope.membersSettingschannel = data.membersSettingschannel;
       $scope.taskid = data.taskid;
       $scope.groupid = data.groupid;
       $scope.channelid = data.channelid;
       $scope.userstoryid = data.userstoryid;
-      $scope.oldvalue = data.oldvalue
-
-
-      $scope.modalAssignedtoError = '';
 
 
 
+      $scope.modalContributorsError = '';
+
+      /* es 1 array con todos los miembros, queremos pasar a otro arraytemp aquellos
+      * que no estan ya como contribuyentes ni como assigned */
 
 
 
+      /*
+       $scope.membersSettingschannel = membersSettingschannel;
+       $scope.task = task;*/
 
 
+      /*$scope.answerid=answerid;
+       $scope.questionid=questionid;*/
 
 
       $scope.highlight = function(text, search) {
@@ -41,7 +48,10 @@ angular.module('myAppAngularMinApp')
 
 
 
-      $scope.updateAssignedtoTask = function (member) {
+      $scope.addContributorTask = function (member) {
+        /*$scope.message = '';
+         $scope.error = 0;
+         $scope.success = 0;*/
 
 
 
@@ -52,8 +62,8 @@ angular.module('myAppAngularMinApp')
           member.id !== undefined && member.id !== null && member.id !== '' ){
 
 
-          ScrumService.updateAssignedtoTask($scope.groupid, $scope.channelid,
-            $scope.userstoryid, $scope.taskid, member.id, $scope.oldvalue)
+          ScrumService.updateContributorsTask($scope.groupid, $scope.channelid,
+            $scope.userstoryid, $scope.taskid, member.id)
             .then(function(res){
 
               /*$scope.success =1;*/
@@ -87,11 +97,9 @@ angular.module('myAppAngularMinApp')
       };
 
 
-
-
       $scope.close = function ()
       {
-        $scope.modalAssignedtoError = '';
+        $scope.modalContributorsError = '';
         $scope.searchMemberChannelText = '';
         $("#searchmember-modal").val('').trigger('input');
         $uibModalInstance.dismiss();

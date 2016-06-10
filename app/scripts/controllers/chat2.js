@@ -231,15 +231,30 @@ angular.module('myAppAngularMinApp')
       /********* backlog dashboard (vars) ***************/
 
       /* ************** init vars, no estaticas  ******************* */
+      function removeCommentText(){
+        $scope.item.commentText="";
+        $("#commentText").val('').trigger('textarea');
+
+      }
+
+
       function initVarsScrumChannelTasks () {
 
         //$scope.rowCollectionTasks = [];
-        $scope.tagTask = {};
+        $scope.tagTask = -1;
         $scope.item.viewRelatedTasks = false;
+        $scope.item.viewRelatedComments = false;
 
-
+        removeCommentText();
 
       }
+
+      $scope.goBackFromDetailTask = function (){
+        $scope.tagTask = -1;
+        $scope.item.viewRelatedTasks = true;
+        $scope.item.viewRelatedComments = false;
+
+      };
 
 
 
@@ -949,7 +964,10 @@ angular.module('myAppAngularMinApp')
       /* VIEW :: userstory table checkbox */
       /* lo mismo para la tabla de las tareas */
       /* lo reutilizamos */
+
+
       function checkAll (arrayCollection) {
+        /* me recorro el array entero y lo pongo a true */
         for(var i = 0; i < arrayCollection.length; i++){
           arrayCollection[i].selectedCell = true;
         }
@@ -958,22 +976,28 @@ angular.module('myAppAngularMinApp')
           $scope.tableCells = {};
 
         }
+
         $scope.tableCells.selected  = angular.copy(arrayCollection);
+
+
       };
+
 
       function uncheckAll (arrayCollection) {
         for(var i = 0; i < arrayCollection.length; i++){
-          arrayCollection.selectedCell = false;
+          arrayCollection[i].selectedCell = false;
         }
+
 
         $scope.tableCells = {};
         $scope.tableCells.selected = [];
+
+
       };
 
 
       /* num 0 son userstories, num 1 son tasks */
-
-
+      /* esto es desde el html */
       $scope.checkAllNone = function(num) {
 
         if($scope.ischeckedAllCells){
@@ -998,6 +1022,7 @@ angular.module('myAppAngularMinApp')
           $scope.ischeckedAllCells = true;
         }
 
+
       };
 
 
@@ -1005,53 +1030,18 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-
-      /*
-      $scope.checkAllNone = function(num) {
-
-        if(num == 0){
-          if($scope.ischeckedAllCells){
-            uncheckAll($scope.rowCollectionUserStories);
-            $scope.ischeckedAllCells = false;
-          }
-          else{
-            checkAll($scope.rowCollectionUserStories);
-            $scope.ischeckedAllCells = true;
-          }
-
-        }
-        else{
-
-          if($scope.ischeckedAllCellsTask){
-            //uncheckAll($scope.rowCollectionTask);
-
-            uncheckAll($scope.tagUserstory.tasks);
-            $scope.ischeckedAllCellsTask = false;
-          }
-          else{
-            //checkAll($scope.rowCollectionTask);
-
-            checkAll($scope.tagUserstory.tasks);
-            $scope.ischeckedAllCellsTask = true;
-          }
-
-        }
-
-
-      };*/
-
-
-
-
       /* esto es a nivel de fila, nos vale el mismo */
       $scope.changeCheckedTableCell = function(row) {
-        if(row.selectedCell == undefined || !row.selectedCell){
+
+        if(row.selectedCell == undefined || row.selectedCell == false){
+
           row.selectedCell = true;
         }
         else{
           row.selectedCell = false;
         }
+
+
       };
 
 
@@ -1227,6 +1217,7 @@ angular.module('myAppAngularMinApp')
         }
 
         $scope.item.viewRelatedTasks = false;
+        $scope.item.viewRelatedComments = false;
         $scope.item.viewinDetail = true;
 
       };
@@ -1234,7 +1225,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-      $scope.viewDetailsTask = function(row) {
+      $scope.viewDetailsTask = function(row, $index) {
 
         console.log("esto vale row");
         console.log(row);
@@ -1246,7 +1237,10 @@ angular.module('myAppAngularMinApp')
         removeVarsSearchTask();
 
 
-        $scope.tagTask = row;
+
+        console.log("esto vale index de viewdetailstasks");
+        console.log($index);
+        $scope.tagTask = $index;
         $scope.item.viewinDetail = true;
 
       };
@@ -1254,11 +1248,88 @@ angular.module('myAppAngularMinApp')
 
 
 
+      function enableMembers(){
+
+        var membersSettingschannelTemp = [];
+
+        for(var i = 0; i< $scope.membersSettingschannel.length; i++){
+          var enc = false;
+
+          if($scope.tagUserstory.tasks[$scope.tagTask].assignedto !== undefined &&
+            $scope.tagUserstory.tasks[$scope.tagTask].assignedto !== null &&
+            $scope.tagUserstory.tasks[$scope.tagTask].assignedto !== ''){
+
+
+            if($scope.membersSettingschannel[i].id !== $scope.tagUserstory.tasks[$scope.tagTask].assignedto.id &&
+              ($scope.tagUserstory.tasks[$scope.tagTask].contributors == undefined ||
+              $scope.tagUserstory.tasks[$scope.tagTask].contributors == null ||
+              $scope.tagUserstory.tasks[$scope.tagTask].contributors == '' ||
+              $scope.tagUserstory.tasks[$scope.tagTask].contributors.length == 0)){
+
+              membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
+
+            }
+
+            else{
+
+              if($scope.membersSettingschannel[i].id !== $scope.tagUserstory.tasks[$scope.tagTask].assignedto.id){
+                enc = false;
+
+                for(var j = 0; j< $scope.tagUserstory.tasks[$scope.tagTask].contributors.length; j++){
+                  if($scope.membersSettingschannel[i].id == $scope.tagUserstory.tasks[$scope.tagTask].contributors[j].id){
+
+                    enc = true;
+                    j= $scope.tagUserstory.tasks[$scope.tagTask].contributors.length;
+                  }
+
+                }
+                if(!enc){
+                  membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
+                }
+              }
+
+            }
+
+          } /* si assigned es vacio lo metemos */
+           else {
+            /* no xq si el assigned es vacio puede que contributors no */
+             if(($scope.tagUserstory.tasks[$scope.tagTask].contributors !== undefined &&
+               $scope.tagUserstory.tasks[$scope.tagTask].contributors !== null &&
+               $scope.tagUserstory.tasks[$scope.tagTask].contributors !== '' &&
+               $scope.tagUserstory.tasks[$scope.tagTask].contributors.length > 0)){
+
+
+               enc = false;
+               for(var j = 0; j< $scope.tagUserstory.tasks[$scope.tagTask].contributors.length; j++){
+
+
+                 if($scope.membersSettingschannel[i].id == $scope.tagUserstory.tasks[$scope.tagTask].contributors[j].id){
+                   enc = true;
+                   j= $scope.tagUserstory.tasks[$scope.tagTask].contributors.length;
+
+                 }
+
+               }
+               if(!enc){
+                 membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
+               }
+             }
+
+           }
+        }
+
+        return membersSettingschannelTemp;
+
+      };
+
+
+
+
+
 
       $scope.changeTaskAssignedto = function (row) {
 
-        console.log("estovale row assignedto");
-        console.log(row.assignedto);
+        var membersSettingschannelTemp = enableMembers();
 
         var modalInstance = $uibModal.open({
           templateUrl: 'views/modals/assignedtoModal.html',
@@ -1272,7 +1343,7 @@ angular.module('myAppAngularMinApp')
                 userstoryid: $scope.tagUserstory.id,
                 taskid: row.id,
                 oldvalue : row.assignedto,
-                membersSettingschannel: $scope.membersSettingschannel
+                membersSettingschannel: membersSettingschannelTemp
               }
             }
           }
@@ -1285,45 +1356,7 @@ angular.module('myAppAngularMinApp')
             closeButton: true
           });
         });
-      }
-
-
-
-
-
-
-
-
-
-
-
-
-      /*$scope.changeTaskAssignedto = function(row) {
-
-        console.log("esto vale row en changeTaskAssignedto");
-        console.log(row);
-
-
-
-        /* sacar 1 modal con lista con usuarios que seleccione y lo meta en assignedto */
-
-
-
-        /* inicializamos el valor del combo de busqueda y el input del mismo */
-        /*removeVarsSearchUS();
-        removeValTableCell();
-        removeVarsSearchTask();*/
-
-
-        /*$scope.tagTask = row;
-        $scope.item.viewinDetail = true;*
-
       };
-*/
-
-
-
-
 
 
 
@@ -1351,9 +1384,6 @@ angular.module('myAppAngularMinApp')
 
         }
 
-        /*$scope.rowCollectionTasks = $scope.tagUserstory.tasks;*/
-
-
 
         console.log("esto vale $scope.tagUserstory.tasks");
         console.log($scope.tagUserstory.tasks);
@@ -1370,7 +1400,373 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      function mapUsers(){
 
+        /* nos recorremos los objectos comments y les metemos el usaername y el mail
+         * y miramos si son nuestros  */
+        if($scope.tagUserstory.tasks[$scope.tagTask].comments !== undefined &&
+          $scope.tagUserstory.tasks[$scope.tagTask].comments !== '' &&
+          $scope.tagUserstory.tasks[$scope.tagTask].comments !== null &&
+          $scope.tagUserstory.tasks[$scope.tagTask].comments.length >0){
+
+          if($scope.tagUserstory.tasks[$scope.tagTask].comments[0].user.username == undefined
+              || $scope.tagUserstory.tasks[$scope.tagTask].comments[0].user.username == ""
+              || $scope.tagUserstory.tasks[$scope.tagTask].comments[0].isEditable == undefined){
+
+            console.log("hace el mapusers");
+
+            for(var i = 0; i< $scope.tagUserstory.tasks[$scope.tagTask].comments.length; i++){
+
+              for(var j = 0; j< $scope.membersSettingschannel.length; j++){
+
+                if($scope.tagUserstory.tasks[$scope.tagTask].comments[i].user.id == $scope.membersSettingschannel[j].id){
+                  $scope.tagUserstory.tasks[$scope.tagTask].comments[i].user.username = $scope.membersSettingschannel[j].username;
+                  $scope.tagUserstory.tasks[$scope.tagTask].comments[i].user.mail = $scope.membersSettingschannel[j].mail;
+                  if($scope.tagUserstory.tasks[$scope.tagTask].comments[i].user.id == $localStorage.id){
+                    $scope.tagUserstory.tasks[$scope.tagTask].comments[i].isEditable = true;
+
+                  }
+
+                }
+              }
+
+
+            }
+            $scope.gotoAnchor($scope.tagUserstory.tasks[$scope.tagTask].comments[($scope.tagUserstory.tasks[$scope.tagTask].comments.length) -1].id);
+
+          }
+
+
+
+          //$scope.tagUserstory.tasks[$scope.tagTask].comments = $scope.tagUserstory.tasks[$scope.tagTask].comments.reverse();
+        }
+
+
+      }
+
+
+
+      $scope.viewRelatedCommentsTask = function() {
+
+        /* inicializamos las variables de las tareas */
+        /* tag, rowColl y ponemos a vacio $scope.item.viewRelatedTasks = false;
+         * esto no va a funcionar
+         * este metodo se usa para ver o no las related tasks */
+        /*initVarsScrumChannelTasks();*/
+
+        /* NO HACE FALTA INICIALIZAR NADA, ROWCOLLECTION CAMBIA Y CUANDO ELIJAMOS
+         * 1 FILA DE TASK MACHACAMOS LA VAR */
+
+        if($scope.tagUserstory.tasks[$scope.tagTask].comments == undefined ||
+          $scope.tagUserstory.tasks[$scope.tagTask].comments == null ||
+          $scope.tagUserstory.tasks[$scope.tagTask].comments == '' ){
+          $scope.tagUserstory.tasks[$scope.tagTask].comments = [];
+
+        }
+
+        /*$scope.rowCollectionTasks = $scope.tagUserstory.tasks;*/
+
+
+
+        console.log("esto vale $scope.tagUserstory.tasks[$scope.tagTask].comments");
+        console.log($scope.tagUserstory.tasks[$scope.tagTask].comments);
+
+        if($scope.item.viewRelatedComments == true){
+          $scope.item.viewRelatedComments = false;
+
+        }
+        else{
+          removeCommentText();
+
+          /* buscamos a los usuarios */
+          mapUsers();
+          /* damos la vuelta a los comentarios */
+
+          $scope.item.viewRelatedComments = true;
+
+        }
+
+      };
+
+
+
+
+
+
+
+
+      /* primero mirar que coge bien las columnas */
+      $scope.removeUSs = function( ) {
+
+        var arrUSRemove = [];
+
+        var groupid = $scope.tagGroup.id;
+        var channelid = $scope.tagChannel.id;
+        var userstoryid = $scope.tagUserstory.id;
+
+
+
+
+        /* mirar los US seleccionados ************************/
+        for( var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          /* mandamos a borrar 1 array de ids ********************/
+
+          console.log("entrooooooo");
+
+          if($scope.rowCollectionUserStories[i].selectedCell){
+            console.log("userstory seleccionado");
+            console.log($scope.rowCollectionUserStories[i]);
+            arrUSRemove.push($scope.rowCollectionUserStories[i].id);
+
+          }
+        }
+
+
+
+        ScrumService.deleteUSs(groupid, channelid, arrUSRemove)
+          .then(function (res) {
+
+
+            if( $scope.tagUserstory == undefined ||
+              $scope.tagUserstory !== null ||
+              $scope.tagUserstory !== '' ){
+              if($scope.rowCollectionUserStories !== undefined &&
+                $scope.rowCollectionUserStories !== null &&
+                $scope.rowCollectionUserStories !== '' &&
+                $scope.rowCollectionUserStories.length > 0){
+
+                uncheckAll($scope.rowCollectionUserStories);
+                $scope.ischeckedAllCells = false;
+
+              }
+
+            }
+
+
+            console.log("esto vale las responses");
+            console.log(res);
+
+
+            /* res puede ser undefined, controlarlo */
+            if( res !== undefined && res !== null && res !== '' && res.length >0){
+
+              toastr.success('' + res.length + ' userstories deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+            else{
+              toastr.success('Userstories deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+
+
+          });
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/************************ superpruebaaa **********************************************/
+
+
+      $scope.removeTasks = function( ) {
+
+        var arrTaskRemove = [];
+
+        var groupid = $scope.tagGroup.id;
+        var channelid = $scope.tagChannel.id;
+        var userstoryid = $scope.tagUserstory.id;
+
+
+
+
+        /* mirar las seleccionadas ************************/
+         for( var i = 0; i < $scope.tagUserstory.tasks.length; i++){
+         /* mandamos a borrar 1 array de ids ********************/
+
+           if($scope.tagUserstory.tasks[i].selectedCell){
+
+              arrTaskRemove.push($scope.tagUserstory.tasks[i].id);
+
+           }
+         }
+
+
+
+        ScrumService.deleteTasks(groupid, channelid, userstoryid, arrTaskRemove)
+          .then(function (res) {
+
+
+            if( $scope.tagUserstory !== undefined &&
+              $scope.tagUserstory !== null &&
+              $scope.tagUserstory !== '' ){
+              if ($scope.tagUserstory.id == userstoryid &&
+                $scope.tagUserstory.tasks !== undefined &&
+                $scope.tagUserstory.tasks !== null &&
+                $scope.tagUserstory.tasks !== '' &&
+                $scope.tagUserstory.tasks.length > 0) {
+
+                uncheckAll($scope.tagUserstory.tasks);
+                $scope.ischeckedAllCells = false;
+              }
+
+            }
+
+
+
+
+            console.log("esto vale las responses");
+            console.log(res);
+
+
+            /* res puede ser undefined, controlarlo */
+            if( res !== undefined && res !== null && res !== '' && res.length >0){
+
+              toastr.success('' + res.length + ' tasks deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+            else{
+              toastr.success('Tasks deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+      };
+
+
+
+
+
+      $scope.removeContributorTask = function( contributor) {
+
+        var field = 'uncontributors';
+        var newvalue = contributor;
+
+
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, null, field)
+          .then(function (res) {
+
+            toastr.info('Remove contributor from task sucessfully', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+      };
+
+
+
+
+      /* le sacariamos la misma modal de siempre */
+      $scope.addContributorTask = function(contributor) {
+
+
+        var field = 'contributors';
+        var membersSettingschannelTemp = enableMembers();
+
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/contributorsModal.html',
+          controller: 'contributorsModalCtrl',
+          size: 'lg',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.tagGroup.id,
+                channelid: $scope.tagChannel.id,
+                userstoryid: $scope.tagUserstory.id,
+                taskid: $scope.tagUserstory.tasks[$scope.tagTask].id,
+                membersSettingschannel: membersSettingschannelTemp
+              }
+            }
+          }
+        });
+
+
+        modalInstance.result.then(function (result) {
+          console.log('result: ' + result);
+          toastr.info('Contributor added to task', 'Information', {
+            closeButton: true
+          });
+        });
+
+
+
+
+      };
+
+
+
+
+
+
+
+      $scope.unassignedTask = function(task) {
+        var field = 'unassignedto';
+
+        var oldvalue = task.assignedto;
+        var newvalue = {};
+
+        console.log("esto vale el actual assigned to");
+        console.log(task.assignedto);
+
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, oldvalue, field)
+          .then(function (res) {
+
+            toastr.info('Task unassigned sucessfully', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+
+
+
+
+
+      };
 
 
 
@@ -1395,6 +1791,67 @@ angular.module('myAppAngularMinApp')
       };
 
 
+
+
+      $scope.editSubjectTask = function(data, tagTask) {
+
+        var oldvalue = undefined;
+        var newvalue = data;
+        var field = 'subject';
+
+
+        /* esta funcion vale para cualquier field */
+        /* metemos field y old value y new value aunque aveces vayan vacios */
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, oldvalue, field)
+          .then(function (res) {
+
+            toastr.info('Task subject changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+
+      };
+
+
+      $scope.removeComment = function(comment) {
+
+        console.log("esto vale comment");
+        var newvalue = comment.id;
+        var field = 'uncomment';
+
+
+        /* esta funcion vale para cualquier field */
+        /* metemos field y old value y new value aunque aveces vayan vacios */
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, null, field)
+          .then(function (res) {
+
+            toastr.info('Comment deleted sucessfully', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+      };
+
+
+
+
       $scope.editDescriptionUserstory = function(data, tagUserstory) {
 
         var field = 'description';
@@ -1414,10 +1871,41 @@ angular.module('myAppAngularMinApp')
             });
 
           });
+      };
+
+      $scope.editDescriptionTask = function(data, tagTask) {
+
+
+
+        var oldvalue = undefined;
+        var newvalue = data;
+        var field = 'description';
+
+
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, oldvalue, field)
+          .then(function (res) {
+
+            toastr.info('Task description changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
 
 
 
       };
+
+
+
+
+
 
 
       $scope.onAddedTag = function(tag) {
@@ -1502,10 +1990,87 @@ angular.module('myAppAngularMinApp')
             });
 
           });
+      };
 
+
+
+
+      $scope.editRequirementTask = function(num) {
+
+        /* num 0 = blocked num = 1 iocaine */
+
+
+
+
+        /* se puede deducir pasando cual se ha cambiado */
+        var oldvalue = "";
+        var newvalue = $scope.tagUserstory.tasks[$scope.tagTask].requirement;
+        var field = 'requirement';
+
+        if(num == 0){
+          oldvalue = "blocked";
+        }
+        else{
+          oldvalue = "iocaine"
+        }
+
+
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, oldvalue, field)
+          .then(function (res) {
+
+            toastr.info('Task type changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
 
       };
 
+
+
+
+
+      /* new = 0, in progress = 1, readyfortest = 2, closed =3 */
+
+      $scope.editStatusTask = function() {
+
+
+        /* el valor anterior lo tenemos en API */
+
+        var oldvalue = "";
+        var newvalue = $scope.tagUserstory.tasks[$scope.tagTask].status;
+        var field = 'status';
+
+
+
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, oldvalue, field)
+          .then(function (res) {
+
+            toastr.info('Task status changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+
+
+
+
+      };
 
 
 
@@ -1545,9 +2110,38 @@ angular.module('myAppAngularMinApp')
             });
 
           });
+      };
 
 
 
+      $scope.sendCommentText = function() {
+        console.log("esto vale el texto");
+        console.log($scope.item.commentText);
+
+
+        /* esto hay que hacerlo cuando termina*/
+        //removeCommentText();
+
+        var field = 'comments';
+        var newvalue = $scope.item.commentText;
+
+
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          $scope.tagUserstory.id, $scope.tagUserstory.tasks[$scope.tagTask].id,
+          newvalue, null, field)
+          .then(function (res) {
+            console.log("Se termino el envio del mensaje");
+            console.log(res.data);
+            removeCommentText();
+
+          }, function (err) {
+            console.log("hay error");
+            console.log(err.data.message);
+            removeCommentText();
+
+
+
+          });
 
 
 
@@ -1571,6 +2165,7 @@ angular.module('myAppAngularMinApp')
             .then(function (res) {
 
               $("#newUserStoryModal").modal("hide");
+              $scope.initVarsNewUserstoryModal();
 
               toastr.success('US successfully created', {
                 closeButton: true
@@ -1604,6 +2199,8 @@ angular.module('myAppAngularMinApp')
               console.log("esto vale la task creada");
               console.log(res.data);
 
+              $scope.initVarsNewRelatedTaskModal();
+
               toastr.success('Task successfully created', {
                 closeButton: true
               });
@@ -1633,11 +2230,6 @@ angular.module('myAppAngularMinApp')
 
         ScrumService.getUserstories($scope.tagGroup.id, $scope.tagChannel.id)
           .then(function (res) {
-
-            console.log("********************");
-            console.log("esto vale get userstories");
-            console.log(res);
-            console.log("********************");
 
             $scope.rowCollectionUserStories = res.data;
 
@@ -1693,6 +2285,7 @@ angular.module('myAppAngularMinApp')
 
 
       };
+
 
 
 
@@ -4110,10 +4703,92 @@ angular.module('myAppAngularMinApp')
 
 
 
-      $scope.viewTask = function (taskid){
+      $scope.viewTask = function (userstoryid, taskid){
         console.log("esto vale taskid en viewTask");
         console.log(taskid);
-      }
+
+
+        console.log("esto vale userstoryid");
+        console.log(userstoryid);
+
+
+
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' ) {
+
+
+
+
+          var indextask = -1;
+          var indexus = -1;
+
+
+          for (var i = 0; i < $scope.rowCollectionUserStories.length; i++) {
+
+
+
+            if($scope.rowCollectionUserStories[i].id == userstoryid){
+
+              /* si lo encuentra, actualizamos $scope.tagUserstory */
+              indexus = i;
+
+
+
+
+
+              if($scope.rowCollectionUserStories[i].tasks !== undefined &&
+                $scope.rowCollectionUserStories[i].tasks !== null &&
+                $scope.rowCollectionUserStories[i].tasks !== '' ) {
+
+
+                for (var j = 0; j < $scope.rowCollectionUserStories[i].tasks.length; j++) {
+
+                  if ($scope.rowCollectionUserStories[i].tasks[j].id == taskid) {
+
+                    console.log("encontrado la task viniendo del timeline, cambiamos vars");
+                    console.log(j);
+                    indextask = j; /* es un indice */
+
+                    j = $scope.rowCollectionUserStories[i].tasks.length;
+                    i = $scope.rowCollectionUserStories.length-1;
+
+                  }
+                }
+
+              }
+            }
+
+          } /* end for */
+
+
+          if(indextask !== -1 && indexus !== -1){
+
+            $scope.initVarsAndSelectOptionsScrumMenu(2);
+            //$scope.item.itemMenuScrumClicked = 2;
+            $scope.tagUserstory = $scope.rowCollectionUserStories[indexus];
+            $scope.tagTask = indextask;
+            $scope.item.viewinDetail = true;
+
+            console.log("en elmetodo desde el timeline esto vale tarea");
+            console.log($scope.rowCollectionUserStories[indexus].tasks[indextask]);
+
+          }
+
+        }
+
+
+        /* actualizar variable que permitan verla */
+
+
+
+
+
+
+
+
+
+      };
 
 
 
@@ -4649,46 +5324,212 @@ angular.module('myAppAngularMinApp')
 
 
 
-      Socket.on('updateTask', function (data) {
+      Socket.on('deleteTask', function (data) {
+
+        /* buscamos la tarea */
 
         if($scope.rowCollectionUserStories !== undefined &&
           $scope.rowCollectionUserStories !== null &&
           $scope.rowCollectionUserStories !== '' ) {
 
-
+          var indexi= -1;
+          var indexj = -1;
 
           for (var i = 0; i < $scope.rowCollectionUserStories.length; i++) {
+            if ($scope.rowCollectionUserStories[i].id == data.userstoryid) {
 
-
-
-            if($scope.rowCollectionUserStories[i].id == data.userstoryid){
-
-              if($scope.rowCollectionUserStories[i].tasks !== undefined &&
+              if ($scope.rowCollectionUserStories[i].tasks !== undefined &&
                 $scope.rowCollectionUserStories[i].tasks !== null &&
-                $scope.rowCollectionUserStories[i].tasks !== '' ) {
-
+                $scope.rowCollectionUserStories[i].tasks !== '') {
 
                 for (var j = 0; j < $scope.rowCollectionUserStories[i].tasks.length; j++) {
-                  if ($scope.rowCollectionUserStories[i].tasks[j].id == data.task.id) {
+                  if ($scope.rowCollectionUserStories[i].tasks[j].id == data.taskid) {
 
-                    console.log("encontrado la task, la cambiamos");
-                    console.log(data.task);
-                    $scope.rowCollectionUserStories[i].tasks[j] = data.task;
+
+                    /* tenemos el index, nos cargamos la tarea */
+                    console.log("encontrado la task, la borramos ");
+                    console.log($scope.rowCollectionUserStories[i].tasks[j]);
+
+                    indexi = i;
+                    indexj = j;
+
 
                     j = $scope.rowCollectionUserStories[i].tasks.length;
-                    i = $scope.rowCollectionUserStories.length-1;
-
+                    i = $scope.rowCollectionUserStories.length - 1;
                   }
                 }
               }
             }
+          }
 
-          } /* end for */
+
+          /* hay que borrar la tarea y si el tio la esta viendo tagTask = undefined
+          * viewindetail fuera */
+          if(indexi > -1 && indexj > -1){
+            $scope.rowCollectionUserStories[indexi].tasks.splice(indexj,1);
+          }
+
         }
 
-        if($scope.tagTask.id == data.task.id){
-          $scope.tagTask = data.task;
+        if($scope.tagTask !== undefined &&
+          $scope.tagTask !== null &&
+          $scope.tagTask !== '' &&
+          $scope.tagUserstory !== undefined &&
+          $scope.tagUserstory !== null &&
+          $scope.tagUserstory !== '' ){
+
+          if($scope.tagUserstory.tasks[$scope.tagTask] !== undefined &&
+            $scope.tagUserstory.tasks[$scope.tagTask] !== null &&
+            $scope.tagUserstory.tasks[$scope.tagTask] !== '' &&
+            $scope.tagUserstory.tasks[$scope.tagTask].length >0){
+            if($scope.tagUserstory.tasks[$scope.tagTask].id == data.taskid){
+              $scope.item.viewinDetail = false;
+              $scope.tagTask = -1;
+
+
+            }
+
+          }
+
         }
+
+        $scope.$apply();
+      });
+
+
+
+
+
+
+      Socket.on('deleteUserstory', function (data) {
+
+
+        var index = -1;
+
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' ) {
+          for (var i = 0; i < $scope.rowCollectionUserStories.length; i++) {
+
+            if ($scope.rowCollectionUserStories[i].id == data.userstoryid) {
+
+              index = i;
+              i = $scope.rowCollectionUserStories.length - 1;
+
+            }
+          }
+
+
+        }
+        if(index > -1){
+          $scope.rowCollectionUserStories.splice(index, 1);
+
+
+        }
+
+        if($scope.tagUserstory !== undefined &&
+          $scope.tagUserstory !== null &&
+          $scope.tagUserstory !== '' ){
+
+          if($scope.tagUserstory == data.userstoryid){
+            $scope.item.viewinDetail = false;
+            $scope.tagTask = -1;
+            $scope.tagUserstory = {};
+
+
+
+          }
+        }
+
+
+        $scope.$apply();
+
+      });
+
+
+
+
+
+
+
+      Socket.on('updateTask', function (data) {
+
+
+        /* actualizar data */
+        /* nos recorremos data.task */
+        if (data.task !== undefined &&
+          data.task !== null &&
+          data.task !== '') {
+
+          if (data.task.comments !== undefined &&
+            data.task.comments !== null &&
+            data.task.comments !== '' &&
+            data.task.comments.length > 0) {
+            for (var t = 0; t < data.task.comments.length; t++) {
+              if (data.task.comments[t].user !== undefined &&
+                data.task.comments[t].user !== null &&
+                data.task.comments[t].user !== '') {
+
+                if (data.task.comments[t].user.id == $localStorage.id) {
+                  data.task.comments[t].isEditable = true;
+                }
+              }
+            }
+          }
+        }
+
+
+
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' ) {
+
+            for (var i = 0; i < $scope.rowCollectionUserStories.length; i++) {
+              if ($scope.rowCollectionUserStories[i].id == data.userstoryid) {
+
+                if ($scope.rowCollectionUserStories[i].tasks !== undefined &&
+                  $scope.rowCollectionUserStories[i].tasks !== null &&
+                  $scope.rowCollectionUserStories[i].tasks !== '') {
+
+                  for (var j = 0; j < $scope.rowCollectionUserStories[i].tasks.length; j++) {
+                    if ($scope.rowCollectionUserStories[i].tasks[j].id == data.task.id) {
+
+                      console.log("encontrado la task, la cambiamos");
+                      console.log(data.task);
+                      $scope.rowCollectionUserStories[i].tasks[j] = data.task;
+
+                      j = $scope.rowCollectionUserStories[i].tasks.length;
+                      i = $scope.rowCollectionUserStories.length - 1;
+
+                    }
+                  }
+                }
+              }
+
+            } /* end for */
+
+        }
+        if($scope.tagTask !== undefined &&
+          $scope.tagTask !== null &&
+          $scope.tagTask !== '' &&
+          $scope.tagUserstory !== undefined &&
+          $scope.tagUserstory !== null &&
+          $scope.tagUserstory !== '' ){
+          if($scope.tagUserstory.tasks[$scope.tagTask] !== undefined &&
+            $scope.tagUserstory.tasks[$scope.tagTask] !== null &&
+            $scope.tagUserstory.tasks[$scope.tagTask] !== ''){
+
+            if ($scope.tagUserstory.tasks[$scope.tagTask].id == data.task.id) {
+              $scope.tagUserstory.tasks[$scope.tagTask] = data.task;
+            }
+
+          }
+
+
+
+
+        }
+
 
         $scope.$apply();
       });

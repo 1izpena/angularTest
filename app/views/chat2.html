@@ -284,16 +284,16 @@
                       #{{tagChannel.channelName}}
                     </a>
 
-                    <a class="" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 2">
-                      : Backlog
+                    <a class="board" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 2">
+                      : BACKLOG
                     </a>
 
-                    <a class="" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 3">
-                      : Sprints
+                    <a class="board" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 3">
+                      : SPRINTS
                     </a>
 
-                    <a class="" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 4">
-                      : Issues
+                    <a class="board" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 4">
+                      : ISSUES
                     </a>
 
 
@@ -663,59 +663,6 @@
               <!--  end panel channel settings -->
 
 
-
-
-<!-- si es de tipo canal, timeline deberia ser esto , sino como los settings -->
-
-              <!-- si tagChannel.scrum y && item.itemMenuScrumClicked == 2 sin margenes -->
-
-
-
-              <!--<div ng-if= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings"
-                   ng-class="tagChannel.scrum ? 'col-xs-115 panel-body' : 'panel-body'"
-                   id="panel-body"
-                   scroll-bottom-on-last="listaMensajes"
-                   ngf-drop ng-model="$parent.file"
-                   ngf-drag-over-class="'dragover'"
-                   ngf-multiple="true"
-                   ngf-allow-dir="true"
-                   accept="*/*"
-                   ngf-pattern="'*/*'">
-                   -->
-
-
-
-
-
-
-              <!-- pruebita 2 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              <!-- pruebita:: id="panel-body"
-              ng-attr-id="tagChannel.scrum ? 'panel-body1channels' : 'panel-body'"
-
-              #panel-body1channels {
-    min-height: 33em;
-    /* height: 94%; */
-    padding: 0px;
-}
-
-
-              -->
 
 
 
