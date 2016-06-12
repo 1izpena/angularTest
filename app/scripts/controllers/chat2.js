@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('myAppAngularMinApp')
-
   .filter('prueba', function () {
     return function (item, searchTaskAssignedto) {
       if(item.assignedto == undefined || item.assignedto == ''){
@@ -140,6 +139,10 @@ angular.module('myAppAngularMinApp')
         $scope.modalsError.messageNewChannelPassBadCredentialsModal = '';
         $scope.modalsError.messageNewChannelUsernameBadCredentialsModal = '';
         $scope.modalsError.messageNewChannelModalReposEmpty = '';
+        $scope.modalsError.messageNewSprintRequiredNameModal = '';
+        $scope.modalsError.messageNewSprintModal = '';
+
+
 
 
 
@@ -152,6 +155,8 @@ angular.module('myAppAngularMinApp')
 
         /* inicializa sus variables y el error de task create */
         removeVarsNewRelatedTaskModal();
+
+        removeVarsNewSprintModal();
 
 
 
@@ -206,6 +211,8 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
       $scope.FilterFunction = function (item) {
         if(item.assignedto == undefined || item.assignedto == ''){
           return false;
@@ -234,6 +241,14 @@ angular.module('myAppAngularMinApp')
       function removeCommentText(){
         $scope.item.commentText="";
         $("#commentText").val('').trigger('textarea');
+
+      }
+
+
+
+      function removeNameNewSprintText(){
+        $scope.sprint.name = "";
+        $("#sprintName").val('').trigger('input');
 
       }
 
@@ -766,6 +781,12 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      function removeErrorMessageNewSprintModal (){
+        $scope.modalsError.messageNewSprintRequiredNameModal = '';
+        $scope.modalsError.messageNewSprintModal = '';
+      }
+
+
 
 
 
@@ -832,6 +853,156 @@ angular.module('myAppAngularMinApp')
 
 
 
+      /*****************************************************************************/
+
+
+      /*------------------------- datepicker------------------------------------*/
+
+
+      $scope.formats = ['EEEE, MMMM dd, yyyy'];
+      $scope.format = $scope.formats[0];
+
+
+      $scope.open1 = function() {
+        $scope.popup1.opened = true;
+      };
+
+      $scope.open2 = function() {
+        $scope.popup2.opened = true;
+
+        var twoweeksafter = new Date();
+        twoweeksafter.setMonth($scope.sprint.startdate.getMonth());
+        twoweeksafter.setDate($scope.sprint.startdate.getDate() + 14);
+
+        $scope.sprint.enddate = twoweeksafter;
+        $scope.dateOptionsEnd.minDate = $scope.sprint.startdate;
+
+      };
+
+
+
+
+      /****************-----------------end datepicker  ------------------******************/
+
+      /*****************************************************************************/
+
+
+      /* dar valores x defecto y borrar esos valores ??*/
+
+
+      /* esto se hace, en el init, al cerrar la modal y al abrirla */
+
+
+      $scope.minDateOpt = new Date();
+      $scope.minDateOptEnd = new Date();
+
+
+      function removeVarsNewSprintModal(){
+
+        $scope.sprint = {};
+        $scope.sprint.startdate = new Date();
+
+
+
+        /* por si no hay sprint anteriores */
+        var datetimeTempMin = new Date();
+        $scope.minDateOpt = new Date();
+
+        $scope.dateOptions.minDate = $scope.minDateOpt.setDate(datetimeTempMin.getDate() -90);
+
+
+
+
+        console.log("esto vale rowCollectionSprints");
+        console.log($scope.rowCollectionSprints);
+
+        if($scope.rowCollectionSprints !== undefined &&
+          $scope.rowCollectionSprints !== null &&
+          $scope.rowCollectionSprints !== '' &&
+          $scope.rowCollectionSprints.length >0){
+
+
+
+          /* mirar si funciona */
+          if($scope.rowCollectionSprints[$scope.rowCollectionSprints.length -1].startdate !== undefined &&
+            $scope.rowCollectionSprints[$scope.rowCollectionSprints.length -1].startdate !== null &&
+            $scope.rowCollectionSprints[$scope.rowCollectionSprints.length -1].startdate !== ''){
+
+            var datetimeTemp = new Date($scope.rowCollectionSprints[$scope.rowCollectionSprints.length -1].enddate);
+            console.log("estovale$scope.sprint.startdate dentro del if");
+            $scope.sprint.startdate.setMonth(datetimeTemp.getMonth());
+            $scope.sprint.startdate.setDate(datetimeTemp.getDate()+1);
+
+
+
+            console.log($scope.sprint.startdate);
+
+
+            /* hay que desabilitar los anteriores */
+
+            $scope.dateOptions.minDate = $scope.sprint.startdate;
+
+          }
+
+
+
+
+        }
+
+        var twoweeksafter = new Date();
+        twoweeksafter.setMonth($scope.sprint.startdate.getMonth());
+        twoweeksafter.setDate($scope.sprint.startdate.getDate() + 14);
+
+
+        $scope.sprint.enddate = twoweeksafter;
+        $scope.dateOptionsEnd.minDate = $scope.sprint.startdate;
+
+
+        $scope.popup1 = {
+          opened: false
+        };
+
+        $scope.popup2 = {
+          opened: false
+        };
+
+        removeErrorMessageNewSprintModal();
+        removeNameNewSprintText();
+
+      }
+
+
+      $scope.dateOptions = {
+        //dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: $scope.minDateOpt,
+        /*minDate: $scope.minDate,*/
+        /*las semanas empiezan en lunes:1*/
+        startingDay: 1,
+        showButtonBar:false
+      };
+
+
+      $scope.sprint = {};
+      $scope.sprint.startdate = new Date();
+      $scope.dateOptionsEnd = {
+        //dateDisabled: disabled,
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: $scope.minDateOptEnd,
+        startingDay: 1,
+        showButtonBar:false
+      };
+
+
+
+
+
+
+
+
+
 
 
       function removeVarsNewRelatedTaskModal(){
@@ -842,6 +1013,8 @@ angular.module('myAppAngularMinApp')
 
 
       }
+
+
 
 
 
@@ -2219,6 +2392,56 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.createNewSprint = function() {
+
+        /*el modelo es sprint*/
+
+        if($scope.sprint.name == undefined ||
+          $scope.sprint.name == null || $scope.sprint.name == ''){
+
+          $scope.modalsError.messageNewSprintRequiredNameModal = "Field name is required.";
+
+        }
+        else {
+          console.log("pasa el else");
+          console.log("esto vale sprint");
+          console.log($scope.sprint);
+          console.log("ahora convertida en ISO");
+          $scope.sprint.startdate = $scope.sprint.startdate.toISOString();
+          $scope.sprint.enddate = $scope.sprint.enddate.toISOString();
+          console.log($scope.sprint);
+
+          /* mandamos el sprint */
+
+          ScrumService.createSprint($scope.tagGroup.id, $scope.tagChannel.id, $scope.sprint)
+            .then(function (res) {
+
+              $("#newSprintModal").modal("hide");
+
+              console.log("esto vale el sprint creado");
+              console.log(res.data);
+
+              $scope.initVarsNewSprintModal();
+
+              toastr.success('Sprint successfully created', {
+                closeButton: true
+              });
+
+
+            }, function (err) {
+
+              $scope.modalsError.messageNewSprintModal = err.data.message;
+            });
+
+
+
+        }
+
+
+      };
+
+
+
 
 
 
@@ -2367,6 +2590,10 @@ angular.module('myAppAngularMinApp')
         removeVarsNewRelatedTaskModal();
 
       };
+
+      $scope.initVarsNewSprintModal = function(){
+        removeVarsNewSprintModal();
+      }
 
 
 
@@ -4703,6 +4930,14 @@ angular.module('myAppAngularMinApp')
 
 
 
+      /* esto hay que cambiarlo */
+      $scope.viewSprint = function (sprintid){
+        console.log("esto vale sprint id en viewSprint");
+        console.log(sprintid);
+      };
+
+
+
       $scope.viewTask = function (userstoryid, taskid){
         console.log("esto vale taskid en viewTask");
         console.log(taskid);
@@ -5296,6 +5531,16 @@ angular.module('myAppAngularMinApp')
       Socket.on('newUserstory', function (data) {
 
         $scope.rowCollectionUserStories.push(data.userstory);
+        $scope.$apply();
+      });
+
+
+
+      Socket.on('newSprint', function (data) {
+
+        console.log("esto vale el new sprint");
+        console.log(data.sprint);
+        $scope.rowCollectionSprints.push(data.sprint);
         $scope.$apply();
       });
 

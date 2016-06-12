@@ -18,6 +18,9 @@
   background-color: cornflowerblue;
 }
 
+.panel-body-backlog-sprints-list .table .badge{
+  background-color: cornflowerblue;
+}
 
 
 /************** modal new userstory *********************/
@@ -190,6 +193,93 @@
   background: #64ef6a;
 
 }
+
+
+
+
+/*********** for date picker ********************/
+
+.text-info{
+  background-color: springgreen;
+  border-radius: 32px;
+
+}
+
+ /*.full button span {
+   background-color: limegreen;
+   border-radius: 32px;
+   color: black;
+ }
+.partially button span {
+  background-color: orange;
+  border-radius: 32px;
+  color: black;
+}
+/* .datpicker .text-info contains text for today's date but
+it dosn't work when we are not showing the current month **********
+.datepicker .text-info {
+  font-size: 14px;
+  color: black;
+}
+/* .datpicker .btn-info contains selected date *************
+.datepicker .btn-info {
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #39b3d7;
+}
+.datepicker .btn:disabled  {
+  font-size: 14px;
+  font-weight: normal;
+  color: gray;
+}
+.datepicker .btn:disabled>.text-muted  {
+  font-size: 14px;
+  font-weight: normal;
+  color: gray;
+}
+.datepicker .text-muted  {
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+.datepicker .btn:enabled  {
+  font-size: 14px;
+  font-weight: bold;
+  color: black;
+}
+
+.full button span {
+  background-color: limegreen;
+  border-radius: 32px;
+  color: black;
+}
+.partially button span {
+  background-color: orange;
+  border-radius: 32px;
+  color: black;
+}
+
+
+.uib-daypicker small{
+  color: white;
+
+}
+
+.uib-daypicker tbody > tr
+{
+  margin-left: 3em;
+}
+
+.uib-datepicker-popup.dropdown-menu{
+  margin:0px;
+  padding:0px;
+}
+
+
+.uib-daypicker thead tr:nth-of-type(2) {
+  display:none;
+}
+
 
 /************ end picker data ******************/
 
@@ -1004,6 +1094,48 @@
 }
 
 
+.panel-body-backlog-sprints {
+
+  color: white;
+  border:none;
+  height: 100%;
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding: 0px !important;
+
+}
+
+
+.panel-body-backlog-sprints .table-without-margin{
+  margin-bottom: 0px;
+
+}
+
+.panel-body-backlog-sprints .table-without-margin a{
+  font-family: inherit;
+}
+
+.panel-body-backlog-sprints .table-without-margin a:hover,
+.panel-body-backlog-sprints .table-without-margin a:focus,
+.panel-body-backlog-sprints .table-without-margin a:active
+{
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+.panel-body-backlog-sprints .table-without-margin th{
+  background: #D9EDF7;
+  color: rgb(51, 122, 183);
+
+}
+
+
+
+
+
 
 .summary-body-detail-userstory .table-without-margin{
   margin-bottom: 0px;
@@ -1066,6 +1198,37 @@
   font-family: 'Oswald', sans-serif;
 }
 
+
+.panel-body-backlog-sprints-new-btn {
+
+  color: white;
+  border:none;
+  height: 100%;
+
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+
+}
+
+.panel-body-backlog-sprints-new-btn i {
+  margin-right: 0.4em;
+
+}
+
+
+.panel-body-backlog-sprints-new-btn .input-group-btn {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+.panel-body-backlog-sprints-new-btn input {
+
+  font-family: 'Oswald', sans-serif;
+}
 
 
 
@@ -1146,6 +1309,31 @@
 
 }
 
+
+
+
+
+
+
+.panel-body-backlog-sprints-list {
+
+  color: white;
+  border:none;
+  height: 100%;
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding: 0px !important;
+}
+
+
+
+
+
+
+
+
 /* selector :: combo */
 oi-select .select-search-list-item {
   padding-right: 1em;
@@ -1176,6 +1364,20 @@ oi-select .select-search-list-item {
 }
 
 
+
+.panel-body-backlog-sprints-list th{
+  color: #000;
+  text-align: center;
+
+}
+
+.panel-body-backlog-sprints-list td{
+  color: rgba(0,0,0,0.54);
+  text-align: center;
+
+}
+
+
 .summary-body-detail-userstory th{
   color: #000;
   text-align: center;
@@ -1183,7 +1385,6 @@ oi-select .select-search-list-item {
 }
 
 .summary-body-detail-userstory td{
-  /*color: rgba(0, 0, 0, 0.41);*/
   color: rgba(0,0,0,0.54);
   text-align: center;
 
@@ -1222,25 +1423,20 @@ oi-select .select-search-list-item {
 }
 
 
-.summary-body-detail-userstory .table .table-cell05{
-  flex:0.5;
+
+
+
+
+.summary-body-detail-userstory .table .table-cell15{
+  flex:1.5;
 }
 
-.summary-body-detail-userstory .table .table-cell06{
-  flex:0.6;
+.summary-body-detail-userstory .table .table-cell14{
+  flex:1.4;
 }
 
-.summary-body-detail-userstory .table .table-cell23{
-  flex:2.3;
-}
-
-.summary-body-detail-userstory .table .table-cell21{
-  flex:2.1;
-}
-
-
-.summary-body-detail-userstory .table .table-cell1{
-  flex:1;
+.summary-body-detail-userstory .table .table-cell4{
+  flex:4;
 }
 
 
@@ -1256,11 +1452,15 @@ oi-select .select-search-list-item {
 }
 
 
+
 .summary-body-detail-userstory .cellSelectedClass{
   background: aliceblue;
 }
 
-
+.summary-body-detail-userstory .img-custom-responsive{
+  max-height: 100%;
+  width: 100%;
+}
 
 
 .summary-body-detail-userstory .table {
@@ -1297,6 +1497,7 @@ oi-select .select-search-list-item {
 
 }
 
+
 .summary-body-detail-userstory thead {
   display: flex;
   flex-direction: column;
@@ -1308,19 +1509,54 @@ oi-select .select-search-list-item {
   display: inline-block;
 }
 
+/*
 .summary-body-detail-userstory thead > tr, tbody > tr, tfoot > tr {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+}*/
+
+
+
+.summary-body-detail-userstory thead > tr{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+
 }
+
+
+.summary-body-detail-userstory tbody > tr{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+
+}
+
+
 
 .summary-body-detail-userstory thead, tfoot {
   flex-shrink: 0;
 
 }
 
-.summary-body-detail-userstory th, tbody td {
-  width: 20%; /* this can vary */
+
+
+
+
+
+.summary-body-detail-userstory th{
+  /*width: 20%; /* this can vary */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+.summary-body-detail-userstory tbody td{
+  /*width: 20%; /* this can vary */
   overflow-x: hidden;
   text-overflow: ellipsis;
   display: inline-block;
@@ -1337,19 +1573,10 @@ oi-select .select-search-list-item {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.uib-datepicker-popup.dropdown-menu{
+  margin:0px;
+  padding: 0px;
+}
 
 
 
@@ -1448,19 +1675,36 @@ oi-select .select-search-list-item {
   display: inline-block;
 }
 
-.panel-body-backlog-userstories-list thead > tr, tbody > tr, tfoot > tr {
+
+.panel-body-backlog-userstories-list thead > tr{
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 }
+
+.panel-body-backlog-userstories-list tbody > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+
 
 .panel-body-backlog-userstories-list thead, tfoot {
   flex-shrink: 0;
 
 }
 
-.panel-body-backlog-userstories-list th, tbody td {
-  width: 20%; /* this can vary */
+.panel-body-backlog-userstories-list th{
+  /*width: 20%; /* this can vary */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+.panel-body-backlog-userstories-list tbody td {
+  /*width: 20%; /* this can vary */
   overflow-x: hidden;
   text-overflow: ellipsis;
   display: inline-block;
@@ -1468,9 +1712,168 @@ oi-select .select-search-list-item {
 }
 
 
+
+
 .panel-body-backlog-userstories-list table tr:hover,
 .panel-body-backlog-userstories-list table tr:focus,
 .panel-body-backlog-userstories-list table tr:active
+{
+  background:rgba(229, 249, 255, 0.45);
+
+}
+
+
+
+.panel-body-backlog-sprints-list .table .table-cell01{
+  flex:0.1;
+}
+
+
+.panel-body-backlog-sprints-list .table .table-cell05{
+  flex:0.5;
+}
+
+.panel-body-backlog-sprints-list .table .table-cell06{
+  flex:0.6;
+}
+
+.panel-body-backlog-sprints-list .table .table-cell23{
+  flex:2.3;
+}
+
+.panel-body-backlog-sprints-list .table .table-cell1{
+  flex:1;
+}
+
+
+.panel-body-backlog-sprints-list td span{
+  font-size:0.9em;
+  margin-right: 0.5em;
+  position: relative;
+  float: right;
+  margin-bottom: 0.5em;
+  background: lime;
+  /*background: rgba(138, 43, 226, 0.65);*/
+
+
+}
+
+
+.panel-body-backlog-sprints-list .cellSelectedClass{
+  background: aliceblue;
+}
+
+
+
+.panel-body-backlog-sprints .img-custom-responsive{
+  max-height: 100%;
+  width: 100%;
+}
+
+.panel-body-backlog-sprints-list .table {
+  border-bottom:0px !important;
+
+}
+
+
+.panel-body-backlog-sprints-list .table th, .table td {
+  border: 1px !important;
+  border: 0 none transparent;
+  outline: 0 none transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.panel-body-backlog-sprints-list .fixed-table-container {
+  border:0px !important;
+
+}
+
+
+
+
+
+
+
+.panel-body-backlog-sprints-list table {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%; /* this can vary */
+}
+
+.panel-body-backlog-sprints-list table * {
+  box-sizing: inherit;
+  -moz-box-sizing: inherit;
+
+}
+
+.panel-body-backlog-sprints-list thead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.panel-body-backlog-sprints-list tbody {
+  overflow-y: auto;
+  display: inline-block;
+}
+
+/*
+.panel-body-backlog-sprints-list thead > tr, tbody > tr, tfoot > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+*/
+
+
+.panel-body-backlog-sprints-list thead > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.panel-body-backlog-sprints-list tbody > tr{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+
+
+.panel-body-backlog-sprints-list thead, tfoot {
+  flex-shrink: 0;
+
+}
+
+
+
+.panel-body-backlog-sprints-list th{
+
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+.panel-body-backlog-sprints-list tbody td {
+
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+
+
+
+
+
+.panel-body-backlog-sprints-list table tr:hover,
+.panel-body-backlog-sprints-list table tr:focus,
+.panel-body-backlog-sprints-list table tr:active
 {
   background:rgba(229, 249, 255, 0.45);
 
@@ -1721,7 +2124,7 @@ oi-select .select-search-list-item {
 
 .summary-stats .description {
 
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   line-height: 1;
   /*margin-right: 0.1em;
   margin-left: 0.5em;*/
@@ -3465,6 +3868,23 @@ a:hover.classscrum span {
 
 }
 
+.panel-sprints-empty{
+  background: transparent url('../images/sprintbacklog.jpg') no-repeat left center;
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=20);
+  -moz-opacity: 0.2;
+  -khtml-opacity: 0.2;
+  opacity: 0.2;
+  background-size: cover;
+
+
+
+}
+
+
+
+
 
 
 .panel-tasks-not-empty{
@@ -3493,6 +3913,18 @@ a:hover.classscrum span {
   top:52.5%;
 
 }
+
+
+.panel-body-backlog-sprints .carousel-caption{
+  /*padding-bottom: 11.5em;*/
+  /*top: 13.7%;
+  left:74.7%;*/
+  top:52.5%;
+
+}
+
+
+
 
 .summary-body-detail-userstory .carousel-caption{
   /*padding-bottom: 11.5em;*/
@@ -3525,19 +3957,30 @@ a:hover.classscrum span {
 
 
 
-.row-backlog-userstories {
-  margin: 0px;
-  height: 85%;
-}
-
-
-/* sobraria 24 + 15 = 39 el total es 15 + 85 = 100 */
 
 /* se añade esta clase si quieren ver el grafico */
 .row-backlog-charts-show-graph {
   margin: 0px;
   height: 24%;
 }
+
+
+
+/* sobraria 24 + 15 = 39 el total es 15 + 85 = 100 */
+
+.row-backlog-userstories {
+  margin: 0px;
+  height: 85%;
+}
+
+.row-backlog-sprints {
+  margin: 0px;
+  height: 85%;
+}
+
+
+
+
 
 /*esta clase se hace mas pequeña cuando se visualiza el grafico */
 .row-backlog-userstories-show-graph {
@@ -3574,6 +4017,22 @@ a:hover.classscrum span {
   height: 85%;
 
 }
+
+
+
+.row-backlog-sprints-new-btn {
+  margin: 0px;
+  height: 15%;
+
+}
+
+
+.row-backlog-sprints-list {
+  margin: 0px;
+  height: 85%;
+
+}
+
 
 
 /************* end panels of charts + userstories **************************/
@@ -3659,6 +4118,23 @@ a:hover.classscrum span {
 }
 
 
+#panel-backlog-sprints {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+#panel-backlog-sprints-new-btn {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+#panel-backlog-sprints-list {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
 
 
 #panel-setchannels {

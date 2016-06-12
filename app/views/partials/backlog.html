@@ -698,7 +698,7 @@
               -->
 
 
-              <th class="table-cell23">
+              <th class="table-cell4">
                 <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
                   Task
                   <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
@@ -709,14 +709,14 @@
                 </a>
 
               </th>
-              <th class="table-cellnone">
+              <th class="table-cell15">
                 <a ng-click="sortType = 'status'; sortReverse = !sortReverse">
                   Status
                   <span ng-show="sortType == 'status'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                 </a>
               </th>
 
-              <th class="table-cellnone">
+              <th class="table-cell14">
                 <a ng-click="sortType = 'assignedto.username'; sortReverse = !sortReverse">
                   Assigned to
                   <span ng-show="sortType == 'assignedto.username'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
@@ -755,13 +755,13 @@
 
 
 
-              <td data-ng-click="viewDetailsTask(row, $index)" class="table-cell23">#{{row.num}} {{row.subject}}</td>
-              <td data-ng-click="viewDetailsTask(row,$index)" class="table-cellnone">{{row.status}}</td>
+              <td data-ng-click="viewDetailsTask(row, $index)" class="table-cell4">#{{row.num}} {{row.subject}}</td>
+              <td data-ng-click="viewDetailsTask(row,$index)" class="table-cell15">{{row.status}}</td>
 
 
               <!-- assignedto es 1 json -->
 
-              <td ng-show="row.assignedto !== undefined && row.assignedto.id !== undefined" data-ng-click="changeTaskAssignedto(row)" class="table-cellnone">
+              <td ng-show="row.assignedto !== undefined && row.assignedto.id !== undefined" data-ng-click="changeTaskAssignedto(row)" class="table-cell14">
                 <img
                   ng-src="http://www.gravatar.com/avatar/{{getHash(row.assignedto.mail)}}?s=50&d=identicon"
                   alt="User Avatar"
@@ -769,7 +769,7 @@
                 <p>{{row.assignedto.username}}</p>
               </td>
 
-              <td ng-show="row.assignedto == undefined || row.assignedto.id == undefined" data-ng-click="changeTaskAssignedto(row)" class="table-cellnone">
+              <td ng-show="row.assignedto == undefined || row.assignedto.id == undefined" data-ng-click="changeTaskAssignedto(row)" class="table-cell14">
                 <img
                   ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
                   alt="User Avatar"

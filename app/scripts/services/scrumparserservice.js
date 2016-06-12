@@ -102,9 +102,85 @@ angular.module('myAppAngularMinApp')
 
 
 
+      function parseSprint(scrumMessageJSON, $index, msg) {
+
+        /* example [Project] Userstory created by [1izpena] (poder ver su perfil , necesito el id del usuario, y lo tengo)
+         * #num Subject */
 
 
-      /* queda parsear cuando es 1 update del status */
+        var messageText = '';
+        var projectParse = '';
+        var actionParse = '';
+        var sprintHeaderParse = '';
+        var sprintBodyParse = '';
+
+
+        var dayMap = new Map();
+        dayMap.set(0, "Sunday");
+        dayMap.set(1, "Monday");
+        dayMap.set(2, "Tuesday");
+        dayMap.set(3, "Wednesday");
+        dayMap.set(4, "Thursday");
+        dayMap.set(5, "Friday");
+        dayMap.set(6, "Saturday");
+
+
+
+        var monthMap = new Map();
+        monthMap.set(0, "January");
+        monthMap.set(1, "February");
+        monthMap.set(2, "March");
+        monthMap.set(3, "April");
+        monthMap.set(4, "May");
+        monthMap.set(5, "June");
+        monthMap.set(6, "July");
+        monthMap.set(7, "August");
+        monthMap.set(8, "September");
+        monthMap.set(9, "October");
+        monthMap.set(10, "November");
+        monthMap.set(11, "December");
+
+
+        if(scrumMessageJSON.sender !== null &&
+          scrumMessageJSON.sender !== undefined &&
+          scrumMessageJSON.sender !== '' &&
+          scrumMessageJSON.sprint !== null &&
+          scrumMessageJSON.sprint !== undefined &&
+          scrumMessageJSON.sprint !== ''){
+
+
+
+
+          if(scrumMessageJSON.action == 'created' ){
+            projectParse = getProjectFields();
+            actionParse = getActionFields(scrumMessageJSON);
+            sprintHeaderParse = getHeaderFieldsForSprint(scrumMessageJSON, $index, msg);
+            sprintBodyParse = getBodyFieldsForSprint (scrumMessageJSON, $index, msg, dayMap, monthMap);
+
+          }
+
+
+        }
+        messageText = projectParse + actionParse + sprintHeaderParse + sprintBodyParse;
+        return messageText;
+
+
+
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function parseUserstory(scrumMessageJSON, $index, msg) {
 
@@ -451,6 +527,78 @@ angular.module('myAppAngularMinApp')
 
 
       }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      function getHeaderFieldsForSprint(scrumMessageJSON, $index,msg){
+        /* (3) #num [Subject] con link  */
+
+
+        var header = "";
+        var num = 0;
+        var name = "";
+
+
+        if(scrumMessageJSON.sprint.num !== null &&
+          scrumMessageJSON.sprint.num !== undefined &&
+          scrumMessageJSON.sprint.num !== '' ){
+
+          num = scrumMessageJSON.sprint.num;
+
+        }
+
+
+        if(scrumMessageJSON.sprint.name !== null &&
+          scrumMessageJSON.sprint.name !== undefined &&
+          scrumMessageJSON.sprint.name !== '' ){
+
+          name = scrumMessageJSON.sprint.name;
+
+        }
+
+
+        if(scrumMessageJSON.sprint.id !== null &&
+          scrumMessageJSON.sprint.id !== undefined &&
+          scrumMessageJSON.sprint.id !== ''){
+
+
+          /* esto hay que revisarlo */
+          header = "<p><a ng-click='viewSprint(" + '"'+scrumMessageJSON.sprint.id+'"'+")'>#" + num + " "+name+"</a> " +
+            "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
+
+        }
+        else{
+          header = "<p><a>#" + num + " "+name+"</a> " +
+            "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
+        }
+
+        return header;
+
+      }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1576,6 +1724,97 @@ angular.module('myAppAngularMinApp')
 
       /****************************** rerere new ****************************************/
 
+      function getBodyFieldsForSprint(scrumMessageJSON, $index, msg, dayMap, monthMap){
+
+
+        /* solo start date y end date */
+        var params = "";
+        var body = "";
+
+
+
+
+
+        if(scrumMessageJSON.sprint.startdate !== null &&
+          scrumMessageJSON.sprint.startdate !== undefined &&
+          scrumMessageJSON.sprint.startdate !== '' ){
+
+          var fulldate = new Date(scrumMessageJSON.sprint.startdate);
+
+          /* dia de la semana */
+          var day = fulldate.getDay();
+          var dayString = dayMap.get(day);
+          var month = fulldate.getMonth();
+          var monthString = monthMap.get(month);
+          var year = fulldate.getFullYear();
+
+          /* dia del mes */
+          var date = fulldate.getDate();
+
+          var dateformat = dayString+", "+ monthString +" " +date+ ", " + year;
+          params +="<h4>Start date: </h4><p>"+ dateformat +"</p>";
+
+
+
+
+
+        }
+        if(scrumMessageJSON.sprint.enddate !== null &&
+          scrumMessageJSON.sprint.enddate !== undefined &&
+          scrumMessageJSON.sprint.enddate !== '' ){
+
+          var fulldateEnd = new Date(scrumMessageJSON.sprint.enddate);
+
+          /* dia de la semana */
+          var dayEnd = fulldateEnd.getDay();
+          var dayStringEnd = dayMap.get(dayEnd);
+
+
+
+          var monthEnd = fulldateEnd.getMonth();
+          var monthStringEnd = monthMap.get(monthEnd);
+          var yearEnd = fulldateEnd.getFullYear();
+
+          /* dia del mes */
+          var dateEnd = fulldateEnd.getDate();
+
+          var dateformatEnd = dayStringEnd+", "+ monthStringEnd +" " +dateEnd+ ", " + yearEnd;
+          params +="<h4>End date: </h4><p>"+ dateformatEnd +"</p>";
+
+        }
+
+
+        if(params == ''){
+          return '';
+        }
+        else {
+          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'>"+ params +"</div>";
+          return body;
+
+        }
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       function getBodyStatusFieldsForUpdate(scrumMessageJSON, $index, msg){
 
         var params = "";
@@ -2102,7 +2341,8 @@ angular.module('myAppAngularMinApp')
 
         }
         else if(messageEventType == "sprint"){
-          /*messageText = parseCommitComment(githubMessageJSON);*/
+          messageText = parseSprint(scrumMessageJSON, $index, msg);
+
 
         }
         else if(messageEventType == "issue"){
@@ -2110,7 +2350,6 @@ angular.module('myAppAngularMinApp')
 
         }
         else if(messageEventType == "task"){
-          /*messageText = parseIssueComment(githubMessageJSON);*/
           messageText = parseTask(scrumMessageJSON, $index, msg);
 
 

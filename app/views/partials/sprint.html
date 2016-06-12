@@ -1,0 +1,578 @@
+
+
+
+<div class="row row-all-content" ng-show="!item.viewinDetail && tagTask == -1" >
+  <div class="row row-backlog-chart">
+    <div class="panel panel-info" id="panel-backlog-chart">
+
+
+
+      <!-- ---- ------------  cabecera  ---------------------- --- -->
+      <div class="panel-body panel-body-backlog-charts">
+
+        <!-- max:: num de userstories totales
+            current:: num userstories closed
+            color, es el color del circulo current
+            bdcolor:: el color de fondo -->
+
+
+        <!-- cambiarlo xdatos reales -->
+
+
+        <round-progress
+          max=50
+          current=20
+          color="#69F0F0"
+          bgcolor="#eaeaea"
+          radius="50"
+          stroke="10"
+          semi="true"
+          rounded="true"
+          clockwise="false"
+          responsive="false"
+          duration="800"
+          animation="easeInOutQuart"
+          animation-delay="0">
+          50/20
+        </round-progress>
+
+
+
+        <div class="summary-stats">
+          <span class="percent">50%</span>
+        </div>
+
+
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            total<br>
+            points
+          </p>
+
+
+        </div>
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            completed<br>
+            points
+          </p>
+
+
+        </div>
+
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            open<br>
+            tasks
+          </p>
+
+
+        </div>
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            closed<br>
+            tasks
+          </p>
+
+
+        </div>
+
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            blocked<br>
+            tasks
+          </p>
+
+
+        </div>
+
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            power<br>
+            dosis
+          </p>
+
+
+        </div>
+
+
+
+        <!-- esto lo quitamos --
+
+        <div class="summary-stats">
+          <!-- boton que muestra o no el grafico --
+          <a ng-show="rowCollectionUserStories.length > 0" class="btn btn-graphic" ng-click="">
+            <span class="fa fa-area-chart fa-3x"></span>
+          </a>
+
+        </div> -->
+
+
+
+
+
+      </div>  <!-- end panel body -->
+    </div>   <!-- end panel-info -->
+  </div>     <!-- end row:: <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
+                              (Panel1: borrar, editar, unlink:: settings de grupo) -->
+  <!----------------- end cabecera ---------------------------------------------------------->
+
+
+
+
+
+
+<!--- grafico demomento lo quitamos -----------------------------------
+
+  <div ng-show="showgraph.show && rowCollectionUserStories.length > 0"
+       class="row row-backlog-charts-show-graph">
+    <div class="panel panel-info" id="panel-backlog-graphs">
+
+
+      <div class="panel-body panel-body-backlog-graphs">
+
+        <!-- y aqui meteriamos la grafica -->
+        <!-- hay que modificarla en base a los puntos que haya -->
+
+
+        <!-- .chart-line
+        chart-data: series data
+        chart-labels: x axis labels
+        chart-legend (default: false): show legend below the chart
+        chart-options (default: {}): Chart.js options
+        chart-series (default: []): series labels
+        chart-click (optional): onclick event handler
+        chart-hover (optional): onmousemove event handler
+        chart-colours (default to global colours): colours for the chart --
+
+
+
+
+        <canvas id="line" class="chart chart-line" chart-data="chartdata"
+                chart-labels="labels" chart-legend="false" chart-series="series"
+                chart-click="onClickpoints" >
+        </canvas>
+
+      </div> <!-- end panel-body --
+
+
+    </div> <!-- end panel-info --
+  </div> <!-- end row-settings1::<div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
+                              (Panel1: borrar, editar, unlink:: settings de grupo) -->
+
+
+
+
+
+
+  <div class="row row-backlog-sprints">
+    <div class="panel panel-info" id="panel-backlog-sprints">
+
+
+
+
+      <!-- dejamos el panel anterior para que se cubra la pantalla -->
+
+      <div class="panel-body panel-body-backlog-sprints" ng-show="rowCollectionSprints.length == 0">
+
+        <div class="panel-sprints-empty">
+          <div class="container">
+          </div>
+        </div>
+
+        <div class="carousel-caption">
+
+
+
+          <a class="btn btn-large btn-success" data-toggle="modal" data-target="#newSprintModal" ng-click="initVarsNewSprintModal()">
+            <i class="fa fa-plus"></i>
+            Add a new sprint
+          </a>
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+
+      <!-- ------------ tod esto se muestra si hay sprints:: tabla -------------------- -->
+      <div class="panel-body panel-body-backlog-sprints" ng-show="rowCollectionSprints.length > 0">
+
+        <!-- hay que meter container fluid para dividir nivel btn aniadir y la lista -->
+        <!-- boton de aniadir userstory -->
+
+
+        <div class="row row-backlog-sprints-new-btn">
+          <div class="panel panel-info" id="panel-backlog-sprints-new-btn">
+            <div class="panel-body panel-body-backlog-sprints-new-btn">
+
+
+              <form>
+                <div class="form-group">
+                  <div class="input-group">
+
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                          <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+
+
+                    <!-- --------------------- esto hay que modificarlo ------------------- -->
+                    <span class="input-group-btn">
+                      <oi-select
+                        oi-options="item.name for item in comboOptions track by item.name"
+                        ng-model="comboOptionsSelected" ng-change="clearValuesofSearchUS(comboOptionsSelected.num)">
+                      </oi-select>
+                    </span>
+
+
+                    <input ng-show="comboOptionsSelected.num == 0" type="text" class="form-control searchUS" placeholder="Search by all fields" ng-model="searchUS.$"/>
+                    <input ng-show="comboOptionsSelected.num == 1" type="text" class="form-control searchUS" placeholder="Search by subject" ng-model="searchUS.subject"/>
+
+                    <input ng-show="comboOptionsSelected.num == 2" type="text" class="form-control searchUS" placeholder="Search by status" ng-model="searchUS.status"/>
+                    <input ng-show="comboOptionsSelected.num == 3" type="text" class="form-control searchUS" placeholder="Search by tags" ng-model="searchTags"/>
+                    <!--ng-model="searchUS.tags"-->
+
+
+                    <!-- no hay seleccionados -->
+                    <span ng-show="tableCells.selected.length == 0" class="input-group-btn">
+                      <div class="input-group-btn">
+                        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#newSprintModal" ng-click="initVarsNewSprintModal()">
+                          <i class="fa fa-plus"></i>
+                          Add a new sprint
+                        </button>
+                      </div>
+                    </span>
+
+
+                    <!-- si hay varios seleccionados -->
+                    <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
+                      <div class="input-group-btn">
+                        <button class="btn btn-warning" type="button">
+                          <i class="fa fa-exchange"></i>
+                          Move to sprint
+                        </button>
+
+                        <button class="btn btn-danger" type="button" ng-click="removeUSs()">
+                          <i class="fa fa-trash"></i>
+                          Delete
+                        </button>
+                      </div>
+                    </span>
+
+
+
+                  </div>
+                </div>
+              </form>
+
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        <div class="row row-backlog-sprints-list">
+          <div class="panel panel-info" id="panel-backlog-sprints-list">
+            <div class="panel-body panel-body-backlog-sprints-list">
+
+
+              <!-- esto es 1 tabla con status,points, userstory y votes  -->
+
+              <!-- <th class="table-cell24">Subject</th>
+                  <th class="table-cell1">Status</th>
+                  <th class="table-cell06">Points</th>
+                  <th class="table-cell1">Tags</th> --->
+
+
+              <table class="table table-without-margin">
+                <thead>
+                <tr>
+
+
+                  <th class="table-cell01">
+                    <input type="checkbox" ng-click="checkAllNone(0)"
+                           ng-checked="ischeckedAllCells">
+
+                  </th>
+
+
+
+                  <th class="table-cell05">
+                    <a ng-click="sortType = 'voters'; sortReverse = !sortReverse">
+                      Votes
+                      <span ng-show="sortType == 'voters'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                      <span ng-show="tableCells.selected.length > 0"
+                            class="badge badge-warning pull-left">{{tableCells.selected.length}}</span>
+                    </a>
+
+                  </th>
+                  <th class="table-cell23">
+                    <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
+                      User Stories
+                      <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+
+                    </a>
+
+                  </th>
+                  <th class="table-cell1">
+                    <a ng-click="sortType = 'status'; sortReverse = !sortReverse">
+                      Status
+                      <span ng-show="sortType == 'status'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+
+                  </th>
+                  <th class="table-cell06">
+                    <a ng-click="sortType = 'totalPoints'; sortReverse = !sortReverse">
+                      Points
+                      <span ng-show="sortType == 'totalPoints'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+
+                  </th>
+                  <th class="table-cell1">
+                    <a ng-click="sortType = 'tags'; sortReverse = !sortReverse">
+                      Tags
+                      <span ng-show="sortType == 'tags'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+                  </th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                <!--  | orderBy:sortType:sortReverse |filter:searchUS:strict"
+                    ng-show="row.sprint == undefined "
+                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''"-->
+                <tr ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse | filter: (comboOptionsSelected.num == 3 ? {tags: searchTags} : searchUS)"
+                    ng-hide="row.sprint !== undefined"
+                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''">
+
+
+
+
+                  <td class="table-cell01">
+                    <input type="checkbox" data-checklist-model="tableCells.selected" data-checklist-value="row" ng-click="changeCheckedTableCell(row)">
+
+                    <!--cellSelectedClass -->
+
+                  </td>
+
+
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell05">{{row.voters.length}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell23">#{{row.num}} {{row.subject}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell1">{{row.status}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell06">{{row.totalPoints}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell1">
+                    <span class="label label-info" ng-repeat="tag in row.tags ">{{tag}}</span><br ng-repeat="tag in row.tags">
+                  </td>
+
+                </tr>
+                </tbody>
+
+
+              </table>
+
+
+
+
+            </div> <!-- end panel-body-backlog-userstories-list -->
+          </div> <!-- end panel-backlog-userstories-list -->
+        </div> <!-- end row-backlog-userstories-list -->
+
+
+
+
+      </div> <!-- end panel-body-backlog-userstories -->
+
+    </div> <!-- panel-info-->
+  </div> <!-- end row--->
+
+</div><!-- end row-all-content :: !item.viewinDetail && tagTask.num == undefined"-->
+
+
+
+
+
+<!--- ********** MODALS ************ -->
+
+
+<!-- ---- New Sprint Modal ---- -->
+<div id="newSprintModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+        <!-- hay que cambiar el initVarsNewUserstoryModal() -->
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initVarsNewSprintModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">New Sprint</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewSprintModal !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewSprintModal =''">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{modalsError.messageNewSprintModal}}
+
+        </div>
+
+
+
+
+
+
+        <!-- name -->
+        <div class="form-group">
+          <label for="sprintName">Name:</label>
+          <input type="text" class="form-control" name="sprintName"
+                 id="sprintName" placeholder="Enter Sprint Name..."
+                 ng-model="sprint.name">
+
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewSprintRequiredNameModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewSprintRequiredNameModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- cambiar esto diciendo que necesita que elcampo este completo -->
+            {{modalsError.messageNewSprintRequiredNameModal}}
+
+          </div>
+
+        </div>
+
+
+
+
+        <div class="row">
+
+          <div class="col-md-6">
+            <label for="sprintStartDate">From:</label>
+            <p class="input-group">
+
+              <input type="text" class="form-control"
+                     uib-datepicker-popup="{{format}}"
+                     ng-model="sprint.startdate"
+                     is-open="popup1.opened"
+                     datepicker-options="dateOptions"
+                     ng-required="true"
+                     close-text="Close"
+                     show-button-bar="false"
+                     id ="sprintStartDate"
+                     readonly />
+
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open1()">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </p>
+          </div>
+
+          <div class="col-md-6">
+            <label for="sprintEndDate">To:</label>
+            <p class="input-group">
+
+              <input type="text" class="form-control"
+                     uib-datepicker-popup="{{format}}"
+                     ng-model="sprint.enddate"
+                     is-open="popup2.opened"
+                     datepicker-options="dateOptionsEnd"
+                     ng-required="true"
+                     close-text="Close"
+                     show-button-bar="false"
+                     id ="sprintEndDate"
+                     readonly />
+
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open2()">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </p>
+          </div>
+
+
+
+
+        </div>
+
+
+    <!--
+        <div class="row">
+          <div class="col-md-6">
+            <label>Format: <span class="muted-text">(manual alternate <em>{{altInputFormats[0]}}</em>)</span></label> <select class="form-control" ng-model="format" ng-options="f for f in formats"><option></option></select>
+          </div>
+        </div>
+
+        <hr />
+        <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="setDate(2009, 7, 24)">2009-08-24</button>
+        <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button>
+
+-->
+      </div> <!-- end modal body -->
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-new-sprint" ng-click="createNewSprint()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables -->
+        <button type="button" class="btn btn-danger" id="btn-new-related-task-close" data-dismiss="modal" ng-click="initVarsNewSprintModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
