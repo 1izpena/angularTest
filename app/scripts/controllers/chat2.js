@@ -258,6 +258,14 @@ angular.module('myAppAngularMinApp')
         $("#sprintName").val('').trigger('input');
 
       }
+      function removeNameEditSprintText(){
+        $scope.sprint.name = "";
+        $("#sprintNameEdit").val('').trigger('input');
+
+      }
+
+
+
 
 
       /* metemos search y celltable */
@@ -1055,6 +1063,7 @@ angular.module('myAppAngularMinApp')
       function removeVarsEditSprintModal(){
 
         removeErrorMessageEditSprintModal();
+        removeNameEditSprintText();
 
         $scope.tagSprintTemp = {};
         $scope.tagSprintTemp.startdate = new Date();
@@ -1079,6 +1088,8 @@ angular.module('myAppAngularMinApp')
             datetimeTemp.enddate = new Date($scope.rowCollectionSprints[i].enddate);
 
 
+            $scope.tagSprintTemp.name = $scope.rowCollectionSprints[i].name;
+            $scope.tagSprintTemp.id = $scope.rowCollectionSprints[i].id;
 
             $scope.tagSprintTemp.startdate.setYear(datetimeTemp.startdate.getFullYear());
             $scope.tagSprintTemp.startdate.setMonth(datetimeTemp.startdate.getMonth());
@@ -1182,19 +1193,20 @@ angular.module('myAppAngularMinApp')
 
 
         $scope.dateEditOptions.minDate = new Date(2010, 5, 22);
-
-
-
-        var datetimeTempO2End = new Date();
         $scope.dateEditOptions.maxDate = new Date();
 
 
         datetimeTempO2.startdate = new Date($scope.tagSprintTemp.startdate);
+        datetimeTempO2.enddate = new Date();
+
+
 
 
         $scope.dateEditOptionsEnd.minDate.setYear(datetimeTempO2.startdate.getFullYear());
         $scope.dateEditOptionsEnd.minDate.setMonth(datetimeTempO2.startdate.getMonth());
         $scope.dateEditOptionsEnd.minDate.setDate(datetimeTempO2.startdate.getDate()+1);
+
+        console.log($scope.dateEditOptionsEnd.minDate);
 
 
 
@@ -1204,11 +1216,13 @@ angular.module('myAppAngularMinApp')
 
           datetimeTempO2.enddate = new Date($scope.rowCollectionSprints[$scope.indsrowColSp.following].startdate);
 
+          console.log("esto vale datetimeTempO2.enddate");
+          console.log(datetimeTempO2.enddate);
 
 
-          $scope.dateEditOptionsEnd.maxDate.setYear(datetimeTempO2End.getFullYear());
-          $scope.dateEditOptionsEnd.maxDate.setMonth(datetimeTempO2End.getMonth());
-          $scope.dateEditOptionsEnd.maxDate.setDate(datetimeTempO2End.getDate()+90);
+          $scope.dateEditOptionsEnd.maxDate.setYear(datetimeTempO2.enddate.getFullYear());
+          $scope.dateEditOptionsEnd.maxDate.setMonth(datetimeTempO2.enddate.getMonth());
+          $scope.dateEditOptionsEnd.maxDate.setDate(datetimeTempO2.enddate.getDate()-1);
 
 
         }
@@ -1219,24 +1233,12 @@ angular.module('myAppAngularMinApp')
 
         }
 
+        console.log("esto vale $scope.dateEditOptionsEnd.maxDate");
+        console.log($scope.dateEditOptionsEnd.maxDate);
+
 
       };
 
-
-
-      /******************************************************************************************/
-
-
-
-      $scope.editSprint = function(){
-        console.log("edit sprint");
-        console.log($scope.tagSprintTemp);
-
-      };
-
-
-
-      /*****************************************************************************/
 
 
       /*------------------------- datepicker------------------------------------*/
@@ -3161,6 +3163,60 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.editSprint = function() {
+
+
+        console.log("edit sprint");
+        console.log($scope.tagSprintTemp);
+
+
+
+
+
+        if($scope.tagSprintTemp.name == undefined ||
+          $scope.tagSprintTemp.name == null || $scope.tagSprintTemp.name == ''){
+
+          $scope.modalsError.messageEditSprintRequiredNameModal = "Field name is required.";
+
+        }
+        else {
+
+          $scope.tagSprintTemp.startdate = $scope.tagSprintTemp.startdate.toISOString();
+          $scope.tagSprintTemp.enddate = $scope.tagSprintTemp.enddate.toISOString();
+
+
+
+          /* mandamos el sprint */
+
+          ScrumService.editSprint($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagSprintTemp)
+            .then(function (res) {
+
+              $("#editSprintModal").modal("hide");
+
+              console.log("esto vale el sprint creado");
+              console.log(res.data);
+
+              $scope.initVarsEditSprintModal();
+
+              toastr.success('Sprint successfully updated', {
+                closeButton: true
+              });
+
+
+            }, function (err) {
+
+              $scope.modalsError.messageEditSprintModal = err.data.message;
+            });
+
+
+        }
+
+
+
+      };
+
+
+
 
 
       $scope.createNewSprint = function() {
@@ -3174,10 +3230,7 @@ angular.module('myAppAngularMinApp')
 
         }
         else {
-          console.log("pasa el else");
-          console.log("esto vale sprint");
-          console.log($scope.sprint);
-          console.log("ahora convertida en ISO");
+
           $scope.sprint.startdate = $scope.sprint.startdate.toISOString();
           $scope.sprint.enddate = $scope.sprint.enddate.toISOString();
           console.log($scope.sprint);
@@ -6614,6 +6667,125 @@ angular.module('myAppAngularMinApp')
         $scope.$apply();
 
       });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      Socket.on('updateSprint', function (data) {
+
+
+
+        if($scope.rowCollectionSprints !== undefined &&
+          $scope.rowCollectionSprints !== null &&
+          $scope.rowCollectionSprints !== '' &&
+          data.sprint !== undefined &&
+          data.sprint !== null &&
+          data.sprint !== '') {
+
+          for (var i = 0; i < $scope.rowCollectionSprints.length; i++) {
+
+            if ($scope.rowCollectionSprints[i].id == data.sprint.id) {
+
+              $scope.rowCollectionSprints[i] = data.sprint;
+              $scope.rowCollectionSprints[i].viewTableUs = true;
+
+            }
+          }
+
+
+
+
+
+
+
+          if($scope.tagSprint !== undefined &&
+            $scope.tagSprint !== null &&
+            $scope.tagSprint !== '' ){
+            if($scope.tagSprint.id !== undefined &&
+              $scope.tagSprint.id !== null &&
+              $scope.tagSprint.id !== ''){
+
+              if($scope.tagSprint.id == data.sprint.id){
+                $scope.tagSprint = data.sprint;
+                $scope.tagSprint.viewTableUs = true;
+
+
+              }
+              else{
+                $scope.tagSprint.viewTableUs = false;
+
+              }
+
+            }
+            /* si no hay ningun tag */
+            else {
+              $scope.ischeckedAllCells = false;
+              removeValTableCellRowSprint();
+              $scope.tableCells = {};
+              $scope.tableCells.selected = [];
+
+            }
+
+
+          }
+
+
+
+
+
+        }
+
+
+                /* si borro sprint y stoy anidada en US y en Task */
+
+
+
+        $scope.$apply();
+
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

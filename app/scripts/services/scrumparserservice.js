@@ -151,7 +151,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-          if(scrumMessageJSON.action == 'created' || scrumMessageJSON.action == 'deleted'){
+          if(scrumMessageJSON.action == 'created' || scrumMessageJSON.action == 'deleted' || scrumMessageJSON.action == 'updated'){
             projectParse = getProjectFields();
             actionParse = getActionFields(scrumMessageJSON);
 
@@ -162,10 +162,21 @@ angular.module('myAppAngularMinApp')
               sprintBodyParse = getBodyFieldsForSprintDeleted (scrumMessageJSON, $index, msg);
 
             }
-            else if(scrumMessageJSON.action == 'created' ){
+            else if(scrumMessageJSON.action == 'created' || scrumMessageJSON.action == 'updated'){
               sprintHeaderParse = getHeaderFieldsForSprint(scrumMessageJSON, $index, msg);
-              sprintBodyParse = getBodyFieldsForSprint (scrumMessageJSON, $index, msg, dayMap, monthMap);
+
+              if(scrumMessageJSON.action == 'created'){
+                sprintBodyParse = getBodyFieldsForSprint (scrumMessageJSON, $index, msg, dayMap, monthMap);
+
+              }
+              else if(scrumMessageJSON.action == 'updated'){
+                sprintBodyParse = getBodyFieldsForSprintEdit (scrumMessageJSON, $index, msg, dayMap, monthMap);
+              }
+
+
             }
+
+
 
 
           }
@@ -1877,7 +1888,7 @@ angular.module('myAppAngularMinApp')
           var date = fulldate.getDate();
 
           var dateformat = dayString+", "+ monthString +" " +date+ ", " + year;
-          params +="<h4>Start date: </h4><p>"+ dateformat +"</p>";
+          params +="<h5>Start date: </h5><h4>"+ dateformat +"</h4>";
 
 
 
@@ -1904,7 +1915,7 @@ angular.module('myAppAngularMinApp')
           var dateEnd = fulldateEnd.getDate();
 
           var dateformatEnd = dayStringEnd+", "+ monthStringEnd +" " +dateEnd+ ", " + yearEnd;
-          params +="<h4>End date: </h4><p>"+ dateformatEnd +"</p>";
+          params +="<h5>End date: </h5><h4>"+ dateformatEnd +"</h4>";
 
         }
 
@@ -1921,6 +1932,245 @@ angular.module('myAppAngularMinApp')
       }
 
 
+
+
+
+
+
+
+
+
+
+
+
+      function getBodyFieldsForSprintEdit(scrumMessageJSON, $index, msg, dayMap, monthMap){
+
+
+        /* solo start date y end date */
+        var params = "";
+        var body = "";
+
+        var dateformatOld ="";
+        var dateformatNew = "";
+
+
+        var fulldateOld = "";
+        var fulldateNew = "";
+
+
+
+        var dayOld, dayStringOld, monthOld, monthStringOld, yearOld, dateOld;
+        var dayNew, dayStringNew, monthNew, monthStringNew, yearNew, dateNew;
+
+
+        if(scrumMessageJSON.fieldschange !== null &&
+          scrumMessageJSON.fieldschange !== undefined &&
+          scrumMessageJSON.fieldschange !== '' ){
+
+          if(scrumMessageJSON.fieldschange.startdate !== null &&
+            scrumMessageJSON.fieldschange.startdate !== undefined &&
+            scrumMessageJSON.fieldschange.startdate !== ''){
+
+
+            fulldateOld = new Date(scrumMessageJSON.sprint.startdate);
+            fulldateNew = new Date(scrumMessageJSON.fieldschange.startdate);
+
+            /* dia de la semana */
+            dayOld = fulldateOld.getDay();
+            dayStringOld = dayMap.get(dayOld);
+            monthOld = fulldateOld.getMonth();
+            monthStringOld = monthMap.get(monthOld);
+            yearOld = fulldateOld.getFullYear();
+            dateOld = fulldateOld.getDate();
+
+
+
+
+            dayNew = fulldateNew.getDay();
+            dayStringNew = dayMap.get(dayNew);
+            monthNew = fulldateNew.getMonth();
+            monthStringNew = monthMap.get(monthNew);
+            yearNew = fulldateNew.getFullYear();
+            dateNew = fulldateNew.getDate();
+
+
+
+
+
+            dateformatOld = dayStringOld+", "+ monthStringOld +" " +dateOld+ ", " + yearOld;
+            dateformatNew = dayStringNew+", "+ monthStringNew +" " +dateNew+ ", " + yearNew;
+
+            if(dateformatOld !== dateformatNew){
+              params +="<h4>Start date changed:</h4><h5>FROM "+ dateformatOld +"</h5>" +
+                "<h5>TO "+ dateformatNew +"</h5>";
+
+            }
+
+
+
+
+
+
+
+          }
+
+          if(scrumMessageJSON.fieldschange.enddate !== null &&
+            scrumMessageJSON.fieldschange.enddate !== undefined &&
+            scrumMessageJSON.fieldschange.enddate !== ''){
+
+
+            fulldateOld = new Date(scrumMessageJSON.sprint.enddate);
+            fulldateNew = new Date(scrumMessageJSON.fieldschange.enddate);
+
+            dayOld = fulldateOld.getDay();
+            dayStringOld = dayMap.get(dayOld);
+            monthOld = fulldateOld.getMonth();
+            monthStringOld = monthMap.get(monthOld);
+            yearOld = fulldateOld.getFullYear();
+            dateOld = fulldateOld.getDate();
+
+
+
+
+            dayNew = fulldateNew.getDay();
+            dayStringNew = dayMap.get(dayNew);
+            monthNew = fulldateNew.getMonth();
+            monthStringNew = monthMap.get(monthNew);
+            yearNew = fulldateNew.getFullYear();
+            dateNew = fulldateNew.getDate();
+
+
+
+            dateformatOld = dayStringOld+", "+ monthStringOld +" " +dateOld+ ", " + yearOld;
+            dateformatNew = dayStringNew+", "+ monthStringNew +" " +dateNew+ ", " + yearNew;
+
+
+
+
+            if(dateformatOld !== dateformatNew){
+              params +="<h4>End date changed:</h4><h5>FROM "+ dateformatOld +"</h5>" +
+                      "<h5>TO "+ dateformatNew +"</h5>";
+
+            }
+
+
+          }
+
+          if(params == ""){
+
+            if(scrumMessageJSON.sprint.startdate !== null &&
+              scrumMessageJSON.sprint.startdate !== undefined &&
+              scrumMessageJSON.sprint.startdate !== '' ){
+
+              var fulldate = new Date(scrumMessageJSON.sprint.startdate);
+
+              /* dia de la semana */
+              var day = fulldate.getDay();
+              var dayString = dayMap.get(day);
+              var month = fulldate.getMonth();
+              var monthString = monthMap.get(month);
+              var year = fulldate.getFullYear();
+
+              /* dia del mes */
+              var date = fulldate.getDate();
+
+              var dateformat = dayString+", "+ monthString +" " +date+ ", " + year;
+              params +="<h5>Start date: </h5><h4>"+ dateformat +"</h4>";
+
+
+
+            }
+            if(scrumMessageJSON.sprint.enddate !== null &&
+              scrumMessageJSON.sprint.enddate !== undefined &&
+              scrumMessageJSON.sprint.enddate !== '' ){
+
+              var fulldateEnd = new Date(scrumMessageJSON.sprint.enddate);
+
+              /* dia de la semana */
+              var dayEnd = fulldateEnd.getDay();
+              var dayStringEnd = dayMap.get(dayEnd);
+
+
+
+              var monthEnd = fulldateEnd.getMonth();
+              var monthStringEnd = monthMap.get(monthEnd);
+              var yearEnd = fulldateEnd.getFullYear();
+
+              /* dia del mes */
+              var dateEnd = fulldateEnd.getDate();
+
+              var dateformatEnd = dayStringEnd+", "+ monthStringEnd +" " +dateEnd+ ", " + yearEnd;
+              params +="<h5>End date: </h5><h4>"+ dateformatEnd +"</h4>";
+
+            }
+
+          }
+
+
+        }
+        else{
+
+
+          if(scrumMessageJSON.sprint.startdate !== null &&
+            scrumMessageJSON.sprint.startdate !== undefined &&
+            scrumMessageJSON.sprint.startdate !== '' ){
+
+            var fulldate = new Date(scrumMessageJSON.sprint.startdate);
+
+            /* dia de la semana */
+            var day = fulldate.getDay();
+            var dayString = dayMap.get(day);
+            var month = fulldate.getMonth();
+            var monthString = monthMap.get(month);
+            var year = fulldate.getFullYear();
+
+            /* dia del mes */
+            var date = fulldate.getDate();
+
+            var dateformat = dayString+", "+ monthString +" " +date+ ", " + year;
+            params +="<h5>Start date: </h5><h4>"+ dateformat +"</h4>";
+
+
+
+          }
+          if(scrumMessageJSON.sprint.enddate !== null &&
+            scrumMessageJSON.sprint.enddate !== undefined &&
+            scrumMessageJSON.sprint.enddate !== '' ){
+
+            var fulldateEnd = new Date(scrumMessageJSON.sprint.enddate);
+
+            /* dia de la semana */
+            var dayEnd = fulldateEnd.getDay();
+            var dayStringEnd = dayMap.get(dayEnd);
+
+
+
+            var monthEnd = fulldateEnd.getMonth();
+            var monthStringEnd = monthMap.get(monthEnd);
+            var yearEnd = fulldateEnd.getFullYear();
+
+            /* dia del mes */
+            var dateEnd = fulldateEnd.getDate();
+
+            var dateformatEnd = dayStringEnd+", "+ monthStringEnd +" " +dateEnd+ ", " + yearEnd;
+            params +="<h5>End date: </h5><h4>"+ dateformatEnd +"</h4>";
+
+          }
+
+
+
+        }
+
+        if(params == ''){
+          return '';
+        }
+        else {
+          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'>"+ params +"</div>";
+          return body;
+
+        }
+
+      };
 
 
 

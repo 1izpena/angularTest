@@ -24,6 +24,7 @@ angular.module('myAppAngularMinApp')
         deleteUSs : deleteUSs,
         getSprints: getSprints,
         createSprint: createSprint,
+        editSprint: editSprint,
         deleteSprints: deleteSprints,
         getIssues: getIssues
 
@@ -547,6 +548,32 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+      function editSprint(groupid, channelid, sprint) {
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        $http({
+          method: 'put',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/sprints/'+sprint.id,
+          headers: { 'x-access-token': $localStorage.token },
+          data: sprint
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
 
 
 
