@@ -32,7 +32,8 @@
           responsive="false"
           duration="800"
           animation="easeInOutQuart"
-          animation-delay="0">
+          animation-delay="0"
+          id="roundprogress-sprint">
           50/20
         </round-progress>
 
@@ -231,7 +232,9 @@
 
               <form>
                 <div class="form-group">
-                  <div class="input-group">
+
+                  <!------------------- busquedas para sprints + botones edit, delete ... ------------------------------------>
+                  <div class="input-group" ng-show="tagSprint.num == undefined">
 
 
                     <span class="input-group-btn">
@@ -241,7 +244,68 @@
                     </span>
 
 
-                    <!-- --------------------- esto hay que modificarlo ------------------- -->
+                    <input type="text" class="form-control searchSprint" placeholder="Search by name" ng-model="searchSprint"/>
+
+                    <!-- no hay seleccionados -->
+                    <span ng-show="tableCells.selected.length == 0" class="input-group-btn">
+                      <div class="input-group-btn">
+                        <button class="btn btn-success" type="button" data-toggle="modal"
+                                data-target="#newSprintModal" ng-click="initVarsNewSprintModal()">
+                          <i class="fa fa-plus"></i>
+                          Add a new sprint
+                        </button>
+                      </div>
+                    </span>
+
+
+                    <!-- si hay varios seleccionados delete -->
+                    <span ng-show="tableCells.selected.length > 1" class="input-group-btn">
+                      <div class="input-group-btn">
+
+                        <button class="btn btn-danger" type="button" ng-click="removeSprints()">
+                          <i class="fa fa-trash"></i>
+                          Delete
+                        </button>
+                      </div>
+                    </span>
+
+                    <!-- hay 1 seleccionado:: editar, borrar -->
+                    <span ng-show="tableCells.selected.length ==1" class="input-group-btn">
+                      <div class="input-group-btn">
+                        <button class="btn btn-info" type="button" data-toggle="modal"
+                                data-target="#editSprintModal" ng-click="initVarsEditSprintModal()">
+
+                          <i class="fa fa-pencil"></i>
+                          Edit
+                        </button>
+
+                        <button class="btn btn-danger" type="button" ng-click="removeSprints()">
+                          <i class="fa fa-trash"></i>
+                          Delete
+                        </button>
+                      </div>
+                    </span>
+
+
+
+                  </div>
+
+
+
+
+
+                  <!------------------------ busquedas para US + botones ----------------------------------->
+                  <div class="input-group" ng-show="tagSprint.num !== undefined">
+
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                          <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+
+
+
                     <span class="input-group-btn">
                       <oi-select
                         oi-options="item.name for item in comboOptions track by item.name"
@@ -272,9 +336,15 @@
                     <!-- si hay varios seleccionados -->
                     <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
                       <div class="input-group-btn">
-                        <button class="btn btn-warning" type="button">
+                        <button class="btn btn-warning" type="button"
+                                data-toggle="modal" data-target="#changeSprintToUserStoryModal">
                           <i class="fa fa-exchange"></i>
                           Move to sprint
+                        </button>
+                        <button class="btn btn-info" type="button"
+                                ng-click="unsassignedUSfromSprint()">
+                          <i class="fa fa-exchange"></i>
+                          Move to backlog
                         </button>
 
                         <button class="btn btn-danger" type="button" ng-click="removeUSs()">
@@ -315,14 +385,106 @@
                   <th class="table-cell1">Tags</th> --->
 
 
-              <table class="table table-without-margin">
+
+<!--table-without-margin-sprints-->
+
+              <table class="table"
+                ng-class="tagSprint.num == undefined ? 'table-without-margin-sprints' : 'table-without-margin-sprints-us'">
                 <thead>
+
+                <tr>
+
+
+                  <!-- esto solo quiero que se muestre cuando no hay sprint seleccionado -->
+                  <th class="table-cell01"
+                      ng-show="tagSprint.num == undefined" >
+
+                    <input type="checkbox" ng-click="checkAllNone(2)"
+                           ng-checked="ischeckedAllCells">
+
+                  </th>
+
+
+                  <th class="table-cell23">
+                    <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
+                      Sprints
+                      <span ng-show="sortType == 'num'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.num == undefined"></span>
+
+                      <span ng-show="tableCells.selected.length > 0 && tagSprint.num == undefined"
+                            class="badge badge-warning pull-right">{{tableCells.selected.length}}</span>
+                    </a>
+                  </th>
+
+                  <th class="table-cell23">
+                    <a ng-click="sortType = 'startdate'; sortReverse = !sortReverse">
+                      Start date
+                      <span ng-show="sortType == 'startdate'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.num == undefined"></span>
+                    </a>
+                  </th>
+
+                  <th class="table-cell23">
+                    <a ng-click="sortType = 'enddate'; sortReverse = !sortReverse">
+                      Ending date
+                      <span ng-show="sortType == 'enddate'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.num == undefined"></span>
+
+                    </a>
+                  </th>
+
+
+
+                </thead>
+
+
+                <tbody>
+
+                <tr ng-repeat="row in rowCollectionSprints | orderBy:sortType:sortReverse | filter: searchSprint"
+                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''"
+                    ng-show="row.viewTableUs">
+
+
+
+
+                  <td class="table-cell01" ng-show="tagSprint.num == undefined">
+                    <input type="checkbox" data-checklist-model="tableCells.selected" data-checklist-value="row" ng-click="changeCheckedTableCell(row)">
+
+                    <!--cellSelectedClass -->
+
+                  </td>
+
+                  <!--{{message.time | amDateFormat:'dddd, MMMM Do YYYY, h:mm:ss a'}}-->
+                  <td data-ng-click="viewSprintTableUS(row)" class="table-cell23">#{{row.num}} {{row.name}}</td>
+                  <td data-ng-click="viewSprintTableUS(row)" class="table-cell23">{{row.startdate | amDateFormat:'ddd, MMM D, YYYY'}} </td>
+                  <td data-ng-click="viewSprintTableUS(row)" class="table-cell23">{{row.enddate | amDateFormat:'ddd, MMM D, YYYY'}}</td>
+
+
+                </tr>
+                </tbody>
+
+
+              </table>
+
+
+
+
+
+
+
+
+
+              <!-- tabla US -->
+              <table class="table table-without-margin" ng-show="tagSprint.num !== undefined">
+                <thead>
+
                 <tr>
 
 
                   <th class="table-cell01">
                     <input type="checkbox" ng-click="checkAllNone(0)"
-                           ng-checked="ischeckedAllCells">
+                           ng-checked="ischeckedAllCells"
+                           ng-show="lookforUS() == false">
 
                   </th>
 
@@ -332,8 +494,6 @@
                     <a ng-click="sortType = 'voters'; sortReverse = !sortReverse">
                       Votes
                       <span ng-show="sortType == 'voters'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
-                      <span ng-show="tableCells.selected.length > 0"
-                            class="badge badge-warning pull-left">{{tableCells.selected.length}}</span>
                     </a>
 
                   </th>
@@ -341,7 +501,8 @@
                     <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
                       User Stories
                       <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
-
+                      <span ng-show="tableCells.selected.length > 0"
+                            class="badge badge-warning pull-right">{{tableCells.selected.length}}</span>
                     </a>
 
                   </th>
@@ -376,7 +537,7 @@
                     ng-show="row.sprint == undefined "
                     ng-class="row.selectedCell ? 'cellSelectedClass' : ''"-->
                 <tr ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse | filter: (comboOptionsSelected.num == 3 ? {tags: searchTags} : searchUS)"
-                    ng-hide="row.sprint !== undefined"
+                    ng-show="row.sprint !== undefined && tagSprint.id == row.sprint"
                     ng-class="row.selectedCell ? 'cellSelectedClass' : ''">
 
 
@@ -405,6 +566,27 @@
               </table>
 
 
+              <div ng-show="tagSprint.num !== undefined && lookforUS() == false"
+                   class = "table-sprints-empty-table-us">
+
+
+                <div class="panel-sprints-empty">
+                  <div class="container">
+                  </div>
+                </div>
+
+                <div class="carousel-caption" >
+
+                  <a class="btn btn-large btn-success" data-toggle="modal" data-target="#newUserStorySprintModal">
+                    <i class="fa fa-plus"></i>
+                    Add a new userstory
+                  </a>
+                </div>
+              </div>
+
+
+
+
 
 
             </div> <!-- end panel-body-backlog-userstories-list -->
@@ -426,6 +608,176 @@
 
 
 <!--- ********** MODALS ************ -->
+
+
+<!------------------------ new US modal ------------------------------------->
+
+<div id="newUserStorySprintModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initVarsNewUserstoryModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">New User Story</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryModal !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryModal =''">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{modalsError.messageNewUserstoryModal}}
+
+        </div>
+
+
+
+
+
+
+        <!-- subject -->
+        <div class="form-group">
+          <label for="userstorySubject">Subject:</label>
+          <input type="text" class="form-control" name="userstorySubjectTxt"
+                 id="userstorySubject" placeholder="Enter Userstory Subject..."
+                 ng-model="userstory.subject">
+
+          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryRequiredSubModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryRequiredSubModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{modalsError.messageNewUserstoryRequiredSubModal}}
+
+          </div>
+
+        </div>
+
+
+
+        <!-- points -->
+        <div class="form-group">
+
+          <div class="btn-group btn-group-justified">
+            <label>UX</label>
+            <label>Design</label>
+            <label>Back</label>
+            <label>Front</label>
+          </div>
+
+
+
+          <div class="btn-group btn-group-justified">
+
+            <button uib-popover-template="dynamicPopover.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryUX"
+                    popover="Popover 1">
+              {{userstory.point.ux}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverDes.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryDes"
+                    popover="Popover 2">
+              {{userstory.point.design}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverFront.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryFront"
+                    popover="Popover 3">
+              {{userstory.point.front}}
+            </button>
+
+            <button uib-popover-template="dynamicPopoverBack.templateUrl" popover-placement="bottom"
+                    type="button" class="btn btn-default" id="userstoryBack"
+                    popover="Popover 4">
+              {{userstory.point.back}}
+            </button>
+
+          </div>
+
+
+
+
+          <br>
+          <label class="total-points">Total points: {{
+            parseFloat(userstory.point.ux) +
+            parseFloat(userstory.point.design) +
+            parseFloat(userstory.point.front) +
+            parseFloat(userstory.point.back) }}</label>
+
+
+        </div> <!-- end form-group -->
+
+
+
+
+        <!-- tags (separar con tabulador) -->
+        <div class="form-group">
+          <label for="userstoryTag"> Tags: </label>
+          <br>
+
+          <tags-input ng-model="userstory.tags" display-property="text"
+                      placeholder="Tag me.."
+                      replace-spaces-with-dashes="false"
+                      id="userstoryTag">
+          </tags-input>
+        </div>
+
+
+
+        <!-- descripcion -->
+        <div class="form-group">
+          <label for="userstoryDescr">Description:</label>
+          <textarea class="form-control" id="userstoryDescr"
+                    placeholder="Enter description to helps others better understand..."
+                    ng-model="userstory.description">
+          </textarea>
+        </div>
+
+
+        <!-- requirement:: checkbox type requirement-->
+        <div class="form-group requirements">
+
+          <div class="btn-group">
+            <label class="btn btn-default" ng-model="userstory.requirement.team" uib-btn-checkbox>Team Requirement</label>
+            <label class="btn btn-default" ng-model="userstory.requirement.client" uib-btn-checkbox>Client Requirement</label>
+            <label class="btn btn-warning" ng-model="userstory.requirement.blocked" uib-btn-checkbox>Blocked</label>
+          </div>
+
+        </div>
+
+
+
+        <!-- falta votes ?-->
+
+      </div> <!-- end modal body -->
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-new-userstory" ng-click="createNewUserstory()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables -->
+        <button type="button" class="btn btn-danger" id="btn-new-userstory-close" data-dismiss="modal" ng-click="initVarsNewUserstoryModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 
 <!-- ---- New Sprint Modal ---- -->
@@ -456,10 +808,6 @@
           {{modalsError.messageNewSprintModal}}
 
         </div>
-
-
-
-
 
 
         <!-- name -->
@@ -536,21 +884,6 @@
 
         </div>
 
-
-    <!--
-        <div class="row">
-          <div class="col-md-6">
-            <label>Format: <span class="muted-text">(manual alternate <em>{{altInputFormats[0]}}</em>)</span></label> <select class="form-control" ng-model="format" ng-options="f for f in formats"><option></option></select>
-          </div>
-        </div>
-
-        <hr />
-        <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
-        <button type="button" class="btn btn-sm btn-default" ng-click="setDate(2009, 7, 24)">2009-08-24</button>
-        <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
-        <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button>
-
--->
       </div> <!-- end modal body -->
 
 
@@ -560,7 +893,108 @@
         </span> Create</button>
 
         <!-- inicializar variables -->
-        <button type="button" class="btn btn-danger" id="btn-new-related-task-close" data-dismiss="modal" ng-click="initVarsNewSprintModal()">
+        <button type="button" class="btn btn-danger" id="btn-new-sprint-close" data-dismiss="modal" ng-click="initVarsNewSprintModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!--------------------------------- select sprint to US modal------------------------------------------------>
+<!-- hacemos 1 lista de sprints : # num name :start date end date ------------->
+
+<div id="changeSprintToUserStoryModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+        <!-- hay que cambiar el initVarsNewUserstoryModal() -->
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">Move to Sprint</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <!-- puede que no haya sprints creados , en esecaso lo dices -->
+        <div class="alert alert-danger" role="alert"
+             ng-show="rowCollectionSprints == undefined ||
+             rowCollectionSprints == null ||
+             rowCollectionSprints == '' ||
+             rowCollectionSprints.length < 0 ">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          Not sprints yet, create a new sprint...
+
+        </div>
+
+
+
+        <table class="table table-hover">
+          <thead>
+
+          <tr>
+
+            <th class="table-cell23">
+              <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
+                Sprints
+                      <span ng-show="sortType == 'num'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+              </a>
+            </th>
+
+            <th class="table-cell23">
+              <a ng-click="sortType = 'startdate'; sortReverse = !sortReverse">
+                Start date
+                      <span ng-show="sortType == 'startdate'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+              </a>
+            </th>
+
+            <th class="table-cell23">
+              <a ng-click="sortType = 'enddate'; sortReverse = !sortReverse">
+                Ending date
+                      <span ng-show="sortType == 'enddate'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+              </a>
+            </th>
+
+          </thead>
+
+
+
+
+          <tbody>
+          <tr ng-repeat="row in rowCollectionSprints | orderBy:sortType:sortReverse"
+              ng-show="row.id !== tagSprint.id">
+            <!-- row -->
+            <td data-ng-click="editSprintUserstory(row)" class="table-cell23">#{{row.num}} {{row.name}}</td>
+            <td data-ng-click="editSprintUserstory(row)" class="table-cell23">{{row.startdate | amDateFormat:'ddd, MMM D, YYYY'}} </td>
+            <td data-ng-click="editSprintUserstory(row)" class="table-cell23">{{row.enddate | amDateFormat:'ddd, MMM D, YYYY'}}</td>
+
+          </tr>
+          </tbody>
+
+
+        </table>
+
+
+      </div> <!-- end modal body -->
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger" id="btn-closed-choose-sprint" data-dismiss="modal">
           <span class="fa fa-remove"></span> Close</button>
 
       </div>
@@ -571,6 +1005,135 @@
 
 
 
+
+
+
+<!-- ---- FALTA           !!!!!!!!!!! Edit Sprint Modal ---- -->
+<div id="editSprintModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+        <!-- hay que cambiar el () initVarsEditSprintModal-->
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initVarsEditSprintModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">Edit Sprint</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <div class="alert alert-danger" role="alert" ng-show="modalsError.messageEditSprintModal !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageEditSprintModal =''">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{modalsError.messageEditSprintModal}}
+
+        </div>
+
+
+
+
+
+
+        <!-- name -->
+        <div class="form-group">
+          <label for="sprintNameEdit">Name:</label>
+          <input type="text" class="form-control" name="sprintName"
+                 id="sprintNameEdit" placeholder="Enter Sprint Name..."
+                 ng-model="tagSprintTemp.name">
+
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageEditSprintRequiredNameModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageEditSprintRequiredNameModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- cambiar esto diciendo que necesita que elcampo este completo -->
+            {{modalsError.messageEditSprintRequiredNameModal}}
+
+          </div>
+
+        </div>
+
+
+
+
+        <div class="row">
+
+          <div class="col-md-6">
+            <label for="tagSprintStartDate">From:</label>
+            <p class="input-group">
+
+              <input type="text" class="form-control"
+                     uib-datepicker-popup="{{format}}"
+                     ng-model="tagSprintTemp.startdate"
+                     is-open="popupEdit1.opened"
+                     datepicker-options="dateEditOptions"
+                     ng-required="true"
+                     close-text="Close"
+                     show-button-bar="false"
+                     id ="tagSprintStartDate"
+                     readonly />
+
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openEdit1()">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </p>
+          </div>
+
+          <div class="col-md-6">
+            <label for="tagSprintEndDate">To:</label>
+            <p class="input-group">
+
+              <input type="text" class="form-control"
+                     uib-datepicker-popup="{{format}}"
+                     ng-model="tagSprintTemp.enddate"
+                     is-open="popupEdit2.opened"
+                     datepicker-options="dateEditOptionsEnd"
+                     ng-required="true"
+                     close-text="Close"
+                     show-button-bar="false"
+                     id ="tagSprintEndDate"
+                     readonly />
+
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openEdit2()">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </p>
+          </div>
+
+
+
+
+        </div>
+
+
+
+      </div> <!-- end modal body -->
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-edit-sprint" ng-click="editSprint()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables -->
+        <button type="button" class="btn btn-danger" id="btn-edit-sprint-close" data-dismiss="modal" ng-click="initVarsEditSprintModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

@@ -14,6 +14,8 @@ angular.module('myAppAngularMinApp')
         getUserstories: getUserstories,
         createUserstory: createUserstory,
         updateUserstory: updateUserstory,
+        updateUSsSprint: updateUSsSprint,
+        unassignedUSsFromSprint: unassignedUSsFromSprint,
         createRelatedTask: createRelatedTask,
         updateContributorsTask: updateContributorsTask,
         updateAssignedtoTask: updateAssignedtoTask,
@@ -22,6 +24,7 @@ angular.module('myAppAngularMinApp')
         deleteUSs : deleteUSs,
         getSprints: getSprints,
         createSprint: createSprint,
+        deleteSprints: deleteSprints,
         getIssues: getIssues
 
 
@@ -251,6 +254,110 @@ angular.module('myAppAngularMinApp')
 
 
 
+      function unassignedUSsFromSprint(groupid, channelid, arrUSUpdate){
+
+        var defered = $q.defer();
+        //var promise = defered.promise;
+
+        var userid = $localStorage.id;
+
+        var promise = $q.all(null);
+        var responsesUpdate = [];
+
+
+        var changesinuserstory = {};
+        changesinuserstory.field = 'unsprint';
+
+
+
+        angular.forEach(arrUSUpdate, function(userstoryid){
+
+          promise = promise.then(function(){
+            return $http({
+              method: 'put',
+              url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid,
+              headers: { 'x-access-token': $localStorage.token },
+              data: changesinuserstory
+
+            }).then(function(res){
+              responsesUpdate.push(res.data);
+            });
+          });
+        });
+
+        promise.then(function(){
+          defered.resolve(responsesUpdate);
+
+        });
+
+        return defered.promise;
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+      function updateUSsSprint(groupid, channelid, sprintid, arrUSUpdate){
+
+        var defered = $q.defer();
+        //var promise = defered.promise;
+
+        var userid = $localStorage.id;
+
+        var promise = $q.all(null);
+        var responsesUpdate = [];
+
+
+        var changesinuserstory = {};
+        changesinuserstory.userstory = {};
+        changesinuserstory.userstory.sprint = sprintid;
+
+        changesinuserstory.field = 'sprint';
+
+
+
+
+
+
+
+        angular.forEach(arrUSUpdate, function(userstoryid){
+          changesinuserstory.userstory.sprint = sprintid;
+
+          promise = promise.then(function(){
+            return $http({
+              method: 'put',
+              url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/userstories/'+ userstoryid,
+              headers: { 'x-access-token': $localStorage.token },
+              data: changesinuserstory
+
+            }).then(function(res){
+              responsesUpdate.push(res.data);
+            });
+          });
+        });
+
+        promise.then(function(){
+          defered.resolve(responsesUpdate);
+
+        });
+
+        return defered.promise;
+
+      };
+
+
+
+
+
 
       function deleteUSs(groupid, channelid, arrUSRemove){
 
@@ -284,6 +391,41 @@ angular.module('myAppAngularMinApp')
 
       };
 
+
+
+
+
+      function deleteSprints(groupid, channelid, arrSprintsRemove){
+
+        var defered = $q.defer();
+        //var promise = defered.promise;
+
+        var userid = $localStorage.id;
+
+        var promise = $q.all(null);
+        var responsesDelete = [];
+
+        angular.forEach(arrSprintsRemove, function(sprintid){
+          promise = promise.then(function(){
+            return $http({
+              method: 'delete',
+              headers: {'x-access-token': $localStorage.token},
+              url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/sprints/'+ sprintid,
+
+            }).then(function(res){
+              responsesDelete.push(res.data);
+            });
+          });
+        });
+
+        promise.then(function(){
+          defered.resolve(responsesDelete);
+
+        });
+
+        return defered.promise;
+
+      };
 
 
 
@@ -402,6 +544,11 @@ angular.module('myAppAngularMinApp')
         return promise;
 
       };
+
+
+
+
+
 
 
 

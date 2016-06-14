@@ -157,7 +157,10 @@
 
       <!-- dejamos el panel anterior para que se cubra la pantalla -->
 
-      <div class="panel-body panel-body-backlog-userstories" ng-show="rowCollectionUserStories.length == 0">
+      <!-- si es false no hay niguno que tenga x sprint NONE,
+      luego NO SE MOSTRARIA LA TABLA  -->
+      <div class="panel-body panel-body-backlog-userstories"
+           ng-show="rowCollectionUserStories.length == 0 || lookforUSWithSprint() == false">
 
         <div class="panel-backlog-empty">
           <div class="container">
@@ -184,7 +187,10 @@
 
 
       <!-- tod esto se muestra si hay userstories -->
-      <div class="panel-body panel-body-backlog-userstories" ng-show="rowCollectionUserStories.length > 0">
+      <!-- si es true,hay alguno que no tiene sprints asociados, asique se mostraria -->
+      <div class="panel-body panel-body-backlog-userstories"
+           ng-show="rowCollectionUserStories.length > 0 &&
+           lookforUSWithSprint()">
 
       <!-- hay que meter container fluid para dividir nivel btn aniadir y la lista -->
         <!-- boton de aniadir userstory -->
@@ -236,7 +242,7 @@
                     <!-- si hay varios seleccionados -->
                     <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
                       <div class="input-group-btn">
-                        <button class="btn btn-warning" type="button">
+                        <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#selectSprintToUserStoryModal">
                           <i class="fa fa-exchange"></i>
                           Move to sprint
                         </button>
@@ -296,8 +302,6 @@
                     <a ng-click="sortType = 'voters'; sortReverse = !sortReverse">
                       Votes
                       <span ng-show="sortType == 'voters'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
-                      <span ng-show="tableCells.selected.length > 0"
-                            class="badge badge-warning pull-left">{{tableCells.selected.length}}</span>
                     </a>
 
                   </th>
@@ -305,6 +309,8 @@
                     <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
                       User Stories
                       <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                      <span ng-show="tableCells.selected.length > 0"
+                            class="badge badge-warning pull-right">{{tableCells.selected.length}}</span>
 
                     </a>
 
@@ -456,7 +462,13 @@
             <div class="view-task-detail-userstory">
 
               <button class="btn related-tasks" type="button" ng-click ="viewRelatedTasksUserstory()">
+                <span ng-show="tagUserstory.tasks !== undefined &&
+                                tagUserstory.tasks !== null && tagUserstory.tasks !== '' &&
+                                tagUserstory.tasks.length > 0"
+                      class="badge badge-warning pull-left">{{tagUserstory.tasks.length}}</span>
+
                 Related tasks
+
 
                 <span
                   ng-class="item.viewRelatedTasks ? 'glyphicon glyphicon glyphicon-chevron-up' :'glyphicon glyphicon glyphicon-chevron-down'"
@@ -684,7 +696,7 @@
 
 
               <th class="table-cell01">
-                <input type="checkbox" ng-click="checkAllNone(0)"
+                <input type="checkbox" ng-click="checkAllNone(1)"
                        ng-checked="ischeckedAllCells">
               </th>
 
@@ -1377,6 +1389,103 @@
 
 
 
+<!--------------------------------- select sprint to US modal------------------------------------------------>
+<!-- hacemos 1 lista de sprints : # num name :start date end date ------------->
+
+<div id="selectSprintToUserStoryModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+        <!-- hay que cambiar el initVarsNewUserstoryModal() -->
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">Move to Sprint</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <!-- puede que no haya sprints creados , en esecaso lo dices -->
+        <div class="alert alert-danger" role="alert"
+             ng-show="rowCollectionSprints == undefined ||
+             rowCollectionSprints == null ||
+             rowCollectionSprints == '' ||
+             rowCollectionSprints.length < 0 ">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          Not sprints yet, create a new sprint...
+
+        </div>
+
+
+
+        <table class="table table-hover">
+          <thead>
+
+          <tr>
+
+            <th class="table-cell23">
+              <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
+                Sprints
+                      <span ng-show="sortType == 'num'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+              </a>
+            </th>
+
+            <th class="table-cell23">
+              <a ng-click="sortType = 'startdate'; sortReverse = !sortReverse">
+                Start date
+                      <span ng-show="sortType == 'startdate'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+              </a>
+            </th>
+
+            <th class="table-cell23">
+              <a ng-click="sortType = 'enddate'; sortReverse = !sortReverse">
+                Ending date
+                      <span ng-show="sortType == 'enddate'" class="fa"
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+              </a>
+            </th>
+
+          </thead>
+
+
+
+
+          <tbody>
+          <tr ng-repeat="row in rowCollectionSprints | orderBy:sortType:sortReverse">
+            <!-- row -->
+            <td data-ng-click="editSprintUserstory(row)" class="table-cell23">#{{row.num}} {{row.name}}</td>
+            <td data-ng-click="editSprintUserstory(row)" class="table-cell23">{{row.startdate | amDateFormat:'ddd, MMM D, YYYY'}} </td>
+            <td data-ng-click="editSprintUserstory(row)" class="table-cell23">{{row.enddate | amDateFormat:'ddd, MMM D, YYYY'}}</td>
+
+          </tr>
+          </tbody>
+
+
+        </table>
+
+
+      </div> <!-- end modal body -->
+
+
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-danger" id="btn-closed-choose-sprint" data-dismiss="modal">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -1420,7 +1529,7 @@
       <div class="modal-body" >
 
 
-        <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryModal !== ''">
+        <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewUserstoryModal !== ''">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryModal =''">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -1440,7 +1549,7 @@
                  id="userstorySubject" placeholder="Enter Userstory Subject..."
                  ng-model="userstory.subject">
 
-          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryRequiredSubModal !== ''">
+          <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewUserstoryRequiredSubModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryRequiredSubModal =''">
               <span aria-hidden="true">&times;</span>
             </button>

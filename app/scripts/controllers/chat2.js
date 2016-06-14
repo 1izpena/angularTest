@@ -143,6 +143,10 @@ angular.module('myAppAngularMinApp')
         $scope.modalsError.messageNewSprintModal = '';
 
 
+        $scope.modalsError.messageEditSprintRequiredNameModal = '';
+        $scope.modalsError.messageEditSprintModal = '';
+
+
 
 
 
@@ -157,6 +161,9 @@ angular.module('myAppAngularMinApp')
         removeVarsNewRelatedTaskModal();
 
         removeVarsNewSprintModal();
+
+
+        removeVarsEditSprintModal();
 
 
 
@@ -253,6 +260,7 @@ angular.module('myAppAngularMinApp')
       }
 
 
+      /* metemos search y celltable */
       function initVarsScrumChannelTasks () {
 
         //$scope.rowCollectionTasks = [];
@@ -263,6 +271,158 @@ angular.module('myAppAngularMinApp')
         removeCommentText();
 
       }
+
+
+
+      function initVarsScrumChannelSprintsGeneralViewWithUs(){
+
+        /* de momento tenemos tagSprint y cada rowCollection sprint con 1 var viewTableUs que hay que actualizar */
+        $scope.tagSprint = {};
+        resetSprintTableShow();
+
+
+      };
+
+
+      /* metemos search y celltable */
+      function initVarsScrumChannelSprints () {
+        initVarsScrumChannelSprintsGeneralViewWithUs();
+
+        $scope.formats = ['EEEE, MMMM dd, yyyy'];
+        $scope.format = $scope.formats[0];
+
+
+        $scope.minDateEditOpt = new Date(2010, 5, 22);
+        $scope.maxDateEditOpt = new Date(2020, 5, 22);
+
+        $scope.minDateEditOptEnd = new Date(2010, 5, 22);
+        $scope.maxDateEditOptEnd = new Date(2020, 5, 22);
+
+        $scope.minDateOpt = new Date();
+        $scope.maxDateOpt = new Date();
+
+        $scope.minDateOptEnd = new Date();
+
+
+
+
+        $scope.sprint = {};
+        $scope.sprint.startdate = new Date();
+        $scope.sprint.enddate = new Date();
+
+
+        $scope.tagSprintTemp = {};
+        $scope.tagSprintTemp.startdate = new Date();
+        $scope.tagSprintTemp.enddate = new Date();
+
+
+        /*var twoweeksafter = new Date();
+        twoweeksafter.setMonth($scope.sprint.startdate.getMonth());
+        twoweeksafter.setDate($scope.sprint.startdate.getDate() + 14);
+        $scope.sprint.enddate = twoweeksafter;*/
+
+
+        $scope.dateEditOptions = {
+          formatYear: 'yy',
+          minDate: $scope.minDateEditOpt,
+          maxDate: $scope.maxDateEditOpt,
+          startingDay: 1,
+          showButtonBar:false
+        };
+
+
+
+        $scope.dateEditOptionsEnd = {
+          formatYear: 'yy',
+          minDate: $scope.minDateEditOptEnd,
+          maxDate: $scope.maxDateEditOptEnd,
+          startingDay: 1,
+          showButtonBar:false
+        };
+
+
+
+        $scope.dateOptions = {
+          formatYear: 'yy',
+          maxDate: $scope.maxDateOpt,
+          minDate: $scope.minDateOpt,
+          startingDay: 1,
+          showButtonBar:false
+        };
+
+
+        $scope.dateOptionsEnd = {
+          formatYear: 'yy',
+          maxDate: new Date(2020, 5, 22),
+          minDate: $scope.minDateOptEnd,
+          startingDay: 1,
+          showButtonBar:false
+        };
+
+
+        //$scope.dateOptionsEnd.minDate = $scope.sprint.startdate;
+
+
+      };
+
+
+
+      $scope.lookforUSWithSprint = function (){
+        /* recorremos elarray de US si algunotiene ese sprint */
+        var enc = false;
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' &&
+          $scope.rowCollectionUserStories.length >0 ){
+
+
+          for( var i = 0; i< $scope.rowCollectionUserStories.length; i++){
+
+            if($scope.rowCollectionUserStories[i].sprint == undefined ||
+              $scope.rowCollectionUserStories[i].sprint == null ||
+              $scope.rowCollectionUserStories[i].sprint == '' ){
+
+
+              enc = true;
+            }
+          }
+        }
+
+        return enc;
+
+      };
+
+
+
+
+
+
+
+
+      $scope.lookforUS = function (){
+        /* recorremos elarray de US si algunotiene ese sprint */
+        var enc = false;
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' &&
+          $scope.rowCollectionUserStories.length >0 &&
+          $scope.tagSprint !== undefined &&
+          $scope.tagSprint !== null &&
+          $scope.tagSprint !== ''){
+
+
+
+          for( var i = 0; i< $scope.rowCollectionUserStories.length; i++){
+            if($scope.rowCollectionUserStories[i].sprint == $scope.tagSprint.id){
+              enc = true;
+            }
+          }
+        }
+        return enc;
+
+      }
+
+
 
       $scope.goBackFromDetailTask = function (){
         $scope.tagTask = -1;
@@ -299,14 +459,19 @@ angular.module('myAppAngularMinApp')
         /* inicializar busquedas en tabla */
         removeVarsSearchUS();
         removeVarsSearchTask();
+        removeVarsSearchSprint();
+
         /* inicializar que las filas de la tabla no estan seleccionadas */
         removeValTableCell();
 
 
-        $scope.tagUserstory = {};
-        $scope.tagUserstoryTemp = {};
+        /* tagUserstory tagUserstorytemp = {} */
+        removeVarsDetailUserstory();
+
+
 
         initVarsScrumChannelTasks ();
+        initVarsScrumChannelSprints ();
 
 
       }
@@ -332,8 +497,10 @@ angular.module('myAppAngularMinApp')
 
           removeVarsSearchUS();
           removeVarsSearchTask();
+          removeVarsSearchSprint();
           removeValTableCell();
           initVarsScrumChannelTasks ();
+          initVarsScrumChannelSprints();
 
         }
       };
@@ -342,17 +509,17 @@ angular.module('myAppAngularMinApp')
 
 
 
+      function removeValTableCellRowUS (){
+
+        if($scope.rowCollectionUserStories !== undefined){
+          uncheckAll($scope.rowCollectionUserStories);
+        }
+
+      };
 
 
-      /* usarlo cuando se inicia (init), cuando se cambia de vista en menu, y cuando se selecciona otro canal
-      * y cuando se hace true, viewrelatedtask */
-      function removeValTableCell (){
 
-        //$scope.ischeckedAllCells = false;
-
-
-        $scope.ischeckedAllCells = false;
-        uncheckAll($scope.rowCollectionUserStories);
+      function removeValTableCellTagUS (){
 
         if($scope.tagUserstory !== undefined){
           if($scope.tagUserstory.tasks !== undefined){
@@ -362,8 +529,34 @@ angular.module('myAppAngularMinApp')
             }
           }
         }
+      };
 
 
+
+      function removeValTableCellRowSprint (){
+
+        if($scope.rowCollectionSprints !== undefined){
+          uncheckAll($scope.rowCollectionSprints);
+
+        }
+
+      };
+
+
+
+
+      /* usarlo cuando se inicia (init), cuando se cambia de vista en menu, y cuando se selecciona otro canal
+      * y cuando se hace true, viewrelatedtask */
+      function removeValTableCell (){
+
+        $scope.ischeckedAllCells = false;
+
+        removeValTableCellRowUS();
+        removeValTableCellTagUS();
+        removeValTableCellRowSprint();
+
+        $scope.tableCells = {};
+        $scope.tableCells.selected = [];
 
       }
 
@@ -787,6 +980,11 @@ angular.module('myAppAngularMinApp')
       }
 
 
+      function removeErrorMessageEditSprintModal(){
+        $scope.modalsError.messageEditSprintRequiredNameModal = '';
+        $scope.modalsError.messageEditSprintModal = '';
+
+      }
 
 
 
@@ -853,29 +1051,241 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+      function removeVarsEditSprintModal(){
+
+        removeErrorMessageEditSprintModal();
+
+        $scope.tagSprintTemp = {};
+        $scope.tagSprintTemp.startdate = new Date();
+        $scope.tagSprintTemp.enddate = new Date();
+
+
+        var datetimeTemp = {};
+        datetimeTemp.startdate = new Date();
+        datetimeTemp.enddate = new Date();
+
+
+
+        $scope.indsrowColSp = {};
+        $scope.indsrowColSp.previous = -1;
+        $scope.indsrowColSp.following = -1;
+
+        for( var i = 0; i <$scope.rowCollectionSprints.length; i++){
+          if($scope.rowCollectionSprints[i].selectedCell){
+
+
+            datetimeTemp.startdate = new Date($scope.rowCollectionSprints[i].startdate);
+            datetimeTemp.enddate = new Date($scope.rowCollectionSprints[i].enddate);
+
+
+
+            $scope.tagSprintTemp.startdate.setYear(datetimeTemp.startdate.getFullYear());
+            $scope.tagSprintTemp.startdate.setMonth(datetimeTemp.startdate.getMonth());
+            $scope.tagSprintTemp.startdate.setDate(datetimeTemp.startdate.getDate());
+
+
+
+            $scope.tagSprintTemp.enddate.setYear(datetimeTemp.enddate.getFullYear());
+            $scope.tagSprintTemp.enddate.setMonth(datetimeTemp.enddate.getMonth());
+            $scope.tagSprintTemp.enddate.setDate(datetimeTemp.enddate.getDate());
+
+
+
+
+
+            if(i > 0){
+              $scope.indsrowColSp.previous = i-1;
+            }
+            if((i+1) < $scope.rowCollectionSprints.length){
+              $scope.indsrowColSp.following = i+ 1;
+
+            }
+
+
+            i= $scope.rowCollectionSprints.length;
+
+          }
+        }
+
+
+
+        $scope.popupEdit1 = {
+          opened: false
+        };
+
+        $scope.popupEdit2 = {
+          opened: false
+        };
+
+
+
+
+      }
+
+
+      /* aun no se que variables usar asique se queda vacia */
+      $scope.initVarsEditSprintModal = function(){
+        removeVarsEditSprintModal();
+
+
+      };
+
+
+
+
+
+
+
+      /*********************** datepicker for edit modal *********************************/
+
+      $scope.openEdit1 = function() {
+        $scope.popupEdit1.opened = true;
+
+
+        var datetimeTempO1 = {};
+
+
+        $scope.dateEditOptions.minDate = new Date(2010, 5, 22);
+        $scope.dateEditOptions.maxDate = new Date(2020, 5, 22);
+
+
+
+        /* para la fecha minima, el final de la anterior */
+        if($scope.indsrowColSp.previous > -1){
+
+          datetimeTempO1.enddate = new Date($scope.rowCollectionSprints[$scope.indsrowColSp.previous].enddate);
+
+
+          $scope.dateEditOptions.minDate.setYear(datetimeTempO1.enddate.getFullYear());
+          $scope.dateEditOptions.minDate.setMonth(datetimeTempO1.enddate.getMonth());
+          $scope.dateEditOptions.minDate.setDate(datetimeTempO1.enddate.getDate() + 1);
+
+
+        }
+
+        datetimeTempO1.startdate = new Date( $scope.tagSprintTemp.enddate);
+
+        $scope.dateEditOptions.maxDate.setYear(datetimeTempO1.startdate.getFullYear());
+        $scope.dateEditOptions.maxDate.setMonth(datetimeTempO1.startdate.getMonth());
+        $scope.dateEditOptions.maxDate.setDate(datetimeTempO1.startdate.getDate() - 1);
+
+      };
+
+
+
+
+      $scope.openEdit2 = function() {
+        $scope.popupEdit2.opened = true;
+
+        var datetimeTempO2 = {};
+
+
+        $scope.dateEditOptions.minDate = new Date(2010, 5, 22);
+
+
+
+        var datetimeTempO2End = new Date();
+        $scope.dateEditOptions.maxDate = new Date();
+
+
+        datetimeTempO2.startdate = new Date($scope.tagSprintTemp.startdate);
+
+
+        $scope.dateEditOptionsEnd.minDate.setYear(datetimeTempO2.startdate.getFullYear());
+        $scope.dateEditOptionsEnd.minDate.setMonth(datetimeTempO2.startdate.getMonth());
+        $scope.dateEditOptionsEnd.minDate.setDate(datetimeTempO2.startdate.getDate()+1);
+
+
+
+
+        if($scope.indsrowColSp.following !== -1){
+
+
+          datetimeTempO2.enddate = new Date($scope.rowCollectionSprints[$scope.indsrowColSp.following].startdate);
+
+
+
+          $scope.dateEditOptionsEnd.maxDate.setYear(datetimeTempO2End.getFullYear());
+          $scope.dateEditOptionsEnd.maxDate.setMonth(datetimeTempO2End.getMonth());
+          $scope.dateEditOptionsEnd.maxDate.setDate(datetimeTempO2End.getDate()+90);
+
+
+        }
+        else{
+          $scope.dateEditOptionsEnd.maxDate.setYear(datetimeTempO2.enddate.getFullYear());
+          $scope.dateEditOptionsEnd.maxDate.setMonth(datetimeTempO2.enddate.getMonth());
+          $scope.dateEditOptionsEnd.maxDate.setDate(datetimeTempO2.enddate.getDate()+90);
+
+        }
+
+
+      };
+
+
+
+      /******************************************************************************************/
+
+
+
+      $scope.editSprint = function(){
+        console.log("edit sprint");
+        console.log($scope.tagSprintTemp);
+
+      };
+
+
+
       /*****************************************************************************/
 
 
       /*------------------------- datepicker------------------------------------*/
 
 
-      $scope.formats = ['EEEE, MMMM dd, yyyy'];
-      $scope.format = $scope.formats[0];
+
 
 
       $scope.open1 = function() {
         $scope.popup1.opened = true;
+
+        var tempdate = new Date($scope.sprint.startdate);
+        var tempdateEnd = new Date($scope.sprint.enddate);
+
+        $scope.dateOptions.minDate = new Date();
+        $scope.dateOptions.minDate.setYear(tempdate.getFullYear());
+        $scope.dateOptions.minDate.setMonth(tempdate.getMonth());
+        $scope.dateOptions.minDate.setDate(tempdate.getDate());
+
+
+        $scope.dateOptions.maxDate = new Date();
+        $scope.dateOptions.maxDate.setYear(tempdateEnd.getFullYear());
+        $scope.dateOptions.maxDate.setMonth(tempdateEnd.getMonth());
+        $scope.dateOptions.maxDate.setDate(tempdateEnd.getDate()-1);
+
       };
+
+
 
       $scope.open2 = function() {
         $scope.popup2.opened = true;
 
         var twoweeksafter = new Date();
+        var tempdateEnd2 = new Date();
+
+        twoweeksafter.setYear($scope.sprint.startdate.getFullYear());
         twoweeksafter.setMonth($scope.sprint.startdate.getMonth());
         twoweeksafter.setDate($scope.sprint.startdate.getDate() + 14);
 
         $scope.sprint.enddate = twoweeksafter;
-        $scope.dateOptionsEnd.minDate = $scope.sprint.startdate;
+
+
+        tempdateEnd2 = new Date($scope.sprint.startdate);
+
+        $scope.dateOptionsEnd.minDate = new Date();
+        $scope.dateOptionsEnd.minDate.setYear(tempdateEnd2.getFullYear());
+        $scope.dateOptionsEnd.minDate.setMonth(tempdateEnd2.getMonth());
+        $scope.dateOptionsEnd.minDate.setDate(tempdateEnd2.getDate()+1);
+
 
       };
 
@@ -887,34 +1297,30 @@ angular.module('myAppAngularMinApp')
       /*****************************************************************************/
 
 
-      /* dar valores x defecto y borrar esos valores ??*/
-
 
       /* esto se hace, en el init, al cerrar la modal y al abrirla */
 
 
-      $scope.minDateOpt = new Date();
-      $scope.minDateOptEnd = new Date();
 
 
       function removeVarsNewSprintModal(){
 
         $scope.sprint = {};
         $scope.sprint.startdate = new Date();
+        $scope.sprint.enddate = new Date();
 
 
 
         /* por si no hay sprint anteriores */
         var datetimeTempMin = new Date();
+
         $scope.minDateOpt = new Date();
+
+        $scope.maxDateOpt = new Date();
 
         $scope.dateOptions.minDate = $scope.minDateOpt.setDate(datetimeTempMin.getDate() -90);
 
 
-
-
-        console.log("esto vale rowCollectionSprints");
-        console.log($scope.rowCollectionSprints);
 
         if($scope.rowCollectionSprints !== undefined &&
           $scope.rowCollectionSprints !== null &&
@@ -929,33 +1335,28 @@ angular.module('myAppAngularMinApp')
             $scope.rowCollectionSprints[$scope.rowCollectionSprints.length -1].startdate !== ''){
 
             var datetimeTemp = new Date($scope.rowCollectionSprints[$scope.rowCollectionSprints.length -1].enddate);
-            console.log("estovale$scope.sprint.startdate dentro del if");
+
+            $scope.sprint.startdate.setYear(datetimeTemp.getFullYear());
             $scope.sprint.startdate.setMonth(datetimeTemp.getMonth());
             $scope.sprint.startdate.setDate(datetimeTemp.getDate()+1);
 
 
 
-            console.log($scope.sprint.startdate);
+            $scope.dateOptions.minDate = new Date($scope.sprint.startdate);
+
+            var twoweeksafter = new Date();
+
+            twoweeksafter.setYear($scope.sprint.startdate.getFullYear());
+            twoweeksafter.setMonth($scope.sprint.startdate.getMonth());
+            twoweeksafter.setDate($scope.sprint.startdate.getDate() + 14);
+            $scope.sprint.enddate = twoweeksafter;
 
 
-            /* hay que desabilitar los anteriores */
-
-            $scope.dateOptions.minDate = $scope.sprint.startdate;
+            $scope.dateOptions.maxDate = new Date($scope.sprint.enddate);
 
           }
 
-
-
-
         }
-
-        var twoweeksafter = new Date();
-        twoweeksafter.setMonth($scope.sprint.startdate.getMonth());
-        twoweeksafter.setDate($scope.sprint.startdate.getDate() + 14);
-
-
-        $scope.sprint.enddate = twoweeksafter;
-        $scope.dateOptionsEnd.minDate = $scope.sprint.startdate;
 
 
         $scope.popup1 = {
@@ -966,39 +1367,12 @@ angular.module('myAppAngularMinApp')
           opened: false
         };
 
+
+
         removeErrorMessageNewSprintModal();
         removeNameNewSprintText();
 
       }
-
-
-      $scope.dateOptions = {
-        //dateDisabled: disabled,
-        formatYear: 'yy',
-        maxDate: new Date(2020, 5, 22),
-        minDate: $scope.minDateOpt,
-        /*minDate: $scope.minDate,*/
-        /*las semanas empiezan en lunes:1*/
-        startingDay: 1,
-        showButtonBar:false
-      };
-
-
-      $scope.sprint = {};
-      $scope.sprint.startdate = new Date();
-      $scope.dateOptionsEnd = {
-        //dateDisabled: disabled,
-        formatYear: 'yy',
-        maxDate: new Date(2020, 5, 22),
-        minDate: $scope.minDateOptEnd,
-        startingDay: 1,
-        showButtonBar:false
-      };
-
-
-
-
-
 
 
 
@@ -1178,8 +1552,12 @@ angular.module('myAppAngularMinApp')
             uncheckAll($scope.rowCollectionUserStories);
 
           }
-          else {
+          else if (num == 1){
             uncheckAll($scope.tagUserstory.tasks);
+          }
+          else{
+            uncheckAll($scope.rowCollectionSprints);
+
           }
           $scope.ischeckedAllCells = false;
 
@@ -1189,14 +1567,21 @@ angular.module('myAppAngularMinApp')
             checkAll($scope.rowCollectionUserStories);
 
           }
-          else {
+          else if (num == 1){
             checkAll($scope.tagUserstory.tasks);
+          }
+          else{
+            checkAll($scope.rowCollectionSprints);
+
           }
           $scope.ischeckedAllCells = true;
         }
 
 
       };
+
+
+
 
 
 
@@ -1312,6 +1697,24 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+
+      $scope.clearValuesofSearchSprint = function() {
+
+        if($scope.searchSprint == undefined || $scope.searchSprint == ''){
+          $scope.searchSprint = {};
+        }
+
+        $scope.searchSprint = '';
+
+
+      };
+
+
+
+
+
       function removeVarsSearchUS(){
 
         $(".searchUS").val('').trigger('input');
@@ -1344,6 +1747,79 @@ angular.module('myAppAngularMinApp')
 
 
       }
+
+
+      function removeVarsSearchSprint(){
+
+        $(".searchSprint").val('').trigger('input');
+        $scope.sortType     = 'num';
+        $scope.sortReverse = false;
+        //$scope.ischeckedAllCellsTask = false;
+        $scope.searchSprint = '';
+
+        /* para que borre all of fields */
+        $scope.clearValuesofSearchSprint();
+
+
+      }
+
+
+
+
+
+      /* variable nueva como la de item */
+
+      function resetSprintTableShow(){
+        for( var i = 0; i< $scope.rowCollectionSprints.length; i++){
+
+          $scope.rowCollectionSprints[i].viewTableUs = true;
+
+
+
+
+        }
+
+      }
+
+
+
+
+      /* esto es para poner la tabla de US */
+      $scope.viewSprintTableUS = function(row) {
+
+
+        console.log("esto vale row");
+        console.log(row);
+
+
+        /* inicializamos el valor del combo de busqueda y el input del mismo */
+        removeVarsSearchSprint();
+
+
+        /* inicializamos variables de tabla */
+        $scope.ischeckedAllCells = false;
+        removeValTableCellRowSprint();
+        $scope.tableCells = {};
+        $scope.tableCells.selected = [];
+
+
+        $scope.tagSprint = row;
+
+
+        for( var i = 0; i< $scope.rowCollectionSprints.length; i++){
+          if($scope.rowCollectionSprints[i].id !== $scope.tagSprint.id){
+            $scope.rowCollectionSprints[i].viewTableUs = false;
+
+          }
+
+
+        }
+
+
+
+
+
+      };
 
 
 
@@ -1700,21 +2176,21 @@ angular.module('myAppAngularMinApp')
           .then(function (res) {
 
 
-            if( $scope.tagUserstory == undefined ||
-              $scope.tagUserstory !== null ||
-              $scope.tagUserstory !== '' ){
-              if($scope.rowCollectionUserStories !== undefined &&
-                $scope.rowCollectionUserStories !== null &&
-                $scope.rowCollectionUserStories !== '' &&
-                $scope.rowCollectionUserStories.length > 0){
+            if($scope.rowCollectionUserStories !== undefined &&
+              $scope.rowCollectionUserStories !== null &&
+              $scope.rowCollectionUserStories !== '' &&
+              $scope.rowCollectionUserStories.length > 0){
 
-                uncheckAll($scope.rowCollectionUserStories);
-                $scope.ischeckedAllCells = false;
 
-              }
+              uncheckAll($scope.rowCollectionUserStories);
 
             }
 
+
+
+            $scope.ischeckedAllCells = false;
+            $scope.tableCells = {};
+            $scope.tableCells.selected = [];
 
             console.log("esto vale las responses");
             console.log(res);
@@ -1750,6 +2226,73 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+      $scope.removeSprints = function( ) {
+
+        var arrSprintsRemove = [];
+
+        var groupid = $scope.tagGroup.id;
+        var channelid = $scope.tagChannel.id;
+        var userstoryid = $scope.tagUserstory.id;
+
+
+
+        for( var i = 0; i < $scope.rowCollectionSprints.length; i++){
+          /* mandamos a borrar 1 array de ids ********************/
+
+
+          if($scope.rowCollectionSprints[i].selectedCell){
+
+            arrSprintsRemove.push($scope.rowCollectionSprints[i].id);
+
+          }
+        }
+
+
+
+        ScrumService.deleteSprints(groupid, channelid, arrSprintsRemove)
+          .then(function (res) {
+
+
+            if($scope.rowCollectionSprints !== undefined &&
+              $scope.rowCollectionSprints !== null &&
+              $scope.rowCollectionSprints !== '' &&
+              $scope.rowCollectionSprints.length > 0){
+
+
+              uncheckAll($scope.rowCollectionSprints);
+
+
+            }
+
+            $scope.ischeckedAllCells = false;
+            $scope.tableCells = {};
+            $scope.tableCells.selected = [];
+
+
+
+            console.log("esto vale las responses");
+            console.log(res);
+
+
+            /* res puede ser undefined, controlarlo */
+            if( res !== undefined && res !== null && res !== '' && res.length >0){
+
+              toastr.success('' + res.length + ' sprints deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+            else{
+              toastr.success('Sprint deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+
+
+          });
+      };
 
 
 
@@ -1791,6 +2334,9 @@ angular.module('myAppAngularMinApp')
             if( $scope.tagUserstory !== undefined &&
               $scope.tagUserstory !== null &&
               $scope.tagUserstory !== '' ){
+
+
+              /* aunque no tenga tareas hay que borrar el array que tiene selected */
               if ($scope.tagUserstory.id == userstoryid &&
                 $scope.tagUserstory.tasks !== undefined &&
                 $scope.tagUserstory.tasks !== null &&
@@ -1798,10 +2344,14 @@ angular.module('myAppAngularMinApp')
                 $scope.tagUserstory.tasks.length > 0) {
 
                 uncheckAll($scope.tagUserstory.tasks);
-                $scope.ischeckedAllCells = false;
+
               }
 
             }
+
+            $scope.ischeckedAllCells = false;
+            $scope.tableCells = {};
+            $scope.tableCells.selected = [];
 
 
 
@@ -1961,6 +2511,209 @@ angular.module('myAppAngularMinApp')
             });
 
           });
+      };
+
+
+
+
+
+
+      /******************** unassign US from Sprint *******************************/
+
+
+      $scope.unsassignedUSfromSprint = function() {
+
+
+
+        var arrUSUpdate = [];
+
+        var groupid = $scope.tagGroup.id;
+        var channelid = $scope.tagChannel.id;
+
+
+
+
+        /* mirar los US seleccionados ************************/
+        for( var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          /* mandamos a borrar 1 array de ids ********************/
+
+          if($scope.rowCollectionUserStories[i].selectedCell){
+            console.log("userstory seleccionado");
+            console.log($scope.rowCollectionUserStories[i]);
+            arrUSUpdate.push($scope.rowCollectionUserStories[i].id);
+
+          }
+        }
+
+
+
+        ScrumService.unassignedUSsFromSprint(groupid, channelid,arrUSUpdate)
+          .then(function (res) {
+
+
+
+
+            console.log("antes de desseleccionar");
+            console.log("esto vale $scope.tagUserstory");
+            console.log($scope.tagUserstory);
+            console.log("esto vale $scope.rowCollectionUserStories");
+            console.log($scope.rowCollectionUserStories);
+
+
+            if($scope.rowCollectionUserStories !== undefined &&
+              $scope.rowCollectionUserStories !== null &&
+              $scope.rowCollectionUserStories !== '' &&
+              $scope.rowCollectionUserStories.length > 0){
+
+
+              uncheckAll($scope.rowCollectionUserStories);
+
+
+
+
+            }
+
+            $scope.ischeckedAllCells = false;
+            $scope.tableCells = {};
+            $scope.tableCells.selected = [];
+
+
+            console.log("esto vale las responses");
+            console.log(res);
+
+
+            /* res puede ser undefined, controlarlo */
+            if( res !== undefined && res !== null && res !== '' && res.length >0){
+
+              toastr.success('' + res.length + ' userstories unlinked from sprint succesfully', {
+                closeButton: true
+              });
+
+            }
+            else{
+              toastr.success('Userstories unlinked from sprint succesfully', {
+                closeButton: true
+              });
+
+            }
+
+
+          });
+
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /* ha esto le llama una modal que tenga los Sprints */
+      $scope.editSprintUserstory = function(sprintselected) {
+        console.log("esto vale es sprint seleted");
+        console.log(sprintselected);
+
+
+        var arrUSUpdate = [];
+
+        var groupid = $scope.tagGroup.id;
+        var channelid = $scope.tagChannel.id;
+
+
+
+
+        /* mirar los US seleccionados ************************/
+        for( var i = 0; i < $scope.rowCollectionUserStories.length; i++){
+          /* mandamos a borrar 1 array de ids ********************/
+
+          if($scope.rowCollectionUserStories[i].selectedCell){
+            console.log("userstory seleccionado");
+            console.log($scope.rowCollectionUserStories[i]);
+            arrUSUpdate.push($scope.rowCollectionUserStories[i].id);
+
+          }
+        }
+
+
+
+        ScrumService.updateUSsSprint(groupid, channelid, sprintselected.id ,arrUSUpdate)
+          .then(function (res) {
+
+            $("#selectSprintToUserStoryModal").modal("hide");
+            $("#changeSprintToUserStoryModal").modal("hide");
+
+
+            console.log("antes de desseleccionar");
+            console.log("esto vale $scope.tagUserstory");
+            console.log($scope.tagUserstory);
+            console.log("esto vale $scope.rowCollectionUserStories");
+            console.log($scope.rowCollectionUserStories);
+
+
+            if($scope.rowCollectionUserStories !== undefined &&
+              $scope.rowCollectionUserStories !== null &&
+              $scope.rowCollectionUserStories !== '' &&
+              $scope.rowCollectionUserStories.length > 0){
+
+
+              uncheckAll($scope.rowCollectionUserStories);
+
+
+
+
+            }
+
+            $scope.ischeckedAllCells = false;
+            $scope.tableCells = {};
+            $scope.tableCells.selected = [];
+
+
+            console.log("esto vale las responses");
+            console.log(res);
+
+
+            /* res puede ser undefined, controlarlo */
+            if( res !== undefined && res !== null && res !== '' && res.length >0){
+
+              toastr.success('' + res.length + ' userstories added to sprint succesfully', {
+                closeButton: true
+              });
+
+            }
+            else{
+              toastr.success('Userstories added to sprint succesfully', {
+                closeButton: true
+              });
+
+            }
+
+
+          });
+
+
       };
 
 
@@ -2334,10 +3087,28 @@ angular.module('myAppAngularMinApp')
 
         }
         else {
+
+          if($scope.tagSprint !== undefined &&
+            $scope.tagSprint !== null &&
+            $scope.tagSprint !== '' ){
+
+            if($scope.tagSprint !== undefined &&
+              $scope.tagSprint !== null &&
+              $scope.tagSprint !== ''){
+              $scope.userstory.sprint = $scope.tagSprint.id;
+
+            }
+
+          }
+
+
           ScrumService.createUserstory($scope.tagGroup.id, $scope.tagChannel.id, $scope.userstory)
             .then(function (res) {
 
               $("#newUserStoryModal").modal("hide");
+              $("#newUserStorySprintModal").modal("hide");
+
+
               $scope.initVarsNewUserstoryModal();
 
               toastr.success('US successfully created', {
@@ -2428,6 +3199,8 @@ angular.module('myAppAngularMinApp')
               });
 
 
+
+
             }, function (err) {
 
               $scope.modalsError.messageNewSprintModal = err.data.message;
@@ -2476,6 +3249,17 @@ angular.module('myAppAngularMinApp')
             console.log(res);
 
             $scope.rowCollectionSprints = res.data;
+            /* nos los recorremos poniendo viewTableUs false*/
+
+            if($scope.rowCollectionSprints !== undefined &&
+              $scope.rowCollectionSprints !== null &&
+              $scope.rowCollectionSprints !== '' &&
+              $scope.rowCollectionSprints.length > 0){
+
+              resetSprintTableShow();
+            }
+
+
 
 
           }, function (err) {
@@ -2594,6 +3378,8 @@ angular.module('myAppAngularMinApp')
       $scope.initVarsNewSprintModal = function(){
         removeVarsNewSprintModal();
       }
+
+
 
 
 
@@ -5541,6 +6327,7 @@ angular.module('myAppAngularMinApp')
         console.log("esto vale el new sprint");
         console.log(data.sprint);
         $scope.rowCollectionSprints.push(data.sprint);
+        initVarsScrumChannelSprintsGeneralViewWithUs();
         $scope.$apply();
       });
 
@@ -5572,7 +6359,6 @@ angular.module('myAppAngularMinApp')
       Socket.on('deleteTask', function (data) {
 
         /* buscamos la tarea */
-
         if($scope.rowCollectionUserStories !== undefined &&
           $scope.rowCollectionUserStories !== null &&
           $scope.rowCollectionUserStories !== '' ) {
@@ -5628,8 +6414,24 @@ angular.module('myAppAngularMinApp')
             $scope.tagUserstory.tasks[$scope.tagTask] !== '' &&
             $scope.tagUserstory.tasks[$scope.tagTask].length >0){
             if($scope.tagUserstory.tasks[$scope.tagTask].id == data.taskid){
+
+
+
+              /* hay que inicializar busquedas y cosas seleccionadas (se ha borrado 1 tarea) */
+              $scope.ischeckedAllCells = false;
+              removeValTableCellTagUS();
+              $scope.tableCells = {};
+              $scope.tableCells.selected = [];
+
+
+              removeVarsSearchTask();
+              initVarsScrumChannelTasks ();
               $scope.item.viewinDetail = false;
-              $scope.tagTask = -1;
+
+
+              toastr.info('Task you selected has been deleted.', 'Information', {
+                closeButton: true
+              });
 
 
             }
@@ -5677,11 +6479,133 @@ angular.module('myAppAngularMinApp')
           $scope.tagUserstory !== '' ){
 
           if($scope.tagUserstory == data.userstoryid){
+            toastr.info('Userstory you selected has been deleted.', 'Information', {
+              closeButton: true
+            });
+
+
+            /* hay que mirar si tiene tagtask */
+
             $scope.item.viewinDetail = false;
-            $scope.tagTask = -1;
-            $scope.tagUserstory = {};
+
+            removeVarsDetailUserstory();
+
+            $scope.ischeckedAllCells = false;
+
+            if($scope.tagTask !== -1){
+              removeValTableCellTagUS();
+              removeVarsSearchTask();
+              initVarsScrumChannelTasks ();
+
+            }
+            else {
+              removeValTableCellRowUS();
+              /*removeVarsSearchUS();*/
+            }
 
 
+            $scope.tableCells = {};
+            $scope.tableCells.selected = [];
+
+
+          }
+        }
+
+
+        $scope.$apply();
+
+      });
+
+
+
+
+
+
+
+      /* importante, mas adelante en este caso habria que salirse del kanvas,
+      * actualizar sus variables */
+
+      Socket.on('deleteSprint', function (data) {
+
+        var index = -1;
+
+        if($scope.rowCollectionSprints !== undefined &&
+          $scope.rowCollectionSprints !== null &&
+          $scope.rowCollectionSprints !== '' ) {
+          for (var i = 0; i < $scope.rowCollectionSprints.length; i++) {
+
+            if ($scope.rowCollectionSprints[i].id == data.sprintid) {
+
+              index = i;
+              i = $scope.rowCollectionSprints.length - 1;
+
+            }
+          }
+        }
+        if(index > -1){
+          $scope.rowCollectionSprints.splice(index, 1);
+
+        }
+
+
+        if($scope.rowCollectionUserStories !== undefined &&
+          $scope.rowCollectionUserStories !== null &&
+          $scope.rowCollectionUserStories !== '' ) {
+          for (var i = 0; i < $scope.rowCollectionUserStories.length; i++) {
+
+            if ($scope.rowCollectionUserStories[i].sprint == data.sprintid) {
+              $scope.rowCollectionUserStories[i].sprint = undefined;
+
+            }
+          }
+        }
+
+
+        /* si borro sprint y stoy anidada en US y en Task */
+        if($scope.tagSprint !== undefined &&
+          $scope.tagSprint !== null &&
+          $scope.tagSprint !== '' ){
+          if($scope.tagSprint.id == data.sprintid){
+
+            toastr.info('Sprint you selected has been deleted.', 'Information', {
+              closeButton: true
+            });
+
+            initVarsScrumChannelSprintsGeneralViewWithUs();
+            removeVarsSearchSprint();
+
+
+            $scope.ischeckedAllCells = false;
+            removeValTableCellRowSprint();
+
+            $scope.tableCells = {};
+            $scope.tableCells.selected = [];
+
+
+            if($scope.tagUserstory !== undefined &&
+              $scope.tagUserstory !== null &&
+              $scope.tagUserstory !== '' ){
+
+              if($scope.tagUserstory == data.userstoryid){
+                $scope.item.viewinDetail = false;
+
+                removeVarsDetailUserstory();
+
+
+                if($scope.tagTask !== -1){
+
+                  removeValTableCellTagUS();
+                  removeVarsSearchTask();
+                  initVarsScrumChannelTasks();
+                }
+                else {
+                  removeValTableCellRowUS();
+                  removeVarsSearchUS();
+
+                }
+
+              }
+            }
 
           }
         }

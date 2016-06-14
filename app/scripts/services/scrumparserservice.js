@@ -151,13 +151,25 @@ angular.module('myAppAngularMinApp')
 
 
 
-          if(scrumMessageJSON.action == 'created' ){
+          if(scrumMessageJSON.action == 'created' || scrumMessageJSON.action == 'deleted'){
             projectParse = getProjectFields();
             actionParse = getActionFields(scrumMessageJSON);
-            sprintHeaderParse = getHeaderFieldsForSprint(scrumMessageJSON, $index, msg);
-            sprintBodyParse = getBodyFieldsForSprint (scrumMessageJSON, $index, msg, dayMap, monthMap);
+
+
+
+            if(scrumMessageJSON.action == 'deleted' ){
+              sprintHeaderParse = getHeaderFieldsForSprintDeleted(scrumMessageJSON, $index, msg);
+              sprintBodyParse = getBodyFieldsForSprintDeleted (scrumMessageJSON, $index, msg);
+
+            }
+            else if(scrumMessageJSON.action == 'created' ){
+              sprintHeaderParse = getHeaderFieldsForSprint(scrumMessageJSON, $index, msg);
+              sprintBodyParse = getBodyFieldsForSprint (scrumMessageJSON, $index, msg, dayMap, monthMap);
+            }
+
 
           }
+
 
 
         }
@@ -229,7 +241,7 @@ angular.module('myAppAngularMinApp')
 
           messageText = projectParse + actionParse + userstoryHeaderParse;
 
-          if(scrumMessageJSON.field > 0 && scrumMessageJSON.field < 10){
+          if(scrumMessageJSON.field > 0 && scrumMessageJSON.field < 11){
             userstoryBodyParse = getBodyFieldsForUpdate (scrumMessageJSON, $index, msg);
             messageText += userstoryBodyParse;
 
@@ -589,6 +601,46 @@ angular.module('myAppAngularMinApp')
         return header;
 
       }
+
+
+
+
+
+      function getHeaderFieldsForSprintDeleted(scrumMessageJSON, $index,msg){
+        /* (3) #num [Subject] con link  */
+
+
+        var header = "";
+        var num = 0;
+        var name = "";
+
+
+        if(scrumMessageJSON.sprint.num !== null &&
+          scrumMessageJSON.sprint.num !== undefined &&
+          scrumMessageJSON.sprint.num !== '' ){
+
+          num = scrumMessageJSON.sprint.num;
+
+        }
+
+
+        if(scrumMessageJSON.sprint.name !== null &&
+          scrumMessageJSON.sprint.name !== undefined &&
+          scrumMessageJSON.sprint.name !== '' ){
+
+          name = scrumMessageJSON.sprint.name;
+
+        }
+
+
+        header = "<p><a>#" + num + " "+name+"</a> " +
+          "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
+
+
+        return header;
+
+      }
+
 
 
 
@@ -1618,6 +1670,7 @@ angular.module('myAppAngularMinApp')
         var params = "";
         var body = "";
         var totalPoints = 0;
+        var sprint = "";
 
 
 
@@ -1645,6 +1698,47 @@ angular.module('myAppAngularMinApp')
           params += "<p><strong> Points: </strong>"+totalPoints+"</p>";
 
         }
+
+        if(scrumMessageJSON.sprint !== null &&
+          scrumMessageJSON.sprint !== undefined &&
+          scrumMessageJSON.sprint !== '' ){
+
+          if(scrumMessageJSON.sprint.num !== null &&
+            scrumMessageJSON.sprint.num !== undefined &&
+            scrumMessageJSON.sprint.num !== '' &&
+            scrumMessageJSON.sprint.name !== null &&
+            scrumMessageJSON.sprint.name !== undefined &&
+            scrumMessageJSON.sprint.name !== '' ){
+
+
+
+            if(scrumMessageJSON.sprint.id !== null &&
+              scrumMessageJSON.sprint.id !== undefined &&
+              scrumMessageJSON.sprint.id !== '' ){
+
+              sprint = "<a ng-click='viewSprint(" + '"'+scrumMessageJSON.sprint.id+'"'+")'>#" + scrumMessageJSON.sprint.num + " "+scrumMessageJSON.sprint.name+"</a>";
+
+            }
+            else {
+
+              sprint = "<a>#" + scrumMessageJSON.sprint.num + " "+scrumMessageJSON.sprint.name+"</a>";
+            }
+
+
+            params += "<p><strong> Sprint: </strong>"+sprint+"</p>";
+
+
+          }
+
+
+
+
+        }
+
+
+
+
+
 
         if(scrumMessageJSON.userstory.description !== null &&
           scrumMessageJSON.userstory.description !== undefined &&
@@ -1724,13 +1818,44 @@ angular.module('myAppAngularMinApp')
 
       /****************************** rerere new ****************************************/
 
+
+
+      function getBodyFieldsForSprintDeleted(scrumMessageJSON, $index, msg){
+
+
+        var params = "";
+        var body = "";
+
+
+        if(scrumMessageJSON.sprint.numuserstories !== null &&
+          scrumMessageJSON.sprint.numuserstories !== undefined &&
+          scrumMessageJSON.sprint.numuserstories !== '' ){
+          params +="<p class='scrum-msg-p'><strong>"+ scrumMessageJSON.sprint.numuserstories +"</strong> US moved to BACKLOG </p>";
+
+
+
+        }
+        if(params == ''){
+          return '';
+        }
+        else {
+          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'>"+ params +"</div>";
+          return body;
+
+        }
+
+
+      }
+
+
+
+
       function getBodyFieldsForSprint(scrumMessageJSON, $index, msg, dayMap, monthMap){
 
 
         /* solo start date y end date */
         var params = "";
         var body = "";
-
 
 
 
@@ -2293,7 +2418,103 @@ angular.module('myAppAngularMinApp')
         }
         /* habra que poner datos especificos del sprint */
         else if(scrumMessageJSON.field == 9){ /* sprint */
-          params += "<h4>Sprint changed </h4>";
+
+          var fromsprintlink = "";
+          var tosprintlink = "";
+          var assignedtosprint = "";
+
+          /*messagetext.userstory.sprint = {};
+           messagetext.userstory.sprint.id = codepoints.old.id;
+           messagetext.userstory.sprint.name = codepoints.old.name;
+           messagetext.userstory.sprint.num = codepoints.old.num;
+
+           }
+           if(codepoints.new !== undefined &&
+           codepoints.new !== null &&
+           codepoints.new !== '' ){
+           messagetext.codepoints = {};
+           messagetext.codepoints.id = codepoints.new.id;
+           messagetext.codepoints.name = codepoints.new.name;
+           messagetext.codepoints.num = codepoints.new.num;
+           */
+
+          if(scrumMessageJSON.codepoints !== undefined &&
+            scrumMessageJSON.codepoints !== null &&
+            scrumMessageJSON.codepoints !== '' ){
+            if(scrumMessageJSON.codepoints.num !== undefined &&
+              scrumMessageJSON.codepoints.num !== null &&
+              scrumMessageJSON.codepoints.num !== '' &&
+              scrumMessageJSON.codepoints.name !== undefined &&
+              scrumMessageJSON.codepoints.name !== null &&
+              scrumMessageJSON.codepoints.name !== '' ){
+
+              var num = scrumMessageJSON.codepoints.num;
+              var name = scrumMessageJSON.codepoints.name;
+
+
+
+
+              if(scrumMessageJSON.codepoints.id !== null &&
+                scrumMessageJSON.codepoints.id !== undefined &&
+                scrumMessageJSON.codepoints.id !== ''){
+
+                fromsprintlink = "<h5>FROM Sprint <a ng-click='viewSprint(" + '"'+scrumMessageJSON.codepoints.id+'"'+")'>#" + num + " "+name+"</a></h5>";
+
+              }
+              else{
+                fromsprintlink = "<h5>FROM Sprint #"+ num +" "+ name + "</h5>";
+              }
+
+
+            }
+
+          }
+          if(fromsprintlink == ''){
+            fromsprintlink = "<h5>FROM BACKLOG </h5>";
+
+          }
+
+          assignedtosprint += fromsprintlink;
+
+          if(scrumMessageJSON.userstory.sprint !== undefined &&
+            scrumMessageJSON.userstory.sprint !== null &&
+            scrumMessageJSON.userstory.sprint !== '' ){
+            if(scrumMessageJSON.userstory.sprint.num !== undefined &&
+              scrumMessageJSON.userstory.sprint.num !== null &&
+              scrumMessageJSON.userstory.sprint.num !== '' &&
+              scrumMessageJSON.userstory.sprint.name !== undefined &&
+              scrumMessageJSON.userstory.sprint.name !== null &&
+              scrumMessageJSON.userstory.sprint.name !== '' ){
+
+              var num = scrumMessageJSON.userstory.sprint.num;
+              var name = scrumMessageJSON.userstory.sprint.name;
+
+
+
+
+              if(scrumMessageJSON.userstory.sprint.id !== null &&
+                scrumMessageJSON.userstory.sprint.id !== undefined &&
+                scrumMessageJSON.userstory.sprint.id !== ''){
+
+                tosprintlink = "<h5>TO Sprint <a ng-click='viewSprint(" + '"'+scrumMessageJSON.userstory.sprint.id+'"'+")'>#" + num + " "+name+"</a></h5>";
+
+              }
+              else{
+                tosprintlink = "<h5>TO Sprint #" + num + " "+name+ "</h5>";
+              }
+
+
+            }
+
+          }
+          if(tosprintlink == ''){
+            tosprintlink = "<h5>TO BACKLOG </h5>";
+
+          }
+          assignedtosprint += tosprintlink;
+
+
+          params += assignedtosprint;
 
         }
 
