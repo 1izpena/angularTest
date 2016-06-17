@@ -33,7 +33,8 @@ angular
     'angular-svg-round-progressbar',
     'chart.js',
     'checklist-model',
-    'toastr'
+    'toastr',
+    'dndLists'
 
   ])
   .run(function(editableOptions) {

@@ -210,11 +210,97 @@ angular.module('myAppAngularMinApp')
         $scope.parseFloat = parseFloat;
 
 
-
-
-
-
       }; /* end scope init */
+
+
+
+
+
+
+
+      /******************** funciones para taskboard **********************************/
+
+
+
+      // Generate initial model :: in init
+
+
+      $scope.models = {
+        selected: null,
+        lists: {"A": [], "B": []}
+      };
+
+
+      // generate de model
+      for (var i = 1; i <= 3; ++i) {
+        console.log("genero modelo");
+        $scope.models.lists.A.push({label: "Item A" + i});
+        $scope.models.lists.B.push({label: "Item B" + i});
+      }
+
+
+
+
+
+
+      $scope.onAddedItemSprint = function ($index, num) {
+        console.log("estamos en added item sprint");
+        console.log("con $index");
+        console.log($index);
+        console.log("con num");
+        console.log(num);
+
+      }
+
+
+      $scope.onSelected = function (indUs, indTask, item) {
+
+        console.log("esto vale indUs en ONSELECTED");
+        console.log(indUs);
+        console.log("esto vale indTask");
+        console.log(indTask);
+
+        console.log("esto vale item");
+        console.log(item);
+
+        console.log("esto vale item compuesto xmi, debe ser el mismo");
+        console.log($scope.rowCollectionUserStories[indUs].tasks[indTask]);
+
+
+
+
+      };
+
+
+
+      $scope.onMoved = function (indUs, indTask, item) {
+
+        console.log("esto vale indUs en ONMOVED");
+        console.log(indUs);
+        console.log("esto vale indTask");
+        console.log(indTask);
+
+        console.log("esto vale item");
+        console.log(item);
+
+        console.log("esto vale item compuesto xmi, debe ser el mismo");
+        console.log($scope.rowCollectionUserStories[indUs].tasks[indTask]);
+
+
+
+      };
+
+      $scope.logEvent = function(message, event) {
+        console.log(message, '(triggered by the following', event.type, 'event)');
+        console.log(event);
+      };
+
+
+
+
+
+
+
 
 
 
@@ -276,17 +362,27 @@ angular.module('myAppAngularMinApp')
         $scope.item.viewRelatedTasks = false;
         $scope.item.viewRelatedComments = false;
 
+
         removeCommentText();
 
       }
 
 
 
+      /*************************** SPRINT ********************************************/
+
       function initVarsScrumChannelSprintsGeneralViewWithUs(){
 
         /* de momento tenemos tagSprint y cada rowCollection sprint con 1 var viewTableUs que hay que actualizar */
         $scope.tagSprint = {};
         resetSprintTableShow();
+        $scope.item.viewTaskboard = false;
+        $scope.tagUserstory = {};
+        $scope.tagTask = -1;
+        $scope.item.viewinDetail = false;
+
+
+        /* creamos 1 array bidimensional para separar las tareas x US */
 
 
       };
@@ -322,12 +418,6 @@ angular.module('myAppAngularMinApp')
         $scope.tagSprintTemp = {};
         $scope.tagSprintTemp.startdate = new Date();
         $scope.tagSprintTemp.enddate = new Date();
-
-
-        /*var twoweeksafter = new Date();
-        twoweeksafter.setMonth($scope.sprint.startdate.getMonth());
-        twoweeksafter.setDate($scope.sprint.startdate.getDate() + 14);
-        $scope.sprint.enddate = twoweeksafter;*/
 
 
         $scope.dateEditOptions = {
@@ -372,6 +462,49 @@ angular.module('myAppAngularMinApp')
 
 
       };
+
+
+
+
+      $scope.assignUStoRow = function (index){
+        if($scope.rowCollectionUserStories[index]!== undefined &&
+          $scope.rowCollectionUserStories[index]!== null &&
+          $scope.rowCollectionUserStories[index]!== ''){
+
+          $scope.tagSaveUSTemp = $scope.rowCollectionUserStories[index];
+        }
+
+      }
+
+
+
+
+      $scope.viewTasksContainer = function (index){
+
+
+        if($scope.rowCollectionUserStories[index]!== undefined &&
+          $scope.rowCollectionUserStories[index]!== null &&
+          $scope.rowCollectionUserStories[index]!== '' ) {
+
+          if ($scope.rowCollectionUserStories[index].viewTaskContainer == undefined ||
+            $scope.rowCollectionUserStories[index].viewTaskContainer == null) {
+            $scope.rowCollectionUserStories[index].viewTaskContainer = false;
+
+          }
+          else if (!$scope.rowCollectionUserStories[index].viewTaskContainer) {
+            $scope.rowCollectionUserStories[index].viewTaskContainer = true;
+
+          }
+          else if($scope.rowCollectionUserStories[index].viewTaskContainer){
+            $scope.rowCollectionUserStories[index].viewTaskContainer = false;
+
+          }
+
+        }
+
+
+      };
+
 
 
 
@@ -432,10 +565,31 @@ angular.module('myAppAngularMinApp')
 
 
 
+
       $scope.goBackFromDetailTask = function (){
+
+        console.log("que ostias??");
+
+        /* si venimos del dashboard hay que borrar tambien el tagUs */
+        if($scope.item.viewTaskboard){
+          $scope.tagUserstory = {};
+          $scope.tagUserstoryTemp = {};
+          $scope.item.viewinDetail = false;
+
+        }
         $scope.tagTask = -1;
         $scope.item.viewRelatedTasks = true;
         $scope.item.viewRelatedComments = false;
+
+      };
+
+
+      $scope.goBackFromDetailUS = function (){
+        $scope.tagUserstory = {};
+        $scope.tagUserstoryTemp = {};
+        $scope.item.viewinDetail = false;
+
+
 
       };
 
@@ -479,7 +633,10 @@ angular.module('myAppAngularMinApp')
 
 
         initVarsScrumChannelTasks ();
+
+        /* dentro tiene el viewtable */
         initVarsScrumChannelSprints ();
+
 
 
       }
@@ -1785,6 +1942,44 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.viewSprintDetailTaskFromDash = function(rowUS, index) {
+
+
+        /* nuestra baza para volver */
+        console.log("esto vale rowus");
+        console.log(rowUS);
+
+
+        /* inicializamos variables de tabla */
+
+
+
+        $scope.tagUserstory = rowUS;
+        $scope.tagTask = index;
+        $scope.item.viewinDetail = true;
+
+
+
+
+
+
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       /* esto es para poner la tabla de US */
       $scope.viewSprintTableUS = function(row) {
@@ -1823,6 +2018,24 @@ angular.module('myAppAngularMinApp')
 
       };
 
+      $scope.viewSprintTasksboard = function() {
+        $scope.item.viewTaskboard = true;
+        console.log("esto vale $scope.rowCollectionUserStories");
+        console.log($scope.rowCollectionUserStories);
+        /* inicializamos el valor del combo de busqueda y el input del mismo */
+        removeVarsSearchSprint();
+
+
+        /* inicializamos variables de tabla */
+        $scope.ischeckedAllCells = false;
+        removeValTableCellRowSprint();
+        $scope.tableCells = {};
+        $scope.tableCells.selected = [];
+
+
+
+
+      };
 
 
 
@@ -1833,17 +2046,14 @@ angular.module('myAppAngularMinApp')
       /* variable nueva como la de item */
       $scope.viewDetailsUserstory = function(row) {
 
-       /* $scope.initVarsNewUserstoryModal();*/
-
-
-        console.log("esto vale row");
-        console.log(row);
-
-
-        /* inicializamos el valor del combo de busqueda y el input del mismo */
         removeVarsSearchUS();
-        /* inicializamos variables de tabla */
-        removeValTableCell();
+
+
+
+        $scope.ischeckedAllCells = false;
+        removeValTableCellRowUS();
+        $scope.tableCells = {};
+        $scope.tableCells.selected = [];
 
 
         $scope.tagUserstory = row;
@@ -1884,13 +2094,18 @@ angular.module('myAppAngularMinApp')
 
         /* inicializamos el valor del combo de busqueda y el input del mismo */
         removeVarsSearchUS();
-        removeValTableCell();
+
+
+        $scope.ischeckedAllCells = false;
+        removeValTableCellTagUS();
+        $scope.tableCells = {};
+        $scope.tableCells.selected = [];
+
         removeVarsSearchTask();
 
 
 
-        console.log("esto vale index de viewdetailstasks");
-        console.log($index);
+
         $scope.tagTask = $index;
         $scope.item.viewinDetail = true;
 
@@ -1899,38 +2114,87 @@ angular.module('myAppAngularMinApp')
 
 
 
-      function enableMembers(){
+
+      /* tengo que pasar el array con la pos o pasar el $scope.tagUs */
+      function enableMembers(us, index){
 
         var membersSettingschannelTemp = [];
 
-        for(var i = 0; i< $scope.membersSettingschannel.length; i++){
-          var enc = false;
-
-          if($scope.tagUserstory.tasks[$scope.tagTask].assignedto !== undefined &&
-            $scope.tagUserstory.tasks[$scope.tagTask].assignedto !== null &&
-            $scope.tagUserstory.tasks[$scope.tagTask].assignedto !== ''){
+        if(index !== undefined && index !== null && index !== ''){
 
 
-            if($scope.membersSettingschannel[i].id !== $scope.tagUserstory.tasks[$scope.tagTask].assignedto.id &&
-              ($scope.tagUserstory.tasks[$scope.tagTask].contributors == undefined ||
-              $scope.tagUserstory.tasks[$scope.tagTask].contributors == null ||
-              $scope.tagUserstory.tasks[$scope.tagTask].contributors == '' ||
-              $scope.tagUserstory.tasks[$scope.tagTask].contributors.length == 0)){
+          for(var i = 0; i< $scope.membersSettingschannel.length; i++){
+            var enc = false;
 
-              membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
 
+            if(index == -1){
+              index = angular.copy($scope.tagTask);
             }
 
-            else{
 
-              if($scope.membersSettingschannel[i].id !== $scope.tagUserstory.tasks[$scope.tagTask].assignedto.id){
+            /* sera undefined, vamos al else */
+
+            /* si el index vale -1, entonces hay tagTask, sino tiramos del index */
+            if(us.tasks[index].assignedto !== undefined &&
+              us.tasks[index].assignedto !== null &&
+              us.tasks[index].assignedto !== ''){
+
+
+              /* ese miembro no esta en assigned to, ni el task tiene contributors */
+              if($scope.membersSettingschannel[i].id !== us.tasks[index].assignedto.id &&
+                (us.tasks[index].contributors == undefined ||
+                us.tasks[index].contributors == null ||
+                us.tasks[index].contributors == '' ||
+                us.tasks[index].contributors.length == 0)){
+
+                membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
+
+              }
+
+              /* o tiene contributors o el id de ambos coincide */
+              else{
+
+                /* si los ids son !== no lo ha encontrado en los miembros y tiene contributors que hay que quitar */
+                if($scope.membersSettingschannel[i].id !== us.tasks[index].assignedto.id){
+                  enc = false;
+
+                  /* nos recorremos sus contributors y enc=true si ha encontrado el miembro que es contributor  */
+                  for(var j = 0; j< us.tasks[index].contributors.length; j++){
+                    if($scope.membersSettingschannel[i].id == us.tasks[index].contributors[j].id){
+
+                      enc = true;
+                      j= us.tasks[index].contributors.length;
+                    }
+
+                  }/*si ha recorrido los contributors y ese miembro no esta lo mete en el array*/
+                  if(!enc){
+                    membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
+                  }
+                }
+
+                /* si el id coincide no lo metemos */
+
+
+
+              }
+
+            } /* si assigned es vacio lo metemos */
+            else {
+              /* no xq si el assigned es vacio puede que contributors no */
+              if((us.tasks[index].contributors !== undefined &&
+                us.tasks[index].contributors !== null &&
+                us.tasks[index].contributors !== '' &&
+                us.tasks[index].contributors.length > 0)){
+
+
                 enc = false;
+                for(var j = 0; j< us.tasks[index].contributors.length; j++){
 
-                for(var j = 0; j< $scope.tagUserstory.tasks[$scope.tagTask].contributors.length; j++){
-                  if($scope.membersSettingschannel[i].id == $scope.tagUserstory.tasks[$scope.tagTask].contributors[j].id){
 
+                  if($scope.membersSettingschannel[i].id == us.tasks[index].contributors[j].id){
                     enc = true;
-                    j= $scope.tagUserstory.tasks[$scope.tagTask].contributors.length;
+                    j= us.tasks[index].contributors.length;
+
                   }
 
                 }
@@ -1938,36 +2202,19 @@ angular.module('myAppAngularMinApp')
                   membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
                 }
               }
-
-            }
-
-          } /* si assigned es vacio lo metemos */
-           else {
-            /* no xq si el assigned es vacio puede que contributors no */
-             if(($scope.tagUserstory.tasks[$scope.tagTask].contributors !== undefined &&
-               $scope.tagUserstory.tasks[$scope.tagTask].contributors !== null &&
-               $scope.tagUserstory.tasks[$scope.tagTask].contributors !== '' &&
-               $scope.tagUserstory.tasks[$scope.tagTask].contributors.length > 0)){
+              else{
+                /*copiamos el array de members */
+                membersSettingschannelTemp = angular.copy($scope.membersSettingschannel);
+              }
 
 
-               enc = false;
-               for(var j = 0; j< $scope.tagUserstory.tasks[$scope.tagTask].contributors.length; j++){
+            }/* else assigned es vacio */
 
 
-                 if($scope.membersSettingschannel[i].id == $scope.tagUserstory.tasks[$scope.tagTask].contributors[j].id){
-                   enc = true;
-                   j= $scope.tagUserstory.tasks[$scope.tagTask].contributors.length;
+          }/* end for */
+        }/* index es undefined */
 
-                 }
 
-               }
-               if(!enc){
-                 membersSettingschannelTemp.push($scope.membersSettingschannel[i]);
-               }
-             }
-
-           }
-        }
 
         return membersSettingschannelTemp;
 
@@ -1975,12 +2222,170 @@ angular.module('myAppAngularMinApp')
 
 
 
+      /******************************** buscar contributors sin tagUserstory ******************************/
+      $scope.changeTaskAssignedtoWithUnassignedFromList = function (rowUS, row, index) {
+
+
+        console.log("esto vale el index antes de enable members");
+        console.log(index);
+        var membersSettingschannelTemp = enableMembers(rowUS, index);
 
 
 
-      $scope.changeTaskAssignedto = function (row) {
+        /* metemos de member meanstack */
+        var memberMean = {};
+        memberMean.id = -1;
+        memberMean.username = "meanstack";
+        memberMean.mail = "internalUser@localhost";
+        membersSettingschannelTemp.push(memberMean);
 
-        var membersSettingschannelTemp = enableMembers();
+        console.log("debe salir meanstack, estoy dessasignando");
+        console.log("esto vale row");
+        console.log(row);
+
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/assignedtoModal.html',
+          controller: 'assignedtoModalCtrl',
+          size: 'lg',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.tagGroup.id,
+                channelid: $scope.tagChannel.id,
+                userstoryid: rowUS.id,
+                taskid: row.id,
+                oldvalue : row.assignedto,
+                membersSettingschannel: membersSettingschannelTemp
+              }
+            }
+          }
+        });
+
+
+        modalInstance.result.then(function (result) {
+          console.log('result: ' + result);
+          toastr.info('Task assigned to changed', 'Information', {
+            closeButton: true
+          });
+        });
+      };
+
+
+
+
+
+
+
+
+
+
+      $scope.changeTaskAssignedtoFromList = function (rowUS, row, index) {
+
+        console.log("no debe salir meanstack, estoy dessasignando");
+        console.log("esto vale row");
+        console.log(row);
+
+
+        console.log("esto vale el index antes de enable members");
+        console.log(index);
+        var membersSettingschannelTemp = enableMembers(rowUS, index);
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/assignedtoModal.html',
+          controller: 'assignedtoModalCtrl',
+          size: 'lg',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.tagGroup.id,
+                channelid: $scope.tagChannel.id,
+                userstoryid: rowUS.id,
+                taskid: row.id,
+                oldvalue : row.assignedto,
+                membersSettingschannel: membersSettingschannelTemp
+              }
+            }
+          }
+        });
+
+
+        modalInstance.result.then(function (result) {
+          console.log('result: ' + result);
+          toastr.info('Task assigned to changed', 'Information', {
+            closeButton: true
+          });
+        });
+      };
+
+
+
+
+
+
+
+      /*********************** buscar contributors con tagUserstory *****************************************/
+
+      /* hacemos lo mismo xsi hay contributors */
+      $scope.changeTaskAssignedtoWithUnassigned = function (row, index) {
+
+
+        console.log("esto vale el index antes de enable members");
+        console.log(index);
+        var membersSettingschannelTemp = enableMembers($scope.tagUserstory, index);
+
+
+
+        /* metemos de member meanstack */
+        var memberMean = {};
+        memberMean.id = -1;
+        memberMean.username = "meanstack";
+        memberMean.mail = "internalUser@localhost";
+        membersSettingschannelTemp.push(memberMean);
+
+
+        var modalInstance = $uibModal.open({
+          templateUrl: 'views/modals/assignedtoModal.html',
+          controller: 'assignedtoModalCtrl',
+          size: 'lg',
+          resolve: {
+            data: function () {
+              return {
+                groupid: $scope.tagGroup.id,
+                channelid: $scope.tagChannel.id,
+                userstoryid: $scope.tagUserstory.id,
+                taskid: row.id,
+                oldvalue : row.assignedto,
+                membersSettingschannel: membersSettingschannelTemp
+              }
+            }
+          }
+        });
+
+
+        modalInstance.result.then(function (result) {
+          console.log('result: ' + result);
+          toastr.info('Task assigned to changed', 'Information', {
+            closeButton: true
+          });
+        });
+      };
+
+
+
+
+
+
+
+
+
+
+      $scope.changeTaskAssignedto = function (row, index) {
+
+
+        console.log("esto vale el index antes de enable members");
+        console.log(index);
+        var membersSettingschannelTemp = enableMembers($scope.tagUserstory, index);
 
         var modalInstance = $uibModal.open({
           templateUrl: 'views/modals/assignedtoModal.html',
@@ -2302,7 +2707,53 @@ angular.module('myAppAngularMinApp')
 
 
 
-/************************ superpruebaaa **********************************************/
+      $scope.removeTaskFromSprint = function(rowUSid, rowid) {
+
+        var arrTaskRemove = [];
+
+        var groupid = $scope.tagGroup.id;
+        var channelid = $scope.tagChannel.id;
+        var userstoryid = rowUSid;
+
+
+        /* mete el id */
+        arrTaskRemove.push(rowid);
+
+        ScrumService.deleteTasks(groupid, channelid, userstoryid, arrTaskRemove)
+          .then(function (res) {
+            /* le estoy llamando desde el sprint, no tengo que hacer nada */
+
+
+            console.log("esto vale las responses");
+            console.log(res);
+
+
+            /* res puede ser undefined, controlarlo */
+            if( res !== undefined && res !== null && res !== '' && res.length >0){
+
+              toastr.success('' + res.length + ' tasks deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+            else{
+              toastr.success('Tasks deleted succesfully', {
+                closeButton: true
+              });
+
+            }
+
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+      };
+
+
+
 
 
       $scope.removeTasks = function( ) {
@@ -2315,11 +2766,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-        /* mirar las seleccionadas ************************/
          for( var i = 0; i < $scope.tagUserstory.tasks.length; i++){
-         /* mandamos a borrar 1 array de ids ********************/
-
            if($scope.tagUserstory.tasks[i].selectedCell){
 
               arrTaskRemove.push($scope.tagUserstory.tasks[i].id);
@@ -2355,11 +2802,6 @@ angular.module('myAppAngularMinApp')
             $scope.tableCells = {};
             $scope.tableCells.selected = [];
 
-
-
-
-            console.log("esto vale las responses");
-            console.log(res);
 
 
             /* res puede ser undefined, controlarlo */
@@ -2422,7 +2864,8 @@ angular.module('myAppAngularMinApp')
 
 
         var field = 'contributors';
-        var membersSettingschannelTemp = enableMembers();
+        var ind = -1;
+        var membersSettingschannelTemp = enableMembers($scope.tagUserstory, ind);
 
 
         var modalInstance = $uibModal.open({
@@ -2963,6 +3406,43 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.editStatusTaskFromSprint = function(status, rowUS, rowTask) {
+
+        console.log("esto vale status");
+        console.log(status);
+        console.log("esto vale rowUS");
+        console.log(rowUS);
+        console.log("esto vale rowtask");
+        console.log(rowTask);
+
+        var oldvalue = "";
+        var newvalue = status;
+        var field = 'status';
+
+
+
+        ScrumService.updateTask($scope.tagGroup.id, $scope.tagChannel.id,
+          rowUS.id, rowTask.id, newvalue, oldvalue, field)
+          .then(function (res) {
+
+            toastr.info('Task status changed', 'Information', {
+              closeButton: true
+            });
+
+          }, function (err) {
+            toastr.error(err.data.message, 'Error', {
+              closeButton: true
+            });
+
+          });
+
+
+      };
+
+
+
+
+
 
 
       /* new = 0, in progress = 1, readyfortest = 2, closed =3 */
@@ -3128,7 +3608,65 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+
+
+
+      $scope.createNewRelatedTaskFromSprint = function() {
+
+        console.log("esto vake $scope.tagSaveUSTemp");
+        console.log($scope.tagSaveUSTemp);
+
+        if($scope.task.subject == undefined ||
+          $scope.task.subject == null || $scope.task.subject == ''){
+
+          $scope.modalsError.messageNewRelatedTaskRequiredSubModal = "Field subject is required.";
+
+        }
+        else {
+          ScrumService.createRelatedTask($scope.tagGroup.id, $scope.tagChannel.id, $scope.tagSaveUSTemp, $scope.task)
+            .then(function (res) {
+
+              $("#newTaskSprintModal").modal("hide");
+
+              $scope.initVarsNewRelatedTaskModal();
+
+              toastr.success('Task successfully created', {
+                closeButton: true
+              });
+
+
+            }, function (err) {
+
+              $scope.modalsError.messageNewUserstoryModal = err.data.message;
+            });
+        }
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       $scope.createNewRelatedTask = function() {
+
+        console.log("esto vake tagUserstory");
+        console.log($scope.tagUserstory);
 
         if($scope.task.subject == undefined ||
           $scope.task.subject == null || $scope.task.subject == ''){
@@ -3141,9 +3679,8 @@ angular.module('myAppAngularMinApp')
             .then(function (res) {
 
               $("#newTaskModal").modal("hide");
+              $("#newTaskSprintModal").modal("hide");
 
-              console.log("esto vale la task creada");
-              console.log(res.data);
 
               $scope.initVarsNewRelatedTaskModal();
 
@@ -6387,6 +6924,7 @@ angular.module('myAppAngularMinApp')
 
 
 
+      /* puede estar seleccionado y ahora no lo estaria */
       Socket.on('updateUserstory', function (data) {
 
         for (var i = 0; i<$scope.rowCollectionUserStories.length; i++){
@@ -6409,6 +6947,41 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+      function cleanTableCell (data) {
+        var ind = -1;
+        if($scope.tableCells !== undefined && $scope.tableCells !== null){
+          if($scope.tableCells.selected !== undefined &&
+            $scope.tableCells.selected !== null &&
+            $scope.tableCells.selected.length >0){
+
+            for(var i = 0; i< $scope.tableCells.selected.length; i++){
+              if($scope.tableCells.selected[i].id == data){
+                ind = i;
+
+                i= $scope.tableCells.selected.length;
+
+              }
+            }
+
+            if(ind !== -1){
+              $scope.tableCells.selected.splice(ind, 1);
+
+            }
+          }
+        }
+
+
+
+
+      }
+
+
+
+
+
+
+      /* buscamos si la tiene seleccionada, la quitamos del array */
       Socket.on('deleteTask', function (data) {
 
         /* buscamos la tarea */
@@ -6431,8 +7004,6 @@ angular.module('myAppAngularMinApp')
 
 
                     /* tenemos el index, nos cargamos la tarea */
-                    console.log("encontrado la task, la borramos ");
-                    console.log($scope.rowCollectionUserStories[i].tasks[j]);
 
                     indexi = i;
                     indexj = j;
@@ -6447,8 +7018,6 @@ angular.module('myAppAngularMinApp')
           }
 
 
-          /* hay que borrar la tarea y si el tio la esta viendo tagTask = undefined
-          * viewindetail fuera */
           if(indexi > -1 && indexj > -1){
             $scope.rowCollectionUserStories[indexi].tasks.splice(indexj,1);
           }
@@ -6458,40 +7027,47 @@ angular.module('myAppAngularMinApp')
         if($scope.tagTask !== undefined &&
           $scope.tagTask !== null &&
           $scope.tagTask !== '' &&
+          $scope.tagTask !== -1 &&
           $scope.tagUserstory !== undefined &&
           $scope.tagUserstory !== null &&
           $scope.tagUserstory !== '' ){
 
-          if($scope.tagUserstory.tasks[$scope.tagTask] !== undefined &&
-            $scope.tagUserstory.tasks[$scope.tagTask] !== null &&
-            $scope.tagUserstory.tasks[$scope.tagTask] !== '' &&
-            $scope.tagUserstory.tasks[$scope.tagTask].length >0){
-            if($scope.tagUserstory.tasks[$scope.tagTask].id == data.taskid){
+          if($scope.tagUserstory.tasks !== undefined &&
+            $scope.tagUserstory.tasks !== null &&
+            $scope.tagUserstory.tasks !== '' &&
+            $scope.tagUserstory.tasks.length >0){
+
+            if($scope.tagUserstory.tasks[$scope.tagTask] !== undefined &&
+              $scope.tagUserstory.tasks[$scope.tagTask] !== null &&
+              $scope.tagUserstory.tasks[$scope.tagTask] !== '' &&
+              $scope.tagUserstory.tasks[$scope.tagTask]){
+              if($scope.tagUserstory.tasks[$scope.tagTask].id == data.taskid){
 
 
 
-              /* hay que inicializar busquedas y cosas seleccionadas (se ha borrado 1 tarea) */
-              $scope.ischeckedAllCells = false;
-              removeValTableCellTagUS();
-              $scope.tableCells = {};
-              $scope.tableCells.selected = [];
+                $scope.item.viewinDetail = false;
+                initVarsScrumChannelTasks ();
 
 
-              removeVarsSearchTask();
-              initVarsScrumChannelTasks ();
-              $scope.item.viewinDetail = false;
+                toastr.info('Task you selected has been deleted.', 'Information', {
+                  closeButton: true
+                });
 
 
-              toastr.info('Task you selected has been deleted.', 'Information', {
-                closeButton: true
-              });
-
+              }
 
             }
 
           }
 
         }
+
+        /* se ha borrado la tarea, hay que mirar si estaba dentro del array y sacarla */
+        /* nos recorremos el array */
+
+        cleanTableCell(data.taskid);
+
+
 
         $scope.$apply();
       });
@@ -6501,6 +7077,8 @@ angular.module('myAppAngularMinApp')
 
 
 
+      /* si la tiene seleccionada la quitamos del array */
+      /* en este caso limpiar tareas(search y cells) y de US limpiar cells si esta en el array */
       Socket.on('deleteUserstory', function (data) {
 
 
@@ -6537,31 +7115,35 @@ angular.module('myAppAngularMinApp')
             });
 
 
-            /* hay que mirar si tiene tagtask */
-
-            $scope.item.viewinDetail = false;
 
             removeVarsDetailUserstory();
+            $scope.item.viewinDetail = false;
 
-            $scope.ischeckedAllCells = false;
 
-            if($scope.tagTask !== -1){
+
+            if($scope.tagTask == -1){
+              $scope.ischeckedAllCells = false;
               removeValTableCellTagUS();
               removeVarsSearchTask();
               initVarsScrumChannelTasks ();
+              $scope.tableCells = {};
+              $scope.tableCells.selected = [];
 
             }
-            else {
-              removeValTableCellRowUS();
-              /*removeVarsSearchUS();*/
-            }
-
-
-            $scope.tableCells = {};
-            $scope.tableCells.selected = [];
 
 
           }
+          else if($scope.tagUserstory.id == undefined ||
+            $scope.tagUserstory.id == null ||
+            $scope.tagUserstory.id == ''){
+            cleanTableCell(data.userstoryid);
+
+          }
+
+        }
+        else {
+          cleanTableCell(data.userstoryid);
+
         }
 
 
@@ -6574,9 +7156,6 @@ angular.module('myAppAngularMinApp')
 
 
 
-
-      /* importante, mas adelante en este caso habria que salirse del kanvas,
-      * actualizar sus variables */
 
       Socket.on('deleteSprint', function (data) {
 
@@ -6625,42 +7204,40 @@ angular.module('myAppAngularMinApp')
             });
 
             initVarsScrumChannelSprintsGeneralViewWithUs();
-            removeVarsSearchSprint();
+            //removeVarsSearchSprint();
 
 
             $scope.ischeckedAllCells = false;
-            removeValTableCellRowSprint();
+            $scope.item.viewinDetail = false;
+
+            removeVarsDetailUserstory();
+
+            removeValTableCellTagUS();
+            removeVarsSearchTask();
+            initVarsScrumChannelTasks();
+
+            removeValTableCellRowUS();
+            removeVarsSearchUS();
+
 
             $scope.tableCells = {};
             $scope.tableCells.selected = [];
 
-
-            if($scope.tagUserstory !== undefined &&
-              $scope.tagUserstory !== null &&
-              $scope.tagUserstory !== '' ){
-
-              if($scope.tagUserstory == data.userstoryid){
-                $scope.item.viewinDetail = false;
-
-                removeVarsDetailUserstory();
-
-
-                if($scope.tagTask !== -1){
-
-                  removeValTableCellTagUS();
-                  removeVarsSearchTask();
-                  initVarsScrumChannelTasks();
-                }
-                else {
-                  removeValTableCellRowUS();
-                  removeVarsSearchUS();
-
-                }
-
-              }
-            }
-
           }
+          /* si no es el mismo, lo buscamos haber si esta en la tablecell selected y lo borramos */
+          else if($scope.tagSprint.id == undefined ||
+              $scope.tagSprint.id == null ||
+              $scope.tagSprint.id == ''){
+
+            cleanTableCell(data.sprintid);
+
+            }
+        }
+
+        else{
+          cleanTableCell(data.sprintid);
+
+
         }
 
 
@@ -6680,6 +7257,8 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+      /* si lo tiene seleccionado le ponemos a true */
 
       Socket.on('updateSprint', function (data) {
 
@@ -6849,32 +7428,35 @@ angular.module('myAppAngularMinApp')
 
             } /* end for */
 
-        }
+       }
         if($scope.tagTask !== undefined &&
           $scope.tagTask !== null &&
           $scope.tagTask !== '' &&
+          $scope.tagTask !== -1 &&
           $scope.tagUserstory !== undefined &&
           $scope.tagUserstory !== null &&
           $scope.tagUserstory !== '' ){
-          if($scope.tagUserstory.tasks[$scope.tagTask] !== undefined &&
-            $scope.tagUserstory.tasks[$scope.tagTask] !== null &&
-            $scope.tagUserstory.tasks[$scope.tagTask] !== ''){
+          if($scope.tagUserstory.tasks !== undefined &&
+            $scope.tagUserstory.tasks !== null &&
+            $scope.tagUserstory.tasks !== '' &&
+            $scope.tagUserstory.tasks.length >0){
 
-            if ($scope.tagUserstory.tasks[$scope.tagTask].id == data.task.id) {
-              $scope.tagUserstory.tasks[$scope.tagTask] = data.task;
+            if($scope.tagUserstory.tasks[$scope.tagTask] !== undefined &&
+              $scope.tagUserstory.tasks[$scope.tagTask] !== null &&
+              $scope.tagUserstory.tasks[$scope.tagTask] !== ''){
+
+              if ($scope.tagUserstory.tasks[$scope.tagTask].id == data.task.id) {
+                $scope.tagUserstory.tasks[$scope.tagTask] = data.task;
+              }
+
             }
-
           }
-
-
-
 
         }
 
 
         $scope.$apply();
       });
-
 
 
 

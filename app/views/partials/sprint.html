@@ -1,7 +1,390 @@
 
+<div class="row row-all-content-sprint-dash"
+     ng-show="item.viewTaskboard && tagSprint.id !== undefined
+              && (tagUserstory == undefined ||tagUserstory.id == undefined)">
+  <div class="row row-dashboard-sprints">
+    <div class="panel panel-info" id="panel-dashboard-sprints">
+      <div class="panel-body panel-body-dashboard-sprints">
 
 
-<div class="row row-all-content" ng-show="!item.viewinDetail && tagTask == -1" >
+        <div class="panel-body panel-body-dashboard-sprints-row">
+
+
+          <div class="panel panel-info" ng-repeat="rowUS in rowCollectionUserStories"
+               ng-show="rowUS.sprint == tagSprint.id && $index % 2 == 0">
+            <div class="panel-heading" id="panel-heading-color-white">
+
+              <div class="form-contributors-btn">
+
+                <button title="new task" type="button" class="btn btn-info pull-left"
+                        data-toggle="modal" data-target="#newTaskSprintModal" ng-click="assignUStoRow($index)">
+                  <span class="fa fa-plus"></span>
+                </button>
+                <a class="try-label" ng-click="">
+                  #{{rowUS.num}} {{rowUS.subject}}
+                </a>
+                <button type="button" class="btn btn-info pull-left" ng-click="viewTasksContainer($index)">
+                  <span class="fa fa-chevron-down"></span>
+                </button>
+
+
+
+
+
+              </div>
+
+
+            </div>
+
+
+
+
+            <!-- ha esto le tengo que llamar:: viewTasksContainer($parent.$index) -->
+            <div class="panel-body">
+
+              <ul dnd-list="rowUS.tasks"
+                  dnd-inserted="onAddedItemSprint($index, $parent.$index)"
+                  ng-show="rowUS.viewTaskContainer !== false && rowUS.tasks!== undefined && rowUS.tasks.length >0">
+
+                <li ng-repeat="rowTask in rowUS.tasks"
+                    dnd-draggable="rowTask"
+                    dnd-moved="onMoved($parent.$index, $index ,rowTask)"
+                    dnd-copied="logEvent('Item copied', event)"
+                    dnd-effect-allowed="copyMove"
+                    dnd-selected="onSelected($parent.$index, $index ,rowTask)"
+                    ng-class="rowTask.status == 'New' ? 'status-new' :
+                              (rowTask.status == 'In progress' ? 'status-in-progress' :
+                               (rowTask.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">
+
+                  <!-------------- sin assignar -------------------------------->
+                  <div class="text-img">
+                    <img ng-show="rowTask.assignedto == undefined || rowTask.assignedto.id == undefined"
+                         ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=40&d=identicon"
+                         alt="User Avatar"
+                         class="avatarin avatarin-opacity"
+                         ng-click="changeTaskAssignedtoFromList(rowUS, rowTask, $index)"/>
+
+
+
+                    <!--------------------- assignado ------------------------------>
+                    <img ng-show="rowTask.assignedto !== undefined && rowTask.assignedto.id !== undefined"
+                         ng-src="http://www.gravatar.com/avatar/{{getHash(rowTask.assignedto.mail)}}?s=40&d=identicon"
+                         alt="User Avatar"
+                         class="avatarin"
+                         ng-click="changeTaskAssignedtoWithUnassignedFromList(rowUS, rowTask, $index)"/>
+
+
+
+
+                    <p>#{{rowTask.num}} {{rowTask.subject}}</p>
+
+
+                    <!--------------- ponemos icono de borrar ------------------------>
+
+
+                    <div class="dropdown">
+                      <span class="nexttask-edit nexttaskk-edit-dropdown"
+                            ng-class="rowTask.status == 'New' ? 'status-new-color' :
+                              (rowTask.status == 'In progress' ? 'status-in-progress-color' :
+                               (rowTask.status == 'Closed' ? 'status-closed-color' :'status-ready-for-test-color'))">
+                      {{rowTask.status}}
+                    </span>
+                      <div class="dropdown-content">
+                        <a ng-repeat="status in statics.status" ng-show="status !== rowTask.status"
+                           ng-click="editStatusTaskFromSprint(status, rowUS, rowTask)"
+                           ng-class="status == 'New' ? 'status-new-color-no-margin' :
+                              (status == 'In progress' ? 'status-in-progress-color-no-margin' :
+                               (status == 'Closed' ? 'status-closed-color-no-margin' :'status-ready-for-test-color-no-margin'))">
+                          {{status}}
+
+                        </a>
+                      </div>
+                    </div>
+
+
+
+                    <!-- queremos ver taskdetail -->
+                    <span class="nexttask-edit" ng-click="viewSprintDetailTaskFromDash(rowUS, $index)">
+                      <i class="fa fa-pencil"></i>
+                    </span>
+                    <span class="nexttask-edit" ng-click="removeTaskFromSprint(rowUS.id, rowTask.id)">
+                      <i class="fa fa-trash-o"></i>
+                    </span>
+
+                  </div>
+
+
+
+
+
+
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div> <!-- fin end row -->
+
+
+
+
+<!--
+
+
+
+        <div class="panel-body panel-body-dashboard-sprints-row">
+
+
+          <div class="panel panel-info" ng-repeat="rowUS in rowCollectionUserStories"
+               ng-show="rowUS.sprint == tagSprint.id && $index % 2 !== 0">
+            <div class="panel-heading" id="panel-heading-color-white2">
+
+              <div class="form-contributors-btn">
+
+                <button title="new task" type="button" class="btn btn-info pull-left"
+                        data-toggle="modal" data-target="#newTaskSprintModal" ng-click="assignUStoRow($index)">
+                  <span class="fa fa-plus"></span>
+                </button>
+                <a class="try-label" ng-click="">
+                  #{{rowUS.num}} {{rowUS.subject}}
+                </a>
+                <button type="button" class="btn btn-info pull-left" ng-click="viewTasksContainer($index)">
+                  <span class="fa fa-chevron-down"></span>
+                </button>
+
+
+
+
+
+              </div>
+
+
+            </div>
+
+
+
+
+            <!-- ha esto le tengo que llamar:: viewTasksContainer($parent.$index) --
+            <div class="panel-body">
+
+              <ul dnd-list="rowUS.tasks"
+                  dnd-inserted="onAddedItemSprint($index, $parent.$index)"
+                  ng-show="rowUS.viewTaskContainer !== false && rowUS.tasks!== undefined && rowUS.tasks.length >0">
+
+                <li ng-repeat="rowTask in rowUS.tasks"
+                    dnd-draggable="rowTask"
+                    dnd-moved="onMoved($parent.$index, $index ,rowTask)"
+                    dnd-copied="logEvent('Item copied', event)"
+                    dnd-effect-allowed="copyMove"
+                    dnd-selected="onSelected($parent.$index, $index ,rowTask)"
+                    ng-class="rowTask.status == 'New' ? 'status-new' :
+                              (rowTask.status == 'In progress' ? 'status-in-progress' :
+                               (rowTask.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">
+
+                  <!-------------- sin assignar --------------------------------
+                  <div class="text-img">
+                    <img ng-show="rowTask.assignedto == undefined || rowTask.assignedto.id == undefined"
+                         ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=40&d=identicon"
+                         alt="User Avatar"
+                         class="avatarin avatarin-opacity"
+                         ng-click="changeTaskAssignedtoFromList(rowUS, rowTask, $index)"/>
+
+
+
+                    <!--------------------- assignado ------------------------------
+                    <img ng-show="rowTask.assignedto !== undefined && rowTask.assignedto.id !== undefined"
+                         ng-src="http://www.gravatar.com/avatar/{{getHash(rowTask.assignedto.mail)}}?s=40&d=identicon"
+                         alt="User Avatar"
+                         class="avatarin"
+                         ng-click="changeTaskAssignedtoWithUnassignedFromList(rowUS, rowTask, $index)"/>
+
+
+
+
+                    <p>#{{rowTask.num}} {{rowTask.subject}}</p>
+
+
+                    <!--------------- ponemos icono de borrar ------------------------
+
+                    <span uib-popover-template="dynamicPopoverChooseStatus.templateUrl"
+                            popover-placement="bottom"
+                            popover="Popover 4"
+                          class="nexttask-edit"
+                          ng-click=""
+                          ng-class="rowTask.status == 'New' ? 'status-new-color' :
+                              (rowTask.status == 'In progress' ? 'status-in-progress-color' :
+                               (rowTask.status == 'Closed' ? 'status-closed-color' :'status-ready-for-test-color'))">
+                      {{rowTask.status}}
+                    </span>
+
+
+
+                    <span class="nexttask-edit" ng-click=""
+                          ng-class="rowTask.status == 'New' ? 'status-new-color' :
+                              (rowTask.status == 'In progress' ? 'status-in-progress-color' :
+                               (rowTask.status == 'Closed' ? 'status-closed-color' :'status-ready-for-test-color'))">
+                      {{rowTask.status}}
+                    </span>
+
+                    <span class="nexttask-edit" ng-click="">
+                      <i class="fa fa-pencil"></i>
+                    </span>
+                    <span class="nexttask-edit" ng-click="removeTaskFromSprint(rowUS.id, rowTask.id)">
+                      <i class="fa fa-trash-o"></i>
+                    </span>
+
+                  </div>
+
+
+
+
+
+
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div> <!-- fin end row -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- start row ---------------
+        <div class="panel-body panel-body-dashboard-sprints-row">
+
+
+          <div class="panel panel-info" ng-repeat="rowUS in rowCollectionUserStories"
+               ng-show="rowUS.sprint == tagSprint.id && $index % 2 == 0">
+            <div class="panel-heading" id="panel-heading-color-white2">
+
+              <div class="form-contributors-btn">
+                <button title="new task" type="button" class="btn btn-info pull-left">
+                  <span class="fa fa-plus"></span>
+                </button>
+                <p class="try-label">#{{rowUS.num}} {{rowUS.subject}}</p>
+              </div>
+
+
+            </div>
+
+
+
+            <div class="panel-body">
+
+              <ul dnd-list="rowUS.tasks"
+                  dnd-inserted="onAddedItemSprint($index, $parent.$index)">
+
+                <li ng-repeat="rowTask in rowUS.tasks"
+                    dnd-draggable="rowTask"
+                    dnd-moved="onMoved($parent.$index, $index ,rowTask)"
+                    dnd-copied="logEvent('Item copied', event)"
+                    dnd-effect-allowed="copyMove"
+                    dnd-selected="onSelected($parent.$index, $index ,rowTask)"
+                    ng-class="rowTask.status == 'New' ? 'status-new' :
+                              (rowTask.status == 'In progress' ? 'status-in-progress' :
+                               (rowTask.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">
+
+                  <div class="text-img">
+                    <img ng-show="rowTask.assignedto == undefined || rowTask.assignedto.id == undefined"
+                         ng-src="http://www.gravatar.com/avatar/{{getHash(rowTask.assignedto.mail)}}?s=40&d=identicon"
+                         alt="User Avatar"
+                         class="avatarin"/>
+                    <img ng-show="rowTask.assignedto !== undefined && rowTask.assignedto.id !== undefined"
+                         ng-src="http://www.gravatar.com/avatar/{{getHash(rowTask.assignedto.mail)}}?s=40&d=identicon"
+                         alt="User Avatar"
+                         class="avatarin"/>
+                    <p>#{{rowTask.num}} {{rowTask.subject}}</p>
+
+                  </div>
+
+
+
+
+
+
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div> <!-- find e row -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--------------------------- ejemplo que funciona ---------------------------------------------->
+        <!--------------------
+
+        <div class="panel-body panel-body-dashboard-sprints-row">
+
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Title</div>
+              <div class="panel-body">
+
+              <ul dnd-list="models.lists.A"
+                  dnd-inserted="onAddedItemSprint(index, 1)">
+
+                <li ng-repeat="item in models.lists.A"
+                    dnd-draggable="item"
+                    dnd-moved="onMoved(models.lists.A, $index ,item)"
+                    dnd-copied="logEvent('Item copied', event)"
+                    dnd-effect-allowed="copyMove"
+                    dnd-selected="onSelected(models.lists.A, $index ,item)">
+                  {{item.label}}
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div> <!-- find e row -->
+
+
+
+
+
+
+
+
+
+
+      </div> <!-- panel-body-backlog-sprints -->
+    </div> <!-- panel-dashboard-sprints -->
+  </div> <!-- row row-dashboard-sprints-->
+
+
+
+</div> <!--row row-all-content-sprint-dash -->
+
+
+
+<!----------------------- hasta aqui dashboard --------------------------------------------------->
+
+
+<div class="row row-all-content" id="row-all-content"
+     ng-show="!item.viewTaskboard && (tagUserstory == undefined ||tagUserstory.id == undefined)">
   <div class="row row-backlog-chart">
     <div class="panel panel-info" id="panel-backlog-chart">
 
@@ -234,7 +617,7 @@
                 <div class="form-group">
 
                   <!------------------- busquedas para sprints + botones edit, delete ... ------------------------------------>
-                  <div class="input-group" ng-show="tagSprint.num == undefined">
+                  <div class="input-group" ng-show="tagSprint.id == undefined">
 
 
                     <span class="input-group-btn">
@@ -295,7 +678,7 @@
 
 
                   <!------------------------ busquedas para US + botones ----------------------------------->
-                  <div class="input-group" ng-show="tagSprint.num !== undefined">
+                  <div class="input-group" ng-show="tagSprint.id !== undefined">
 
 
                     <span class="input-group-btn">
@@ -322,13 +705,25 @@
                     <!--ng-model="searchUS.tags"-->
 
 
-                    <!-- no hay seleccionados -->
+
+                    <!-- no hay US seleccionados -->
                     <span ng-show="tableCells.selected.length == 0" class="input-group-btn">
                       <div class="input-group-btn">
-                        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#newSprintModal" ng-click="initVarsNewSprintModal()">
+
+                        <button class="btn btn-success" type="button"
+                                ng-show="lookforUS() !== false"
+                                data-toggle="modal" data-target="#newUserStorySprintModal">
                           <i class="fa fa-plus"></i>
-                          Add a new sprint
+                          Add a new userstory
                         </button>
+
+                        <button class="btn btn-warning" type="button" ng-click="viewSprintTasksboard()"
+                                ng-show="lookforUS() !== false">
+                          <i class="fa fa-server"></i>
+                          Sprint Taskboard
+                        </button>
+
+
                       </div>
                     </span>
 
@@ -377,27 +772,17 @@
             <div class="panel-body panel-body-backlog-sprints-list">
 
 
-              <!-- esto es 1 tabla con status,points, userstory y votes  -->
 
-              <!-- <th class="table-cell24">Subject</th>
-                  <th class="table-cell1">Status</th>
-                  <th class="table-cell06">Points</th>
-                  <th class="table-cell1">Tags</th> --->
-
-
-
-<!--table-without-margin-sprints-->
 
               <table class="table"
-                ng-class="tagSprint.num == undefined ? 'table-without-margin-sprints' : 'table-without-margin-sprints-us'">
+                ng-class="tagSprint.id == undefined ? 'table-without-margin-sprints' : 'table-without-margin-sprints-us'">
                 <thead>
-
                 <tr>
 
 
                   <!-- esto solo quiero que se muestre cuando no hay sprint seleccionado -->
                   <th class="table-cell01"
-                      ng-show="tagSprint.num == undefined" >
+                      ng-show="tagSprint.id == undefined" >
 
                     <input type="checkbox" ng-click="checkAllNone(2)"
                            ng-checked="ischeckedAllCells">
@@ -409,9 +794,9 @@
                     <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
                       Sprints
                       <span ng-show="sortType == 'num'" class="fa"
-                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.num == undefined"></span>
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.id == undefined"></span>
 
-                      <span ng-show="tableCells.selected.length > 0 && tagSprint.num == undefined"
+                      <span ng-show="tableCells.selected.length > 0 && tagSprint.id == undefined"
                             class="badge badge-warning pull-right">{{tableCells.selected.length}}</span>
                     </a>
                   </th>
@@ -420,7 +805,7 @@
                     <a ng-click="sortType = 'startdate'; sortReverse = !sortReverse">
                       Start date
                       <span ng-show="sortType == 'startdate'" class="fa"
-                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.num == undefined"></span>
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.id == undefined"></span>
                     </a>
                   </th>
 
@@ -428,7 +813,7 @@
                     <a ng-click="sortType = 'enddate'; sortReverse = !sortReverse">
                       Ending date
                       <span ng-show="sortType == 'enddate'" class="fa"
-                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.num == undefined"></span>
+                            ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'" ng-show="tagSprint.id == undefined"></span>
 
                     </a>
                   </th>
@@ -447,7 +832,7 @@
 
 
 
-                  <td class="table-cell01" ng-show="tagSprint.num == undefined">
+                  <td class="table-cell01" ng-show="tagSprint.id == undefined">
                     <input type="checkbox" data-checklist-model="tableCells.selected" data-checklist-value="row" ng-click="changeCheckedTableCell(row)">
 
                     <!--cellSelectedClass -->
@@ -475,7 +860,7 @@
 
 
               <!-- tabla US -->
-              <table class="table table-without-margin" ng-show="tagSprint.num !== undefined">
+              <table class="table table-without-margin" ng-show="tagSprint.id !== undefined && lookforUS()">
                 <thead>
 
                 <tr>
@@ -483,8 +868,7 @@
 
                   <th class="table-cell01">
                     <input type="checkbox" ng-click="checkAllNone(0)"
-                           ng-checked="ischeckedAllCells"
-                           ng-show="lookforUS() == false">
+                           ng-checked="ischeckedAllCells">
 
                   </th>
 
@@ -543,7 +927,9 @@
 
 
 
-                  <td class="table-cell01">
+                  <td class="table-cell01" ng-class="row.status == 'New' ? 'status-new' :
+                              (row.status == 'In progress' ? 'status-in-progress' :
+                               (row.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">
                     <input type="checkbox" data-checklist-model="tableCells.selected" data-checklist-value="row" ng-click="changeCheckedTableCell(row)">
 
                     <!--cellSelectedClass -->
@@ -552,7 +938,9 @@
 
 
                   <td data-ng-click="viewDetailsUserstory(row)" class="table-cell05">{{row.voters.length}}</td>
-                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell23">#{{row.num}} {{row.subject}}</td>
+                  <td data-ng-click="viewDetailsUserstory(row)" class="table-cell23"
+                      ng-class="row.status == 'Closed' ? 'status-closed' :''">
+                    #{{row.num}} {{row.subject}}</td>
                   <td data-ng-click="viewDetailsUserstory(row)" class="table-cell1">{{row.status}}</td>
                   <td data-ng-click="viewDetailsUserstory(row)" class="table-cell06">{{row.totalPoints}}</td>
                   <td data-ng-click="viewDetailsUserstory(row)" class="table-cell1">
@@ -566,7 +954,7 @@
               </table>
 
 
-              <div ng-show="tagSprint.num !== undefined && lookforUS() == false"
+              <div ng-show="tagSprint.id !== undefined && lookforUS() == false"
                    class = "table-sprints-empty-table-us">
 
 
@@ -602,6 +990,89 @@
   </div> <!-- end row--->
 
 </div><!-- end row-all-content :: !item.viewinDetail && tagTask.num == undefined"-->
+
+<!------------------------------ end tables Sprint and US ---------------------------------------------->
+
+
+
+
+
+
+
+
+
+<!------------------------ view detail US y related tasks ---------------------------------------------->
+
+
+
+
+<!-- vista en detalle de userstory y sus relatedtasks -->
+<div class="row row-all-content"  id="row-all-content2"
+     ng-show="!item.viewTaskboard && tagSprint !== undefined && tagSprint.id !== undefined
+              && tagUserstory !== undefined && tagUserstory.id !== undefined && item.viewinDetail
+              && tagTask == -1"
+     ng-include="'views/partials/usDetailsFromSprint.html'">
+</div> <!--ng-show="item.viewinDetail" vista en detalle -->
+
+
+
+
+<!-------------------------end view detail US y related tasks --------------------------------------------->
+
+
+<!--------------------------------- view details tasks ------------------------------------------------>
+<!--------------------------- con el mismo tenemos
+                              que acceder con y sin tagUserstory.id:: por si venimos del
+                              viewTaskboard::esta es nuestra variable magica::
+                              luego si que asignamos tagUS y lo borramos si quitan nuestra tarea
+                              y venimos de ahi
+                              !item.viewTaskboard
+                              -------------------------------------------------------------->
+
+
+<div class="row row-all-content" id="row-all-content3"
+     ng-show="tagSprint !== undefined && tagSprint.id !== undefined
+              && tagUserstory !== undefined && tagUserstory.id !== undefined && item.viewinDetail
+              && tagTask !== -1"
+     ng-include="'views/partials/taskDetailsFromSprint.html'">
+
+</div>
+
+
+
+
+<!--------------------------------------- end view details tasks ---------------------------------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1008,7 +1479,7 @@
 
 
 
-<!-- ---- FALTA           !!!!!!!!!!! Edit Sprint Modal ---- -->
+<!-- ---- Edit Sprint Modal ---- -->
 <div id="editSprintModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
     <!-- Modal content-->
@@ -1124,10 +1595,121 @@
 
       <div class="modal-footer">
         <button type="submit" class="btn btn-success" id="btn-edit-sprint" ng-click="editSprint()"><span class="fa fa-floppy-o">
-        </span> Create</button>
+        </span> Edit</button>
 
         <!-- inicializar variables -->
         <button type="button" class="btn btn-danger" id="btn-edit-sprint-close" data-dismiss="modal" ng-click="initVarsEditSprintModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ---- New Related Task Modal ---- -->
+<div id="newTaskSprintModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+        <!-- hay que cambiar el initVarsNewUserstoryModal() -->
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initVarsNewRelatedTaskModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">New Task</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewRelatedTaskModal !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewRelatedTaskModal =''">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{modalsError.messageNewRelatedTaskModal}}
+
+        </div>
+
+
+
+
+
+
+        <!-- subject -->
+        <div class="form-group">
+          <label for="taskSubject">Subject:</label>
+          <input type="text" class="form-control" name="taskSubjectTxt"
+                 id="taskSubject" placeholder="Enter Task Subject..."
+                 ng-model="task.subject">
+
+          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewRelatedTaskRequiredSubModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewRelatedTaskRequiredSubModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- cambiar esto diciendo que necesita que elcampo este completo -->
+            {{modalsError.messageNewRelatedTaskRequiredSubModal}}
+
+          </div>
+
+        </div>
+
+
+
+        <!-- status
+        luego poner
+        ng-show="tagUserstory.sprint !== null && !== undefined && !== ''"
+        -->
+        <div class="form-group">
+          <oi-select oi-options="item for item in statics.status track by item"
+                     ng-model="task.status"
+                     required></oi-select>
+        </div>
+
+
+
+        <!-- descripcion -->
+        <div class="form-group">
+          <label for="taskDescr">Description:</label>
+          <textarea class="form-control" id="taskDescr"
+                    placeholder="Enter description to helps others better understand..."
+                    ng-model="task.description">
+          </textarea>
+        </div>
+
+
+
+
+        <div class="form-group requirements-task">
+          <div class="btn-group">
+            <label type='button' class="btn btn-warning" ng-model="task.requirement.blocked" uib-btn-checkbox>Blocked</label>
+            <label type='button' class="btn btn-info" ng-model="task.requirement.iocaine" uib-btn-checkbox>Power</label>
+
+          </div>
+
+        </div>
+
+
+
+
+
+
+      </div> <!-- end modal body -->
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-new-related-task" ng-click="createNewRelatedTaskFromSprint()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables -->
+        <button type="button" class="btn btn-danger" id="btn-new-related-task-close" data-dismiss="modal" ng-click="initVarsNewRelatedTaskModal()">
           <span class="fa fa-remove"></span> Close</button>
 
       </div>

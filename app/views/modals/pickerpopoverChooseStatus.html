@@ -1,0 +1,18 @@
+<div class="picker">
+
+  <ul class="picker-ul">
+    <li ng-repeat="status in statics.status" ng-class="status.selected ? 'resalt-background' : 'normal-background'">
+      <a ng-click="editStatusTaskFromSprint(point)">{{status}}</a>
+    </li>
+  </ul>
+<!--
+  <div class="picker-items">
+
+    <div ng-class="status.selected ? 'resalt-background' : 'normal-background'" ng-repeat="status in statics.status"
+         class="picker-item">
+      <a ng-click="editStatusTaskFromSprint(point)">{{status}}</a>
+    </div>
+
+
+  </div>-->
+</div>

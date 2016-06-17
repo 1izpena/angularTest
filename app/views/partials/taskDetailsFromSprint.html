@@ -1,0 +1,434 @@
+
+  <div class="panel panel-info" id="panel-detail-task">
+
+    <!-- le hacemos flexbox y metemos colums -->
+    <div class="panel-body panel-body-detail-task" id="panel-body-detail-task">
+      <div class="summary-header-detail-task-parent">
+
+
+        <div class="summary-header-detail-task">
+          <!-- puedo poner los votos del userstory -->
+          <div class="summary-detail-view">
+
+              <span title="US votes" class="votes">{{tagUserstory.voters.length}}
+              </span>
+            <i ng-click="editVoteUserstory(0)" ng-show="!tagUserstoryTemp.disableVote" class="fa fa-plus"></i>
+            <i ng-click="editVoteUserstory(1)" ng-show="tagUserstoryTemp.disableVote" class="fa fa-minus"></i>
+
+          </div>
+
+          <div class="summary-detail-view1">
+            <span class="subject">#{{tagUserstory.tasks[tagTask].num}}</span>
+
+          </div>
+
+          <div class="summary-detail-view2">
+              <span class="subject" editable-text="tagUserstory.tasks[tagTask].subject" e-required onbeforesave="editSubjectTask($data, tagUserstory.tasks[tagTask])">
+                                  {{ tagUserstory.tasks[tagTask].subject || 'empty' }}
+                                     </span>
+          </div>
+
+          <div class="summary-detail-view3">
+              <span class="nexttask">
+                <i class="fa fa-angle-right fa-lg"></i>
+              </span>
+          </div>
+
+        </div><!-- end div summary-header-detail-userstory -->
+
+
+        <div class="summary-detail-body1">
+          <div class="created-by">
+            <p> Created by
+              <a ng-click=""> {{tagUserstory.tasks[tagTask].createdby.username}}
+              </a>
+            </p>
+            <p> {{tagUserstory.tasks[tagTask].datetime | date:'medium'}}</p>
+          </div>
+
+          <div>
+            <img
+              ng-src="http://www.gravatar.com/avatar/{{getHash(tagUserstory.tasks[tagTask].createdby.mail)}}?s=50&d=identicon"
+              alt="User Avatar"
+              class="avatar" id="img-circle3"/>
+          </div>
+
+
+          <!-- boton para ver o no los comments y volver atras  -->
+          <div class="view-comments-detail-task">
+            <button class="btn related-comments" type="button">
+
+              <span ng-click="goBackFromDetailTask()"
+                    aria-hidden="true">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+              </span>
+
+              Related comments
+
+                <span
+                  ng-click ="viewRelatedCommentsTask()"
+                  ng-class="item.viewRelatedComments ? 'glyphicon glyphicon glyphicon-chevron-up' :'glyphicon glyphicon glyphicon-chevron-down'"
+                  aria-hidden="true">
+
+                </span>
+
+
+
+            </button>
+
+
+
+
+          </div>
+        </div>
+
+      </div> <!-- end div summary-header-detail-task-parent -->
+
+
+
+
+
+
+
+
+      <!-- class to view tasks in detail -->
+      <div class="summary-body-detail-task animate-show" ng-hide="item.viewRelatedComments" >
+
+        <!--  para las tareas tenemos ::
+
+    /* si locaine puede ser para varios, puedes poner contributors */
+    assignedto      : { type: Schema.ObjectId, ref: 'User', required: false },
+    contributors    : [{ type: Schema.ObjectId, ref: 'User', required: false }],
+
+    /* new = 0, in progress = 1, readyfortest = 2, closed =3 */ -->
+
+
+        <div class="summary-detail-task-body2"> <!-- column -->
+          <div class="summary-detail-task-body2-child"> <!-- row -->
+
+            <div class="summary-detail-task-body2-child-body1"> <!-- column -->
+
+              <div class="form-group">
+                <label>Status:</label>
+
+                <oi-select oi-options="item for item in statics.status track by item"
+                           ng-model="tagUserstory.tasks[tagTask].status"
+                           ng-change="editStatusTask()"
+                           required>
+
+                </oi-select>
+              </div> <!-- end form-group -->
+
+
+
+
+
+              <div class="summary-detail-task-body21-child-body2" ng-show="tagUserstory.tasks[tagTask].assignedto !== undefined && tagUserstory.tasks[tagTask].assignedto.id !== undefined"> <!-- este es column -->
+
+                <div>
+                  <img
+                    ng-src="http://www.gravatar.com/avatar/{{getHash(tagUserstory.tasks[tagTask].assignedto.mail)}}?s=50&d=identicon"
+                    alt="User Avatar"
+                    class="avatar" id="img-circle6"
+                    ng-click="changeTaskAssignedto(tagUserstory.tasks[tagTask], tagTask)"/>
+                </div>
+
+                <div class="summary-detail-task-body2-child-body2-assignedto">
+                  <p> Assigned to </p>
+                  <a> {{tagUserstory.tasks[tagTask].assignedto.username}}
+                  </a>
+                </div>
+                <!--
+                <div class="btn-group" role="group" aria-label="...">
+                  <button title="add contributor" type="button" class="btn btn-default">
+                    <span class="fa fa-user-plus"></span>
+                  </button>
+                </div>
+                -->
+                <span>
+                  <i ng-click="unassignedTask(tagUserstory.tasks[tagTask])" class="fa fa-times" aria-hidden="true"></i>
+                </span>
+
+
+
+              </div>
+
+
+              <!-- lo mismo para NOT ASSIGNED -->
+              <div class="summary-detail-task-body21-child-body2" ng-show="tagUserstory.tasks[tagTask].assignedto == undefined || tagUserstory.tasks[tagTask].assignedto.id == undefined"> <!-- este es column -->
+
+                <div>
+                  <img
+                    ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
+                    alt="User Avatar"
+                    class="avatar" id="img-circle7"
+                    ng-click="changeTaskAssignedto(tagUserstory.tasks[tagTask], tagTask)"/>
+                </div>
+
+                <div class="summary-detail-task-body2-child-body2-assignedto">
+                  <p> Assigned to </p>
+                  <a ng-click=""> Not assigned
+                  </a>
+                </div>
+
+              </div>
+
+
+
+            </div>
+
+
+
+
+
+
+            <!-- aqui irian los contributors si hay -->
+            <!-- <span aria-hidden="true">&times;</span> -->
+
+
+            <div class="form-contributors">
+
+              <div class="form-contributors-btn">
+
+                <button title="new contributor"
+                        ng-click="addContributorTask( contributor)"
+                        type="button" class="btn btn-info">
+                  <span class="fa fa-user-plus"></span>
+                </button>
+                <button type="button" class="btn btn-info btn-label-contributor">
+                  Contributors
+                </button>
+
+              </div>
+
+
+
+              <div class="contributors-list">
+                <ul class="media-list list-group" ng-show="tagUserstory.tasks[tagTask].contributors !== undefined || tagUserstory.tasks[tagTask].contributors.length > 0">
+
+                  <li class="media list-group-item" ng-repeat="contributor in tagUserstory.tasks[tagTask].contributors">
+
+                    <div class="comment">
+                      <img
+                        ng-src="http://www.gravatar.com/avatar/{{getHash(contributor.mail)}}?s=50&d=identicon"
+                        alt="User Avatar"
+                        class="avatar-comments"/>
+
+
+                      <div class="media-body">
+                        <strong class="username">{{contributor.username}} </strong>
+                          <span>
+                            <i ng-click="removeContributorTask(contributor)" class="fa fa-times" aria-hidden="true"></i>
+                          </span>
+                      </div>
+
+                      <div class="clearfix"></div>
+
+                    </div> <!-- end div comments -->
+                  </li>
+
+                </ul>
+              </div>
+
+
+            </div> <!--end contributors:: derecha -->
+
+
+
+
+          </div> <!-- end hacemos columnas:: row -->
+
+        </div> <!-- end hacemos filas:: columns -->
+
+
+
+
+
+
+        <!-- description -->
+        <div class="summary-detail-body4">
+          <div class="form-group">
+            <label for="taskDescr">Description:</label>
+            <p id="taskDescr" editable-textarea="tagUserstory.tasks[tagTask].description"
+               e-required
+               onbeforesave="editDescriptionTask($data, tagUserstory.tasks[tagTask])">
+              {{ tagUserstory.tasks[tagTask].description || 'Enter description to helps others better understand...' }}
+
+            </p>
+          </div>
+        </div>
+
+
+        <div class="summary-detail-body5">
+          <div class="form-group requirements-task">
+            <!-- solo requirement -->
+
+            <div class="btn-group">
+              <label type='button' ng-click="editRequirementTask(0)" class="btn btn-warning" ng-model="tagUserstory.tasks[tagTask].requirement.blocked" uib-btn-checkbox>Blocked</label>
+              <label type='button' ng-click="editRequirementTask(1)" class="btn btn-info" ng-model="tagUserstory.tasks[tagTask].requirement.iocaine" uib-btn-checkbox>Support</label>
+
+            </div>
+
+
+          </div>
+        </div>
+
+
+
+      </div> <!-- end view detail -->
+
+
+
+
+
+
+      <!-- aqui ponemos los comments -->
+      <div class="summary-body-detail-task-comments animate-show" ng-show="item.viewRelatedComments" >
+
+
+
+
+
+
+        <div class="well well-custom" scroll-bottom-on-last="tagUserstory.tasks[tagTask].comments">
+          <ul class="media-list list-group">
+
+
+
+            <!-- elfalso -->
+            <li class="media list-group-item"
+                ng-show="tagUserstory.tasks[tagTask].comments == undefined || tagUserstory.tasks[tagTask].comments.length == 0">
+              <div class="comment">
+
+                <img
+                  ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
+                  alt="User Avatar"
+                  class="avatar-comments"/>
+
+
+                <div class="media-body">
+
+                  <strong class="username">MeanStack </strong>
+                  <small class="date date-comments" >
+                    <span class="glyphicon glyphicon-time"></span>
+
+                    <span>Right now</span>
+                  </small>
+
+                  <p> Empty space is so boring ... </p>
+
+                </div>
+                <div class="clearfix"></div>
+
+              </div>
+            </li>
+
+
+
+            <!-- --------------- el real ------------------ -->
+            <li class="media list-group-item"
+                ng-repeat="comment in tagUserstory.tasks[tagTask].comments" send-last
+                ng-show="tagUserstory.tasks[tagTask].comments !== undefined && tagUserstory.tasks[tagTask].comments.length > 0"
+                name="{{comment.id}}" id="{{comment.id}}">
+
+              <div class="comment">
+
+
+
+                <img
+                  ng-src="http://www.gravatar.com/avatar/{{getHash(comment.user.mail)}}?s=50&d=identicon"
+                  alt="User Avatar"
+                  class="avatar-comments"/>
+
+
+                <div class="media-body">
+
+                  <strong class="username">{{comment.user.username}}</strong>
+                  <small class="date date-comments" >
+                    <span class="glyphicon glyphicon-time"></span>
+                    <span am-time-ago="comment.created"></span>
+
+                  </small>
+
+
+                  <p>    {{comment.comment}}    </p>
+                  <small class="date date-comments" ng-show="comment.isEditable" ng-click="removeComment(comment)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </small>
+
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+            </li>
+
+
+          </ul>
+
+          <!-- 2 ul's para well class:: comments -->
+
+
+        </div>
+
+        <!-- end divs con 2 ul's para well class:: comments -->
+
+
+
+        <!--<div class="well">-->
+        <div class="panel-body comments">
+            <textarea class="form-control" placeholder="Type your comment"
+                      rows="2" id="commentText"
+                      ng-model="item.commentText">
+            </textarea>
+          <button type="button" class="btn btn-info pull-right" ng-click="sendCommentText()">
+            Submit comment
+          </button>
+        </div>
+        <!-- </div>-->
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!----------------final del lo nuevo copiado -------------->
+
+
+
+
+
+
+
+
+
+    </div><!-- detail tasks -->
+
+  </div> <!--panel-detail-task end detail-task -->
+
+
+
+
+
+
+
+
+

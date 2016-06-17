@@ -1260,7 +1260,7 @@ angular.module('myAppAngularMinApp')
           }
           else if(scrumMessageJSON.attr.oldfield == 'iocaine'){
 
-            labeled = "<span class='label label-info label-marked'>Power</span>";
+            labeled = "<span class='label label-info label-marked'>Support</span>";
 
             if(scrumMessageJSON.attr.newfield.iocaine){
               status = "marked as a";
@@ -1638,7 +1638,7 @@ angular.module('myAppAngularMinApp')
             else if(scrumMessageJSON.task.requirement.iocaine){
 
 
-              iocainetask = "<span class='label label-info' >Power</span>";
+              iocainetask = "<span class='label label-info' >Support</span>";
             }
 
 

@@ -3,6 +3,166 @@
   src: url('../fonts/Lora-Regular.ttf');
 }
 
+
+/**************** prueba drowdow ***********************************/
+/*.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}*/
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 99;
+  font-size: small;
+  font-family: inherit;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  min-width: 100px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+}
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+  text-decoration: none;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
+
+
+
+
+
+/******************************************************/
+
+/********** prueba listas que se mueven *****************/
+
+
+.panel-body-dashboard-sprints ul[dnd-list],
+.panel-body-dashboard-sprints ul[dnd-list] > li {
+  position: relative;
+}
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.panel-body-dashboard-sprints ul[dnd-list] {
+  min-height: 42px;
+  padding-left: 0px;
+  padding:0px;
+  margin-bottom: 0px;
+
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+.panel-body-dashboard-sprints ul[dnd-list] .dndDraggingSource {
+  display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.panel-body-dashboard-sprints ul[dnd-list] .dndPlaceholder {
+  display: block;
+  background-color: #ddd;
+  min-height: 42px;
+}
+
+/**
+ * The dnd-lists's child elements currently MUST have
+ * position: relative. Otherwise we can not determine
+ * whether the mouse pointer is in the upper or lower
+ * half of the element we are dragging over. In other
+ * browsers we can use event.offsetY for this.
+ */
+.panel-body-dashboard-sprints ul[dnd-list] li {
+  background-color: #fff;
+  /*border: 1px solid #ddd;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;*/
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+}
+
+.panel-body-dashboard-sprints ul {
+  border: 0px solid white;
+
+}
+
+
+
+/**
+ * Show selected elements in green
+ */
+.panel-body-dashboard-sprints ul[dnd-list] li.selected {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.panel-body-dashboard-sprints li{
+  color: gray;
+
+}
+
+*, *:before, *:after {box-sizing:  border-box !important;}
+
+
+.panel-body-dashboard-sprints .row {
+  -moz-column-width: 25em;
+  -webkit-column-width: 25em;
+  -moz-column-gap: .5em;
+  -webkit-column-gap: .5em;
+
+}
+
+.panel-body-dashboard-sprints .panel {
+  display: inline-block;
+  padding: 0px;
+  margin:0px;
+  width:100%;
+}
+
+
+
+
+
+
+
+/************ fin listas que se mueven************************************/
+
+
 #page-content-wrapper
 {
   font-family: lora;
@@ -15,6 +175,7 @@
 
 .view-task-detail-userstory .badge{
   background-color: #337ab7;
+  margin-left: 1em;
 }
 
 
@@ -164,6 +325,8 @@
 .picker:after {
   clear: both;
 }
+
+
 .picker .picker-items {
   position: relative;
   clear: both;
@@ -208,7 +371,7 @@
 }
 
 .picker .picker-item{
-  width: 15px;
+  width: 37px;
 }
 
 .picker .picker-item a {
@@ -416,9 +579,9 @@ it dosn't work when we are not showing the current month **********
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  margin: 0 .5rem;
-  margin-left: 1.5em;
-  margin-right: 1.5em;
+  /*margin: 0 .5rem;*/
+  margin-left: 1em;
+  margin-right: 1.5rem;
 
 
 }
@@ -441,6 +604,8 @@ it dosn't work when we are not showing the current month **********
 
   padding-bottom: 0px; !important;
   padding-top: 0px; !important;
+  margin-left: -0.1em;
+
   /*margin: 0 .5rem;
   margin-left: 1.5em;
   margin-right: 1.5em;*/
@@ -452,6 +617,7 @@ it dosn't work when we are not showing the current month **********
 
   padding-bottom: 0px; !important;
   padding-top: 0px; !important;
+  padding: 0px; !important;
 
 }
 
@@ -516,7 +682,6 @@ it dosn't work when we are not showing the current month **********
 
 
 
-
 .summary-header-detail-userstory-parent{
   /*background: red;*/
   border:none;
@@ -529,6 +694,8 @@ it dosn't work when we are not showing the current month **********
 
   flex-direction: column;
 
+
+
 }
 
 .summary-header-detail-task-parent{
@@ -540,6 +707,8 @@ it dosn't work when we are not showing the current month **********
   display: flex;
 
   flex-direction: column;
+  margin-right: -1.1em;
+  margin-left: -1.2em;
 
 }
 
@@ -595,7 +764,13 @@ it dosn't work when we are not showing the current month **********
   float: right;
 }
 
+.related-tasks span:hover,
+.related-tasks span:focus,
+.related-tasks span:active{
+  border: 0 none transparent;
+  outline: 0 none transparent;
 
+}
 
 
 
@@ -645,14 +820,36 @@ it dosn't work when we are not showing the current month **********
 
   border: 0 none transparent;
   outline: 0 none transparent;
+  outline: none !important;
+  border: 0 !important;
+
+
+
   border-spacing: 0;
   border-collapse: collapse;
 
 }
 
+.view-task-detail-userstory .btn:hover,
+.view-task-detail-userstory .btn:focus,
+.view-task-detail-userstory .btn:active{
+  outline: none !important;
+  border: 0 !important;
+
+}
+
+
 
 .related-comments .glyphicon{
   float: right;
+}
+
+
+.related-comments span:hover,
+.related-comments span:focus,
+.related-comments span:active{
+  outline: none;
+  border: 0;
 }
 
 
@@ -786,7 +983,13 @@ it dosn't work when we are not showing the current month **********
 
   flex:1;
   flex-direction: column;
+  margin:15px;
+  margin-bottom: 0px;
 
+}
+
+#summary-body-detail-userstory{
+  margin:0px; !important;
 }
 
 
@@ -1082,8 +1285,8 @@ it dosn't work when we are not showing the current month **********
   display: -ms-flexbox;
   display: flex;
   margin: 0 .5rem;
-  margin-left: 1.5em;
-  margin-right: 1.5em;
+  margin-left: 1em;
+  margin-right: 1.5rem;
 
   padding-top: 0px !important;
   padding-bottom: 0px !important;
@@ -1159,10 +1362,301 @@ it dosn't work when we are not showing the current month **********
 }
 
 
+.table-dashboard-sprint {
+  height: 100%;
+  overflow-y: auto;
+  margin-bottom:0px;
+
+
+}
+#panel-dashboard-sprints{
+  margin-bottom: 0px;
+
+}
+
+.panel-body-dashboard-sprints {
+
+  color: white;
+  border:none;
+  height: 100%;
+  margin-bottom: 0px;
+  margin-left:15px;
+  margin-right:15px;
+
+
+  padding: 0px !important;
+  /*padding-bottom: 0px !important;*/
+  overflow-y: auto;
+  /*overflow-x: hidden;*/
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+
+
+}
+
+.panel-body-dashboard-sprints-row{
+  color: white;
+  border:none;
+  height: 100%;
+  margin-bottom: 0px;
+  padding: 0px !important;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+.panel-body-dashboard-sprints-row .panel-info{
+  border: 0px solid white;
+}
+
+.panel-body-dashboard-sprints-row .text-img{
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+
+}
+
+.text-img p{
+  flex: 6;
+  margin-bottom: 0px;
+  margin-left: 1em;
+
+}
+
+.text-img img{
+  width: 33px;
+  height: 33px;
+
+}
+
+
+.text-img .avatarin-opacity{
+  opacity: 0.5;
+
+}
+
+
+
+
+
+
+
+
+.panel-body-dashboard-sprints-row .try-label{
+  margin: 0.4em;
+  font-size: 0.9em;
+  color: #337ab9;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+.panel-body-dashboard-sprints-row .panel-body{
+  margin:0px;
+  padding:0px;
+
+}
+
+/*
+@media (max-width: 800px) {
+  .panel-body-dashboard-sprints {
+    flex-direction: column;
+  }
+}
+*/
+
+.panel-body-dashboard-sprints .panel-default{
+  flex:1;
+}
+
+
+
+#panel-heading-color-white,
+#panel-heading-color-white2{
+  /*color: white;*/
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: initial;
+
+  padding:0px;
+}
+
+
+#panel-heading-color-white a:hover,
+#panel-heading-color-white a:focus,
+#panel-heading-color-white a:active{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#panel-heading-color-white2 a:hover,
+#panel-heading-color-white2 a:focus,
+#panel-heading-color-white2 a:active{
+  border-radius: inherit;
+  color: #337ab7;
+  background: #d9edf7;
+  border-color: #d9edf7;
+}
+
+
+#panel-heading-color-white .btn,
+#panel-heading-color-white2 .btn{
+  border-radius: inherit;
+  color: #337ab7;
+  background: #d9edf7;
+  border-color: #d9edf7;
+}
+
+
+
+
+
+
+#panel-heading-color-white .btn:hover,
+#panel-heading-color-white .btn:focus,
+#panel-heading-color-white .btn:active{
+  text-decoration: none;
+  cursor: pointer;
+  outline: none !important;
+  border: 0 !important;
+}
+
+#panel-heading-color-white2 .btn:hover,
+#panel-heading-color-white2 .btn:focus,
+#panel-heading-color-white2 .btn:active{
+  text-decoration: none;
+  cursor: pointer;
+  outline: none !important;
+  border: 0 !important;
+}
+
+
+
+
+
+.status-new {
+  border-right: 4px solid #0275d8 !important;
+}
+
+.status-in-progress {
+  border-right: 4px solid rgba(0, 205, 205, 0.49) !important;
+
+}
+
+.status-ready-for-test {
+  border-right: 4px solid #ec971f !important;
+}
+
+.status-closed {
+  /*border-left: 5px solid #449d44 !important;*/
+  border-right: 4px solid rgb(0,230,118) !important;
+  /*text-decoration: line-through;*/
+}
+
+
+
+
+
+.summary-body-detail-userstory .table .status-closed.table-cell4{
+  text-decoration: line-through;
+}
+
+.status-closed p{
+
+  text-decoration: line-through;
+}
+
+
+
+.table-cell01.status-new {
+  border-left: 4px solid #0275d8 !important;
+}
+
+.table-cell01.status-in-progress {
+  border-left: 4px solid rgba(0, 205, 205, 0.49) !important;
+
+}
+
+.table-cell01.status-ready-for-test {
+  border-left: 4px solid #ec971f !important;
+}
+
+.table-cell01.status-closed {
+  border-left: 4px solid rgb(0,230,118) !important;
+}
+
+.table-cell04.status-closed {
+  text-decoration: line-through;
+}
+
+.table-cell23.status-closed {
+  text-decoration: line-through;
+}
+
+
+
+.panel-body-backlog-userstories-list.status-new {
+  border-left: 4px solid #0275d8 !important;
+}
+
+
+.panel-body-backlog-userstories-list.status-in-progress {
+  border-left: 4px solid rgba(0, 205, 205, 0.49) !important;
+
+}
+
+.panel-body-backlog-userstories-list.status-ready-for-test {
+  border-left: 4px solid #ec971f !important;
+}
+
+.panel-body-backlog-userstories-list.status-closed {
+  /*border-left: 5px solid #449d44 !important;*/
+  border-left: 4px solid rgb(0,230,118) !important;
+  text-decoration: line-through;
+}
+
+
+
+
+
+
+
 .panel-body-backlog-sprints .table-without-margin{
   margin-bottom: 0px;
 
 }
+
+.panel-body-backlog-sprints-list .table>thead:first-child>tr:first-child>th{
+  padding-left: 0.9em;
+
+}
+
+.summary-body-detail-userstory .table>thead:first-child>tr:first-child>th{
+  padding-left: 0.9em;
+}
+
+.panel-body-backlog-userstories-list .table>thead:first-child>tr:first-child>th{
+  padding-left: 0.9em;
+}
+
+.panel-body-backlog-sprints-list .table-without-margin-sprints>thead:first-child>tr:first-child>th{
+  padding-left: 0.5em !important;
+
+}
+
 
 .panel-body-backlog-sprints .table-without-margin a{
   font-family: inherit;
@@ -1175,8 +1669,8 @@ it dosn't work when we are not showing the current month **********
   text-decoration: none;
   cursor: pointer;
 
-
 }
+
 .panel-body-backlog-sprints .table-without-margin th{
   background: #D9EDF7;
   color: rgb(51, 122, 183);
@@ -1194,6 +1688,67 @@ it dosn't work when we are not showing the current month **********
   color: rgb(51, 122, 183);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.panel-body-dashboard-sprints .table-dashboard-sprint{
+  margin-bottom: 0px;
+
+}
+
+.panel-body-dashboard-sprints .table-dashboard-sprint a{
+  font-family: inherit;
+}
+
+.panel-body-dashboard-sprints .table-dashboard-sprint a:hover,
+.panel-body-dashboard-sprints .table-dashboard-sprint a:focus,
+.panel-body-dashboard-sprints .table-dashboard-sprint a:active
+{
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+.panel-body-dashboard-sprints .table-dashboard-sprint th{
+  background: #D9EDF7;
+  color: rgb(51, 122, 183);
+
+}
+
+.panel-body-dashboard-sprints .table-dashboard-sprint th{
+  background: rgba(100, 149, 237, 0.5);
+  color: rgb(51, 122, 183);
+
+}
+
+.panel-body-dashboard-sprints .table-dashboard-sprint th{
+  background: rgba(100, 149, 237, 0.5);
+  color: rgb(51, 122, 183);
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1377,8 +1932,7 @@ it dosn't work when we are not showing the current month **********
 
 
 .panel-body-backlog-userstories-list {
-  /*background: rgba(0, 37, 128, 0.5);*/
-  /*background-image: url('../images/patern.png');*/
+
   color: white;
   border:none;
   height: 100%;
@@ -1390,16 +1944,15 @@ it dosn't work when we are not showing the current month **********
     display: -ms-flexbox;
     display: flex;
     */
-  margin: 0 .5rem;
-  margin-left: 1.5em;
-  margin-right: 1.5em;
 
-  padding: 0px !important;
+  padding-left: 14px !important;
+  margin-left: -0.4em;
+  margin-right: -0.5em;
 
-  /*padding-top: 0px !important;
-  padding-bottom: 0px !important;*/
+  padding-bottom: 0px !important;
+  padding-top:0px !important;
 
-
+  /*padding: 0px !important;*/
 
 }
 
@@ -1415,10 +1968,11 @@ it dosn't work when we are not showing the current month **********
   border:none;
   height: 100%;
   margin: 0 .5rem;
-  margin-left: 1.5em;
-  margin-right: 1.5em;
+  margin-left: 0.6em;
+  margin-right: 0.6em;
 
   padding: 0px !important;
+  overflow-y: auto;
 }
 
 
@@ -1442,10 +1996,6 @@ oi-select .select-search-list-item {
 
 .panel-body-backlog-userstories-list th{
   color: #000;
-  /*font-family: 'Oswald', sans-serif;*/
-  /*font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;*/
-  /*font-family: 'Oswald', sans-serif;;
-  font-size: larger;*/
   text-align: center;
 
 }
@@ -1456,6 +2006,26 @@ oi-select .select-search-list-item {
   text-align: center;
 
 }
+
+
+
+
+.panel-body-dashboard-sprints th{
+  color: #000;
+  text-align: center;
+
+}
+
+.panel-body-dashboard-sprints td{
+  /*color: rgba(0, 0, 0, 0.41);*/
+  color: rgba(0,0,0,0.54);
+  text-align: center;
+
+}
+
+
+
+
 
 
 
@@ -1667,10 +2237,173 @@ oi-select .select-search-list-item {
 }
 
 
+
+
+
+
+
+.panel-body-dashboard-sprints ul[dnd-list] > li:hover,
+.panel-body-dashboard-sprints ul[dnd-list] > li:focus,
+.panel-body-dashboard-sprints ul[dnd-list] > li:active
+{
+  background:rgba(229, 249, 255, 0.45);
+
+}
+
+
 .uib-datepicker-popup.dropdown-menu{
   margin:0px;
   padding: 0px;
 }
+
+
+
+
+
+.panel-body-dashboard-sprints .table .table-cell01{
+  flex:0.1;
+}
+
+
+.panel-body-dashboard-sprints .table .table-cell15{
+  flex:1.5;
+}
+
+.panel-body-dashboard-sprints .table .table-cell14{
+  flex:1.4;
+}
+
+.panel-body-dashboard-sprints .table .table-cell4{
+  flex:4;
+}
+
+
+.panel-body-dashboard-sprints td span{
+  margin-right: 0.5em;
+  position: relative;
+  float: right;
+  margin-bottom: 0.5em;
+  background: lime;
+  /*background: rgba(138, 43, 226, 0.65);*/
+
+
+}
+
+
+
+.panel-body-dashboard-sprints .cellSelectedClass{
+  background: aliceblue;
+}
+
+.panel-body-dashboard-sprints .img-custom-responsive{
+  max-height: 100%;
+  width: 100%;
+}
+
+
+.panel-body-dashboard-sprints .table {
+  border-bottom:0px !important;
+
+}
+.panel-body-dashboard-sprints .table th, .table td {
+  border: 1px !important;
+
+  border: 0 none transparent;
+  outline: 0 none transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.panel-body-dashboard-sprints .fixed-table-container {
+  border:0px !important;
+
+}
+
+
+
+.panel-body-dashboard-sprints table {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%; /* this can vary */
+}
+
+.panel-body-dashboard-sprints table * {
+  box-sizing: inherit;
+  -moz-box-sizing: inherit;
+
+}
+
+
+.panel-body-dashboard-sprints thead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.panel-body-dashboard-sprints tbody {
+  overflow-y: auto;
+  display: inline-block;
+}
+
+
+
+
+.panel-body-dashboard-sprints thead > tr{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+
+}
+
+
+.panel-body-dashboard-sprints tbody > tr{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+
+}
+
+
+
+.panel-body-dashboard-sprints thead, tfoot {
+  flex-shrink: 0;
+
+}
+
+.panel-body-dashboard-sprints th{
+  /*width: 20%; /* this can vary */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+.panel-body-dashboard-sprints tbody td{
+  /*width: 20%; /* this can vary */
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+
+.panel-body-dashboard-sprints table tr:hover,
+.panel-body-dashboard-sprints table tr:focus,
+.panel-body-dashboard-sprints table tr:active
+{
+  background:rgba(229, 249, 255, 0.45);
+
+}
+
+
+
+
+
+
 
 
 
@@ -1893,6 +2626,18 @@ oi-select .select-search-list-item {
   height: 100%; /* this can vary */
   margin-bottom: 0px;
 }
+
+.panel-body-dashboard-sprints .table-dashboard-sprint {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%; /* this can vary */
+  margin-bottom: 0px;
+}
+
+
 
 .panel-body-backlog-sprints-list .table-without-margin-sprints-us {
   box-sizing: border-box;
@@ -2173,13 +2918,87 @@ oi-select .select-search-list-item {
 
   font-size: 2em;
   font-family: OpenSans-Semibold,Arial,Helvetica,sans-serif;
-  /* line-height: .9; */
-  /*margin-left: 1.3em;*/
   text-align: center;
   margin-bottom: 0px;
   max-width: 100%;
 
 }
+
+.text-img .nexttask-edit{
+  margin-right: 0.5em;
+  display:none;
+}
+
+.text-img .nexttaskk-edit-dropdown{
+  margin-right: 2.5em;
+  display:none;
+  font-family: 'Oswald', sans-serif;
+}
+
+.text-img:hover span{
+  display: block;
+}
+.text-img:focus span{
+  display: block;
+}
+.text-img:active span{
+  display: block;
+}
+
+.text-img .nexttask-edit:hover,
+.text-img .nexttask-edit:focus,
+.text-img .nexttask-edit:active
+{
+  text-decoration: none;
+  border-color: white;
+  outline: none;
+  border: 0;
+}
+
+.text-img .status-new-color {
+  color: #0275d8 !important;
+  margin-left: 0.7em;
+}
+
+.text-img .status-in-progress-color {
+  color: rgba(0, 205, 205, 0.49) !important;
+  margin-left: 0.7em;
+
+}
+
+.text-img .status-ready-for-test-color {
+  color: #ec971f !important;
+  margin-left: 0.7em;
+}
+
+.text-img .status-closed-color {
+  color: rgb(0,230,118) !important;
+  /*text-decoration: line-through;*/
+  /*text-decoration: none !important;*/
+  margin-left: 0.7em;
+}
+
+
+
+
+.text-img .status-new-color-no-margin {
+  color: #0275d8 !important;
+}
+
+.text-img .status-in-progress-color-no-margin {
+  color: rgba(0, 205, 205, 0.49) !important;
+
+}
+
+.text-img .status-ready-for-test-color-no-margin {
+  color: #ec971f !important;
+}
+
+.text-img .status-closed-color-no-margin {
+  color: rgb(0,230,118) !important;
+}
+
+
 
 
 
@@ -2268,6 +3087,8 @@ oi-select .select-search-list-item {
   height: 92%;
   padding-bottom: 0px;
 
+  margin: 0px;
+  padding: 0px;
 }
 
 /*class*/
@@ -2429,6 +3250,7 @@ line-height: 1.3em;*/
   text-decoration: none;
   cursor: pointer;
   background-color: transparent;
+
 }
 
 
@@ -3053,37 +3875,19 @@ form.well {
 }
 
 
-#img-circle{
+#img-circle,
+#img-circle2,
+#img-circle3,
+#img-circle4,
+#img-circle5,
+#img-circle6,
+#img-circle7,
+#img-circle8,
+#img-circle9 {
     float:left;
 }
 
-#img-circle2{
-  float:left;
-}
 
-#img-circle3{
-  float:left;
-}
-
-#img-circle4{
-  float:left;
-}
-
-#img-circle5{
-  float:left;
-}
-
-#img-circle6{
-  float:left;
-}
-
-#img-circle7{
-  float:left;
-}
-
-#img-circle8{
-  float:left;
-}
 
 
 
@@ -4054,10 +4858,31 @@ a:hover.classscrum span {
 
 */
 
+#row-all-content,
+#row-all-content1,
+#row-all-content2,
+#row-all-content3,
+#row-all-content4
+{
+  width: 100%;
+  margin: 0px;
+}
+
+
+.row-all-content-sprint-dash{
+
+  height: 100%;
+}
+
+
+
 .row-backlog-chart {
   margin: 0px;
   height: 15%;
+
 }
+
+
 
 /*
 
@@ -4087,6 +4912,12 @@ a:hover.classscrum span {
 
 .row-backlog-sprints {
   margin: 0px;
+  height: 85%;
+}
+
+
+.row-dashboard-sprints {
+  margin: 0px; !important
   height: 85%;
 }
 
@@ -4225,6 +5056,14 @@ a:hover.classscrum span {
 
 #panel-backlog-userstories-list {
   margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+
+#panel-dashboard-sprints {
+  margin-left: 15px;
+  margin-right: 15px;
   border:none;
   height: 100%;
 }

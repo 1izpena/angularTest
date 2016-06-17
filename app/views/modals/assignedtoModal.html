@@ -59,15 +59,40 @@
           <div class="col-md-4 col-xs-6 member-item"
                ng-repeat="member in membersSettingschannel | filter:searchMemberChannelText">
 
-            <div class="member-container" class="list-group-default"
-                 ng-click="updateAssignedtoTask(member)">
 
-              <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
+            <!-- si son miembros normales -->
+            <div class="member-container" class="list-group-default"
+                 ng-click="updateAssignedtoTask(member)"
+                 ng-show="member.id !== -1">
+
+              <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle2"/>
 
 
               <p class="username" ng-bind-html="highlight(member.username, searchMemberChannelText)">{{member.username}}</p>
               <p class="mail" ng-bind-html="highlight(member.mail, searchMemberChannelText)">{{member.mail}}</p>
+
             </div>
+            <!-- si viene de desasignar -->
+            <div class="member-container" class="list-group-default"
+                 ng-click="unassignedTaskModal()"
+                 ng-show="member.id == -1">
+
+              <img ng-src="http://www.gravatar.com/avatar/{{getHash(member.mail)}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
+
+
+              <p class="username" ng-bind-html="highlight(member.username, searchMemberChannelText)">{{member.username}}</p>
+              <p class="mail" ng-bind-html="highlight('meanstack@mail.es', searchMemberChannelText)">meanstack@mail.es</p>
+
+            </div>
+
+
+
+
+
+
+
+
+
           </div>
         </div>
 

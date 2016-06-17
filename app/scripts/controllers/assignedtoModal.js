@@ -5,8 +5,8 @@
 
 
 angular.module('myAppAngularMinApp')
-  .controller('assignedtoModalCtrl', ['$scope', '$uibModalInstance',  '$localStorage', 'ScrumService','data', '$sce',
-    function ($scope, $uibModalInstance, $localStorage, ScrumService, data, $sce) {
+  .controller('assignedtoModalCtrl', ['$scope', '$uibModalInstance',  '$localStorage', 'ScrumService','data', '$sce','md5',
+    function ($scope, $uibModalInstance, $localStorage, ScrumService, data, $sce, md5) {
 
 
       console.log("esto vale data en modal");
@@ -24,6 +24,13 @@ angular.module('myAppAngularMinApp')
       $scope.modalAssignedtoError = '';
 
 
+      $scope.getHash = function (str) {
+        if (str)
+          return md5.createHash(str);
+        else
+          return "";
+      };
+
 
 
 
@@ -38,6 +45,49 @@ angular.module('myAppAngularMinApp')
         }
         return $sce.trustAsHtml(text.replace(new RegExp(search, 'gi'), '<span class="highlightedText">$&</span>'));
       };
+
+
+
+      $scope.unassignedTaskModal = function () {
+        if($scope.groupid !== undefined && $scope.groupid !== null && $scope.groupid !== '' &&
+          $scope.channelid !== undefined && $scope.channelid !== null && $scope.channelid !== '' &&
+          $scope.userstoryid !== undefined && $scope.userstoryid !== null && $scope.userstoryid !== '' &&
+          $scope.taskid !== undefined && $scope.taskid !== null && $scope.taskid !== '' ){
+
+
+          var field = 'unassignedto';
+          var newvalue = {};
+
+
+          ScrumService.updateTask($scope.groupid, $scope.channelid,
+            $scope.userstoryid, $scope.taskid,
+            newvalue, $scope.oldvalue, field)
+            .then(function (res) {
+
+              $uibModalInstance.close(res.data);
+
+
+            },function(err){
+
+
+              console.log("esto vale error, en modal");
+              console.log(err);
+              $scope.modalAssignedtoError =  err.data.message;
+
+
+            });
+
+
+        }
+        else{
+          $scope.modalAssignedtoError = 'Bad Request. Missing required parameters.';
+
+        }
+
+
+      };
+
+
 
 
 

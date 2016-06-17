@@ -467,7 +467,7 @@
                                                      ((option == 2 && (member.id != adminGroup.id)) ? 'list-group-remove' :  'list-group-default')"
                                ng-click="(option == 1 && !member.isinvited) ? inviteUserToGroup(member) :
                                                      ((option == 2 && (member.id != adminGroup.id)) ? removeUserFromGroup(member) :  null)">
-                            <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle"/>
+                            <img ng-src="http://www.gravatar.com/avatar/{{member.hash}}?s=40&d=identicon" class="avatar" alt="User Avatar"  id="img-circle9"/>
 
                             <span ng-if="adminGroup.id == member.id"class="label label-primary" id="labeladminAd">Admin</span>
                             <span ng-if="member.isinvited == 1" class="label label-primary" id="labeladminIn">Invited</span>
