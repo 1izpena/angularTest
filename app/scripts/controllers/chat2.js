@@ -1935,52 +1935,52 @@ angular.module('myAppAngularMinApp')
 
         }
         else if(num == 1){
-          $scope.searchUS.$ = '';
-          $scope.searchUS.type = '';
+          $scope.searchIssue.$ = '';
+          $scope.searchIssue.type = '';
           $scope.searchIssue.severity = '';
           $scope.searchIssue.priority = '';
-          $scope.searchUS.status = '';
+          $scope.searchIssue.status = '';
 
         }
         else if(num == 2){
-          $scope.searchUS.$ = '';
-          $scope.searchUS.subject = '';
+          $scope.searchIssue.$ = '';
+          $scope.searchIssue.subject = '';
           $scope.searchIssue.severity = '';
           $scope.searchIssue.priority = '';
-          $scope.searchUS.status = '';
+          $scope.searchIssue.status = '';
 
         }
         else if(num == 3){
-          $scope.searchUS.$ = '';
-          $scope.searchUS.subject = '';
-          $scope.searchUS.type = '';
+          $scope.searchIssue.$ = '';
+          $scope.searchIssue.subject = '';
+          $scope.searchIssue.type = '';
           $scope.searchIssue.priority = '';
-          $scope.searchUS.status = '';
+          $scope.searchIssue.status = '';
 
         }
         else if(num == 4){
-          $scope.searchUS.$ = '';
-          $scope.searchUS.subject = '';
-          $scope.searchUS.type = '';
+          $scope.searchIssue.$ = '';
+          $scope.searchIssue.subject = '';
+          $scope.searchIssue.type = '';
           $scope.searchIssue.severity = '';
-          $scope.searchUS.status = '';
+          $scope.searchIssue.status = '';
 
         }
         else if(num == 5){
-          $scope.searchUS.$ = '';
-          $scope.searchUS.subject = '';
-          $scope.searchUS.type = '';
+          $scope.searchIssue.$ = '';
+          $scope.searchIssue.subject = '';
+          $scope.searchIssue.type = '';
           $scope.searchIssue.severity = '';
           $scope.searchIssue.priority = '';
         }
 
         else{
-          $scope.searchUS.$ = '';
-          $scope.searchUS.subject = '';
-          $scope.searchUS.type = '';
+          $scope.searchIssue.$ = '';
+          $scope.searchIssue.subject = '';
+          $scope.searchIssue.type = '';
           $scope.searchIssue.severity = '';
           $scope.searchIssue.priority = '';
-          $scope.searchUS.status = '';
+          $scope.searchIssue.status = '';
 
         }
 
