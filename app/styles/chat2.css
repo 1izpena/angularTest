@@ -187,6 +187,10 @@
   background-color: cornflowerblue;
 }
 
+.panel-body-backlog-issues-list .table .badge{
+  background-color: cornflowerblue;
+}
+
 
 /************** modal new userstory *********************/
 
@@ -1362,6 +1366,24 @@ it dosn't work when we are not showing the current month **********
 }
 
 
+.panel-body-backlog-issues {
+
+  color: white;
+  border:none;
+  height: 100%;
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding: 0px !important;
+
+}
+
+
+
+
+
+
 .table-dashboard-sprint {
   height: 100%;
   overflow-y: auto;
@@ -1644,6 +1666,22 @@ it dosn't work when we are not showing the current month **********
 
 }
 
+
+
+.panel-body-backlog-issues .table-without-margin{
+  margin-bottom: 0px;
+
+}
+
+.panel-body-backlog-issues-list .table>thead:first-child>tr:first-child>th{
+  padding-left: 0.9em;
+
+}
+
+
+
+
+
 .summary-body-detail-userstory .table>thead:first-child>tr:first-child>th{
   padding-left: 0.9em;
 }
@@ -1656,6 +1694,7 @@ it dosn't work when we are not showing the current month **********
   padding-left: 0.5em !important;
 
 }
+
 
 
 .panel-body-backlog-sprints .table-without-margin a{
@@ -1688,6 +1727,40 @@ it dosn't work when we are not showing the current month **********
   color: rgb(51, 122, 183);
 
 }
+
+
+
+
+
+
+
+
+.panel-body-backlog-issues-list .table-without-margin>thead:first-child>tr:first-child>th{
+  padding-left: 0.5em !important;
+
+}
+
+
+.panel-body-backlog-issues .table-without-margin a{
+  font-family: inherit;
+}
+
+.panel-body-backlog-issues .table-without-margin a:hover,
+.panel-body-backlog-issues .table-without-margin a:focus,
+.panel-body-backlog-issues .table-without-margin a:active
+{
+  text-decoration: none;
+  cursor: pointer;
+
+}
+
+.panel-body-backlog-issues .table-without-margin th{
+  background: #D9EDF7;
+  color: rgb(51, 122, 183);
+
+}
+
+
 
 
 
@@ -1816,6 +1889,38 @@ it dosn't work when we are not showing the current month **********
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+.panel-body-backlog-issues-list .table-without-margin a{
+  font-family: inherit;
+}
+
+
+.panel-body-backlog-issues-list .table-without-margin a:hover,
+.panel-body-backlog-issues-list .table-without-margin a:focus,
+.panel-body-backlog-issues-list .table-without-margin a:active
+{
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+
+
+
+
+
 .panel-body-backlog-userstories-new-btn {
 
   color: white;
@@ -1875,6 +1980,39 @@ it dosn't work when we are not showing the current month **********
 }
 
 .panel-body-backlog-sprints-new-btn input {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+
+
+.panel-body-backlog-issues-new-btn {
+
+  color: white;
+  border:none;
+  height: 100%;
+
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+
+}
+
+.panel-body-backlog-issues-new-btn i {
+  margin-right: 0.4em;
+
+}
+
+
+.panel-body-backlog-issues-new-btn .input-group-btn {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+.panel-body-backlog-issues-new-btn input {
 
   font-family: 'Oswald', sans-serif;
 }
@@ -1977,6 +2115,18 @@ it dosn't work when we are not showing the current month **********
 
 
 
+.panel-body-backlog-issues-list {
+
+  color: white;
+  border:none;
+  height: 100%;
+  margin: 0 .5rem;
+  margin-left: 0.6em;
+  margin-right: 0.6em;
+
+  padding: 0px !important;
+  overflow-y: auto;
+}
 
 
 
@@ -2040,6 +2190,21 @@ oi-select .select-search-list-item {
   text-align: center;
 
 }
+
+.panel-body-backlog-issues-list th{
+  color: #000;
+  text-align: center;
+
+}
+
+.panel-body-backlog-issues-list td{
+  color: rgba(0,0,0,0.54);
+  text-align: center;
+
+}
+
+
+
 
 
 .summary-body-detail-userstory th{
@@ -2737,6 +2902,161 @@ oi-select .select-search-list-item {
 }
 
 
+/****************************************/
+
+.panel-body-backlog-issues-list .table .table-cell01{
+  flex:0.1;
+}
+
+
+.panel-body-backlog-issues-list .table .table-cell05{
+  flex:0.5;
+}
+
+.panel-body-backlog-issues-list .table .table-cell06{
+  flex:0.6;
+}
+
+.panel-body-backlog-issues-list .table .table-cell23{
+  flex:2.3;
+}
+
+.panel-body-backlog-issues-list .table .table-cell1{
+  flex:1;
+}
+
+
+.panel-body-backlog-issues-list td span{
+  font-size:0.9em;
+  margin-right: 0.5em;
+  position: relative;
+  float: right;
+  margin-bottom: 0.5em;
+  background: lime;
+  /*background: rgba(138, 43, 226, 0.65);*/
+
+
+}
+
+
+.panel-body-backlog-issues-list .cellSelectedClass{
+  background: aliceblue;
+}
+
+
+
+.panel-body-backlog-issues .img-custom-responsive{
+  max-height: 100%;
+  width: 100%;
+}
+
+.panel-body-backlog-issues-list .table {
+  border-bottom:0px !important;
+
+}
+
+
+.panel-body-backlog-issues-list .table th, .table td {
+  border: 1px !important;
+  border: 0 none transparent;
+  outline: 0 none transparent;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.panel-body-backlog-issues-list .fixed-table-container {
+  border:0px !important;
+
+}
+
+
+
+.panel-body-backlog-issues-list .table-without-margin {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%; /* this can vary */
+  margin-bottom: 0px;
+}
+
+
+
+.panel-body-backlog-issues-list table * {
+  box-sizing: inherit;
+  -moz-box-sizing: inherit;
+
+}
+
+.panel-body-backlog-issues-list thead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.panel-body-backlog-issues-list tbody {
+  overflow-y: auto;
+  display: inline-block;
+}
+
+/*
+.panel-body-backlog-sprints-list thead > tr, tbody > tr, tfoot > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+*/
+
+
+.panel-body-backlog-issues-list thead > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.panel-body-backlog-issues-list tbody > tr{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+
+
+.panel-body-backlog-issues-list thead, tfoot {
+  flex-shrink: 0;
+
+}
+
+
+
+.panel-body-backlog-issues-list th{
+
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+.panel-body-backlog-issues-list tbody td {
+
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+
+}
+
+
+
+
+
+
+.panel-body-backlog-issues-list table tr:hover,
+.panel-body-backlog-issues-list table tr:focus,
+.panel-body-backlog-issues-list table tr:active
+{
+  background:rgba(229, 249, 255, 0.45);
+
+}
 
 
 
@@ -4794,10 +5114,20 @@ a:hover.classscrum span {
   opacity: 0.2;
   background-size: cover;
 
-
-
 }
 
+
+.panel-issues-empty{
+  background: transparent url('../images/issues.png') no-repeat left center;
+  width: 100%;
+  height: 100%;
+  filter: alpha(opacity=20);
+  -moz-opacity: 0.2;
+  -khtml-opacity: 0.2;
+  opacity: 0.2;
+  background-size: cover;
+
+}
 
 
 
@@ -4832,6 +5162,16 @@ a:hover.classscrum span {
 
 
 .panel-body-backlog-sprints .carousel-caption{
+  /*padding-bottom: 11.5em;*/
+  /*top: 13.7%;
+  left:74.7%;*/
+  top:52.5%;
+
+}
+
+
+
+.panel-body-backlog-issues .carousel-caption{
   /*padding-bottom: 11.5em;*/
   /*top: 13.7%;
   left:74.7%;*/
@@ -4916,6 +5256,14 @@ a:hover.classscrum span {
 }
 
 
+.row-backlog-issues {
+  margin: 0px;
+  height: 85%;
+}
+
+
+
+
 .row-dashboard-sprints {
   margin: 0px; !important
   height: 85%;
@@ -4968,9 +5316,22 @@ a:hover.classscrum span {
   height: 15%;
 
 }
+.row-backlog-issues-new-btn {
+  margin: 0px;
+  height: 15%;
+
+}
+
+
+
 
 
 .row-backlog-sprints-list {
+  margin: 0px;
+  height: 85%;
+
+}
+.row-backlog-issues-list {
   margin: 0px;
   height: 85%;
 
@@ -5075,6 +5436,15 @@ a:hover.classscrum span {
   height: 100%;
 }
 
+
+#panel-backlog-issues {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+
+
 #panel-backlog-sprints-new-btn {
   margin: 0px;
   border:none;
@@ -5086,6 +5456,23 @@ a:hover.classscrum span {
   border:none;
   height: 100%;
 }
+
+#panel-backlog-issues-new-btn {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+#panel-backlog-issues-list {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+
+
+
+
 
 
 #panel-setchannels {

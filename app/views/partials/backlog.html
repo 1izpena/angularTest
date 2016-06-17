@@ -347,7 +347,7 @@
                 <!--  | orderBy:sortType:sortReverse |filter:searchUS:strict"
                     ng-show="row.sprint == undefined "
                     ng-class="row.selectedCell ? 'cellSelectedClass' : ''"-->
-                <tr ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse | filter: (comboOptionsSelected.num == 3 ? {tags: searchTags} : searchUS)"
+                <tr ng-repeat="row in rowCollectionUserStories | orderBy:sortType:sortReverse | filter: (comboOptionsSelected.num == 3 ? {tags: searchTags}: searchUS)"
                     ng-hide="row.sprint !== undefined"
                     ng-class="row.selectedCell ? 'cellSelectedClass' : ''">
 

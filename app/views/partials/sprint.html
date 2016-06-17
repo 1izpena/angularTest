@@ -20,7 +20,7 @@
                         data-toggle="modal" data-target="#newTaskSprintModal" ng-click="assignUStoRow($index)">
                   <span class="fa fa-plus"></span>
                 </button>
-                <a class="try-label" ng-click="">
+                <a class="try-label">
                   #{{rowUS.num}} {{rowUS.subject}}
                 </a>
                 <button type="button" class="btn btn-info pull-left" ng-click="viewTasksContainer($index)">
@@ -43,15 +43,9 @@
             <div class="panel-body">
 
               <ul dnd-list="rowUS.tasks"
-                  dnd-inserted="onAddedItemSprint($index, $parent.$index)"
                   ng-show="rowUS.viewTaskContainer !== false && rowUS.tasks!== undefined && rowUS.tasks.length >0">
 
                 <li ng-repeat="rowTask in rowUS.tasks"
-                    dnd-draggable="rowTask"
-                    dnd-moved="onMoved($parent.$index, $index ,rowTask)"
-                    dnd-copied="logEvent('Item copied', event)"
-                    dnd-effect-allowed="copyMove"
-                    dnd-selected="onSelected($parent.$index, $index ,rowTask)"
                     ng-class="rowTask.status == 'New' ? 'status-new' :
                               (rowTask.status == 'In progress' ? 'status-in-progress' :
                                (rowTask.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">
@@ -76,7 +70,7 @@
 
 
 
-                    <p>#{{rowTask.num}} {{rowTask.subject}}</p>
+                    <p ng-click="">#{{rowTask.num}} {{rowTask.subject}}</p>
 
 
                     <!--------------- ponemos icono de borrar ------------------------>
@@ -128,7 +122,29 @@
 
 
 
-<!--
+<!--      Por si quiero arrastrar
+
+              <ul dnd-list="rowUS.tasks"
+                  dnd-inserted="onAddedItemSprint($index, $parent.$index)"
+                  ng-show="rowUS.viewTaskContainer !== false && rowUS.tasks!== undefined && rowUS.tasks.length >0">
+
+                <li ng-repeat="rowTask in rowUS.tasks"
+                    dnd-draggable="rowTask"
+                    dnd-moved="onMoved($parent.$index, $index ,rowTask)"
+                    dnd-copied="logEvent('Item copied', event)"
+                    dnd-effect-allowed="copyMove"
+                    dnd-selected="onSelected($parent.$index, $index ,rowTask)"
+                    ng-class="rowTask.status == 'New' ? 'status-new' :
+                              (rowTask.status == 'In progress' ? 'status-in-progress' :
+                               (rowTask.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">
+
+
+
+
+
+
+
+------------------------------------
 
 
 

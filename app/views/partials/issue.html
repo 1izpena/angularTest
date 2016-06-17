@@ -1,10 +1,593 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="row row-all-content" id="row-all-content"
+     ng-show="!item.viewTaskboard && (tagUserstory == undefined ||tagUserstory.id == undefined)">
+  <div class="row row-backlog-chart">
+    <div class="panel panel-info" id="panel-backlog-chart">
 
-</body>
-</html>
+
+
+
+      <!-- ---- ------------  cabecera  ---------------------- --- -->
+      <div class="panel-body panel-body-backlog-charts">
+
+        <!-- max:: num de userstories totales
+            current:: num userstories closed
+            color, es el color del circulo current
+            bdcolor:: el color de fondo -->
+
+
+        <!-- cambiarlo xdatos reales -->
+
+
+        <round-progress
+          max=50
+          current=20
+          color="#69F0F0"
+          bgcolor="#eaeaea"
+          radius="50"
+          stroke="10"
+          semi="true"
+          rounded="true"
+          clockwise="false"
+          responsive="false"
+          duration="800"
+          animation="easeInOutQuart"
+          animation-delay="0"
+          id="roundprogress-sprint">
+          50/20
+        </round-progress>
+
+
+
+        <div class="summary-stats">
+          <span class="percent">50%</span>
+        </div>
+
+
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            total<br>
+            points
+          </p>
+
+
+        </div>
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            completed<br>
+            points
+          </p>
+
+
+        </div>
+
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            open<br>
+            issues
+          </p>
+
+
+        </div>
+
+        <div class="summary-stats">
+          <p class="number">0</p>
+
+          <p class="description">
+            closed<br>
+            issues
+          </p>
+
+
+        </div>
+
+
+
+
+        <!-- esto lo quitamos --
+
+        <div class="summary-stats">
+          <!-- boton que muestra o no el grafico --
+          <a ng-show="rowCollectionUserStories.length > 0" class="btn btn-graphic" ng-click="">
+            <span class="fa fa-area-chart fa-3x"></span>
+          </a>
+
+        </div> -->
+
+
+
+
+
+      </div>  <!-- end panel body -->
+    </div>   <!-- end panel-info -->
+  </div>     <!-- end row:: <div ng-if= "tagGroup !== '' " class="row" id="row-settings">
+                              (Panel1: borrar, editar, unlink:: settings de grupo) -->
+  <!----------------- end cabecera ---------------------------------------------------------->
+
+
+
+
+
+
+  <!--- grafico demomento lo quitamos -----------------------------------
+
+    <div ng-show="showgraph.show && rowCollectionUserStories.length > 0"
+         class="row row-backlog-charts-show-graph">
+      <div class="panel panel-info" id="panel-backlog-graphs">
+
+
+        <div class="panel-body panel-body-backlog-graphs">
+
+          <!-- y aqui meteriamos la grafica -->
+  <!-- hay que modificarla en base a los puntos que haya -->
+
+
+  <!-- .chart-line
+  chart-data: series data
+  chart-labels: x axis labels
+  chart-legend (default: false): show legend below the chart
+  chart-options (default: {}): Chart.js options
+  chart-series (default: []): series labels
+  chart-click (optional): onclick event handler
+  chart-hover (optional): onmousemove event handler
+  chart-colours (default to global colours): colours for the chart --
+
+
+
+
+  <canvas id="line" class="chart chart-line" chart-data="chartdata"
+          chart-labels="labels" chart-legend="false" chart-series="series"
+          chart-click="onClickpoints" >
+  </canvas>
+
+</div> <!-- end panel-body --
+
+
+</div> <!-- end panel-info --
+</div> <!-- end row-settings1::<div ng-if= "tagGroup !== '' " class="row" id="row-settings1">
+                        (Panel1: borrar, editar, unlink:: settings de grupo) -->
+
+
+
+
+
+
+  <div class="row row-backlog-issues">
+    <div class="panel panel-info" id="panel-backlog-issues">
+
+
+      <!-- dejamos el panel anterior para que se cubra la pantalla -->
+      <div class="panel-body panel-body-backlog-issues" ng-show="rowCollectionIssues.length == 0">
+
+        <div class="panel-issues-empty">
+          <div class="container">
+          </div>
+        </div>
+
+        <div class="carousel-caption">
+
+          <!--------------------- FALTA ------------------------------>
+          <a class="btn btn-large btn-success" data-toggle="modal" data-target="#newIssueModal" ng-click="initVarsNewIssueModal()">
+            <i class="fa fa-plus"></i>
+            Add a new issue
+          </a>
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+
+      <!-- ------------ tod esto se muestra si hay sprints:: tabla -------------------- -->
+      <div class="panel-body panel-body-backlog-issues" ng-show="rowCollectionIssues.length > 0">
+
+        <!-- hay que meter container fluid para dividir nivel btn aniadir y la lista -->
+        <!-- boton de aniadir userstory -->
+
+
+        <div class="row row-backlog-issues-new-btn">
+          <div class="panel panel-info" id="panel-backlog-issues-new-btn">
+            <div class="panel-body panel-body-backlog-issues-new-btn">
+
+
+              <form>
+                <div class="form-group">
+
+                  <!------------------- busquedas para issues + botones edit, delete ... ------------------------------------>
+                  <div class="input-group" ng-show="tagIssue.id == undefined">
+
+
+
+
+
+
+                    <span class="input-group-btn">
+                      <oi-select
+                        oi-options="item.name for item in comboOptionsIssues track by item.name"
+                        ng-model="comboOptionsSelectedIssue" ng-change="clearValuesofSearchIssue(comboOptionsSelectedIssue.num)">
+                      </oi-select>
+                    </span>
+
+
+                    <input ng-show="comboOptionsSelectedIssue.num == 0" type="text" class="form-control searchIssue" placeholder="Search by all fields" ng-model="searchIssue.$"/>
+                    <input ng-show="comboOptionsSelectedIssue.num == 1" type="text" class="form-control searchIssue" placeholder="Search by subject" ng-model="searchIssue.subject"/>
+
+                    <input ng-show="comboOptionsSelectedIssue.num == 2" type="text" class="form-control searchIssue" placeholder="Search by status" ng-model="searchIssue.type"/>
+                    <input ng-show="comboOptionsSelectedIssue.num == 3" type="text" class="form-control searchIssue" placeholder="Search by status" ng-model="searchIssue.severity"/>
+
+                    <input ng-show="comboOptionsSelectedIssue.num == 4" type="text" class="form-control searchIssue" placeholder="Search by status" ng-model="searchIssue.priority"/>
+                    <input ng-show="comboOptionsSelectedIssue.num == 5" type="text" class="form-control searchIssue" placeholder="Search by status" ng-model="searchIssue.status"/>
+
+
+
+                    <!-- no hay seleccionados -->
+                    <span ng-show="tableCells.selected.length == 0" class="input-group-btn">
+                      <div class="input-group-btn">
+                        <button class="btn btn-success" type="button" data-toggle="modal"
+                                data-target="#newIssueModal" ng-click="initVarsNewIssueModal()">
+                          <i class="fa fa-plus"></i>
+                          Add a new issue
+                        </button>
+                      </div>
+                    </span>
+
+
+                    <!-- si hay varios seleccionados delete -->
+                    <span ng-show="tableCells.selected.length > 1" class="input-group-btn">
+                      <div class="input-group-btn">
+
+                        <button class="btn btn-danger" type="button" ng-click="removeIssues()">
+                          <i class="fa fa-trash"></i>
+                          Delete
+                        </button>
+                      </div>
+                    </span>
+
+                    <!-- hay 1 seleccionado:: editar, borrar -->
+                    <span ng-show="tableCells.selected.length ==1" class="input-group-btn">
+                      <div class="input-group-btn">
+                        <button class="btn btn-info" type="button" data-toggle="modal"
+                                data-target="#editIssueModal" ng-click="initVarsEditIssueModal()">
+
+                          <i class="fa fa-pencil"></i>
+                          Edit
+                        </button>
+
+                        <button class="btn btn-danger" type="button" ng-click="removeIssues()">
+                          <i class="fa fa-trash"></i>
+                          Delete
+                        </button>
+                      </div>
+                    </span>
+
+
+                  </div>
+                  <!-- ----- end issue search -------------------->
+
+
+                </div>
+              </form>
+
+
+
+
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        <div class="row row-backlog-issues-list">
+          <div class="panel panel-info" id="panel-backlog-issues-list">
+            <div class="panel-body panel-body-backlog-issues-list">
+
+
+
+
+              <table class="table table-without-margin">
+                <thead>
+                <tr>
+
+
+                  <!-- esto solo quiero que se muestre cuando no hay sprint seleccionado -->
+                  <th class="table-cell01">
+
+                    <input type="checkbox" ng-click="checkAllNone(3)"
+                           ng-checked="ischeckedAllCells">
+
+                  </th>
+
+
+                  <th class="table-cell05">
+                    <a ng-click="sortType = 'voters'; sortReverse = !sortReverse">
+                      Votes
+                      <span ng-show="sortType == 'voters'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+
+                  </th>
+                  <th class="table-cell23">
+                    <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
+                      Issues
+                      <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                      <span ng-show="tableCells.selected.length > 0"
+                            class="badge badge-warning pull-right">{{tableCells.selected.length}}</span>
+
+                    </a>
+
+                  </th>
+
+
+
+
+                  <th class="table-cell1">
+                    <a ng-click="sortType = 'type'; sortReverse = !sortReverse">
+                      Type
+                      <span ng-show="sortType == 'type'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+
+                  </th>
+                  <th class="table-cell1">
+                    <a ng-click="sortType = 'severity'; sortReverse = !sortReverse">
+                      Severity
+                      <span ng-show="sortType == 'severity'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+
+                  </th>
+                  <th class="table-cell1">
+                    <a ng-click="sortType = 'priority'; sortReverse = !sortReverse">
+                      Proirity
+                      <span ng-show="sortType == 'priority'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+
+                  </th>
+
+
+                  <th class="table-cell1">
+                    <a ng-click="sortType = 'status'; sortReverse = !sortReverse">
+                      Status
+                      <span ng-show="sortType == 'status'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+
+                  </th>
+
+
+                  <th class="table-cell14">
+                    <a ng-click="sortType = 'assignedto.username'; sortReverse = !sortReverse">
+                      Assigned to
+                      <span ng-show="sortType == 'assignedto.username'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
+                    </a>
+                  </th>
+
+
+                </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+                <tr ng-repeat="row in rowCollectionIssues | orderBy:sortType:sortReverse | filter: searchIssue"
+                    ng-class="row.selectedCell ? 'cellSelectedClass' : ''">
+
+
+
+                  <td class="table-cell01" ng-class="row.status == 'New' ? 'status-new' :
+                              (row.status == 'In progress' ? 'status-in-progress' :
+                               (row.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">
+                    <input type="checkbox" data-checklist-model="tableCells.selected" data-checklist-value="row"
+                           ng-click="changeCheckedTableCell(row)">
+
+                    <!--cellSelectedClass -->
+
+                  </td>
+
+
+                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell05">{{row.voters.length}}</td>
+                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell23"
+                      ng-class="row.status == 'Closed' ? 'status-closed' :''">
+                    #{{row.num}} {{row.subject}}
+                  </td>
+
+                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.type}}</td>
+                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.severity}}</td>
+                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.priority}}</td>
+                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.status}}</td>
+
+                  <!-- assignedto es 1 json -->
+                  <td ng-show="row.assignedto !== undefined && row.assignedto.id !== undefined" data-ng-click="changeTaskAssignedtoWithUnassigned(row, $index)" class="table-cell14">
+                    <img
+                      ng-src="http://www.gravatar.com/avatar/{{getHash(row.assignedto.mail)}}?s=50&d=identicon"
+                      alt="User Avatar"
+                      class="avatarin"/>
+                    <p>{{row.assignedto.username}}</p>
+                  </td>
+
+                  <td ng-show="row.assignedto == undefined || row.assignedto.id == undefined" data-ng-click="changeTaskAssignedto(row, $index)" class="table-cell14">
+                    <img
+                      ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
+                      alt="User Avatar"
+                      class="avatar"/>
+                    <p>{{row.assignedto.username || 'Not assigned'}}</p>
+
+                  </td>
+
+
+
+                </tr>
+                </tbody>
+
+
+              </table>
+
+
+
+
+
+
+
+
+            </div> <!-- end panel-body-backlog-userstories-list -->
+          </div> <!-- end panel-backlog-userstories-list -->
+        </div> <!-- end row-backlog-userstories-list -->
+
+
+
+
+      </div> <!-- end panel-body-backlog-userstories -->
+
+    </div> <!-- panel-info-->
+  </div> <!-- end row--->
+
+</div><!-- end row-all-content :: !item.viewinDetail && tagTask.num == undefined"-->
+
+<!------------------------------ end table Issue ---------------------------------------------->
+
+
+
+
+
+
+
+
+
+
+
+<!------------------------- MODALS ----------------------------------------------------->
+
+
+<!-- ---- New Related Task Modal ---- -->
+<div id="newIssueModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header" >
+
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                ng-click="initVarsNewIssueModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">New Isue</h4>
+      </div>
+
+      <div class="modal-body" >
+
+
+        <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewIssueModal !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewIssueModal =''">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{modalsError.messageNewIssueModal}}
+
+        </div>
+
+
+
+
+
+
+        <!-- subject -->
+        <div class="form-group">
+          <label for="issueSubject">Subject:</label>
+          <input type="text" class="form-control" name="issueSubjectTxt"
+                 id="issueSubject" placeholder="Enter Issue Subject..."
+                 ng-model="issue.subject">
+
+          <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewIssueRequiredSubModal !== ''">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewIssueRequiredSubModal =''">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- cambiar esto diciendo que necesita que elcampo este completo -->
+            {{modalsError.messageNewIssueRequiredSubModal}}
+
+          </div>
+
+        </div>
+
+
+
+        <!-- type -->
+        <div class="form-group">
+          <label for="issueType">Type:</label>
+          <oi-select oi-options="item for item in statics.type track by item"
+                     ng-model="issue.type"
+                     id="issueType"
+                     required> </oi-select>
+        </div>
+
+        <!-- severity -->
+        <div class="form-group">
+          <label for="issueSeverity">Severity:</label>
+          <oi-select oi-options="item for item in statics.severity track by item"
+                     ng-model="issue.severity"
+                     id="issueSeverity"
+                     required> </oi-select>
+        </div>
+
+        <!-- priority -->
+        <div class="form-group">
+          <label for="issuePriority">Priority:</label>
+          <oi-select oi-options="item for item in statics.priority track by item"
+                     ng-model="issue.priority"
+                     id="issuePriority"
+                     required> </oi-select>
+        </div>
+
+
+
+        <!-- status -->
+        <div class="form-group">
+          <label for="issueStatus">Status:</label>
+          <oi-select oi-options="item for item in statics.status track by item"
+                     ng-model="issue.status"
+                     id="issueStatus"
+                     required> </oi-select>
+        </div>
+
+
+
+        <!-- descripcion -->
+        <div class="form-group">
+          <label for="issueDescr">Description:</label>
+          <textarea class="form-control" id="issueDescr"
+                    placeholder="Enter description to helps others better understand..."
+                    ng-model="issue.description">
+          </textarea>
+        </div>
+
+
+
+      </div> <!-- end modal body -->
+
+
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" id="btn-new-related-task" ng-click="createNewIssue()"><span class="fa fa-floppy-o">
+        </span> Create</button>
+
+        <!-- inicializar variables -->
+        <button type="button" class="btn btn-danger" id="btn-new-related-task-close" data-dismiss="modal" ng-click="initVarsNewIssueModal()">
+          <span class="fa fa-remove"></span> Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>

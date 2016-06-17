@@ -109,6 +109,17 @@ angular.module('myAppAngularMinApp')
         ];
 
 
+        $scope.comboOptionsIssues = [
+          {name: "All", num: 0},
+          {name: "Subject", num: 1},
+          {name: "Type", num: 2},
+          {name: "Severity", num: 3},
+          {name: "Priority", num: 4},
+          {name: "Status", num: 5}
+
+        ];
+
+
         $scope.statics = {};
         $scope.statics.points = [
           {num:0, status: false},
@@ -126,7 +137,9 @@ angular.module('myAppAngularMinApp')
         $scope.statics.requirements = ["Team Requirement", "Client Requirement", "Blocked" ];
 
         $scope.statics.status = ["New", "In progress", "Ready for test", "Closed"];
-
+        $scope.statics.type = ["Bug", "Question", "Enhancement"];
+        $scope.statics.severity = ["Wishlist", "Normal", "Critical"];
+        $scope.statics.priority = ["Low", "Normal", "High"];
 
 
 
@@ -145,6 +158,9 @@ angular.module('myAppAngularMinApp')
 
         $scope.modalsError.messageEditSprintRequiredNameModal = '';
         $scope.modalsError.messageEditSprintModal = '';
+
+        $scope.modalsError.messageNewIssueModal = '';
+        $scope.modalsError.messageNewIssueRequiredSubModal = '';
 
 
 
@@ -369,8 +385,18 @@ angular.module('myAppAngularMinApp')
 
 
 
-      /*************************** SPRINT ********************************************/
+      /*************************** ISSUE ********************************************/
+      function initVarsScrumChannelIssues(){
 
+        $scope.tagIssue = {};
+
+      };
+
+
+
+
+
+      /*************************** SPRINT ********************************************/
       function initVarsScrumChannelSprintsGeneralViewWithUs(){
 
         /* de momento tenemos tagSprint y cada rowCollection sprint con 1 var viewTableUs que hay que actualizar */
@@ -568,8 +594,6 @@ angular.module('myAppAngularMinApp')
 
       $scope.goBackFromDetailTask = function (){
 
-        console.log("que ostias??");
-
         /* si venimos del dashboard hay que borrar tambien el tagUs */
         if($scope.item.viewTaskboard){
           $scope.tagUserstory = {};
@@ -623,6 +647,8 @@ angular.module('myAppAngularMinApp')
         removeVarsSearchTask();
         removeVarsSearchSprint();
 
+        removeVarsSearchIssue();
+
         /* inicializar que las filas de la tabla no estan seleccionadas */
         removeValTableCell();
 
@@ -651,6 +677,8 @@ angular.module('myAppAngularMinApp')
 
       $scope.initVarsAndSelectOptionsScrumMenu = function (num){
 
+        console.log("esto valen los us");
+
         $scope.item.itemMenuScrumClicked = num;
 
         if(num == 1){
@@ -666,8 +694,10 @@ angular.module('myAppAngularMinApp')
           removeValTableCell();
           initVarsScrumChannelTasks ();
           initVarsScrumChannelSprints();
+          initVarsScrumChannelIssues();
 
         }
+        console.log($scope.rowCollectionUserStories);
       };
 
 
@@ -1131,6 +1161,17 @@ angular.module('myAppAngularMinApp')
 
       };
 
+
+
+      function removeErrorMessageNewIssueModal () {
+        $scope.modalsError.messageNewIssueModal = '';
+        $scope.modalsError.messageNewIssueRequiredSubModal = '';
+
+      };
+
+
+
+
       function removeErrorMessageNewRelatedTaskModal () {
         /* se reutiliza la primera para integration */
         $scope.modalsError.messageNewRelatedTaskModal = '';
@@ -1203,14 +1244,30 @@ angular.module('myAppAngularMinApp')
         $scope.userstory.point.front = $scope.statics.points[0].num;
         $scope.userstory.point.back = $scope.statics.points[0].num;
 
-      }
+      };
 
 
       function removeVarsDetailUserstory(){
         $scope.tagUserstory = {};
         $scope.tagUserstoryTemp = {};
 
-      }
+      };
+
+
+
+
+
+
+      function removeVarsNewIssueModal(){
+
+        removeErrorMessageNewIssueModal();
+        $scope.issue = {};
+        $scope.issue.type = $scope.statics.type[0];
+        $scope.issue.severity = $scope.statics.severity[1];
+        $scope.issue.priority = $scope.statics.priority[1];
+        $scope.issue.status = $scope.statics.status[0];
+
+      };
 
 
 
@@ -1714,8 +1771,12 @@ angular.module('myAppAngularMinApp')
           else if (num == 1){
             uncheckAll($scope.tagUserstory.tasks);
           }
-          else{
+          else if(num == 2){
             uncheckAll($scope.rowCollectionSprints);
+
+          }
+          else{
+            uncheckAll($scope.rowCollectionIssues);
 
           }
           $scope.ischeckedAllCells = false;
@@ -1729,8 +1790,12 @@ angular.module('myAppAngularMinApp')
           else if (num == 1){
             checkAll($scope.tagUserstory.tasks);
           }
-          else{
+          else if(num == 2){
             checkAll($scope.rowCollectionSprints);
+
+          }
+          else{
+            checkAll($scope.rowCollectionIssues);
 
           }
           $scope.ischeckedAllCells = true;
@@ -1855,6 +1920,74 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.clearValuesofSearchIssue = function(num) {
+
+        if($scope.searchIssue == undefined || $scope.searchIssue == ''){
+          $scope.searchIssue = {};
+        }
+
+        if(num == 0){
+          $scope.searchIssue.subject = '';
+          $scope.searchIssue.type = '';
+          $scope.searchIssue.severity = '';
+          $scope.searchIssue.priority = '';
+          $scope.searchIssue.status = '';
+
+        }
+        else if(num == 1){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.type = '';
+          $scope.searchIssue.severity = '';
+          $scope.searchIssue.priority = '';
+          $scope.searchUS.status = '';
+
+        }
+        else if(num == 2){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchIssue.severity = '';
+          $scope.searchIssue.priority = '';
+          $scope.searchUS.status = '';
+
+        }
+        else if(num == 3){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchUS.type = '';
+          $scope.searchIssue.priority = '';
+          $scope.searchUS.status = '';
+
+        }
+        else if(num == 4){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchUS.type = '';
+          $scope.searchIssue.severity = '';
+          $scope.searchUS.status = '';
+
+        }
+        else if(num == 5){
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchUS.type = '';
+          $scope.searchIssue.severity = '';
+          $scope.searchIssue.priority = '';
+        }
+
+        else{
+          $scope.searchUS.$ = '';
+          $scope.searchUS.subject = '';
+          $scope.searchUS.type = '';
+          $scope.searchIssue.severity = '';
+          $scope.searchIssue.priority = '';
+          $scope.searchUS.status = '';
+
+        }
+
+      };
+
+
+
 
 
 
@@ -1918,6 +2051,21 @@ angular.module('myAppAngularMinApp')
 
         /* para que borre all of fields */
         $scope.clearValuesofSearchSprint();
+
+
+      }
+
+
+      function removeVarsSearchIssue(){
+
+        $(".searchIssue").val('').trigger('input');
+        $scope.comboOptionsSelectedIssue = {name: "All", num: 0};
+        $scope.sortType     = 'num';
+        $scope.sortReverse = false;
+        $scope.searchIssue = '';
+
+        /* para que borre all of fields */
+        $scope.clearValuesofSearchIssue(6);
 
 
       }
@@ -3559,6 +3707,45 @@ angular.module('myAppAngularMinApp')
 
 
 
+      $scope.createNewIssue = function() {
+
+        if($scope.issue.subject == undefined ||
+          $scope.issue.subject == null || $scope.issue.subject == ''){
+
+          $scope.modalsError.messageNewIssueRequiredSubModal = "Field subject is required.";
+
+        }
+        else {
+
+
+          ScrumService.createIssue($scope.tagGroup.id, $scope.tagChannel.id, $scope.issue)
+            .then(function (res) {
+
+              $("#newIssueModal").modal("hide");
+
+              $scope.initVarsNewIssueModal();
+
+              toastr.success('Issue successfully created', {
+                closeButton: true
+              });
+
+
+            }, function (err) {
+
+              $scope.modalsError.messageNewIssueModal = err.data.message;
+            });
+        }
+
+      };
+
+
+
+
+
+
+
+
+
 
       $scope.createNewUserstory = function() {
 
@@ -3818,6 +4005,7 @@ angular.module('myAppAngularMinApp')
           .then(function (res) {
 
             $scope.rowCollectionUserStories = res.data;
+            console.log("esto valen los userstories *********");
 
 
           }, function (err) {
@@ -3967,7 +4155,14 @@ angular.module('myAppAngularMinApp')
 
       $scope.initVarsNewSprintModal = function(){
         removeVarsNewSprintModal();
-      }
+      };
+
+
+
+      $scope.initVarsNewIssueModal = function(){
+        removeVarsNewIssueModal();
+
+      };
 
 
 
@@ -6402,6 +6597,17 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      /******* sms TIMELINE ***********/
+
+
+      $scope.viewIssue = function (issueid){
+        console.log("esto vale issueid desde timeline");
+        console.log(issueid);
+
+
+
+
+      }
 
 
       /* esto viene del mensaje del timeline, si pinchan sobre 1 userstory */
@@ -7049,6 +7255,14 @@ angular.module('myAppAngularMinApp')
                 initVarsScrumChannelTasks ();
 
 
+                /* si venimos de dashboard hay que quitar tambien el US */
+                if($scope.item.viewTaskboard){
+                  $scope.tagUserstory = {};
+                  $scope.tagUserstoryTemp = {};
+
+                }
+
+
                 toastr.info('Task you selected has been deleted.', 'Information', {
                   closeButton: true
                 });
@@ -7066,6 +7280,9 @@ angular.module('myAppAngularMinApp')
         /* nos recorremos el array */
 
         cleanTableCell(data.taskid);
+
+
+
 
 
 

@@ -26,7 +26,8 @@ angular.module('myAppAngularMinApp')
         createSprint: createSprint,
         editSprint: editSprint,
         deleteSprints: deleteSprints,
-        getIssues: getIssues
+        getIssues: getIssues,
+        createIssue: createIssue
 
 
       };
@@ -648,6 +649,34 @@ angular.module('myAppAngularMinApp')
             defered.reject(error);
           }
         );
+        return promise;
+
+      };
+
+
+
+      function createIssue(groupid, channelid, issue) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+
+        $http({
+          method: 'post',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/issues',
+          headers: { 'x-access-token': $localStorage.token },
+          data: issue
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
         return promise;
 
       };

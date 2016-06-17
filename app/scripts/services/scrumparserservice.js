@@ -195,6 +195,49 @@ angular.module('myAppAngularMinApp')
 
 
 
+      function parseIssue(scrumMessageJSON, $index, msg) {
+
+
+        var messageText = '';
+        var projectParse = '';
+        var actionParse = '';
+        var issueHeaderParse = '';
+        var issueBodyParse = '';
+
+
+        if(scrumMessageJSON.sender !== null &&
+          scrumMessageJSON.sender !== undefined &&
+          scrumMessageJSON.sender !== '' &&
+          scrumMessageJSON.issue !== null &&
+          scrumMessageJSON.issue !== undefined &&
+          scrumMessageJSON.issue !== ''){
+
+
+
+
+
+          /*hay que mirar la accion para hacer 1 cosa u otra */
+          if(scrumMessageJSON.action == 'created' ){
+            projectParse = getProjectFields();
+            actionParse = getActionFields(scrumMessageJSON);
+            issueHeaderParse = getHeaderFieldsForIssue(scrumMessageJSON, $index, msg);
+            issueBodyParse = getBodyFieldsIssue (scrumMessageJSON, $index, msg);
+
+
+          }
+
+
+        }
+        messageText = projectParse + actionParse + issueHeaderParse + issueBodyParse;
+
+
+        return messageText;
+
+
+
+
+      };
+
 
 
 
@@ -485,12 +528,63 @@ angular.module('myAppAngularMinApp')
 
         }
 
+        return header;
+      }
 
+
+
+
+
+
+      function getHeaderFieldsForIssue(scrumMessageJSON, $index,msg){
+        /* (3) #num [Subject] con link  */
+
+
+        var header = "";
+        var num = 0;
+        var subject = "";
+
+
+        if(scrumMessageJSON.issue.num !== null &&
+          scrumMessageJSON.issue.num !== undefined &&
+          scrumMessageJSON.issue.num !== '' ){
+
+          num = scrumMessageJSON.issue.num;
+
+        }
+
+
+        if(scrumMessageJSON.issue.subject !== null &&
+          scrumMessageJSON.issue.subject !== undefined &&
+          scrumMessageJSON.issue.subject !== '' ){
+
+          subject = scrumMessageJSON.issue.subject;
+
+        }
+
+
+        if(scrumMessageJSON.issue.id !== null &&
+          scrumMessageJSON.issue.id !== undefined &&
+          scrumMessageJSON.issue.id !== ''){
+
+          header = "<p><a ng-click='viewIssue(" + '"'+scrumMessageJSON.issue.id+'"'+")'>#" + num + " "+subject+"</a> " +
+            "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
+
+        }
+        else{
+          header = "<p><a>#" + num + " "+subject+"</a> " +
+            "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' role='button' tabindex='0'></i></p>";
+
+        }
 
         return header;
 
 
-      }
+
+      };
+
+
+
 
 
 
@@ -549,7 +643,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-      }
+      };
 
 
 
@@ -1513,6 +1607,152 @@ angular.module('myAppAngularMinApp')
 
 
 
+      function getBodyFieldsIssue(scrumMessageJSON, $index, msg){
+
+        var params = "";
+        var body = "";
+
+
+        if(scrumMessageJSON.issue.voters !== null &&
+          scrumMessageJSON.issue.voters !== undefined &&
+          scrumMessageJSON.issue.voters !== '' ){
+          if(scrumMessageJSON.issue.voters.length){
+            params += "<p class='scrum-msg-p'><strong> Votes: </strong>"+scrumMessageJSON.userstory.voters.length+"</p>";
+          }
+          else{
+            params += "<p class='scrum-msg-p'><strong> Votes:</strong> 0</p>";
+          }
+        }
+        else{
+          params += "<p class='scrum-msg-p'><strong> Votes:</strong> 0</p>";
+        }
+
+
+
+        if(scrumMessageJSON.issue.description !== null &&
+          scrumMessageJSON.issue.description !== undefined &&
+          scrumMessageJSON.issue.description !== '' ){
+          params = params + "<p><strong> Description: </strong></p><p class='description-class'>"+scrumMessageJSON.issue.description+"</p>";
+
+
+        }
+
+
+        /*type        : { type: String, default: 'Bug', enum: ['Bug', 'Question', 'Enhancement']}
+         status      : { type: String, default: 'New', enum: ['New', 'In progress', 'Closed', 'Ready for test'] },*/
+
+
+
+
+        if(scrumMessageJSON.issue.type!== null &&
+          scrumMessageJSON.issue.type !== undefined &&
+          scrumMessageJSON.issue.type !== '' ){
+
+          var type = scrumMessageJSON.issue.type;
+          var typeparams = "";
+
+          if(type == "Bug"){ /* warning */
+            typeparams = "label-warning";
+          }
+          else if(type == "Question"){ /* info */
+            typeparams = "label-info";
+
+          }
+          else { /* primary:: mejora */
+            typeparams = "label-primary";
+          }
+
+
+          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ typeparams +" status'>" + type + "</span></p>";
+        }
+        /* severity    : { type: String, default: 'Normal', enum: [Wishlist', 'Normal', 'Critical] }, */
+        if(scrumMessageJSON.issue.severity!== null &&
+          scrumMessageJSON.issue.severity !== undefined &&
+          scrumMessageJSON.issue.severity !== '' ){
+
+          var severity = scrumMessageJSON.issue.severity;
+          var severityparams = "";
+
+          if(severity == "Wishlist"){ /* warning */
+            severityparams = "btn-default";
+          }
+          else if(severity == "Normal"){ /* info */
+            severityparams = "label-info";
+
+          }
+          else { /* primary:: mejora */
+            severityparams = "label-warning";
+          }
+
+
+          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ severityparams +" status'>" + severity + "</span></p>";
+        }
+        /* priority    : { type: String, default: 'Normal', enum: ['Low', 'Normal', 'High'] }, */
+        if(scrumMessageJSON.issue.priority!== null &&
+          scrumMessageJSON.issue.priority !== undefined &&
+          scrumMessageJSON.issue.priority !== '' ){
+
+          var priority = scrumMessageJSON.issue.priority;
+          var priorityparams = "";
+
+          if(priority == "Low"){ /* warning */
+            priorityparams = "label-primary";
+          }
+          else if(priority == "Normal"){ /* info */
+            priorityparams = "label-info";
+
+          }
+          else { /* primary:: mejora */
+            priorityparams = "label-warning";
+          }
+
+
+          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ priorityparams +" status'>" + priority + "</span></p>";
+        }
+
+        if(scrumMessageJSON.issue.status!== null &&
+          scrumMessageJSON.issue.status !== undefined &&
+          scrumMessageJSON.issue.status !== '' ){
+
+          var status = scrumMessageJSON.issue.status;
+          var statusparams = "";
+
+          if(status == "New"){ /* warning */
+            statusparams = "label-primary";
+          }
+          else if(status == "In progress"){ /* info */
+            statusparams = "label-info";
+
+          }
+          else if(status == "Ready for test"){ /* info */
+            statusparams = "label-warning";
+
+          }
+          else { /* primary:: mejora */
+            statusparams = "label-success";
+          }
+
+
+          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ statusparams +" status'>" + status + "</span></p>";
+        }
+
+
+
+        if(params == ''){
+          return '';
+        }
+        else {
+          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'>"+ params +"</div>";
+          return body;
+
+        }
+
+      }
+
+
+
+
+
 
       function getBodyFieldsTask(scrumMessageJSON, $index, msg){
 
@@ -1641,16 +1881,9 @@ angular.module('myAppAngularMinApp')
               iocainetask = "<span class='label label-info' >Support</span>";
             }
 
-
-            /*params2 += "<p class='scrum-msg-labels'><strong>Type: </strong>"+blockedtask+""+iocainetask+"</p>";*/
             params2 += "<p class='scrum-msg-labels'>"+blockedtask+""+iocainetask+"</p>";
 
           }
-
-
-
-
-
 
 
         }
@@ -2790,12 +3023,7 @@ angular.module('myAppAngularMinApp')
 
       var messageText = '';
 
-/*
-      console.log("******************************");
-      console.log("******************************");
 
-      console.log("scrumMessageJSON");
-      console.log(scrumMessageJSON);*/
 
       if(scrumMessageJSON !== null &&
         scrumMessageJSON !== undefined &&
@@ -2817,7 +3045,7 @@ angular.module('myAppAngularMinApp')
 
         }
         else if(messageEventType == "issue"){
-          /*messageText = parseIssues(githubMessageJSON);*/
+          messageText = parseIssue(githubMessageJSON);
 
         }
         else if(messageEventType == "task"){
