@@ -490,8 +490,10 @@
         ng-show="tagUserstory.sprint !== null && !== undefined && !== ''"
         -->
         <div class="form-group">
+          <label for="taskStatus">Status:</label>
           <oi-select oi-options="item for item in statics.status track by item"
                      ng-model="task.status"
+                     id="taskStatus"
                      required></oi-select>
         </div>
 

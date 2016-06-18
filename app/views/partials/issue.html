@@ -1,5 +1,7 @@
 <div class="row row-all-content" id="row-all-content"
-     ng-show="!item.viewTaskboard && (tagUserstory == undefined ||tagUserstory.id == undefined)">
+     ng-show="!item.viewinDetail && (tagIssue == -1 || tagIssue == undefined || tagIssue == null || tagIssue == '')">
+
+
   <div class="row row-backlog-chart">
     <div class="panel panel-info" id="panel-backlog-chart">
 
@@ -313,14 +315,14 @@
                   </th>
 
 
-                  <th class="table-cell05">
+                  <th class="table-cell04">
                     <a ng-click="sortType = 'voters'; sortReverse = !sortReverse">
                       Votes
                       <span ng-show="sortType == 'voters'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
-                  <th class="table-cell23">
+                  <th class="table-cell18">
                     <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
                       Issues
                       <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
@@ -334,23 +336,23 @@
 
 
 
-                  <th class="table-cell1">
+                  <th class="table-cell06">
                     <a ng-click="sortType = 'type'; sortReverse = !sortReverse">
                       Type
                       <span ng-show="sortType == 'type'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
-                  <th class="table-cell1">
+                  <th class="table-cell06">
                     <a ng-click="sortType = 'severity'; sortReverse = !sortReverse">
                       Severity
                       <span ng-show="sortType == 'severity'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
-                  <th class="table-cell1">
+                  <th class="table-cell06">
                     <a ng-click="sortType = 'priority'; sortReverse = !sortReverse">
-                      Proirity
+                      Priority
                       <span ng-show="sortType == 'priority'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
@@ -366,7 +368,7 @@
                   </th>
 
 
-                  <th class="table-cell14">
+                  <th class="table-cell10">
                     <a ng-click="sortType = 'assignedto.username'; sortReverse = !sortReverse">
                       Assigned to
                       <span ng-show="sortType == 'assignedto.username'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
@@ -398,19 +400,38 @@
                   </td>
 
 
-                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell05">{{row.voters.length}}</td>
-                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell23"
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell04">{{row.voters.length}}</td>
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell18"
                       ng-class="row.status == 'Closed' ? 'status-closed' :''">
                     #{{row.num}} {{row.subject}}
                   </td>
 
-                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.type}}</td>
-                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.severity}}</td>
-                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.priority}}</td>
-                  <td data-ng-click="viewDetailsIssue(row)" class="table-cell1">{{row.status}}</td>
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell06">
+                    <!-- bug, question, enhancement -->
+                    <div ng-class="row.type == 'Bug' ? 'circle-warning' : (row.type == 'Question' ? 'circle-primary' :'circle-success')"></div>
+                    {{row.type | limitTo:4}}
+
+                  </td>
+
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell06">
+                    <div ng-class="row.severity == 'Wishlist' ? 'circle-default' :
+                                  (row.severity == 'Minor' ? 'circle-success' :
+                                  (row.severity == 'Normal' ? 'circle-primary' :
+                                  (row.severity == 'Important' ? 'circle-warning' : 'circle-blocked')))">
+                    </div>
+                    {{row.severity | limitTo:4}}
+                  </td>
+
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell06">
+                    <div ng-class="row.priority == 'Low' ? 'circle-success' : (row.priority == 'Normal' ? 'circle-primary' :'circle-warning')"></div>
+
+                    {{row.priority| limitTo:4}}
+                  </td>
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell1">{{row.status}}</td>
 
                   <!-- assignedto es 1 json -->
-                  <td ng-show="row.assignedto !== undefined && row.assignedto.id !== undefined" data-ng-click="changeTaskAssignedtoWithUnassigned(row, $index)" class="table-cell14">
+                  <td ng-show="row.assignedto !== undefined && row.assignedto.id !== undefined"
+                      data-ng-click="changeIssueAssignedtoWithUnassigned(row, $index)" class="table-cell10">
                     <img
                       ng-src="http://www.gravatar.com/avatar/{{getHash(row.assignedto.mail)}}?s=50&d=identicon"
                       alt="User Avatar"
@@ -418,7 +439,9 @@
                     <p>{{row.assignedto.username}}</p>
                   </td>
 
-                  <td ng-show="row.assignedto == undefined || row.assignedto.id == undefined" data-ng-click="changeTaskAssignedto(row, $index)" class="table-cell14">
+                  <td ng-show="row.assignedto == undefined || row.assignedto.id == undefined"
+                      data-ng-click="changeIssueAssignedto(row, $index)"
+                      class="table-cell10">
                     <img
                       ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
                       alt="User Avatar"
@@ -458,7 +481,12 @@
 
 <!------------------------------ end table Issue ---------------------------------------------->
 
+<!-- view issue in detail + comments ----->
+<div class="row row-all-content"  id="row-all-content2"
+     ng-show="item.viewinDetail && tagIssue !== -1 && tagIssue !== undefined && tagIssue !== null && tagIssue !== ''"
+     ng-include="'views/partials/issueDetails.html'">
 
+</div> <!--ng-show="item.viewinDetail" vista en detalle -->
 
 
 
@@ -485,7 +513,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
 
-        <h4 class="modal-title">New Isue</h4>
+        <h4 class="modal-title">New Issue</h4>
       </div>
 
       <div class="modal-body" >
@@ -524,43 +552,61 @@
 
 
 
-        <!-- type -->
-        <div class="form-group">
-          <label for="issueType">Type:</label>
-          <oi-select oi-options="item for item in statics.type track by item"
-                     ng-model="issue.type"
-                     id="issueType"
-                     required> </oi-select>
+
+
+        <div class="row">
+          <div class="col-md-3">
+            <!-- type -->
+            <div class="form-group">
+              <label for="issueType">Type:</label>
+              <oi-select oi-options="item for item in statics.type track by item"
+                         ng-model="issue.type"
+                         id="issueType"
+                         required> </oi-select>
+            </div>
+          </div>
+
+
+
+          <div class="col-md-3">
+            <!-- severity -->
+            <div class="form-group">
+              <label for="issueSeverity">Severity:</label>
+              <oi-select oi-options="item for item in statics.severity track by item"
+                         ng-model="issue.severity"
+                         id="issueSeverity"
+                         required> </oi-select>
+            </div>
+          </div>
+
+
+          <div class="col-md-3">
+            <!-- priority -->
+            <div class="form-group">
+              <label for="issuePriority">Priority:</label>
+              <oi-select oi-options="item for item in statics.priority track by item"
+                         ng-model="issue.priority"
+                         id="issuePriority"
+                         required> </oi-select>
+            </div>
+          </div>
+
+
+          <div class="col-md-3">
+            <!-- status -->
+            <div class="form-group">
+              <label for="issueStatus">Status:</label>
+              <oi-select oi-options="item for item in statics.status track by item"
+                         ng-model="issue.status"
+                         id="issueStatus"
+                         required> </oi-select>
+            </div>
+          </div>
+
+
         </div>
 
-        <!-- severity -->
-        <div class="form-group">
-          <label for="issueSeverity">Severity:</label>
-          <oi-select oi-options="item for item in statics.severity track by item"
-                     ng-model="issue.severity"
-                     id="issueSeverity"
-                     required> </oi-select>
-        </div>
 
-        <!-- priority -->
-        <div class="form-group">
-          <label for="issuePriority">Priority:</label>
-          <oi-select oi-options="item for item in statics.priority track by item"
-                     ng-model="issue.priority"
-                     id="issuePriority"
-                     required> </oi-select>
-        </div>
-
-
-
-        <!-- status -->
-        <div class="form-group">
-          <label for="issueStatus">Status:</label>
-          <oi-select oi-options="item for item in statics.status track by item"
-                     ng-model="issue.status"
-                     id="issueStatus"
-                     required> </oi-select>
-        </div>
 
 
 

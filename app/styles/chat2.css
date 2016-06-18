@@ -1735,10 +1735,10 @@ it dosn't work when we are not showing the current month **********
 
 
 
-.panel-body-backlog-issues-list .table-without-margin>thead:first-child>tr:first-child>th{
+/*.panel-body-backlog-issues-list .table-without-margin>thead:first-child>tr:first-child>th{
   padding-left: 0.5em !important;
 
-}
+}*/
 
 
 .panel-body-backlog-issues .table-without-margin a{
@@ -2909,21 +2909,105 @@ oi-select .select-search-list-item {
 }
 
 
-.panel-body-backlog-issues-list .table .table-cell05{
-  flex:0.5;
+.panel-body-backlog-issues-list .table .table-cell04{
+  flex:0.4;
 }
 
-.panel-body-backlog-issues-list .table .table-cell06{
-  flex:0.6;
+.panel-body-backlog-issues-list .table .table-cell03{
+  flex:0.3;
 }
 
-.panel-body-backlog-issues-list .table .table-cell23{
-  flex:2.3;
+
+.panel-body-backlog-issues-list .table .table-cell09{
+  flex:0.8;
+  display: flex;
+}
+
+.panel-body-backlog-issues-list .table .table-cell18{
+  flex:1.8;
 }
 
 .panel-body-backlog-issues-list .table .table-cell1{
   flex:1;
 }
+.panel-body-backlog-issues-list .table .table-cell07{
+  flex:0.7;
+}
+
+
+.panel-body-backlog-issues-list .table .table-cell06{
+
+  display: flex;
+}
+
+.panel-body-backlog-issues-list .table .table-cell10{
+  flex:1;
+}
+
+
+
+
+
+
+.circle-blocked,
+.circle-success,
+.circle-warning,
+.circle-default,
+.circle-primary
+{
+  width: 14px;
+  height: 14px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  margin-right: 0.5em;
+}
+
+
+.circle-blocked-right,
+.circle-success-right,
+.circle-warning-right,
+.circle-default-right,
+.circle-primary-right
+{
+  width: 14px;
+  height: 14px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  margin-left: 0.6em;
+  margin-top: 0.3em;
+}
+
+
+.circle-blocked,
+.circle-blocked-right{
+  background: red;
+}
+
+.circle-success,
+.circle-success-right{
+  background: #64ef6a;
+
+}
+.circle-warning,
+.circle-warning-right{
+  background: #efc65e;
+}
+
+.circle-default,
+.circle-default-right{
+  background: #dadada;
+}
+.circle-primary,
+.circle-primary-right{
+  background: #4f69f5;
+
+}
+
+
+
+
 
 
 .panel-body-backlog-issues-list td span{
@@ -3105,6 +3189,7 @@ oi-select .select-search-list-item {
 
 .summary-detail-view2 span {
   color: #f5f5f5;
+  font-style: normal;
 }
 
 .summary-detail-view2 .glyphicon-remove{
@@ -4214,6 +4299,7 @@ form.well {
 .summary-body-detail-userstory img{
   float:left;
   width: 2.7em;
+  margin-right: 0.5em;
 
 }
 
@@ -4221,6 +4307,21 @@ form.well {
   opacity: 0.5;
 
 }
+
+
+.panel-body-backlog-issues-list img{
+  float:left;
+  width: 2.7em;
+  margin-right: 0.5em;
+
+}
+
+.panel-body-backlog-issues-list .avatar {
+  opacity: 0.5;
+
+}
+
+
 
 
 
@@ -5890,11 +5991,21 @@ a:hover.classscrum span {
   margin-bottom: 0.5em;
 
 }
+.chat li.left .metadatalinks .scrum-msg-labels-with-margin-both{
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+
+}
 
 
 
 .chat li.left .metadatalinks .scrum-msg-p{
   margin-top: 10px;
+
+}
+
+.chat li.left .metadatalinks .scrum-msg-p-circle{
+  display: flex;
 
 }
 

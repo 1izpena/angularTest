@@ -1637,79 +1637,6 @@ angular.module('myAppAngularMinApp')
 
         }
 
-
-        /*type        : { type: String, default: 'Bug', enum: ['Bug', 'Question', 'Enhancement']}
-         status      : { type: String, default: 'New', enum: ['New', 'In progress', 'Closed', 'Ready for test'] },*/
-
-
-
-
-        if(scrumMessageJSON.issue.type!== null &&
-          scrumMessageJSON.issue.type !== undefined &&
-          scrumMessageJSON.issue.type !== '' ){
-
-          var type = scrumMessageJSON.issue.type;
-          var typeparams = "";
-
-          if(type == "Bug"){ /* warning */
-            typeparams = "label-warning";
-          }
-          else if(type == "Question"){ /* info */
-            typeparams = "label-info";
-
-          }
-          else { /* primary:: mejora */
-            typeparams = "label-primary";
-          }
-
-
-          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ typeparams +" status'>" + type + "</span></p>";
-        }
-        /* severity    : { type: String, default: 'Normal', enum: [Wishlist', 'Normal', 'Critical] }, */
-        if(scrumMessageJSON.issue.severity!== null &&
-          scrumMessageJSON.issue.severity !== undefined &&
-          scrumMessageJSON.issue.severity !== '' ){
-
-          var severity = scrumMessageJSON.issue.severity;
-          var severityparams = "";
-
-          if(severity == "Wishlist"){ /* warning */
-            severityparams = "btn-default";
-          }
-          else if(severity == "Normal"){ /* info */
-            severityparams = "label-info";
-
-          }
-          else { /* primary:: mejora */
-            severityparams = "label-warning";
-          }
-
-
-          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ severityparams +" status'>" + severity + "</span></p>";
-        }
-        /* priority    : { type: String, default: 'Normal', enum: ['Low', 'Normal', 'High'] }, */
-        if(scrumMessageJSON.issue.priority!== null &&
-          scrumMessageJSON.issue.priority !== undefined &&
-          scrumMessageJSON.issue.priority !== '' ){
-
-          var priority = scrumMessageJSON.issue.priority;
-          var priorityparams = "";
-
-          if(priority == "Low"){ /* warning */
-            priorityparams = "label-primary";
-          }
-          else if(priority == "Normal"){ /* info */
-            priorityparams = "label-info";
-
-          }
-          else { /* primary:: mejora */
-            priorityparams = "label-warning";
-          }
-
-
-          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ priorityparams +" status'>" + priority + "</span></p>";
-        }
-
         if(scrumMessageJSON.issue.status!== null &&
           scrumMessageJSON.issue.status !== undefined &&
           scrumMessageJSON.issue.status !== '' ){
@@ -1733,8 +1660,88 @@ angular.module('myAppAngularMinApp')
           }
 
 
-          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin'> <span class='label "+ statusparams +" status'>" + status + "</span></p>";
+          params += "<p class='scrum-msg-labels scrum-msg-labels-with-margin-both'> <span class='label "+ statusparams +" status'>" + status + "</span></p>";
         }
+
+
+
+
+        if(scrumMessageJSON.issue.type!== null &&
+          scrumMessageJSON.issue.type !== undefined &&
+          scrumMessageJSON.issue.type !== '' ){
+
+          var type = scrumMessageJSON.issue.type;
+          var typeparams = "";
+
+          if(type == "Bug"){ /* warning */
+            /*typeparams = "label-warning";*/
+            typeparams = "circle-warning-right"
+
+          }
+          else if(type == "Question"){ /* info */
+            typeparams = "circle-primary-right";
+
+          }
+          else { /* primary:: mejora */
+            typeparams = "circle-success-right";
+          }
+
+          params += "<p class='scrum-msg-p-circle'><strong>"+ type +"</strong> <span class ='"+ typeparams  +"'</span></p>";
+
+
+        }
+
+        if(scrumMessageJSON.issue.severity!== null &&
+          scrumMessageJSON.issue.severity !== undefined &&
+          scrumMessageJSON.issue.severity !== '' ){
+
+          var severity = scrumMessageJSON.issue.severity;
+          var severityparams = "";
+
+          if(severity == "Wishlist"){ /* warning */
+            severityparams = "circle-default-right";
+          }
+          else if(severity == "Minor"){ /* info */
+            severityparams = "circle-success-right";
+
+          }
+          else if(severity == "Normal"){ /* info */
+            severityparams = "circle-primary-right";
+
+          }else if(severity == "Important"){ /* info */
+            severityparams = "circle-warning-right";
+
+          }
+          else { /* primary:: mejora */
+            severityparams = "circle-blocked-right";
+          }
+
+          params += "<p class='scrum-msg-p-circle'><strong>Severity: "+ severity +"</strong> <span class ='"+ severityparams  +"'</span></p>";
+
+
+        }
+        if(scrumMessageJSON.issue.priority!== null &&
+          scrumMessageJSON.issue.priority !== undefined &&
+          scrumMessageJSON.issue.priority !== '' ){
+
+          var priority = scrumMessageJSON.issue.priority;
+          var priorityparams = "";
+
+          if(priority == "Low"){ /* warning */
+            priorityparams = "circle-success-right";
+          }
+          else if(priority == "Normal"){ /* info */
+            priorityparams = "circle-primary-right";
+
+          }
+          else { /* primary:: mejora */
+            priorityparams = "circle-warning-right";
+          }
+
+          params += "<p class='scrum-msg-p-circle'><strong>Priority: "+ priority +"</strong> <span class ='"+ priorityparams  +"'</span></p>";
+
+        }
+
 
 
 
@@ -3045,7 +3052,7 @@ angular.module('myAppAngularMinApp')
 
         }
         else if(messageEventType == "issue"){
-          messageText = parseIssue(githubMessageJSON);
+          messageText = parseIssue(scrumMessageJSON, $index, msg);
 
         }
         else if(messageEventType == "task"){
