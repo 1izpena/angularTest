@@ -10,7 +10,8 @@ angular.module('myAppAngularMinApp')
 
       return {
 
-        parseScrumEvents: parseScrumEvents
+        parseScrumEvents: parseScrumEvents,
+        parseScrumComments: parseScrumComments
 
 
       };
@@ -217,12 +218,33 @@ angular.module('myAppAngularMinApp')
 
 
           /*hay que mirar la accion para hacer 1 cosa u otra */
-          if(scrumMessageJSON.action == 'created' ){
+          if(scrumMessageJSON.action == 'created'  || scrumMessageJSON.action == 'updated'){
             projectParse = getProjectFields();
             actionParse = getActionFields(scrumMessageJSON);
             issueHeaderParse = getHeaderFieldsForIssue(scrumMessageJSON, $index, msg);
-            issueBodyParse = getBodyFieldsIssue (scrumMessageJSON, $index, msg);
 
+
+
+            if(scrumMessageJSON.action == 'created'){
+
+              issueBodyParse = getBodyFieldsIssue (scrumMessageJSON, $index, msg);
+            }
+
+            else if(scrumMessageJSON.action == 'updated'){
+
+              issueBodyParse = getBodyFieldsIssueUpdated (scrumMessageJSON, $index, msg);
+
+            }
+
+
+
+          }
+          else if(scrumMessageJSON.action == 'deleted'){
+            projectParse = getProjectFields();
+            actionParse = getActionFields(scrumMessageJSON);
+            issueHeaderParse = getHeaderFieldsForIssueDeleted(scrumMessageJSON, $index, msg);
+
+            /*messagetext.issue.numus*/
 
           }
 
@@ -585,6 +607,59 @@ angular.module('myAppAngularMinApp')
 
 
 
+      function getHeaderFieldsForIssueDeleted(scrumMessageJSON, $index,msg){
+        /* (3) #num [Subject] con link  */
+
+
+        var header = "";
+        var num = 0;
+        var subject = "";
+
+
+        if(scrumMessageJSON.issue.num !== null &&
+          scrumMessageJSON.issue.num !== undefined &&
+          scrumMessageJSON.issue.num !== '' ){
+
+          num = scrumMessageJSON.issue.num;
+
+        }
+
+
+        if(scrumMessageJSON.issue.subject !== null &&
+          scrumMessageJSON.issue.subject !== undefined &&
+          scrumMessageJSON.issue.subject !== '' ){
+
+          subject = scrumMessageJSON.issue.subject;
+
+        }
+        if(scrumMessageJSON.issue.numus !== null &&
+          scrumMessageJSON.issue.numus !== undefined &&
+          scrumMessageJSON.issue.numus !== ''){
+          header = "<div class='metadatalinks delete-issue'<p><a>#" + num + " "+subject+"</a>" +
+            "<i ng-click='changeVisibleDetails("+ '"' +$index+'"'+")' class='fa fa-caret-square-o-down fa-lg' " +
+            "role='button' tabindex='0'></i></p></div>";
+
+          header += "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'><p>"
+            + scrumMessageJSON.issue.numus +" US unlinked</p></div>";
+
+
+
+        }
+        else{
+          header = "<div class='metadatalinks delete-issue'<p><a>#" + num + " "+subject+"</a></p></div>";
+
+        }
+
+
+
+        return header;
+
+
+
+      };
+
+
+
 
 
 
@@ -889,7 +964,7 @@ angular.module('myAppAngularMinApp')
 
 
         /* en este caso new field tiene que ser undefined */
-        if(scrumMessageJSON.sender !== undefined &&
+        /*if(scrumMessageJSON.sender !== undefined &&
           scrumMessageJSON.sender !== null &&
           scrumMessageJSON.sender !== '' ){
           if(scrumMessageJSON.sender.username !== undefined &&
@@ -914,7 +989,12 @@ angular.module('myAppAngularMinApp')
 
           }
 
-        }
+        }*/
+
+
+
+
+
         if(scrumMessageJSON.attr.newfield !== undefined &&
           scrumMessageJSON.attr.newfield !== null &&
           scrumMessageJSON.attr.newfield !== '' ){
@@ -922,17 +1002,92 @@ angular.module('myAppAngularMinApp')
             scrumMessageJSON.attr.newfield.comment !== null &&
             scrumMessageJSON.attr.newfield.comment !== '' ){
 
-            console.log("******scrumMessageJSON.attr.newfield.comment**********");
-            console.log(scrumMessageJSON.attr.newfield.comment);
-            bodycomment = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'><p>"+ scrumMessageJSON.attr.newfield.comment +"</p></div>";
+
+
+            if(scrumMessageJSON.issue !== undefined &&
+              scrumMessageJSON.issue !== null &&
+              scrumMessageJSON.issue !== '' ) {
+
+              if (scrumMessageJSON.issue.id !== undefined &&
+                scrumMessageJSON.issue.id !== null &&
+                scrumMessageJSON.issue.id !== '') {
+
+
+
+                sendercomment = "<h5>New <a ng-click='viewCommentFromIssue(" + '"'+scrumMessageJSON.issue.id+'"'+")'>comment</a>:</h5>";
+
+                bodycomment = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'><p>"+ scrumMessageJSON.attr.newfield.comment +"</p></div>";
+
+              }
+              else {
+
+                sendercomment = "<h5>New " +
+                  "<a ng-click='viewCommentFromTask(" + '"'+scrumMessageJSON.userstory.id +'"'+"," + '"'+scrumMessageJSON.task.id+'"'+ ")'>comment</a>:</h5>";
+
+                bodycomment = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'><p>"+ scrumMessageJSON.attr.newfield.comment +"</p></div>";
+
+              }
+
+            }
+            else{
+              sendercomment = "<h5>New " +
+                "<a ng-click='viewCommentFromTask(" + '"'+scrumMessageJSON.userstory.id +'"'+"," + '"'+scrumMessageJSON.task.id+'"'+ ")'>comment</a>:</h5>";
+
+              bodycomment = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'><p>"+ scrumMessageJSON.attr.newfield.comment +"</p></div>";
+
+            }
+
 
           }
 
 
         }
 
+        if(scrumMessageJSON.issue !== undefined &&
+          scrumMessageJSON.issue !== null &&
+          scrumMessageJSON.issue !== '' ) {
 
-        body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ sendercomment +" "+ bodycomment +"</div>";
+          if (scrumMessageJSON.issue.id !== undefined &&
+            scrumMessageJSON.issue.id !== null &&
+            scrumMessageJSON.issue.id !== '') {
+
+            if(scrumMessageJSON.attr.newfield == undefined ||
+              scrumMessageJSON.attr.newfield == null ||
+              scrumMessageJSON.attr.newfield == '' ||
+              scrumMessageJSON.attr.newfield.comment == undefined ||
+              scrumMessageJSON.attr.newfield.comment == null ||
+              scrumMessageJSON.attr.newfield.comment == ''){
+              sendercomment = "<h5>New <a ng-click='viewCommentFromIssue(" + '"'+scrumMessageJSON.issue.id+'"'+")'>comment</a></h5>";
+
+
+              console.log("esto valesendercomment");
+              console.log(sendercomment);
+
+            }
+
+
+
+            body = sendercomment +" "+ bodycomment;
+
+
+
+
+
+
+
+          }
+          else {
+            body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ sendercomment +" "+ bodycomment +"</div>";
+
+          }
+        }
+        else{
+          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ sendercomment +" "+ bodycomment +"</div>";
+
+        }
+
+
+
         return body;
 
 
@@ -940,6 +1095,39 @@ angular.module('myAppAngularMinApp')
 
 
       };
+
+
+
+
+      function getBodyFieldsIssueForVotes(scrumMessageJSON, $index, msg){
+        var params ="";
+
+        /* old fiel si es !== -1 el sender ha votado, sino ha desvotado */
+        if(scrumMessageJSON.attr.oldfield !== -1){
+          params += "<h4>Votes increased: </h4>";
+        }
+        else {
+
+          params += "<h4>Votes decreased: </h4>";
+        }
+
+        if(scrumMessageJSON.attr.newfield !== undefined &&
+          scrumMessageJSON.attr.newfield !== null &&
+          scrumMessageJSON.attr.newfield !== '') {
+
+          params += "<p>Total votes: </h4>" + scrumMessageJSON.attr.newfield + "</p>";
+        }
+
+        return params;
+
+
+
+      };
+
+
+
+
+
 
 
 
@@ -984,14 +1172,35 @@ angular.module('myAppAngularMinApp')
         }
         /* aqui si me lo ha cambiado bien la bd, scrumMessageJSON.attr.newfield tiene que ser undefined */
 
-        assignedtobody += "<h5>TO None</h5>";
+        assignedtobody += "<h5>TO NONE</h5>";
 
 
 
+        /* si issue e issue.id */
+        if(scrumMessageJSON.issue !== undefined &&
+          scrumMessageJSON.issue !== null &&
+          scrumMessageJSON.issue !== '' ){
 
-        body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ assignedtobody +"</div>";
+          if(scrumMessageJSON.issue.id !== undefined &&
+            scrumMessageJSON.issue.id !== null &&
+            scrumMessageJSON.issue.id !== '' ){
+
+            body = assignedtobody;
+
+          }
+          else {
+            body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ assignedtobody +"</div>";
+
+          }
+
+        }
+
+        else {
+
+          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ assignedtobody +"</div>";
+        }
+
         return body;
-
 
 
 
@@ -1105,6 +1314,7 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      /******************** functions for update issue ***************************************************/
 
 
 
@@ -1116,6 +1326,14 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+
+
+
+
+      /************************* end functions update issue *********************************************/
+      /******************* reutilizamos para assigned to de issues *****************************************/
 
       function getBodyFieldsTaskForAssignedto(scrumMessageJSON, $index, msg){
 
@@ -1180,8 +1398,30 @@ angular.module('myAppAngularMinApp')
 
         }
         else{
+          /* si issue e issue.id */
+          if(scrumMessageJSON.issue !== undefined &&
+            scrumMessageJSON.issue !== null &&
+            scrumMessageJSON.issue !== '' ){
 
-          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ assignedtobody +"</div>";
+            if(scrumMessageJSON.issue.id !== undefined &&
+              scrumMessageJSON.issue.id !== null &&
+              scrumMessageJSON.issue.id !== '' ){
+
+              body = assignedtobody;
+
+            }
+            else {
+              body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ assignedtobody +"</div>";
+
+            }
+
+          }
+
+          else {
+
+            body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ assignedtobody +"</div>";
+          }
+
           return body;
 
         }
@@ -1226,31 +1466,321 @@ angular.module('myAppAngularMinApp')
 
 
 
-      /*attr.newfield = newtaskresult.requirement;
-       attr.oldfield */
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+      function getBodyFieldsIssueForSubject(scrumMessageJSON, $index, msg){
+
+        var body = "";
+
+        if(scrumMessageJSON.attr.fieldchange !== undefined &&
+          scrumMessageJSON.attr.fieldchange !== null &&
+          scrumMessageJSON.attr.fieldchange !== '' ){
+
+          body += "<h4>"+ capitalizeFirstLetter(scrumMessageJSON.attr.fieldchange) +" changed </h4>";
+
+          if(scrumMessageJSON.attr.fieldchange == 'description'){
+
+            if(scrumMessageJSON.attr.newfield !== undefined &&
+              scrumMessageJSON.attr.newfield !== null &&
+              scrumMessageJSON.attr.newfield !== '' ){
+              body += "<p>"+scrumMessageJSON.attr.newfield +"</p>";
+
+            }
+          }
+        }
+        return body;
+
+      };
+
+
+
+
+
+
+
+      function getBodyFieldsIssueForType(scrumMessageJSON, $index, msg){
+        var labeled = "";
+
+        var labelfrom = "";
+        var labelto = "";
+        var typeparams = "";
+
+        var body = "";
+
+
+        if(scrumMessageJSON.attr.fieldchange !== undefined &&
+          scrumMessageJSON.attr.fieldchange !== null &&
+          scrumMessageJSON.attr.fieldchange !== '' ){
+
+          body += "<h4>"+ capitalizeFirstLetter(scrumMessageJSON.attr.fieldchange) +" changed: </h4>";
+
+
+        }
+        if(scrumMessageJSON.attr.oldfield !== null &&
+          scrumMessageJSON.attr.oldfield !== undefined &&
+          scrumMessageJSON.attr.oldfield !== '' ){
+
+          labelfrom = scrumMessageJSON.attr.oldfield;
+
+
+          if(labelfrom == "Bug"){ /* warning */
+            /*typeparams = "label-warning";*/
+            typeparams = "circle-warning-right"
+
+          }
+          else if(labelfrom == "Question"){ /* info */
+            typeparams = "circle-primary-right";
+
+          }
+          else { /* primary:: mejora */
+            typeparams = "circle-success-right";
+          }
+
+          body += "<p class='scrum-msg-p-circle'>FROM <span title='"+ labelfrom +"' class ='"+ typeparams  +"'</span></p>";
+
+
+        }
+
+
+
+        if(scrumMessageJSON.attr.newfield !== null &&
+          scrumMessageJSON.attr.newfield !== undefined &&
+          scrumMessageJSON.attr.newfield !== '' ){
+
+          labelto = scrumMessageJSON.attr.newfield;
+
+
+          if(labelto == "Bug"){ /* warning */
+            /*typeparams = "label-warning";*/
+            typeparams = "circle-warning-right"
+
+          }
+          else if(labelto == "Question"){ /* info */
+            typeparams = "circle-primary-right";
+
+          }
+          else { /* primary:: mejora */
+            typeparams = "circle-success-right";
+          }
+
+          body += "<p class='scrum-msg-p-circle'>TO <span title='"+ labelto +"' class ='"+ typeparams  +"'</span></p>";
+
+
+        }
+
+        return body;
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+      function getBodyFieldsIssueForSeverity(scrumMessageJSON, $index, msg){
+        var labeled = "";
+
+        var labelfrom = "";
+        var labelto = "";
+        var severityparams = "";
+
+        var body = "";
+
+
+        if(scrumMessageJSON.attr.fieldchange !== undefined &&
+          scrumMessageJSON.attr.fieldchange !== null &&
+          scrumMessageJSON.attr.fieldchange !== '' ){
+
+          body += "<h4>"+ capitalizeFirstLetter(scrumMessageJSON.attr.fieldchange) +" changed: </h4>";
+
+
+        }
+        if(scrumMessageJSON.attr.oldfield !== null &&
+          scrumMessageJSON.attr.oldfield !== undefined &&
+          scrumMessageJSON.attr.oldfield !== '' ){
+
+          labelfrom = scrumMessageJSON.attr.oldfield;
+
+
+
+          if(labelfrom == "Wishlist"){ /* warning */
+            severityparams = "circle-default-right";
+          }
+          else if(labelfrom == "Minor"){ /* info */
+            severityparams = "circle-success-right";
+
+          }
+          else if(labelfrom == "Normal"){ /* info */
+            severityparams = "circle-primary-right";
+
+          }
+          else if(labelfrom == "Important"){ /* info */
+            severityparams = "circle-warning-right";
+
+          }
+          else { /* primary:: mejora */
+            severityparams = "circle-blocked-right";
+          }
+
+
+          body += "<p class='scrum-msg-p-circle'>FROM <span title='"+ labelfrom +"' class ='"+ severityparams  +"'</span></p>";
+
+
+        }
+
+
+
+        if(scrumMessageJSON.attr.newfield !== null &&
+          scrumMessageJSON.attr.newfield !== undefined &&
+          scrumMessageJSON.attr.newfield !== '' ){
+
+          labelto = scrumMessageJSON.attr.newfield;
+
+
+
+          if(labelto == "Wishlist"){ /* warning */
+            severityparams = "circle-default-right";
+          }
+          else if(labelto == "Minor"){ /* info */
+            severityparams = "circle-success-right";
+
+          }
+          else if(labelto == "Normal"){ /* info */
+            severityparams = "circle-primary-right";
+
+          }
+          else if(labelto == "Important"){ /* info */
+            severityparams = "circle-warning-right";
+
+          }
+          else { /* primary:: mejora */
+            severityparams = "circle-blocked-right";
+          }
+
+
+          body += "<p class='scrum-msg-p-circle'>TO <span title='"+ labelto +"' class ='"+ severityparams  +"'</span></p>";
+
+
+        }
+
+        return body;
+
+      };
+
+
+
+
+      function getBodyFieldsIssueForPriority(scrumMessageJSON, $index, msg){
+        var labeled = "";
+
+        var labelfrom = "";
+        var labelto = "";
+        var priorityparams = "";
+
+        var body = "";
+
+
+        if(scrumMessageJSON.attr.fieldchange !== undefined &&
+          scrumMessageJSON.attr.fieldchange !== null &&
+          scrumMessageJSON.attr.fieldchange !== '' ){
+
+          body += "<h4>"+ capitalizeFirstLetter(scrumMessageJSON.attr.fieldchange) +" changed: </h4>";
+
+
+        }
+        if(scrumMessageJSON.attr.oldfield !== null &&
+          scrumMessageJSON.attr.oldfield !== undefined &&
+          scrumMessageJSON.attr.oldfield !== '' ){
+
+          labelfrom = scrumMessageJSON.attr.oldfield;
+
+
+          if(labelfrom == "Low"){ /* warning */
+            priorityparams = "circle-success-right";
+          }
+          else if(labelfrom == "Normal"){ /* info */
+            priorityparams = "circle-primary-right";
+
+          }
+          else { /* primary:: mejora */
+            priorityparams = "circle-warning-right";
+          }
+
+          body += "<p class='scrum-msg-p-circle'>FROM <span title='"+ labelfrom +"' class ='"+ priorityparams  +"'</span></p>";
+
+        }
+        if(scrumMessageJSON.attr.newfield !== null &&
+          scrumMessageJSON.attr.newfield !== undefined &&
+          scrumMessageJSON.attr.newfield !== '' ){
+
+          labelto = scrumMessageJSON.attr.newfield;
+
+
+          if(labelto == "Low"){ /* warning */
+            priorityparams = "circle-success-right";
+          }
+          else if(labelto == "Normal"){ /* info */
+            priorityparams = "circle-primary-right";
+
+          }
+          else { /* primary:: mejora */
+            priorityparams = "circle-warning-right";
+          }
+
+          body += "<p class='scrum-msg-p-circle'>TO <span title='"+ labelto +"' class ='"+ priorityparams  +"'</span></p>";
+
+        }
+
+
+
+
+
+        return body;
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /* reutilizamos para issues */
       function getBodyFieldsTaskForStatus(scrumMessageJSON, $index, msg){
         var statuschanged = "";
-
-
         var labeled = "";
 
         var labelfrom = "";
         var labelto = "";
 
         var body = "";
-
-        /*
-        esto tengo en elobjecto
-        * action":"updated","event":"task","sender":{"id":"56cb877e73da764818ec5ded","username":"1izpena","mail":"1izpena@mail.es"},"attr":{"fieldchange":"status","newfield":"In progress","oldfield":"Closed"},"userstory":{"id":"57518f95d5b9a7855db1d60f","num":16,"subject":"Crear userstory en canal con scrum"},"task":{"id":"57518fc9d5b9a7855db1d611","num":5,"subject":"Implementar método POST para el módulo userstory en el API REST","status":"In progress","requirement":{"iocaine":true,"blocked":false}}}
-        *
-        * */
-
-
-
 
 
         if(scrumMessageJSON.attr.fieldchange !== undefined &&
@@ -1306,8 +1836,27 @@ angular.module('myAppAngularMinApp')
 
         }
         else{
+          if(scrumMessageJSON.issue !== undefined &&
+            scrumMessageJSON.issue !== null &&
+            scrumMessageJSON.issue !== ''){
+            if(scrumMessageJSON.issue.id !== undefined &&
+              scrumMessageJSON.issue.id !== null &&
+              scrumMessageJSON.issue.id !== ''){
+              body = labeled;
 
-          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ labeled +"</div>";
+
+            }
+            else{
+              body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ labeled +"</div>";
+
+            }
+
+          }
+          else{
+            body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinksTask'>"+ labeled +"</div>";
+          }
+
+
           return body;
 
         }
@@ -1472,6 +2021,132 @@ angular.module('myAppAngularMinApp')
 
       /********************************* end new **********************************************/
 
+
+      function getBodyFieldsIssueUpdated(scrumMessageJSON, $index, msg){
+        /* en el mensaje tengo que campo a cambiado */
+
+        var params = "";
+        var body = "";
+
+
+        var header = "";
+
+
+        if(scrumMessageJSON.attr !== undefined &&
+          scrumMessageJSON.attr !== null &&
+          scrumMessageJSON.attr !== '' ){
+
+
+
+          /* aqui ya separamos */
+          if(scrumMessageJSON.attr.fieldchange == 'assignedto'){
+            /* reutilizamos la de tasks */
+            params += getBodyFieldsTaskForAssignedto(scrumMessageJSON, $index, msg);
+
+
+          }
+          /* reutilizamos la de tasks */
+          else if(scrumMessageJSON.attr.fieldchange == 'unassignedto'){
+            params += getBodyFieldsTaskForUnassigned(scrumMessageJSON, $index, msg);
+
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'voters'){
+            params += getBodyFieldsIssueForVotes(scrumMessageJSON, $index, msg);
+
+
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'subject' || scrumMessageJSON.attr.fieldchange == 'description'){
+            params += getBodyFieldsIssueForSubject(scrumMessageJSON, $index, msg);
+
+
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'status'){
+            params += getBodyFieldsTaskForStatus(scrumMessageJSON, $index, msg);
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'type'){
+            params += getBodyFieldsIssueForType(scrumMessageJSON, $index, msg);
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'severity'){
+            params += getBodyFieldsIssueForSeverity(scrumMessageJSON, $index, msg);
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'priority'){
+            params += getBodyFieldsIssueForPriority(scrumMessageJSON, $index, msg);
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'comments'){
+            params += getBodyFieldsTaskForComments(scrumMessageJSON, $index, msg);
+
+          }
+
+
+
+
+
+          /*
+          else if(scrumMessageJSON.attr.fieldchange == 'type'){
+            params += getBodyFieldsIssueForType(scrumMessageJSON, $index, msg);
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'severity'){
+            params += getBodyFieldsIssueForSeverity(scrumMessageJSON, $index, msg);
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'priority'){
+            params += getBodyFieldsIssueForPriority(scrumMessageJSON, $index, msg);
+
+          }
+          else if(scrumMessageJSON.attr.fieldchange == 'status'){
+            params += getBodyFieldsTaskForStatus(scrumMessageJSON, $index, msg);
+
+          }
+
+          else if(scrumMessageJSON.attr.fieldchange == 'comments'){
+            params += getBodyFieldsTaskForComments(scrumMessageJSON, $index, msg);
+
+          }
+*/
+
+
+
+
+
+        }
+
+
+        if(params == ''){
+          return '';
+        }
+        else {
+
+          body = "<div ng-if="+ '"' +msg.visible+'"' +"class='metadatalinks'>"+ params +"</div>";
+          return body;
+
+        }
+
+
+
+
+
+
+      };
+
+
+
+
+
+
+
+
+
+
+
+      /******************************* end get body fields issues for update ***************************************/
       function getBodyFieldsTaskUpdated(scrumMessageJSON, $index, msg){
         /* en el mensaje tengo que campo a cambiado */
 
@@ -2459,14 +3134,14 @@ angular.module('myAppAngularMinApp')
               statusbodyfrom = "<span class='label label-primary status' >"+scrumMessageJSON.codepoints.from+"</span>";
             }
             else if(scrumMessageJSON.codepoints.from == "In progress"){
-              statusbodyfrom = "<span class='label label-info status' >scrumMessageJSON.codepoints.from</span>";
+              statusbodyfrom = "<span class='label label-info status' >"+scrumMessageJSON.codepoints.from+"</span>";
 
             }
             else if(scrumMessageJSON.codepoints.from == "Ready for test"){
-              statusbodyfrom = "<span class='label label-warning status' >scrumMessageJSON.codepoints.from</span>";
+              statusbodyfrom = "<span class='label label-warning status' >"+scrumMessageJSON.codepoints.from+"</span>";
             }
             else if(scrumMessageJSON.codepoints.from == "Closed"){
-              statusbodyfrom = "<span class='label label-success status' >scrumMessageJSON.codepoints.from</span>";
+              statusbodyfrom = "<span class='label label-success status' >"+scrumMessageJSON.codepoints.from+"</span>";
 
             }
 
@@ -2533,8 +3208,21 @@ angular.module('myAppAngularMinApp')
 
 
           }
+          if(scrumMessageJSON.userstory.numissues !== undefined &&
+            scrumMessageJSON.userstory.numissues !== null &&
+            scrumMessageJSON.userstory.numissues !== ''){
+
+            params += "<h4>"+ scrumMessageJSON.userstory.numissues + " issue unlinked </h4>";
+
+
+
+          }
 
         }
+
+
+
+
 
 
         if(params !== ''){
@@ -3023,6 +3711,102 @@ angular.module('myAppAngularMinApp')
 
 
       /****************************** end new ***********************************/
+
+
+    function parseScrumComments(scrumCommentJSON, $index, msg) {
+        var messageText = '';
+
+
+
+        var num = "";
+        var subject = "";
+        var username ="";
+        var params = "";
+
+
+        if(scrumCommentJSON !== null &&
+          scrumCommentJSON !== undefined &&
+          scrumCommentJSON !== ''){
+          if(scrumCommentJSON.userstory !== null &&
+            scrumCommentJSON.userstory !== undefined &&
+            scrumCommentJSON.userstory !== '') {
+
+
+            /* queremos poner Generating the user story #15 - daleeee*/
+            messageText += "Generating new related userstory";
+
+            if (scrumCommentJSON.userstory.num !== null &&
+              scrumCommentJSON.userstory.num !== undefined &&
+              scrumCommentJSON.userstory.num !== '') {
+              num = scrumCommentJSON.userstory.num;
+            }
+            if (scrumCommentJSON.userstory.subject !== null &&
+              scrumCommentJSON.userstory.subject !== undefined &&
+              scrumCommentJSON.userstory.subject !== '') {
+              subject = scrumCommentJSON.userstory.subject;
+            }
+
+
+
+            if (scrumCommentJSON.sender !== null &&
+              scrumCommentJSON.sender !== undefined &&
+              scrumCommentJSON.sender !== '') {
+
+
+              if (scrumCommentJSON.sender.username !== null &&
+                scrumCommentJSON.sender.username !== undefined &&
+                scrumCommentJSON.sender.username !== '') {
+                username = scrumCommentJSON.sender.username;
+
+
+                if (scrumCommentJSON.sender.id !== null &&
+                  scrumCommentJSON.sender.id !== undefined &&
+                  scrumCommentJSON.sender.id !== '') {
+
+                  params = " by <a ng-click='viewUserProfile(" + '"' + scrumCommentJSON.sender.id + '"' + ")'>" + username + "</a>";
+
+
+                }
+                else {
+                  params = " by <a ng-click=''>" + username + "</a>";
+                }
+
+
+
+
+              }
+            }
+
+
+
+            if (scrumCommentJSON.userstory.id !== null &&
+              scrumCommentJSON.userstory.id !== undefined &&
+              scrumCommentJSON.userstory.id !== '') {
+
+              messageText += "<p><a ng-click='viewUserstory(" + '"' + scrumCommentJSON.userstory.id + '"' + ")'>#" + num + " "
+                + subject + "</a>" + params +"</p>";
+
+
+            }
+            else {
+              messageText += "<p><a ng-click=''>#" + num + " " + subject + "</a>" + params +"</p>";
+
+
+            }
+
+
+
+
+          }
+
+        }
+
+        return messageText;
+
+    };
+
+
+
 
 
 

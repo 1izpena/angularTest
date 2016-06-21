@@ -295,6 +295,9 @@
                     <a class="board" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 4">
                       : ISSUES
                     </a>
+                    <a class="board" ng-show= "tagChannel !== '' && tagChannel.scrum && item.itemMenuScrumClicked == 5">
+                      : TEAM
+                    </a>
 
 
 
@@ -880,7 +883,7 @@
               <div ng-show= "tagChannel !== '' && tagGroup !== '' && !activeChannelSettings && tagChannel.scrum && item.itemMenuScrumClicked == 5 "
                    class="col-xs-115 panel-body"
                    id="panel-body-scrum-not-chat5"
-                   ng-include="'views/partials/backlog.html'">
+                   ng-include="'views/partials/teamCharts.html'">
 
 
 
@@ -1734,7 +1737,7 @@
                    name="channelNameTxt" id="channelNameTxt"
                    placeholder="Enter Channel Name..."
                    ng-model="channel.channelName"
-                   data-rule-required="true" />
+                   data-rule-required="true" autofocus/>
 
             <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewChannelNameModal !== ''">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewChannelNameModal=''">

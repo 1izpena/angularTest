@@ -470,7 +470,7 @@
           <label for="taskSubject">Subject:</label>
           <input type="text" class="form-control" name="taskSubjectTxt"
                  id="taskSubject" placeholder="Enter Task Subject..."
-                 ng-model="task.subject">
+                 ng-model="task.subject" autofocus>
 
           <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewRelatedTaskRequiredSubModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewRelatedTaskRequiredSubModal =''">
@@ -514,7 +514,7 @@
         <div class="form-group requirements-task">
           <div class="btn-group">
             <label type='button' class="btn btn-warning" ng-model="task.requirement.blocked" uib-btn-checkbox>Blocked</label>
-            <label type='button' class="btn btn-info" ng-model="task.requirement.iocaine" uib-btn-checkbox>Power</label>
+            <label type='button' class="btn btn-info" ng-model="task.requirement.iocaine" uib-btn-checkbox>Support</label>
 
           </div>
 

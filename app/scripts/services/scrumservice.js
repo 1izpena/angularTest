@@ -27,7 +27,11 @@ angular.module('myAppAngularMinApp')
         editSprint: editSprint,
         deleteSprints: deleteSprints,
         getIssues: getIssues,
-        createIssue: createIssue
+        createIssue: createIssue,
+        updateIssue: updateIssue,
+        updateAssignedtoIssue: updateAssignedtoIssue,
+        deleteIssues: deleteIssues
+
 
 
       };
@@ -164,6 +168,76 @@ angular.module('myAppAngularMinApp')
       };
 
 
+      /********************************** new ******************************************************/
+      function updateAssignedtoIssue(groupid, channelid, issueid, memberid, oldvalue) {
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        var changesinissue = {};
+
+        changesinissue.field = 'assignedto';
+        changesinissue.fieldnewvalue = memberid;
+        changesinissue.fieldoldvalue = oldvalue;
+
+
+        $http({
+          method: 'put',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/issues/'+ issueid,
+          headers: { 'x-access-token': $localStorage.token },
+          data: changesinissue
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
+
+
+
+
+
+      function updateIssue(groupid, channelid, issueid, newvalue, oldvalue, field) {
+
+        //puedo coger en el servidor el valor anterior
+        var defered = $q.defer();
+        var promise = defered.promise;
+        var userid = $localStorage.id;
+
+
+        var changesinissue = {};
+
+        changesinissue.field = field;
+        changesinissue.fieldnewvalue = newvalue;
+        changesinissue.fieldoldvalue = oldvalue;
+
+        $http({
+          method: 'put',
+          url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/issues/'+ issueid,
+          headers: { 'x-access-token': $localStorage.token },
+          data: changesinissue
+
+        }).then(
+          function(response) {
+            defered.resolve(response);
+          },
+          function(error){
+            defered.reject(error);
+          }
+        );
+
+        return promise;
+
+      };
 
 
 
@@ -180,7 +254,7 @@ angular.module('myAppAngularMinApp')
 
 
 
-      /*updateAssignedtoTask($scope.groupid, $scope.channelid,$scope.taskid, member)*/
+      /********************************** end new *********************************************************/
       function updateAssignedtoTask(groupid, channelid, userstoryid, taskid, memberid, oldvalue) {
 
         //puedo coger en el servidor el valor anterior
@@ -432,6 +506,40 @@ angular.module('myAppAngularMinApp')
 
 
 
+
+
+      function deleteIssues(groupid, channelid, arrIssueRemove){
+
+
+        var defered = $q.defer();
+
+        var userid = $localStorage.id;
+
+        var promise = $q.all(null);
+        var responsesDelete = [];
+
+        angular.forEach(arrIssueRemove, function(issueid){
+
+          promise = promise.then(function(){
+            return $http({
+              method: 'delete',
+              headers: {'x-access-token': $localStorage.token},
+              url: API_BASE + '/api/v1/users/'+ userid +'/chat/groups/'+ groupid +'/channels/'+ channelid +'/issues/'+ issueid,
+
+            }).then(function(res){
+              responsesDelete.push(res.data);
+            });
+          });
+        });
+
+        promise.then(function(){
+          defered.resolve(responsesDelete);
+
+        });
+
+        return defered.promise;
+
+      };
 
 
 

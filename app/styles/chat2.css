@@ -4,6 +4,16 @@
 }
 
 
+/******************** prueba canvas ****************************/
+#radar {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+
+
+
 /**************** prueba drowdow ***********************************/
 /*.dropbtn {
   background-color: #4CAF50;
@@ -522,6 +532,14 @@ it dosn't work when we are not showing the current month **********
   width: 100%;
 }
 
+
+
+.requirements-task .pull-center{
+  font-family: 'Oswald', sans-serif;
+  font-size: initial;
+
+}
+
 .requirements-task .btn-group label{
   width: 50%;
 }
@@ -647,7 +665,24 @@ it dosn't work when we are not showing the current month **********
 }
 
 
+.panel-body-detail-team{
+  border:none;
+  height: 100%;
 
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex-direction: column;
+  padding-bottom: 0px; !important;
+  padding-top: 0px; !important;
+}
+
+
+#panel-body-detail-team{
+  padding: 0px; !important;
+}
 
 
 
@@ -909,6 +944,14 @@ it dosn't work when we are not showing the current month **********
 
 }
 
+.summary-detail-task-body2-child-body1-repeat .list-group-item {
+  margin: 0px;!important
+border: 0px;
+
+
+
+}
+
 
 
 
@@ -1010,6 +1053,29 @@ it dosn't work when we are not showing the current month **********
   flex-direction: column;
 }
 
+
+
+.summary-body-detail-team{
+  border:none;
+  /*height: 100%;*/
+  color: #777777;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex:1;
+  flex-direction: column;
+  overflow-y: auto;
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+
+
+
+
+
 .summary-body-detail-task-comments{
   border:none;
   /*height: 100%;*/
@@ -1070,6 +1136,55 @@ it dosn't work when we are not showing the current month **********
   border:none;
 }
 
+.summary-detail-body5 .btn-all{
+  width: 100%;
+  font-size: inherit;
+}
+
+
+.summary-detail-body5 .btn-all span{
+  margin-left: 2em;
+}
+
+
+.summary-detail-body5 .btn-all span:hover,
+.summary-detail-body5 .btn-all span:active,
+.summary-detail-body5 .btn-all span:focus{
+  text-decoration: none;
+  cursor: pointer;
+ /* outline: none !important;
+  border: 0 !important;*/
+}
+
+
+
+
+.summary-detail-body4-repeat .form-group{
+  flex:1;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.summary-detail-body4-repeat .form-group textarea{
+  height: 100%;
+  width: 100%;
+
+}
+
+.summary-detail-body4-repeat .editable-click:hover{
+
+  text-decoration: none;
+  cursor: pointer;
+
+}
+.summary-detail-body4-repeat .editable-click{
+
+  color: #777777;
+  background: white;
+  border:none;
+}
+
 
 
 .summary-detail-body1{
@@ -1109,6 +1224,25 @@ it dosn't work when we are not showing the current month **********
 }
 
 
+.summary-detail-team-body2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex-direction: column;
+  padding-top: 0px;
+  /*flex:2.2;*/
+  flex:1;
+  min-height: 20em;
+
+
+}
+
+
+
+
+
 
 .summary-detail-task-body21{
   padding: 1em;
@@ -1137,6 +1271,16 @@ it dosn't work when we are not showing the current month **********
 }
 
 
+.summary-detail-team-body2-child {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex-direction: row;
+  height: 100%;
+}
+
 
 
 
@@ -1147,8 +1291,35 @@ it dosn't work when we are not showing the current month **********
   display: flex;
 
   flex-direction: column;
-  flex:3;
+  flex:2.5;
 }
+
+
+
+.summary-detail-team-body2-child-body1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex-direction: column;
+  flex:2.5;
+}
+
+
+
+
+.summary-detail-task-body2-child-body1-repeat {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex-direction: column;
+  flex:2;
+}
+
+
 
 .summary-detail-task-body2-child-body2 {
   display: -webkit-box;
@@ -1181,7 +1352,7 @@ it dosn't work when we are not showing the current month **********
 
   flex-direction: column;
   /*margin-left: 2em;*/
-  padding-left: 3em;
+  padding-left: 2em;
   flex:1;
 
 }
@@ -1233,6 +1404,19 @@ it dosn't work when we are not showing the current month **********
   flex:1.5;
   flex-direction: row;
   padding-top: 0px;
+
+}
+
+.summary-detail-body4-repeat {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex:2;
+  flex-direction: row;
+  padding-top: 0px;
+  margin-top: 3em;
 
 }
 
@@ -1469,13 +1653,18 @@ it dosn't work when we are not showing the current month **********
 
 
 .panel-body-dashboard-sprints-row .try-label{
-  margin: 0.4em;
+  padding: 6px 12px;
   font-size: 0.9em;
   color: #337ab9;
 
 
 }
 
+
+#panel-heading-color-white .try-label{
+  padding: 6px 12px;
+  flex:1;
+}
 
 
 
@@ -1668,6 +1857,8 @@ it dosn't work when we are not showing the current month **********
 
 
 
+
+
 .panel-body-backlog-issues .table-without-margin{
   margin-bottom: 0px;
 
@@ -1678,7 +1869,10 @@ it dosn't work when we are not showing the current month **********
 
 }
 
+.panel-body-backlog-issues-list .table-cell-without-margin>thead:first-child>tr:first-child>th{
+  padding-left: 8px !important;
 
+}
 
 
 
@@ -2001,7 +2195,42 @@ it dosn't work when we are not showing the current month **********
 
 }
 
+
+
+.panel-body-backlog-issues-new-btn-team {
+
+  color: white;
+  border:none;
+  height: 100%;
+
+  margin: 0 .5rem;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .panel-body-backlog-issues-new-btn i {
+  margin-right: 0.4em;
+
+}
+
+
+.panel-body-backlog-issues-new-btn-team i {
   margin-right: 0.4em;
 
 }
@@ -2017,6 +2246,16 @@ it dosn't work when we are not showing the current month **********
   font-family: 'Oswald', sans-serif;
 }
 
+
+.panel-body-backlog-issues-new-btn-team .input-group-btn {
+
+  font-family: 'Oswald', sans-serif;
+}
+
+.panel-body-backlog-issues-new-btn-team input {
+
+  font-family: 'Oswald', sans-serif;
+}
 
 
 
@@ -2923,29 +3162,75 @@ oi-select .select-search-list-item {
   display: flex;
 }
 
-.panel-body-backlog-issues-list .table .table-cell18{
-  flex:1.8;
+.panel-body-backlog-issues-list .table .table-cell2{
+  flex:2;
 }
 
 .panel-body-backlog-issues-list .table .table-cell1{
   flex:1;
 }
+.panel-body-backlog-issues-list .table .table-cell08{
+  flex:0.8;
+}
+
+
 .panel-body-backlog-issues-list .table .table-cell07{
   flex:0.7;
 }
 
 
-.panel-body-backlog-issues-list .table .table-cell06{
-
+.panel-body-backlog-issues-list .table .table-cell03{
+  flex:0.3;
   display: flex;
+}
+.panel-body-backlog-issues-list .table .table-cell02{
+  flex:0.2;
+  display: flex;
+}
+
+.panel-body-backlog-issues-list .table .table-cell22{
+  flex:2.2;
 }
 
 .panel-body-backlog-issues-list .table .table-cell10{
   flex:1;
 }
 
+.panel-body-backlog-issues-list .table .table-cell15{
+  flex:1.5;
+}
+
+.panel-body-backlog-issues-list .table .table-cell05{
+  flex:0.5;
+}
 
 
+.panel-body-backlog-issues-list .table .table-cell05-num{
+  flex:0.5;
+}
+
+.panel-body-backlog-issues-list .table-cell05-num p{
+  margin-top: 1em;
+}
+
+
+
+
+
+.table .circle-blocked,
+.table .circle-success,
+.table .circle-warning,
+.table .circle-default,
+.table .circle-primary
+{
+  width: 14px;
+  height: 14px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  margin-right: 0.5em;
+  margin-top:0.4em;
+}
 
 
 
@@ -3165,6 +3450,15 @@ oi-select .select-search-list-item {
   display: -ms-flexbox;
   display: flex;
 }
+.summary-detail-view2-issue {
+  margin: 0 .5rem;
+  flex:1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: column;
+}
 
 .summary-detail-view3 {
   margin: 0 .5rem;
@@ -3192,7 +3486,22 @@ oi-select .select-search-list-item {
   font-style: normal;
 }
 
+.summary-detail-view2-issue span {
+  color: #f5f5f5;
+  font-style: normal;
+}
+.summary-detail-view2-issue .subject2 {
+  color: #f5f5f5;
+  font-style: normal;
+  font-family: 'Oswald', sans-serif;
+}
+
+
 .summary-detail-view2 .glyphicon-remove{
+  color: #000;
+}
+
+.summary-detail-view2-issue .glyphicon-remove{
   color: #000;
 }
 
@@ -3201,6 +3510,36 @@ oi-select .select-search-list-item {
 
 }
 
+.summary-detail-view2-issue .subject2 a{
+  color: #00e7e7;
+}
+
+
+.summary-detail-view2-issue .subject2 a:hover,
+.summary-detail-view2-issue .subject2 a:focus,
+.summary-detail-view2-issue .subject2 a:active{
+  text-decoration: none;
+}
+
+
+.summary-detail-view2-issue .subject2:hover,
+.summary-detail-view2-issue .subject2:focus,
+.summary-detail-view2-issue .subject2:active{
+  text-decoration: none;
+  color: rgb(245, 245, 245);
+  cursor: default;
+
+}
+
+
+.summary-detail-view2-issue .subject2 a:hover,
+.summary-detail-view2-issue .subject2 a:focus,
+.summary-detail-view2-issue .subject2 a:active{
+  text-decoration: none;
+  color: rgb(245, 245, 245);
+  cursor: default;
+
+}
 
 
 .summary-detail-view .votes{
@@ -3247,8 +3586,6 @@ oi-select .select-search-list-item {
 
 }
 
-
-
 .summary-detail-view2 .subject:hover{
   text-decoration: none;
   cursor: pointer;
@@ -3260,6 +3597,50 @@ oi-select .select-search-list-item {
   width: 100%;
   /*background-color: transparent;*/
 }
+
+
+
+.summary-detail-view2-issue .subject {
+
+  font-size: 2rem;
+  font-family: 'Oswald', sans-serif;
+  /* line-height: .9; */
+  /*margin-left: 1.3em;*/
+  border: none;
+  margin-bottom: 0px;
+  max-width: 100%;
+  width: 100%;
+
+}
+
+
+
+.summary-detail-view2-issue .subject:hover{
+  text-decoration: none;
+  cursor: pointer;
+  color: #5DD4D4;
+  /*background-color: transparent;*/
+}
+
+.summary-detail-view2-issue .subject2 a:hover,
+.summary-detail-view2-issue .subject2 a:focus,
+.summary-detail-view2-issue .subject2 a:active{
+  text-decoration: none;
+  cursor: pointer;
+  color: #5DD4D4;
+  /*background-color: transparent;*/
+}
+
+
+
+.summary-detail-view2-issue .editable-wrap{
+  width: 100%;
+  /*background-color: transparent;*/
+}
+
+
+
+
 
 .summary-detail-body4 .editable-wrap{
   width: 100%;
@@ -3275,7 +3656,31 @@ oi-select .select-search-list-item {
 }
 
 
+.summary-detail-body4-repeat .editable-wrap{
+  width: 100%;
+  height:100%;
+  /*background-color: transparent;*/
+}
+
+.summary-detail-body4-repeat .editable-controls{
+  width: 86%;
+  height:90%;
+
+  /*background-color: transparent;*/
+}
+
+
+
+
+
 .summary-detail-view2 .editable-controls{
+  width: 100%;
+
+  /*background-color: transparent;*/
+}
+
+
+.summary-detail-view2-issue .editable-controls{
   width: 100%;
 
   /*background-color: transparent;*/
@@ -3353,6 +3758,17 @@ oi-select .select-search-list-item {
 .text-img .nexttask-edit:hover,
 .text-img .nexttask-edit:focus,
 .text-img .nexttask-edit:active
+{
+  text-decoration: none;
+  border-color: white;
+  outline: none;
+  border: 0;
+}
+
+
+.text-img p:hover,
+.text-img p:focus,
+.text-img p:active
 {
   text-decoration: none;
   border-color: white;
@@ -4298,7 +4714,7 @@ form.well {
 
 .summary-body-detail-userstory img{
   float:left;
-  width: 2.7em;
+  width: 2.4em;
   margin-right: 0.5em;
 
 }
@@ -4311,10 +4727,19 @@ form.well {
 
 .panel-body-backlog-issues-list img{
   float:left;
-  width: 2.7em;
+  width: 2.4em;
   margin-right: 0.5em;
 
 }
+
+
+.panel-body-backlog-issues-list .avatarin2{
+  margin-top:0.4em;
+  margin-left: 1em;
+
+}
+
+
 
 .panel-body-backlog-issues-list .avatar {
   opacity: 0.5;
@@ -4351,6 +4776,50 @@ form.well {
 	padding-right: 0px;
   text-align: center;
 }
+
+
+#container-scrum-team{
+  height: 100%;
+  padding-right: 0px;
+  text-align: center;
+  padding:0px;
+}
+
+
+#row-scrum-team{
+  margin-bottom: 15px;
+}
+
+
+#container-scrum-team .col-scrum-team{
+  padding-left: 3em;
+
+
+}
+
+#container-scrum-team .col-scrum-team10{
+  text-align: left;
+
+
+}
+
+#container-scrum-team .col-scrum-team10 p{
+  font-size: small;
+  margin-bottom: 0px;
+}
+
+#container-scrum-team .col-scrum-team10 strong{
+  font-size: smaller;
+}
+
+#container-scrum-team .avatarin2{
+  margin-right: 0.5em;
+  width: 30px;
+  margin-top:4px;
+}
+
+
+
 
 #containermembersettings2{
   height: 75%;
@@ -5365,6 +5834,17 @@ a:hover.classscrum span {
 
 
 
+
+
+
+.row-backlog-team {
+  margin: 0px;
+  height: 100%;
+}
+
+
+
+
 .row-dashboard-sprints {
   margin: 0px; !important
   height: 85%;
@@ -5423,6 +5903,11 @@ a:hover.classscrum span {
 
 }
 
+.row-backlog-issues-new-btn-team {
+  margin: 0px;
+  height: 10%;
+
+}
 
 
 
@@ -5497,6 +5982,13 @@ a:hover.classscrum span {
 }
 
 
+#panel-detail-team{
+  margin: 0px;
+  border:none;
+  height: 90%;
+}
+
+
 
 #panel-backlog-graphs {
   margin: 0px;
@@ -5545,6 +6037,31 @@ a:hover.classscrum span {
 }
 
 
+#panel-backlog-team {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+
+.panel-body-backlog-team {
+  margin: 0px;
+  border:none;
+  height: 100%;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.panel-body-backlog-team .chart-container{
+  margin: 0px;
+  border:none;
+  height: 100%;
+  padding: 5em;
+
+}
+
+
+
 
 #panel-backlog-sprints-new-btn {
   margin: 0px;
@@ -5563,6 +6080,16 @@ a:hover.classscrum span {
   border:none;
   height: 100%;
 }
+
+
+#panel-backlog-issues-new-btn-team {
+  margin: 0px;
+  border:none;
+  height: 100%;
+}
+
+
+
 
 #panel-backlog-issues-list {
   margin: 0px;
@@ -5881,7 +6408,7 @@ a:hover.classscrum span {
 
    border-color: transparent;
    min-height: 1px;
-   overflow-y: scroll;
+   overflow-y: auto;
    height: 100%;
    max-height: none;
    margin: 0px 0px;
@@ -5920,6 +6447,14 @@ a:hover.classscrum span {
   border-left-style:solid;
   border-left-color: lavender;
 }
+
+
+.chat li.left .delete-issue
+{
+  padding-left: 0.5em;
+}
+
+
 
 
 .chat li.left .metadatalinksTask

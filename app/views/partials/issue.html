@@ -176,7 +176,6 @@
 
         <div class="carousel-caption">
 
-          <!--------------------- FALTA ------------------------------>
           <a class="btn btn-large btn-success" data-toggle="modal" data-target="#newIssueModal" ng-click="initVarsNewIssueModal()">
             <i class="fa fa-plus"></i>
             Add a new issue
@@ -210,9 +209,11 @@
                   <!------------------- busquedas para issues + botones edit, delete ... ------------------------------------>
                   <div class="input-group" ng-show="tagIssue.id == undefined">
 
-
-
-
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button">
+                          <i class="fa fa-search"></i>
+                        </button>
+                    </span>
 
 
                     <span class="input-group-btn">
@@ -247,7 +248,7 @@
 
 
                     <!-- si hay varios seleccionados delete -->
-                    <span ng-show="tableCells.selected.length > 1" class="input-group-btn">
+                    <span ng-show="tableCells.selected.length > 0" class="input-group-btn">
                       <div class="input-group-btn">
 
                         <button class="btn btn-danger" type="button" ng-click="removeIssues()">
@@ -257,22 +258,10 @@
                       </div>
                     </span>
 
+
+                    <!-- quizas mas adelante poder asociar a US -->
                     <!-- hay 1 seleccionado:: editar, borrar -->
-                    <span ng-show="tableCells.selected.length ==1" class="input-group-btn">
-                      <div class="input-group-btn">
-                        <button class="btn btn-info" type="button" data-toggle="modal"
-                                data-target="#editIssueModal" ng-click="initVarsEditIssueModal()">
 
-                          <i class="fa fa-pencil"></i>
-                          Edit
-                        </button>
-
-                        <button class="btn btn-danger" type="button" ng-click="removeIssues()">
-                          <i class="fa fa-trash"></i>
-                          Delete
-                        </button>
-                      </div>
-                    </span>
 
 
                   </div>
@@ -322,7 +311,7 @@
                     </a>
 
                   </th>
-                  <th class="table-cell18">
+                  <th class="table-cell2">
                     <a ng-click="sortType = 'num'; sortReverse = !sortReverse">
                       Issues
                       <span ng-show="sortType == 'num'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
@@ -336,21 +325,21 @@
 
 
 
-                  <th class="table-cell06">
+                  <th class="table-cell02">
                     <a ng-click="sortType = 'type'; sortReverse = !sortReverse">
                       Type
                       <span ng-show="sortType == 'type'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
-                  <th class="table-cell06">
+                  <th class="table-cell03">
                     <a ng-click="sortType = 'severity'; sortReverse = !sortReverse">
                       Severity
                       <span ng-show="sortType == 'severity'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
                     </a>
 
                   </th>
-                  <th class="table-cell06">
+                  <th class="table-cell03">
                     <a ng-click="sortType = 'priority'; sortReverse = !sortReverse">
                       Priority
                       <span ng-show="sortType == 'priority'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
@@ -359,7 +348,7 @@
                   </th>
 
 
-                  <th class="table-cell1">
+                  <th class="table-cell08">
                     <a ng-click="sortType = 'status'; sortReverse = !sortReverse">
                       Status
                       <span ng-show="sortType == 'status'" class="fa" ng-class="sortReverse ? 'fa-caret-up' : 'fa-caret-down'"></span>
@@ -401,37 +390,40 @@
 
 
                   <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell04">{{row.voters.length}}</td>
-                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell18"
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell22"
                       ng-class="row.status == 'Closed' ? 'status-closed' :''">
                     #{{row.num}} {{row.subject}}
                   </td>
 
-                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell06">
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell02">
                     <!-- bug, question, enhancement -->
-                    <div ng-class="row.type == 'Bug' ? 'circle-warning' : (row.type == 'Question' ? 'circle-primary' :'circle-success')"></div>
-                    {{row.type | limitTo:4}}
+                    <div ng-attr-title="{{row.type}}"
+                         ng-class="row.type == 'Bug' ? 'circle-warning' : (row.type == 'Question' ? 'circle-primary' :'circle-success')"></div>
+
 
                   </td>
 
-                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell06">
-                    <div ng-class="row.severity == 'Wishlist' ? 'circle-default' :
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell03">
+                    <div ng-attr-title="{{row.severity}}"
+                      ng-class="row.severity == 'Wishlist' ? 'circle-default' :
                                   (row.severity == 'Minor' ? 'circle-success' :
                                   (row.severity == 'Normal' ? 'circle-primary' :
                                   (row.severity == 'Important' ? 'circle-warning' : 'circle-blocked')))">
                     </div>
-                    {{row.severity | limitTo:4}}
+
                   </td>
 
-                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell06">
-                    <div ng-class="row.priority == 'Low' ? 'circle-success' : (row.priority == 'Normal' ? 'circle-primary' :'circle-warning')"></div>
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell03">
+                    <div ng-attr-title="{{row.priority}}"
+                         ng-class="row.priority == 'Low' ? 'circle-success' : (row.priority == 'Normal' ? 'circle-primary' :'circle-warning')"></div>
 
-                    {{row.priority| limitTo:4}}
+
                   </td>
-                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell1">{{row.status}}</td>
+                  <td data-ng-click="viewDetailsIssue(row, $index)" class="table-cell08">{{row.status}}</td>
 
                   <!-- assignedto es 1 json -->
                   <td ng-show="row.assignedto !== undefined && row.assignedto.id !== undefined"
-                      data-ng-click="changeIssueAssignedtoWithUnassigned(row, $index)" class="table-cell10">
+                      data-ng-click="changeIssueAssignedtoWithUnassignedFromList(row, $index)" class="table-cell10">
                     <img
                       ng-src="http://www.gravatar.com/avatar/{{getHash(row.assignedto.mail)}}?s=50&d=identicon"
                       alt="User Avatar"
@@ -440,7 +432,7 @@
                   </td>
 
                   <td ng-show="row.assignedto == undefined || row.assignedto.id == undefined"
-                      data-ng-click="changeIssueAssignedto(row, $index)"
+                      data-ng-click="changeIssueAssignedtoFromList(row, $index)"
                       class="table-cell10">
                     <img
                       ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=50&d=identicon"
@@ -537,7 +529,7 @@
           <label for="issueSubject">Subject:</label>
           <input type="text" class="form-control" name="issueSubjectTxt"
                  id="issueSubject" placeholder="Enter Issue Subject..."
-                 ng-model="issue.subject">
+                 ng-model="issue.subject" autofocus>
 
           <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewIssueRequiredSubModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewIssueRequiredSubModal =''">

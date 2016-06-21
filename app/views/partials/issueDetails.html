@@ -12,8 +12,8 @@
 
               <span title="Issue votes" class="votes">{{rowCollectionIssues[tagIssue].voters.length}}
               </span>
-          <i ng-click="editVoteIssue(0)" ng-show="!tagUserstoryTemp.disableVote" class="fa fa-plus"></i>
-          <i ng-click="editVoteIssue(1)" ng-show="tagUserstoryTemp.disableVote" class="fa fa-minus"></i>
+          <i ng-click="editVoteIssue(0)" ng-show="!tagIssueTemp.disableVote" class="fa fa-plus"></i>
+          <i ng-click="editVoteIssue(1)" ng-show="tagIssueTemp.disableVote" class="fa fa-minus"></i>
 
         </div>
 
@@ -22,11 +22,29 @@
 
         </div>
 
-        <div class="summary-detail-view2">
-              <span class="subject" editable-text="tagUserstory.tasks[tagTask].subject" e-required
+        <div class="summary-detail-view2-issue">
+              <span class="subject" editable-text="rowCollectionIssues[tagIssue].subject" e-required
                     onbeforesave="editSubjectIssue($data, rowCollectionIssues[tagIssue])">
                                   {{ rowCollectionIssues[tagIssue].subject }}
                                      </span>
+
+
+          <span class="subject2">
+            <p>This issue has been promoted to US:
+            <span ng-if="rowCollectionIssues[tagIssue].userstories.length > 0"
+               ng-repeat="rowus in rowCollectionIssues[tagIssue].userstories">
+              <a ng-click = "viewUserstory(rowus.id)">
+                #{{ rowus.num }}
+              </a>
+
+            </span>
+            </p>
+
+          </span>
+
+
+
+
         </div>
 
         <div class="summary-detail-view3">
@@ -102,48 +120,48 @@
       <div class="summary-detail-task-body2"> <!-- column -->
         <div class="summary-detail-task-body2-child"> <!-- row -->
 
-          <div class="summary-detail-task-body2-child-body1"> <!-- column -->
+          <div class="summary-detail-task-body2-child-body1-repeat"> <!-- column -->
 
 
             <!-- ponemos todos los combos juntos -->
 
 
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <!-- type -->
                 <div class="form-group">
                   <label for="issueType">Type:</label>
                   <oi-select oi-options="item for item in statics.type track by item"
                              ng-model="rowCollectionIssues[tagIssue].type"
                              id="issueType"
-                             ng-change="editTypeIssue()"
+                             ng-change="editCombosIssue(0)"
                              required> </oi-select>
                 </div>
               </div>
 
 
 
-              <div class="col-md-4">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <!-- severity -->
                 <div class="form-group">
                   <label for="issueSeverity">Severity:</label>
                   <oi-select oi-options="item for item in statics.severity track by item"
                              ng-model="rowCollectionIssues[tagIssue].severity"
                              id="issueSeverity"
-                             ng-change="editSeverityIssue()"
+                             ng-change="editCombosIssue(1)"
                              required> </oi-select>
                 </div>
               </div>
 
 
-              <div class="col-md-4">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <!-- priority -->
                 <div class="form-group">
                   <label for="issuePriority">Priority:</label>
                   <oi-select oi-options="item for item in statics.priority track by item"
                              ng-model="rowCollectionIssues[tagIssue].priority"
                              id="issuePriority"
-                             ng-change="editPriorityIssue()"
+                             ng-change="editCombosIssue(2)"
                              required> </oi-select>
                 </div>
               </div>
@@ -158,178 +176,12 @@
 
 
             <div class="row">
-              <div class="col-md-8">
-                <!-- status  -->
-                <div class="form-group">
-                  <label for="issueStatus">Status:</label>
-                  <oi-select oi-options="item for item in statics.status track by item"
-                             ng-model="rowCollectionIssues[tagIssue].status"
-                             id="issueStatus"
-                             ng-change="editStatusIssuek()"
-                             required> </oi-select>
-                </div>
 
 
 
-                <!---------------- comienzo prueba lista ------------------------------>
-                <div class="panel panel-info" ng-repeat="rowUS in rowCollectionUserStories"
-                     ng-show="rowUS.sprint == tagSprint.id && $index == 0">
-                  <div class="panel-heading" id="panel-heading-color-white">
 
-                    <div class="form-contributors-btn">
 
-                      <button title="new task" type="button" class="btn btn-info pull-left"
-                              data-toggle="modal" data-target="#newTaskSprintModal" ng-click="assignUStoRow($index)">
-                        <span class="fa fa-plus"></span>
-                      </button>
-                      <a class="try-label">
-                        #{{rowUS.num}} {{rowUS.subject}}
-                      </a>
-                      <button type="button" class="btn btn-info pull-left" ng-click="viewTasksContainer($index)">
-                        <span class="fa fa-chevron-down"></span>
-                      </button>
-
-
-
-
-
-                    </div>
-
-
-                  </div>
-
-
-
-
-                  <!-- ha esto le tengo que llamar:: viewTasksContainer($parent.$index) -->
-                  <div class="panel-body" ng-show="rowCollectionUserStories.length == 0">
-
-                    <!-- queremos el US solo num y subject y status, persona?? tmbn  -->
-
-
-                    <ul dnd-list="rowUS">
-
-                      <li>
-
-                      <div class="text-img">
-                     <!-- <li ng-repeat="rowUS in rowCollectionUserStories"
-                          ng-class="row.status == 'New' ? 'status-new' :
-                              (row.status == 'In progress' ? 'status-in-progress' :
-                               (row.status == 'Closed' ? 'status-closed' :'status-ready-for-test'))">-->
-
-
-                        <!-- los US no se assignan a nadie -->
-                        <!-------------- sin assignar -------------------------------->
-                        <!--<div class="text-img">
-                          <img ng-show="rowTask.assignedto == undefined || rowTask.assignedto.id == undefined"
-                               ng-src="http://www.gravatar.com/avatar/{{getHash('internalUser@localhost')}}?s=40&d=identicon"
-                               alt="User Avatar"
-                               class="avatarin avatarin-opacity"
-                               ng-click="changeTaskAssignedtoFromList(rowUS, rowTask, $index)"/>
-
-
-
-                          <!--------------------- assignado ------------------------------
-                          <img ng-show="rowTask.assignedto !== undefined && rowTask.assignedto.id !== undefined"
-                               ng-src="http://www.gravatar.com/avatar/{{getHash(rowTask.assignedto.mail)}}?s=40&d=identicon"
-                               alt="User Avatar"
-                               class="avatarin"
-                               ng-click="changeTaskAssignedtoWithUnassignedFromList(rowUS, rowTask, $index)"/>
-
-
-
-
-                          <p ng-click="">#{{rowTask.num}} {{rowTask.subject}}</p>
-
-
-                          <!--------------- ponemos icono de borrar ------------------------>
-
-
-                          <!-- queremos ver taskdetail -->
-                    <span class="nexttask-edit" ng-click="viewSprintDetailTaskFromDash(row, $index)">
-                      <i class="fa fa-pencil"></i>
-                    </span>
-
-                          <!-- esto es para desasignar el us -->
-                    <span class="nexttask-edit" ng-click="removeTaskFromSprint(row.id)">
-                      <i class="fa fa-trash-o"></i>
-                    </span>
-
-                        </div>
-
-
-
-
-
-
-                      </li>
-                    </ul>
-
-                  </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <!-- end prueba lista ----------------->
-
-
-              </div> <!-- end row md-8 -->
-
-
-
-              <div class="col-md-4">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <!-- assigned -->
 
 
@@ -347,7 +199,7 @@
 
                   <div class="summary-detail-task-body2-child-body2-assignedto">
                     <p> Assigned to </p>
-                    <a> {{tagUserstory.tasks[tagTask].assignedto.username}}
+                    <a> {{rowCollectionIssues[tagIssue].assignedto.username}}
                     </a>
                   </div>
 
@@ -384,41 +236,38 @@
                 </div>
 
 
+              </div> <!-- end row 6 -->
 
 
-              </div>
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
 
-
-
-
-
-
-
-            </div>
+              </div> <!-- end row md-2 -->
 
 
 
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <!-- status  -->
+                <div class="form-group">
+                  <label for="issueStatus">Status:</label>
+                  <oi-select oi-options="item for item in statics.status track by item"
+                             ng-model="rowCollectionIssues[tagIssue].status"
+                             id="issueStatus"
+                             ng-change="editCombosIssue(3)"
+                             required> </oi-select>
+                </div>
 
 
-
-
-
-
-            <!-- <div class="form-group">
-               <label>Status:</label>
-
-               <oi-select oi-options="item for item in statics.status track by item"
-                          ng-model="tagUserstory.tasks[tagTask].status"
-                          ng-change="editStatusTask()"
-                          required>
-
-               </oi-select>
-             </div> <!-- end form-group -->
+              </div> <!-- end row md-4 -->
 
 
 
 
 
+
+
+
+
+            </div> <!-- end row normal -->
 
 
 
@@ -428,59 +277,6 @@
 
 
 
-
-          <!-- de momento aqui nada, podemos meter us
-
-          <!-- aqui irian los contributors si hay -->
-          <!-- <span aria-hidden="true">&times;</span> -->
-
-<!--
-          <div class="form-contributors">
-
-            <div class="form-contributors-btn">
-
-              <button title="new contributor"
-                      ng-click="addContributorTask( contributor)"
-                      type="button" class="btn btn-info">
-                <span class="fa fa-user-plus"></span>
-              </button>
-              <button type="button" class="btn btn-info btn-label-contributor">
-                Contributors
-              </button>
-
-            </div>
-
-
-
-            <div class="contributors-list">
-              <ul class="media-list list-group" ng-show="tagUserstory.tasks[tagTask].contributors !== undefined || tagUserstory.tasks[tagTask].contributors.length > 0">
-
-                <li class="media list-group-item" ng-repeat="contributor in tagUserstory.tasks[tagTask].contributors">
-
-                  <div class="comment">
-                    <img
-                      ng-src="http://www.gravatar.com/avatar/{{getHash(contributor.mail)}}?s=50&d=identicon"
-                      alt="User Avatar"
-                      class="avatar-comments"/>
-
-
-                    <div class="media-body">
-                      <strong class="username">{{contributor.username}} </strong>
-                          <span>
-                            <i ng-click="removeContributorTask(contributor)" class="fa fa-times" aria-hidden="true"></i>
-                          </span>
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                  </div> <!-- end div comments --
-                </li>
-
-              </ul>
-            </div>
-
-
-          </div> <!--end contributors:: derecha -->
 
 
 
@@ -495,12 +291,12 @@
 
 
       <!-- description -->
-      <div class="summary-detail-body4">
+      <div class="summary-detail-body4-repeat">
         <div class="form-group">
           <label for="taskDescr">Description:</label>
           <p id="taskDescr" editable-textarea="rowCollectionIssues[tagIssue].description"
              e-required
-             onbeforesave="editDescriptionIssue($data, tagUserstory.tasks[tagTask])">
+             onbeforesave="editDescriptionIssue($data, rowCollectionIssues[tagIssue])">
             {{ rowCollectionIssues[tagIssue].description || 'Enter description to helps others better understand...' }}
 
           </p>
@@ -508,22 +304,24 @@
       </div>
 
 
-
-      <!--
       <div class="summary-detail-body5">
         <div class="form-group requirements-task">
-          <!-- solo requirement --
+          <!-- solo requirement -->
 
           <div class="btn-group">
-            <label type='button' ng-click="editRequirementTask(0)" class="btn btn-warning" ng-model="tagUserstory.tasks[tagTask].requirement.blocked" uib-btn-checkbox>Blocked</label>
-            <label type='button' ng-click="editRequirementTask(1)" class="btn btn-info" ng-model="tagUserstory.tasks[tagTask].requirement.iocaine" uib-btn-checkbox>Support</label>
-
+            <button type="button" class="btn btn-primary pull-center btn-all" ng-click="promoteIssuetoUS()">
+              Promote to User Story
+              <span class="fa fa-tasks fa-lg"></span>
+            </button>
           </div>
 
 
         </div>
       </div>
--->
+
+
+
+
 
 
     </div> <!-- end view detail -->
@@ -596,8 +394,24 @@
                 </small>
 
 
-                <p>    {{comment.comment}}    </p>
-                <small class="date date-comments" ng-show="comment.isEditable" ng-click="removeComment(comment)">
+
+
+                <p ng-if="isInternalComment($index)" class="text-left">
+                  <span ng-show="getInternalComment($index, comment)!== ''" bind-html-compile="getInternalComment($index, comment)"></span>
+                </p>
+
+                <p ng-if="!isInternalComment($index)" class="text-left">
+                    {{comment.comment}}
+                </p>
+
+
+
+
+
+
+
+
+                <small class="date date-comments" ng-show="comment.isEditable" ng-click="removeCommentIssue(comment)">
                   <span class="glyphicon glyphicon-trash"></span>
                 </small>
 

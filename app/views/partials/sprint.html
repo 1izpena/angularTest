@@ -16,15 +16,23 @@
 
               <div class="form-contributors-btn">
 
+                <a class="try-label">
+                  #{{rowUS.num}} {{rowUS.subject}}
+                </a>
                 <button title="new task" type="button" class="btn btn-info pull-left"
                         data-toggle="modal" data-target="#newTaskSprintModal" ng-click="assignUStoRow($index)">
                   <span class="fa fa-plus"></span>
                 </button>
-                <a class="try-label">
-                  #{{rowUS.num}} {{rowUS.subject}}
-                </a>
-                <button type="button" class="btn btn-info pull-left" ng-click="viewTasksContainer($index)">
+                <button type="button" class="btn btn-info pull-left"
+                        ng-show="rowUS.viewTaskContainer == false "
+                        ng-click="viewTasksContainer($index)">
                   <span class="fa fa-chevron-down"></span>
+                </button>
+
+                <button type="button" class="btn btn-info pull-left"
+                        ng-show="rowUS.viewTaskContainer !== false && (rowUS.tasks!== undefined && rowUS.tasks.length >0)"
+                        ng-click="viewTasksContainer($index)">
+                  <span class="fa fa-chevron-up"></span>
                 </button>
 
 
@@ -1136,7 +1144,7 @@
           <label for="userstorySubject">Subject:</label>
           <input type="text" class="form-control" name="userstorySubjectTxt"
                  id="userstorySubject" placeholder="Enter Userstory Subject..."
-                 ng-model="userstory.subject">
+                 ng-model="userstory.subject" autofocus>
 
           <div class="alert alert-danger" role="alert" ng-if="modalsError.messageNewUserstoryRequiredSubModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewUserstoryRequiredSubModal =''">
@@ -1302,7 +1310,7 @@
           <label for="sprintName">Name:</label>
           <input type="text" class="form-control" name="sprintName"
                  id="sprintName" placeholder="Enter Sprint Name..."
-                 ng-model="sprint.name">
+                 ng-model="sprint.name" autofocus>
 
           <div class="alert alert-danger" role="alert" ng-show="modalsError.messageNewSprintRequiredNameModal !== ''">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="modalsError.messageNewSprintRequiredNameModal =''">
@@ -1705,7 +1713,7 @@
         <div class="form-group requirements-task">
           <div class="btn-group">
             <label type='button' class="btn btn-warning" ng-model="task.requirement.blocked" uib-btn-checkbox>Blocked</label>
-            <label type='button' class="btn btn-info" ng-model="task.requirement.iocaine" uib-btn-checkbox>Power</label>
+            <label type='button' class="btn btn-info" ng-model="task.requirement.iocaine" uib-btn-checkbox>Support</label>
 
           </div>
 
