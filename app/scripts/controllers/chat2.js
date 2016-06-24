@@ -2560,10 +2560,13 @@ angular.module('myAppAngularMinApp')
 
       $scope.viewSprintTasksboard = function() {
         $scope.item.viewTaskboard = true;
-        console.log("esto vale $scope.rowCollectionUserStories");
-        console.log($scope.rowCollectionUserStories);
+
         /* inicializamos el valor del combo de busqueda y el input del mismo */
         removeVarsSearchSprint();
+
+
+
+
 
 
         /* inicializamos variables de tabla */
@@ -2571,6 +2574,14 @@ angular.module('myAppAngularMinApp')
         removeValTableCellRowSprint();
         $scope.tableCells = {};
         $scope.tableCells.selected = [];
+
+        console.log("esto vale $scope.rowCollectionUserStories");
+        console.log($scope.rowCollectionUserStories);
+
+        console.log("solo mostramos cuando se cumple rowUS.sprint == tagSprint.id");
+
+        console.log("esto vale tagSprint.id");
+        console.log(" vamos a mirar si alguna tiene sprint y si coinciden rowUS.sprint == tagSprint.id");
 
 
 
