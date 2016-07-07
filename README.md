@@ -19,9 +19,7 @@ Run `grunt` for building and `grunt serve` for preview.
 
 Running `grunt test` will run the unit tests with karma.
 
-## Details
 
-Para instalar yeoman, siempre con 'sudo' en ubuntu o como administrador en windows:
 
 $ npm install -g grunt-cli bower yo generator-karma generator-angular
 
