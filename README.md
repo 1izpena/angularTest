@@ -1,7 +1,5 @@
 # my-app-angular-min
 
-
-
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.14.0.
 
@@ -23,8 +21,6 @@ Running `grunt test` will run the unit tests with karma.
 
 ## Details
 
-He creado la aplicación automáticamente con yeoman, que es un asistente para la generación de aplicaciones webs del lado cliente, y en nuestro caso, para generar una aplicación angular, he incorporado el generador de angular.
-Creo que será más sencillo para todos que os instaleis yeoman, porque haciendo comandos sencillos desde consola, te genera mucho código. Sino también podeis hacerlo a pelo.
 Para instalar yeoman, siempre con 'sudo' en ubuntu o como administrador en windows:
 
 $ npm install -g grunt-cli bower yo generator-karma generator-angular
