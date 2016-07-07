@@ -44,4 +44,4 @@ Mas adelante si 'yo' os da problemas podeis poner en una terminal:
 $ yo doctor
 Y os dira los posibles problemas que encuentra en vuestra maquina y los comandos exactos para arreglarlos.
 
-Online DEMO in 'http://54.171.73.143'
+
