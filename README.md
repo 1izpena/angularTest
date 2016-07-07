@@ -1,6 +1,6 @@
 # my-app-angular-min
 
-Partimos de que todos tenemos la version de node 5.0.0 y la version de npm 3.3.6.
+
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.14.0.
